@@ -1,0 +1,11 @@
+# Slidev の md は frontmatter 区切り (---) を rumdl が壊すため除外する。
+# rumdl の exclude はプロセス cwd 基準で照合されるため、
+# 生成後プロジェクト (cwd = プロジェクトルート) と
+# nix-templates リポジトリ (cwd = リポジトリルート) の両方のパターンを持つ
+[global]
+exclude = [
+  "slides/slides.md",
+  "slides/pages/*.md",
+  "templates/slidev/slides/slides.md",
+  "templates/slidev/slides/pages/*.md",
+]

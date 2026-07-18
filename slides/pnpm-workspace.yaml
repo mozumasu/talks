@@ -1,0 +1,9 @@
+packages:
+  - .
+
+# wrangler の依存が postinstall を必要とする (workerd はバイナリ取得)
+allowBuilds:
+  esbuild: true
+  playwright-chromium: true
+  sharp: true
+  workerd: true

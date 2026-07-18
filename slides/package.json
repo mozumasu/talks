@@ -1,0 +1,21 @@
+{
+  "name": "CHANGE_ME-slides",
+  "private": true,
+  "packageManager": "pnpm@11.11.0",
+  "type": "module",
+  "scripts": {
+    "dev": "slidev slides.md --port ${PORT:-3030} --remote --bind 127.0.0.1",
+    "build": "slidev build slides.md",
+    "export": "slidev export slides.md"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.11.0",
+    "slidev-addon-CHANGE_ME": "link:../../CHANGE_ME/packages/slidev-addon-CHANGE_ME",
+    "slidev-theme-CHANGE_ME": "link:../../CHANGE_ME/packages/slidev-theme-CHANGE_ME",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.61.1",
+    "wrangler": "4.110.0"
+  }
+}
