@@ -1,30 +1,30 @@
 ---
 # 使うテーマに置換する (npm 公開テーマ名 or ローカルパス)
-theme: CHANGE_ME
-title: CHANGE_ME タイトル
+theme: findy
+title: Talks as Code
 info: |
   イベント名
-  CHANGE_ME タイトル
+  登壇を支える技術
 class: text-left
 comark: true
 favicon: https://github.com/mozumasu.png
 addons:
-  - slidev-addon-CHANGE_ME
+  - slidev-addon-findy
 layout: talk-cover
-event: イベント名 2026.1.1
+event: 登壇を支える技術 2026.1.1
 image: https://github.com/mozumasu.png
 name: mozumasu
-role: CHANGE_ME 所属 / 役職
+role: ファインディ / Platform SRE
 ---
 
 ## サブタイトル
-# CHANGE_ME タイトル
+# Talks as Code
 
 ---
 layout: profile
 image: https://github.com/mozumasu.png
 name: mozumasu
-role: CHANGE_ME 所属 / 役職
+role: ファインディ / Platform SRE
 ---
 
 ## 自己紹介

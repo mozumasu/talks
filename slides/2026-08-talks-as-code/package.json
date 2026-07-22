@@ -1,5 +1,5 @@
 {
-  "name": "CHANGE_ME-slides",
+  "name": "talks-talks-as-code",
   "private": true,
   "packageManager": "pnpm@11.11.0",
   "type": "module",
@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@slidev/cli": "^52.11.0",
-    "slidev-addon-CHANGE_ME": "link:../../CHANGE_ME/packages/slidev-addon-CHANGE_ME",
-    "slidev-theme-CHANGE_ME": "link:../../CHANGE_ME/packages/slidev-theme-CHANGE_ME",
+    "slidev-addon-findy": "link:../../../findy-slidev/packages/slidev-addon-findy",
+    "slidev-theme-findy": "link:../../../findy-slidev/packages/slidev-theme-findy",
     "vue": "^3.5.0"
   },
   "devDependencies": {
     "playwright-chromium": "^1.61.1",
-    "wrangler": "4.110.0"
+    "wrangler": "4.113.0"
   }
 }
