@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
-  "name": "CHANGE_ME",
+  "name": "talks",
   "compatibility_date": "2026-07-01",
   "assets": {
     "directory": "./dist",
