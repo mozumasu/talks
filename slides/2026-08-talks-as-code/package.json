@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "slidev slides.md --port ${PORT:-3030} --remote --bind 127.0.0.1",
-    "build": "slidev build slides.md --base /talks-as-code/ --out ../../dist/talks-as-code",
+    "build": "slidev build slides.md",
     "export": "slidev export slides.md"
   },
   "dependencies": {
