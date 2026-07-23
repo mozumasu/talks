@@ -15,7 +15,6 @@
     "vue": "^3.5.0"
   },
   "devDependencies": {
-    "playwright-chromium": "^1.61.1",
-    "wrangler": "4.113.0"
+    "playwright-chromium": "^1.61.1"
   }
 }

@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      wrangler:
+        specifier: 4.113.0
+        version: 4.113.0
 
   slides/2026-08-talks-as-code:
     dependencies:
@@ -26,9 +30,6 @@ importers:
       playwright-chromium:
         specifier: ^1.61.1
         version: 1.61.1
-      wrangler:
-        specifier: 4.113.0
-        version: 4.113.0
 
 packages:
 
