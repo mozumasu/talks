@@ -65,14 +65,20 @@ eyebrow: SSO が使えないってどういうこと
 - コンソールは 1 セッションのみ → stg と prod でセッションの取り合い
 
 ---
-layout: section
-color: green
+layout: content
 toc: 選択肢のマップ
+title: 選択肢のマップ
 ---
 
-# 選択肢のマップ
+<FindyAgendaItem num="1" title="正攻法: Identity Center に乗せてもらう" gradient />
+<FindyAgendaItem num="2" title="代替: スイッチロール (Jump アカウント)" gradient />
+<FindyAgendaItem num="3" title="推奨: granted でログイン画面ごとスキップ" gradient />
+<FindyAgendaItem num="4" title="キーレス派: aws login (ただし 12 時間の壁)" gradient />
+<FindyAgendaItem num="5" title="どの道を選んでも効く軽減策 3 点" gradient />
 
-理想論は分かってる。<br>でも使えないんだ
+<!--
+理想論 (SSO 使え) は分かってる。でも使えないんだ、という枕から選択肢を順に紹介する。
+-->
 
 ---
 layout: content
