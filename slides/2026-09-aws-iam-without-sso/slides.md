@@ -47,6 +47,8 @@ toc: SSO が使えないってどういうこと
 
 ---
 layout: content
+eyebrowNum: 1
+eyebrow: SSO が使えないってどういうこと
 ---
 
 # 「Identity Center 使えばいいじゃん」が通じない環境がある
@@ -74,6 +76,8 @@ toc: 選択肢のマップ
 
 ---
 layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
 ---
 
 # 正攻法: Identity Center に乗せてもらう
@@ -99,6 +103,8 @@ sso_role_name = AdministratorAccess
 
 ---
 layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
 ---
 
 # 代替: スイッチロール (Jump アカウント)
@@ -114,6 +120,8 @@ layout: content
 
 ---
 layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
 ---
 
 # 推奨: granted でログイン画面ごとスキップ
@@ -130,6 +138,8 @@ assume -c app-stg    # stg のコンソールがブラウザで開く。入力�
 
 ---
 layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
 ---
 
 # ついでに解決: アクセスキーを平文で持たない
@@ -151,6 +161,8 @@ credential_process = granted credential-process --profile app-stg
 
 ---
 layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
 ---
 
 # キーレス派: aws login (CLI 組み込みブラウザ認証)
@@ -170,6 +182,8 @@ aws login --profile app-stg
 
 ---
 layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
 ---
 
 # 何を選んでも効く軽減策 3 点
@@ -196,6 +210,8 @@ federation URL を自作したら
 
 ---
 layout: content
+eyebrowNum: 3
+eyebrow: 失敗談
 ---
 
 # IAM ユーザーのトークンは federation に拒否される
@@ -221,6 +237,8 @@ aws sts assume-role \
 
 ---
 layout: content
+eyebrowNum: 3
+eyebrow: 失敗談
 ---
 
 # まとめ: トレードオフを選ぶ
