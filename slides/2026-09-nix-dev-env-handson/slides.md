@@ -52,7 +52,8 @@ columns: 1
 ---
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 1
 toc: なぜ brew/mise をやめたのか
 ---
@@ -142,7 +143,8 @@ ratio: 1/1
 - `cd` するだけで環境が切り替わる
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 2
 toc: ハンズオン準備
 ---
@@ -203,7 +205,8 @@ nix run nixpkgs#hello
 - 動かない人はここで挙手 (トラブルシュートタイム)
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 3
 toc: はじめての flake.nix
 ---
@@ -301,7 +304,8 @@ layout: content
 - flake.nix と flake.lock をコミットした
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 4
 toc: パッケージを揃える
 ---
@@ -391,7 +395,8 @@ which git curl   # /nix/store/... を指す
 - ここまでで brew / mise 相当の宣言が flake.nix 1 ファイルに集約された
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 5
 toc: direnv で自動化
 ---
@@ -462,7 +467,8 @@ layout: content
 - `nix flake update` で flake.lock の差分が見える
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 6
 toc: 実戦: 社内モノレポでの移行
 ---
@@ -505,7 +511,8 @@ layout: content
 - (発表までに定量的な効果・エピソードを追記する)
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 7
 toc: 発展: Dockerfile も置き換えられるか
 ---
@@ -537,10 +544,47 @@ layout: content
 
 # それでも Dockerfile 継続を選んだ
 
-- 技術的には可能。しかしチーム運用で見送った
-- npmDepsHash の維持コスト: 依存更新のたびにハッシュ更新が必要
-- macOS からは Linux イメージをビルドできない (Linux builder が別途必要)
-- CI・レビュー体制が Dockerfile 前提で回っている
+- 技術的には可能。見送りを検討した理由は 3 つ
+- 理由 1: npmDepsHash の維持コスト (依存更新のたびにハッシュ更新)
+- 理由 2: macOS からは Linux イメージをビルドできない
+- 理由 3: CI・レビュー体制が Dockerfile 前提で回っている
+- ただし調べると、理由 1・2 には解決策がある
+
+---
+layout: two-cols
+ratio: 1/1
+---
+
+# 理由 1・2 には解決策がある
+
+::left::
+
+## 理由 1: ハッシュ申告
+
+- npm なら nixpkgs 公式の `importNpmLock` で解決
+- package-lock.json の integrity ハッシュを直接使うため、ハッシュ申告自体が不要になる
+- ただし npm 限定。pnpm の `pnpm.fetchDeps` にはハッシュが残る (nix-update による自動更新で緩和はできる)
+
+::right::
+
+## 理由 2: Linux ビルド
+
+- nix-darwin の `nix.linux-builder` (公式)
+- nix-rosetta-builder
+- Determinate Nix の native Linux builder (2026-07 時点で段階ロールアウト中・申請制)
+- CI の Linux ランナー限定ビルド
+- 「できない」ではなく「VM ビルダーという配布物が一段増える」
+
+---
+layout: content
+---
+
+# それでも見送った主因は理由 3
+
+- 理由 1・2 は解決策を積めば潰せる
+- しかし解決策を積むほど「維持できるのが自分だけ」になる
+- importNpmLock の制約、Linux ビルダーの面倒を見られる人が何人いるか
+- 技術の壁ではなくバス係数の壁
 
 ---
 layout: content
@@ -554,7 +598,8 @@ layout: content
 - 今日の持ち帰り: まず devShell だけ、が現実的な第一歩
 
 ---
-layout: chapter
+layout: section
+color: blue
 eyebrow: Chapter 8
 toc: まとめ
 ---
@@ -571,7 +616,7 @@ layout: content
 - 定義の分散がバージョンのズレを生む。devShell は定義を 1 箇所に集約する
 - direnv と組み合わせると「cd するだけ」で環境が揃う
 - `.git/info/exclude` で個人導入から始め、チーム合意後に `git add -f` で共有する
-- Dockerfile の置き換えは技術的には可能。ただし運用判断は別
+- Dockerfile の置き換えは技術的には可能。見送った主因は技術ではなく運用 (バス係数)
 
 ---
 layout: content
@@ -583,6 +628,21 @@ layout: content
 - パッケージ検索: <https://search.nixos.org/packages>
 - nix-direnv: <https://github.com/nix-community/nix-direnv>
 - dockerTools: <https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-dockerTools>
+
+---
+layout: content
+---
+
+# Appendix: よくある反論
+
+- 「importNpmLock があるのでは?」
+  - npm ならその通り。うちは pnpm + Nx モノレポで残コストがあり、かつ主因は運用
+- 「CI でビルドすればいい」
+  - 正しい。手元の docker build 相当の確認ループが CI 往復になるトレードオフ
+
+<div class="text-xs op60 mt-8">
+出典: nixpkgs マニュアル JavaScript section / github.com/Mic92/nix-update / github.com/cpick/nix-rosetta-builder / docs.determinate.systems/determinate-nix/linux-builder/
+</div>
 
 ---
 layout: end
