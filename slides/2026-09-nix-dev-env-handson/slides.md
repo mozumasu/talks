@@ -507,7 +507,7 @@ git add --intent-to-add --force flake.nix flake.lock
 ```
 
 - `--intent-to-add` はパスだけ登録するので、コミットに混入しない
-- 共有すると決めたら普通に `git add -f` してコミット (個人 → 合意 → 共有)
+- 共有すると決めたら exclude から行を消して普通に add (個人 → 合意 → 共有)
 
 ---
 layout: content
@@ -521,7 +521,7 @@ eyebrowNum: 5
 | --- | --- | --- |
 | `git add` | 内容をステージ | 通常のコミット |
 | `git add -N` | パスだけ登録 | flake に見せたい、コミットはしない |
-| `git add -f` | 無視を押し切って add | 無視済みを共有に昇格 |
+| `git add -f` | 無視を押し切って add | ほぼ無し (無視をやめるなら exclude を消す) |
 | `git add -N -f` | 上 2 つの合わせ技 | **個人導入フェーズはこれ** |
 
 - 正式名: `-N` = `--intent-to-add` / `-f` = `--force`
@@ -724,7 +724,7 @@ eyebrowNum: 8
 - flake.nix は「Docker の代わり」ではなく「brew + mise の代わり」
 - 定義の分散がバージョンのズレを生む。devShell は定義を 1 箇所に集約する
 - direnv と組み合わせると「cd するだけ」で環境が揃う
-- `.git/info/exclude` で個人導入から始め、チーム合意後に `git add -f` で共有する
+- `.git/info/exclude` + `git add -N -f` で個人導入から始め、チーム合意後に共有する
 - Dockerfile の置き換えは技術的には可能。見送った主因は技術ではなく運用 (バス係数)
 
 ---
