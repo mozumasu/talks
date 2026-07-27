@@ -502,10 +502,12 @@ eyebrowNum: 5
 echo '.envrc' >> .git/info/exclude
 echo 'flake.nix' >> .git/info/exclude
 echo 'flake.lock' >> .git/info/exclude
+# flake は git が知るファイルしか見ない → 追跡だけさせる (コミットには入らない)
+git add --intent-to-add --force flake.nix flake.lock
 ```
 
-- 逆にチーム共有すると決めたら `git add -f` で明示的にコミットする
-- 個人導入 → チーム合意 → 共有、の順で段階的に進められる
+- `--intent-to-add` はパスだけ登録するので、コミットに混入しない
+- 共有すると決めたら普通に `git add -f` してコミット (個人 → 合意 → 共有)
 
 ---
 layout: content
