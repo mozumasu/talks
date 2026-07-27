@@ -212,18 +212,21 @@ eyebrow: ハンズオン準備
 eyebrowNum: 2
 ---
 
-# direnv のインストール
+# direnv と nix-direnv のインストール
 
-- direnv: ディレクトリに入ると環境変数を自動で読み込むツール
-- nix-direnv: `use flake` を高速化・キャッシュ化する拡張
+- [direnv](https://github.com/direnv/direnv): ディレクトリに入ると環境変数を自動で読み込む
+- [nix-direnv](https://github.com/nix-community/nix-direnv): `use flake` を高速化・キャッシュ化する拡張
 
 ```sh
-# まだ brew に頼る (あとで devShell に移せる)
-brew install direnv
+brew install direnv                      # 本体 (あとで devShell に移せる)
+nix profile install nixpkgs#nix-direnv   # 拡張
 ```
 
-```sh [~/.zshrc]
+```sh [セットアップ]
+# ~/.zshrc に追記
 eval "$(direnv hook zsh)"
+# ~/.config/direnv/direnvrc に追記 (要 mkdir -p)
+source ~/.nix-profile/share/nix-direnv/direnvrc
 ```
 
 ---
