@@ -2,6 +2,14 @@
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "talks",
   "compatibility_date": "2026-07-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "talks.mozumasu.com",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
