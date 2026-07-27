@@ -17,7 +17,7 @@ role: ファインディ / Platform SRE
 ---
 
 ## IAM ユーザーで生きるしかない人への選択肢マップ
-# SSO が使えなくても快適に生きたい
+# SSO が使えなくても<br>快適に生きたい
 
 ---
 layout: profile
@@ -144,13 +144,8 @@ eyebrow: 選択肢のマップ
 
 # ついでに解決: アクセスキーを平文で持たない
 
-```bash
-granted credentials import app-stg
-```
-
-- アクセスキーが macOS Keychain に移り、`~/.aws/credentials` から平文が消える
-- `~/.aws/config` に `credential_process = granted credential-process ...` が書き込まれる
-  - AWS CLI / CDK は変更なしでそのまま動く
+- `granted credentials import` でアクセスキーが macOS Keychain に移り、`~/.aws/credentials` から平文が消える
+- `~/.aws/config` には `credential_process` が書き込まれ、AWS CLI / CDK は変更なしでそのまま動く
 
 ```ini [~/.aws/config]
 [profile app-stg]
@@ -237,8 +232,6 @@ aws sts assume-role \
 
 ---
 layout: content
-eyebrowNum: 3
-eyebrow: 失敗談
 ---
 
 # まとめ: トレードオフを選ぶ
