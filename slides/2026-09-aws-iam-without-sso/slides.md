@@ -186,7 +186,7 @@ layout: content
 
 ---
 layout: section
-color: orange
+color: mid
 toc: 失敗談
 ---
 
