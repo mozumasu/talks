@@ -515,6 +515,24 @@ eyebrow: direnv で自動化
 eyebrowNum: 5
 ---
 
+# 補足: git add のオプション使い分け
+
+| コマンド | 何をする | 出番 |
+| --- | --- | --- |
+| `git add` | 内容をステージ | 通常のコミット |
+| `git add -N` | パスだけ登録 | flake に見せたい、コミットはしない |
+| `git add -f` | 無視を押し切って add | 無視済みを共有に昇格 |
+| `git add -N -f` | 上 2 つの合わせ技 | **個人導入フェーズはこれ** |
+
+- 正式名: `-N` = `--intent-to-add` / `-f` = `--force`
+- 注意: `git commit -a` は `-N` のファイルも巻き込む (普通の `git commit` は安全)
+
+---
+layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
+---
+
 # flake.lock 更新の運用
 
 - flake.lock が nixpkgs のリビジョンを固定している
