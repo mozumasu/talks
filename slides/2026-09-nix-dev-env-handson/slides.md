@@ -615,19 +615,20 @@ eyebrowNum: 7
 
 ## 理由 1: ハッシュ申告
 
-- npm なら nixpkgs 公式の `importNpmLock` で解決
-- package-lock.json の integrity ハッシュを直接使うため、ハッシュ申告自体が不要になる
-- ただし npm 限定。pnpm の `pnpm.fetchDeps` にはハッシュが残る (nix-update による自動更新で緩和はできる)
+- npm なら公式の `importNpmLock` で解決
+  - lockfile の integrity を直接使うので申告不要
+- ただし npm 限定
+  - pnpm はハッシュが残る (`nix-update` で緩和)
 
 ::right::
 
 ## 理由 2: Linux ビルド
 
-- nix-darwin の `nix.linux-builder` (公式)
-- nix-rosetta-builder
-- Determinate Nix の native Linux builder (2026-07 時点で段階ロールアウト中・申請制)
+- `nix.linux-builder` (公式) / nix-rosetta-builder
+- Determinate Nix の native builder (申請制)
 - CI の Linux ランナー限定ビルド
-- 「できない」ではなく「VM ビルダーという配布物が一段増える」
+
+→ 「できない」ではなく「VM ビルダーという配布物が一段増える」
 
 ---
 layout: content
