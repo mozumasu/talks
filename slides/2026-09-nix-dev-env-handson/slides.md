@@ -79,27 +79,34 @@ mise install   # gh / jq / nodejs
 ```
 
 ---
-layout: content
+layout: two-cols
+ratio: 1/1
 eyebrow: なぜ brew/mise をやめたのか
 eyebrowNum: 1
 ---
 
 # 実話: バージョンはズレていた
 
-- 社内の Node.js モノレポでの話
-- Dockerfile: `FROM node:24.16.0`
-- mise.toml: `node = "24.16.0"` のはずだった
-- 実際に確認したら手元の Node.js と本番イメージがズレていた
-- 「揃えているつもり」は定義が分散している限り再発する
+::left::
 
-```dockerfile
+## 本番イメージ
+
+```dockerfile [Dockerfile]
 FROM node:24.16.0
 ```
 
+## 手元の開発環境
+
 ```toml [mise.toml]
 [tools]
-node = "24.16.0"
+node = "24.16.0"   # のはずだった
 ```
+
+::right::
+
+- 社内の Node.js モノレポでの話
+- 実際に確認したら手元の Node.js と本番イメージがズレていた
+- 「揃えているつもり」は定義が分散している限り再発する
 
 ---
 layout: content
