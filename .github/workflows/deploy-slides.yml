@@ -20,30 +20,29 @@ jobs:
     permissions:
       contents: read
     steps:
-      # slides/package.json がテーマ/アドオンを
-      # link:../../CHANGE_ME/... で参照しているため、隣に checkout する。
-      # テーマリポジトリが private の場合は contents:read の fine-grained PAT が必要
-      - name: Checkout deck
+      # デッキの package.json が link:../../../findy-slidev/... を参照するため、
+      # talks と findy-slidev を兄弟ディレクトリとして checkout する
+      - name: Checkout talks
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          path: deck
+          path: talks
           persist-credentials: false
 
       - name: Checkout theme repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          repository: mozumasu/CHANGE_ME
+          repository: mozumasu/findy-slidev
           # 再現性のため theme のコミットを固定する。更新時はここを上げる
           ref: main
-          path: CHANGE_ME
+          path: findy-slidev
           token: ${{ secrets.THEME_REPO_READ_TOKEN }}
           persist-credentials: false
 
-      # バージョンは slides/package.json の packageManager フィールドから読む
+      # バージョンは root package.json の packageManager フィールドから読む
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
         with:
-          package_json_file: deck/slides/package.json
+          package_json_file: talks/package.json
 
       - name: Setup Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -51,32 +50,25 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: |
-            deck/slides/pnpm-lock.yaml
-            CHANGE_ME/pnpm-lock.yaml
+            talks/pnpm-lock.yaml
+            findy-slidev/pnpm-lock.yaml
 
+      # link: 参照はリンク先の依存を自動インストールしないため、テーマ側も install する
       - name: Install theme dependencies
-        working-directory: CHANGE_ME
+        working-directory: findy-slidev
         run: pnpm install --frozen-lockfile
 
-      - name: Install slides dependencies
-        working-directory: deck/slides
+      - name: Install talks dependencies
+        working-directory: talks
         run: pnpm install --frozen-lockfile
 
-      # *.workers.dev のルート配信のため --base 指定は不要
-      - name: Build slides
-        working-directory: deck/slides
+      - name: Build all decks
+        working-directory: talks
         run: pnpm build
-
-      # Slidev が生成する Netlify 用 _redirects (/* /index.html 200) を
-      # Cloudflare は不正なルールとして拒否する。SPA fallback は
-      # wrangler.jsonc の not_found_handling が担うため削除してよい
-      - name: Remove Netlify redirects file
-        working-directory: deck/slides
-        run: rm -f dist/_redirects
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4.0.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: deck/slides
+          workingDirectory: talks
