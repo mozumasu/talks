@@ -65,8 +65,17 @@ eyebrow: SSO が使えないってどういうこと
 - コンソールは 1 セッションのみ → stg と prod でセッションの取り合い
 
 ---
-layout: content
+layout: section
+color: green
 toc: 選択肢のマップ
+---
+
+# 選択肢のマップ
+
+理想論は分かってる。<br>でも使えないんだ
+
+---
+layout: content
 title: 選択肢のマップ
 ---
 
@@ -76,17 +85,13 @@ title: 選択肢のマップ
 <FindyAgendaItem num="4" title="キーレス派: aws login (ただし 12 時間の壁)" gradient />
 <FindyAgendaItem num="5" title="どの道を選んでも効く軽減策 3 点" gradient />
 
-<!--
-理想論 (SSO 使え) は分かってる。でも使えないんだ、という枕から選択肢を順に紹介する。
--->
-
 ---
 layout: content
 eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# 正攻法: Identity Center に乗せてもらう
+# 01. 正攻法: Identity Center に乗せてもらう
 
 - 基盤が既にあるなら、必要なのは構築ではなく**先方への依頼**
   1. ユーザー (グループ) の作成、または IdP アカウントの発行
@@ -113,7 +118,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# 代替: スイッチロール (Jump アカウント)
+# 02. 代替: スイッチロール (Jump アカウント)
 
 - 自社管理の 1 アカウントに IAM ユーザーを集約し、stg / prod には AssumeRole 用のロールだけ置く
 - ログイン先は常に Jump アカウントの 1 URL → コンソールの「ロールの切り替え」で各環境へ
@@ -130,7 +135,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# 推奨: granted でログイン画面ごとスキップ
+# 03. 推奨: granted でログイン画面ごとスキップ
 
 ```bash
 brew install common-fate/granted/granted
@@ -148,7 +153,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# granted と assume: 管理の顔と日常の顔
+# 03. granted と assume: 管理の顔と日常の顔
 
 ```bash
 granted credentials list   # 管理は granted (登録・一覧・ローテーション)
@@ -166,7 +171,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# プロファイル追加は 1 コマンド
+# 03. プロファイル追加は 1 コマンド
 
 ```bash
 granted credentials add app-stg
@@ -186,7 +191,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# ついでに解決: アクセスキーを平文で持たない
+# 03. ついでに解決: アクセスキーを平文で持たない
 
 - `granted credentials import` でアクセスキーが macOS Keychain に移り、`~/.aws/credentials` から平文が消える
 - `~/.aws/config` には `credential_process` が書き込まれ、AWS CLI / CDK は変更なしでそのまま動く
@@ -204,7 +209,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# キーレス派: aws login (CLI 組み込みブラウザ認証)
+# 04. キーレス派: aws login (CLI 組み込みブラウザ認証)
 
 - AWS CLI 組み込みのブラウザ認証。長期アクセスキーを保存しない**キーレス方式**
 
@@ -225,7 +230,7 @@ eyebrowNum: 2
 eyebrow: 選択肢のマップ
 ---
 
-# 何を選んでも効く軽減策 3 点
+# 05. 何を選んでも効く軽減策 3 点
 
 - **アカウントエイリアス**: 12 桁の代わりに名前でサインインできる
 
