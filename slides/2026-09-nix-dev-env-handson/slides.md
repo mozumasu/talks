@@ -58,7 +58,7 @@ eyebrow: Chapter 1
 toc: なぜ brew/mise をやめたのか
 ---
 
-# なぜ brew/mise をやめたのか
+# なぜ brew/mise を<br>やめたのか
 
 ---
 layout: content
@@ -184,7 +184,7 @@ eyebrow: Chapter 2
 toc: ハンズオン準備
 ---
 
-# ハンズオン準備: Nix と direnv を入れる
+# ハンズオン準備:<br>Nix と direnv を入れる
 
 ---
 layout: content
@@ -252,7 +252,7 @@ eyebrow: Chapter 3
 toc: はじめての flake.nix
 ---
 
-# ハンズオン 1: はじめての flake.nix
+# ハンズオン 1:<br>はじめての flake.nix
 
 ---
 layout: content
@@ -361,7 +361,7 @@ eyebrow: Chapter 4
 toc: パッケージを揃える
 ---
 
-# ハンズオン 2: brew/mise のツールを devShell に移す
+# ハンズオン 2:<br>brew/mise のツールを<br>devShell に移す
 
 ---
 layout: content
@@ -542,7 +542,7 @@ eyebrow: Chapter 6
 toc: "実戦: 社内モノレポでの移行"
 ---
 
-# 実戦: 社内 Node.js モノレポでの移行
+# 実戦: 社内 Node.js<br>モノレポでの移行
 
 ---
 layout: two-cols
