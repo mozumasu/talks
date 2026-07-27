@@ -514,7 +514,7 @@ eyebrowNum: 5
 layout: section
 color: blue
 eyebrow: Chapter 6
-toc: 実戦: 社内モノレポでの移行
+toc: "実戦: 社内モノレポでの移行"
 ---
 
 # 実戦: 社内 Node.js モノレポでの移行
@@ -562,7 +562,7 @@ eyebrowNum: 6
 layout: section
 color: blue
 eyebrow: Chapter 7
-toc: 発展: Dockerfile も置き換えられるか
+toc: "発展: Dockerfile も置き換えられるか"
 ---
 
 # 発展: Dockerfile も Nix で置き換えられるか
