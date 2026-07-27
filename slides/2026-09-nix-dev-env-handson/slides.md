@@ -496,18 +496,18 @@ eyebrowNum: 5
 # チームに flake を強制しない工夫
 
 - チームのリポジトリに個人環境ファイルをコミットしたくない場合
-- `.gitignore` を汚さず、自分だけ無視リストに入れる
+- 純粋に無視するものと「flake に見せたいもの」を分けて扱う
 
 ```sh
+# direnv はファイルシステムから直接読む → 純粋に無視でよい
 echo '.envrc' >> .git/info/exclude
-echo 'flake.nix' >> .git/info/exclude
-echo 'flake.lock' >> .git/info/exclude
-# flake は git が知るファイルしか見ない → 追跡だけさせる (コミットには入らない)
-git add --intent-to-add --force flake.nix flake.lock
+echo '.direnv/' >> .git/info/exclude
+# flake は git が知るファイルしか見ない → パスだけ登録 (コミットには入らない)
+git add -N flake.nix flake.lock
 ```
 
-- `--intent-to-add` はパスだけ登録するので、コミットに混入しない
-- 共有すると決めたら exclude から行を消して普通に add (個人 → 合意 → 共有)
+- `-N` (`--intent-to-add`) はパスだけ登録するので、コミットに混入しない
+- 共有すると決めたら普通に `git add` してコミット (個人 → 合意 → 共有)
 
 ---
 layout: content
@@ -515,17 +515,16 @@ eyebrow: direnv で自動化
 eyebrowNum: 5
 ---
 
-# 補足: git add のオプション使い分け
+# 補足: git add -N とは
 
 | コマンド | 何をする | 出番 |
 | --- | --- | --- |
 | `git add` | 内容をステージ | 通常のコミット |
-| `git add -N` | パスだけ登録 | flake に見せたい、コミットはしない |
-| `git add -f` | 無視を押し切って add | ほぼ無し (無視をやめるなら exclude を消す) |
-| `git add -N -f` | 上 2 つの合わせ技 | **個人導入フェーズはこれ** |
+| `git add -N` | パスだけ登録 | flake に見せたいがコミットはしない |
 
-- 正式名: `-N` = `--intent-to-add` / `-f` = `--force`
-- 注意: `git commit -a` は `-N` のファイルも巻き込む (普通の `git commit` は安全)
+- 正式名: `-N` = `--intent-to-add`
+- 注意 1: `git commit -a` と `git add .` は `-N` のファイルも巻き込む (普通の `git commit` は安全)
+- 注意 2: flake 系を exclude に入れないのは意図的。ignore は未追跡ファイルにしか効かず、`-N` 後は守ってくれないので、入れると `-f` が要るだけで防御は増えない
 
 ---
 layout: content
@@ -724,7 +723,7 @@ eyebrowNum: 8
 - flake.nix は「Docker の代わり」ではなく「brew + mise の代わり」
 - 定義の分散がバージョンのズレを生む。devShell は定義を 1 箇所に集約する
 - direnv と組み合わせると「cd するだけ」で環境が揃う
-- `.git/info/exclude` + `git add -N -f` で個人導入から始め、チーム合意後に共有する
+- exclude と `git add -N` で個人導入から始め、チーム合意後に共有する
 - Dockerfile の置き換えは技術的には可能。見送った主因は技術ではなく運用 (バス係数)
 
 ---
