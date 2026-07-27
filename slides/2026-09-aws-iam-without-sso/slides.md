@@ -133,8 +133,46 @@ assume -c app-stg    # stg のコンソールがブラウザで開く。入力�
 
 - クレデンシャルから federation URL を生成 → **サインイン画面自体が出ない**
 - `assume -c` だけ打てば fzf ライクにプロファイルを補完選択
-- Firefox Multi-Account Containers 対応 → **stg と prod を同時に別タブで表示**できる
+- Firefox は専用の Granted Containers アドオンで **stg と prod を同時に別タブで表示**できる
 - 同等機能の aws-vault (`aws-vault login app-stg`) もあり。役割が被るのでどちらかに寄せる
+
+---
+layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
+---
+
+# granted と assume: 管理の顔と日常の顔
+
+```bash
+granted credentials list   # 管理は granted (登録・一覧・ローテーション)
+assume app-stg             # 日常は assume: このシェルに一時クレデンシャルを export
+assume -c app-stg          # -c を付けるとブラウザでコンソールが開く
+```
+
+- `assume` はバイナリではなく**シェルエイリアス** (`source` で実行される)
+- バイナリは呼び出し元シェルの環境変数を書き換えられない → `source` 実行で**いま使っているシェル**に `AWS_*` を export する仕掛け
+- インストール時に ~/.zshrc へエイリアスが自動追記される
+
+---
+layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
+---
+
+# プロファイル追加は 1 コマンド
+
+```bash
+granted credentials add app-stg
+# → Access Key ID / Secret Access Key を対話入力 (macOS Keychain に保存)
+# → ~/.aws/config に credential_process が自動追記され、CLI / CDK はそのまま動く
+
+assume app-stg             # もう使える
+```
+
+- region や `mfa_serial` は `~/.aws/config` の同じプロファイルに普通に書き足す
+- `mfa_serial` があると assume 時にトークン入力 → 一時クレデンシャルをキャッシュ
+- 既存の `~/.aws/credentials` の平文キーは `granted credentials import` で取り込む (次のスライド)
 
 ---
 layout: content
