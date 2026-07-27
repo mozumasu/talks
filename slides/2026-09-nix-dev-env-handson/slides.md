@@ -1,0 +1,591 @@
+---
+theme: findy
+title: brew/mise をやめて flake.nix で開発環境をつくる
+info: |
+  ハンズオン (仮)
+  brew/mise をやめて flake.nix で開発環境をつくる
+class: text-left
+comark: true
+favicon: https://github.com/mozumasu.png
+addons:
+  - slidev-addon-findy
+layout: talk-cover
+event: ハンズオンイベント名 2026.9.X
+image: https://github.com/mozumasu.png
+name: mozumasu
+role: ファインディ / Platform SRE
+---
+
+## flake.nix + direnv ハンズオン
+# brew/mise をやめて flake.nix で開発環境をつくる
+
+---
+layout: profile
+image: https://github.com/mozumasu.png
+name: mozumasu
+role: ファインディ / Platform SRE
+---
+
+## 自己紹介
+
+- 開発環境: MacOS / WezTerm / Neovim / macSKK
+- 社内の Node.js モノレポの開発環境を brew + mise から flake.nix + direnv に移行した
+
+- X: @mozumasu / GitHub: mozumasu
+
+---
+layout: content
+---
+
+# 今日のゴール
+
+- flake.nix + direnv で「リポジトリに入ると開発ツールが揃う」環境を自分の手で作る
+- brew / mise で入れていたツールを devShell に移せるようになる
+- flake.lock の運用 (更新・チーム共有) のイメージを持ち帰る
+- 発展: Dockerfile まで置き換えるか? の判断材料を知る
+
+想定: 60〜90 分、手元で Nix をインストールして進めるハンズオン形式
+
+---
+layout: toc
+columns: 1
+---
+
+---
+layout: chapter
+eyebrow: Chapter 1
+toc: なぜ brew/mise をやめたのか
+---
+
+# なぜ brew/mise をやめたのか
+
+---
+layout: content
+---
+
+# よくある開発環境の構成
+
+- brew: `coreutils` `curl` `git` などの CLI ツール
+- mise: `gh` `jq` `nodejs` などのバージョン管理
+- Dockerfile: 本番イメージ用の Node.js
+- つまり「同じツールチェーン」の定義が 3 箇所に分散している
+
+```sh
+brew install coreutils curl git
+mise install   # gh / jq / nodejs
+```
+
+---
+layout: content
+---
+
+# 実話: バージョンはズレていた
+
+- 社内の Node.js モノレポでの話
+- Dockerfile: `FROM node:24.16.0`
+- mise.toml: `node = "24.16.0"` のはずだった
+- 実際に確認したら手元の Node.js と本番イメージがズレていた
+- 「揃えているつもり」は定義が分散している限り再発する
+
+```dockerfile
+FROM node:24.16.0
+```
+
+```toml [mise.toml]
+[tools]
+node = "24.16.0"
+```
+
+---
+layout: content
+---
+
+# なぜズレるのか
+
+- 定義が複数ファイルにあり、更新は人間の運用頼み
+- brew はバージョン固定がそもそも苦手 (基本は常に最新)
+- mise はプロジェクトごとに固定できるが、本番イメージとは別管理
+- レビューで「両方直したか」を毎回確認するのは現実的でない
+
+---
+layout: content
+---
+
+# キーメッセージ: flake.nix は「brew + mise の代わり」
+
+- flake.nix は「Docker の代わり」ではない
+- プロセス隔離はしない。ホストで動くツールチェーンの宣言と固定をする
+- devShell と本番イメージが同じ pkgs のピンを参照できる → 定義上ズレない
+- ホストのツールチェーン統一という目的では devcontainer より速く、エディタ連携も自然
+
+---
+layout: two-cols
+ratio: 1/1
+---
+
+# 比較: devcontainer / mise / flake.nix
+
+::left::
+
+## devcontainer
+
+- プロセス隔離あり、環境の再現性は高い
+- コンテナ越しのファイル I/O・エディタ連携にコストがかかる
+- 「ホストのツールを揃えたい」だけには重い
+
+::right::
+
+## flake.nix + direnv
+
+- 隔離はしないがツールのバージョンは厳密に固定
+- ホストで直接動くのでエディタ連携が自然
+- `cd` するだけで環境が切り替わる
+
+---
+layout: chapter
+eyebrow: Chapter 2
+toc: ハンズオン準備
+---
+
+# ハンズオン準備: Nix と direnv を入れる
+
+---
+layout: content
+---
+
+# Nix のインストール
+
+- Determinate Systems のインストーラを使う (flakes がデフォルト有効)
+
+```sh
+curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+```
+
+- インストール後、新しいシェルを開いて確認
+
+```sh
+nix --version
+```
+
+---
+layout: content
+---
+
+# direnv のインストール
+
+- direnv: ディレクトリに入ると環境変数を自動で読み込むツール
+- nix-direnv: `use flake` を高速化・キャッシュ化する拡張
+
+```sh
+# まだ brew に頼る (あとで devShell に移せる)
+brew install direnv
+```
+
+```sh [~/.zshrc]
+eval "$(direnv hook zsh)"
+```
+
+---
+layout: content
+---
+
+# チェックポイント 1
+
+- 以下が全部動けば準備完了
+
+```sh
+nix --version
+direnv --version
+nix run nixpkgs#hello
+```
+
+- `Hello, world!` が出れば nixpkgs からのパッケージ取得も OK
+- 動かない人はここで挙手 (トラブルシュートタイム)
+
+---
+layout: chapter
+eyebrow: Chapter 3
+toc: はじめての flake.nix
+---
+
+# ハンズオン 1: はじめての flake.nix
+
+---
+layout: content
+---
+
+# nix flake init でテンプレートから始める
+
+```sh
+mkdir nix-handson && cd nix-handson
+git init
+nix flake init
+```
+
+- `flake.nix` が生成される
+- 注意: flake は git 管理下のファイルしか見ない → `git add flake.nix` を忘れずに
+
+---
+layout: content
+---
+
+# flake.nix の読み方
+
+- inputs: 依存する flake (実質 nixpkgs のリビジョン指定)
+- outputs: この flake が提供するもの (今日は devShells だけ使う)
+
+```nix [flake.nix]
+{
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+  outputs = { self, nixpkgs }:
+    let
+      system = "aarch64-darwin"; # Apple Silicon の場合
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      devShells.${system}.default = pkgs.mkShell {
+        packages = [ pkgs.git pkgs.jq ];
+      };
+    };
+}
+```
+
+---
+layout: content
+---
+
+# nix develop で devShell に入る
+
+```sh
+git add flake.nix
+nix develop
+```
+
+```sh
+# devShell の中で
+which jq
+jq --version
+```
+
+- `which jq` が `/nix/store/...` を指せば成功
+- `exit` で抜けると元の環境に戻る
+
+---
+layout: content
+---
+
+# nix flake show と dirty warning
+
+```sh
+nix flake show
+```
+
+- この flake が提供する outputs のツリーが見える
+- `warning: Git tree ... is dirty` は「未コミットの変更がある」だけの警告
+- flake.lock が生成されていることも確認する
+
+```sh
+git add flake.lock
+git commit -m "init flake"
+```
+
+---
+layout: content
+---
+
+# チェックポイント 2
+
+- `nix develop` で shell に入れる
+- `which jq` が `/nix/store/...` を指す
+- `nix flake show` で `devShells` が見える
+- flake.nix と flake.lock をコミットした
+
+---
+layout: chapter
+eyebrow: Chapter 4
+toc: パッケージを揃える
+---
+
+# ハンズオン 2: brew/mise のツールを devShell に移す
+
+---
+layout: content
+---
+
+# パッケージ名の探し方
+
+- search.nixos.org で検索するのが基本
+- CLI からは `nix search`
+
+```sh
+nix search nixpkgs gh
+nix search nixpkgs nodejs
+```
+
+---
+layout: content
+---
+
+# 罠: brew と名前が違うパッケージ
+
+- brew の名前のまま探すと見つからないものがある
+
+| brew | nixpkgs |
+| --- | --- |
+| gnu-sed | gnused |
+| awscli | awscli2 |
+| coreutils | coreutils (同名) |
+
+- 見つからないときは search.nixos.org でコマンド名 (`sed` など) から逆引きする
+
+---
+layout: content
+---
+
+# 実例: brew + mise のツールを全部移す
+
+- 移行対象: brew の `coreutils` `curl` `git`、mise の `gh` `jq` `nodejs`
+
+```nix [flake.nix]
+devShells.${system}.default = pkgs.mkShell {
+  packages = [
+    pkgs.coreutils
+    pkgs.curl
+    pkgs.git
+    pkgs.gh
+    pkgs.jq
+    pkgs.nodejs_24
+  ];
+};
+```
+
+---
+layout: content
+---
+
+# Node.js のバージョンを固定する
+
+- `pkgs.nodejs_24` はメジャーバージョンの指定
+- パッチバージョンまでは nixpkgs のリビジョン (= flake.lock) が決める
+- 「nixpkgs のピン = ツールチェーン全体のピン」という考え方に頭を切り替える
+
+```sh
+nix develop
+node --version
+```
+
+---
+layout: content
+---
+
+# チェックポイント 3
+
+```sh
+nix develop
+node --version   # nixpkgs が提供する Node.js 24.x
+gh --version
+jq --version
+which git curl   # /nix/store/... を指す
+```
+
+- ここまでで brew / mise 相当の宣言が flake.nix 1 ファイルに集約された
+
+---
+layout: chapter
+eyebrow: Chapter 5
+toc: direnv で自動化
+---
+
+# ハンズオン 3: direnv で「cd するだけ」にする
+
+---
+layout: content
+---
+
+# .envrc で use flake
+
+- 毎回 `nix develop` と打つのはつらい → direnv に任せる
+
+```sh [.envrc]
+use flake
+```
+
+```sh
+direnv allow
+```
+
+- 以後、このディレクトリに `cd` すると自動で devShell の環境になる
+
+---
+layout: content
+---
+
+# チームに flake を強制しない工夫
+
+- チームのリポジトリに個人環境ファイルをコミットしたくない場合
+- `.gitignore` を汚さず、自分だけ無視リストに入れる
+
+```sh
+echo '.envrc' >> .git/info/exclude
+echo 'flake.nix' >> .git/info/exclude
+echo 'flake.lock' >> .git/info/exclude
+```
+
+- 逆にチーム共有すると決めたら `git add -f` で明示的にコミットする
+- 個人導入 → チーム合意 → 共有、の順で段階的に進められる
+
+---
+layout: content
+---
+
+# flake.lock 更新の運用
+
+- flake.lock が nixpkgs のリビジョンを固定している
+- 更新は明示的に行う (勝手には上がらない)
+
+```sh
+nix flake update
+git diff flake.lock
+```
+
+- lock ファイルの差分レビュー = ツールチェーン更新のレビュー
+- Renovate / dependabot 的な定期更新 PR にするのがチーム運用の定石
+
+---
+layout: content
+---
+
+# チェックポイント 4
+
+- リポジトリに `cd` するだけで `node --version` が devShell のものになる
+- リポジトリの外に出ると元の環境に戻る
+- `nix flake update` で flake.lock の差分が見える
+
+---
+layout: chapter
+eyebrow: Chapter 6
+toc: 実戦: 社内モノレポでの移行
+---
+
+# 実戦: 社内 Node.js モノレポでの移行
+
+---
+layout: two-cols
+ratio: 1/1
+---
+
+# Before / After
+
+::left::
+
+## Before
+
+- brew: coreutils / curl / git
+- mise: gh / jq / nodejs
+- Dockerfile: `FROM node:24.16.0`
+- 定義が 3 箇所、実際にバージョンがズレていた
+
+::right::
+
+## After
+
+- flake.nix (devShell) + direnv に集約
+- Node.js のバージョンは nixpkgs のピンが決める
+- devShell と本番イメージが同じ pkgs を参照すれば定義上ズレない
+
+---
+layout: content
+---
+
+# 移行してどうだったか
+
+- 新メンバーのセットアップ: 手順書の「brew install...」の列挙が `direnv allow` に置き換わる
+- 「手元で動くのに CI で落ちる」系のツールバージョン差分が消える
+- macOS アップデートや brew upgrade で環境が壊れる不安から解放される
+- (発表までに定量的な効果・エピソードを追記する)
+
+---
+layout: chapter
+eyebrow: Chapter 7
+toc: 発展: Dockerfile も置き換えられるか
+---
+
+# 発展: Dockerfile も Nix で置き換えられるか
+
+---
+layout: content
+---
+
+# pkgs.dockerTools という選択肢
+
+- Nix はコンテナイメージも作れる: `dockerTools.buildLayeredImage`
+- Docker デーモン不要でイメージを生成できる
+- `apt-get update` のような「実行時期でビルド結果が変わる」要素がない
+- 依存グラフに基づくレイヤー分割でキャッシュ効率が良い
+
+```nix
+dockerTools.buildLayeredImage {
+  name = "my-app";
+  contents = [ app pkgs.nodejs_24 ];
+  config.Cmd = [ "node" "server.js" ];
+}
+```
+
+---
+layout: content
+---
+
+# それでも Dockerfile 継続を選んだ
+
+- 技術的には可能。しかしチーム運用で見送った
+- npmDepsHash の維持コスト: 依存更新のたびにハッシュ更新が必要
+- macOS からは Linux イメージをビルドできない (Linux builder が別途必要)
+- CI・レビュー体制が Dockerfile 前提で回っている
+
+---
+layout: content
+---
+
+# 学び: 技術的可否と運用判断を分ける
+
+- 「できるか」と「チームでやるべきか」は別の問い
+- devShell (brew/mise の代替) は導入コストが低く、個人から始められる
+- イメージビルド (Dockerfile の代替) は CI・レビュー・チーム習熟まで含めた投資判断
+- 今日の持ち帰り: まず devShell だけ、が現実的な第一歩
+
+---
+layout: chapter
+eyebrow: Chapter 8
+toc: まとめ
+---
+
+# まとめ
+
+---
+layout: content
+---
+
+# まとめ
+
+- flake.nix は「Docker の代わり」ではなく「brew + mise の代わり」
+- 定義の分散がバージョンのズレを生む。devShell は定義を 1 箇所に集約する
+- direnv と組み合わせると「cd するだけ」で環境が揃う
+- `.git/info/exclude` で個人導入から始め、チーム合意後に `git add -f` で共有する
+- Dockerfile の置き換えは技術的には可能。ただし運用判断は別
+
+---
+layout: content
+---
+
+# 参考リンク
+
+- Nix Flakes: <https://nixos.wiki/wiki/Flakes>
+- パッケージ検索: <https://search.nixos.org/packages>
+- nix-direnv: <https://github.com/nix-community/nix-direnv>
+- dockerTools: <https://nixos.org/manual/nixpkgs/stable/#sec-pkgs-dockerTools>
+
+---
+layout: end
+---
+
+# ありがとうございました
