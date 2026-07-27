@@ -51,6 +51,7 @@ for (const e of entries) {
     `pnpm --filter ./slides/${e.dir} exec slidev build slides.md --base /${e.slug}/ --out ../../dist/${e.slug}`,
     { stdio: "inherit" },
   );
+  rmSync(`dist/${e.slug}/_redirects`, { force: true }); // Netlify 用の _redirects は不要なので削除
 }
 
 // ── 5. 一覧ページの生成 ─────────────────────────
