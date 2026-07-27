@@ -62,6 +62,8 @@ toc: なぜ brew/mise をやめたのか
 
 ---
 layout: content
+eyebrow: なぜ brew/mise をやめたのか
+eyebrowNum: 1
 ---
 
 # よくある開発環境の構成
@@ -78,6 +80,8 @@ mise install   # gh / jq / nodejs
 
 ---
 layout: content
+eyebrow: なぜ brew/mise をやめたのか
+eyebrowNum: 1
 ---
 
 # 実話: バージョンはズレていた
@@ -99,6 +103,8 @@ node = "24.16.0"
 
 ---
 layout: content
+eyebrow: なぜ brew/mise をやめたのか
+eyebrowNum: 1
 ---
 
 # なぜズレるのか
@@ -110,6 +116,8 @@ layout: content
 
 ---
 layout: content
+eyebrow: なぜ brew/mise をやめたのか
+eyebrowNum: 1
 ---
 
 # キーメッセージ: flake.nix は「brew + mise の代わり」
@@ -122,6 +130,8 @@ layout: content
 ---
 layout: two-cols
 ratio: 1/1
+eyebrow: なぜ brew/mise をやめたのか
+eyebrowNum: 1
 ---
 
 # 比較: devcontainer / mise / flake.nix
@@ -153,6 +163,8 @@ toc: ハンズオン準備
 
 ---
 layout: content
+eyebrow: ハンズオン準備
+eyebrowNum: 2
 ---
 
 # Nix のインストール
@@ -171,6 +183,8 @@ nix --version
 
 ---
 layout: content
+eyebrow: ハンズオン準備
+eyebrowNum: 2
 ---
 
 # direnv のインストール
@@ -189,6 +203,8 @@ eval "$(direnv hook zsh)"
 
 ---
 layout: content
+eyebrow: ハンズオン準備
+eyebrowNum: 2
 ---
 
 # チェックポイント 1
@@ -215,6 +231,8 @@ toc: はじめての flake.nix
 
 ---
 layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
 ---
 
 # nix flake init でテンプレートから始める
@@ -230,6 +248,8 @@ nix flake init
 
 ---
 layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
 ---
 
 # flake.nix の読み方
@@ -255,6 +275,8 @@ layout: content
 
 ---
 layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
 ---
 
 # nix develop で devShell に入る
@@ -275,6 +297,8 @@ jq --version
 
 ---
 layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
 ---
 
 # nix flake show と dirty warning
@@ -294,6 +318,8 @@ git commit -m "init flake"
 
 ---
 layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
 ---
 
 # チェックポイント 2
@@ -314,6 +340,8 @@ toc: パッケージを揃える
 
 ---
 layout: content
+eyebrow: パッケージを揃える
+eyebrowNum: 4
 ---
 
 # パッケージ名の探し方
@@ -328,6 +356,8 @@ nix search nixpkgs nodejs
 
 ---
 layout: content
+eyebrow: パッケージを揃える
+eyebrowNum: 4
 ---
 
 # 罠: brew と名前が違うパッケージ
@@ -344,6 +374,8 @@ layout: content
 
 ---
 layout: content
+eyebrow: パッケージを揃える
+eyebrowNum: 4
 ---
 
 # 実例: brew + mise のツールを全部移す
@@ -365,6 +397,8 @@ devShells.${system}.default = pkgs.mkShell {
 
 ---
 layout: content
+eyebrow: パッケージを揃える
+eyebrowNum: 4
 ---
 
 # Node.js のバージョンを固定する
@@ -380,6 +414,8 @@ node --version
 
 ---
 layout: content
+eyebrow: パッケージを揃える
+eyebrowNum: 4
 ---
 
 # チェックポイント 3
@@ -405,6 +441,8 @@ toc: direnv で自動化
 
 ---
 layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
 ---
 
 # .envrc で use flake
@@ -423,6 +461,8 @@ direnv allow
 
 ---
 layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
 ---
 
 # チームに flake を強制しない工夫
@@ -441,6 +481,8 @@ echo 'flake.lock' >> .git/info/exclude
 
 ---
 layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
 ---
 
 # flake.lock 更新の運用
@@ -458,6 +500,8 @@ git diff flake.lock
 
 ---
 layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
 ---
 
 # チェックポイント 4
@@ -478,6 +522,8 @@ toc: 実戦: 社内モノレポでの移行
 ---
 layout: two-cols
 ratio: 1/1
+eyebrow: "実戦: 社内モノレポでの移行"
+eyebrowNum: 6
 ---
 
 # Before / After
@@ -501,6 +547,8 @@ ratio: 1/1
 
 ---
 layout: content
+eyebrow: "実戦: 社内モノレポでの移行"
+eyebrowNum: 6
 ---
 
 # 移行してどうだったか
@@ -521,6 +569,8 @@ toc: 発展: Dockerfile も置き換えられるか
 
 ---
 layout: content
+eyebrow: "発展: Dockerfile も置き換えられるか"
+eyebrowNum: 7
 ---
 
 # pkgs.dockerTools という選択肢
@@ -540,6 +590,8 @@ dockerTools.buildLayeredImage {
 
 ---
 layout: content
+eyebrow: "発展: Dockerfile も置き換えられるか"
+eyebrowNum: 7
 ---
 
 # それでも Dockerfile 継続を選んだ
@@ -553,6 +605,8 @@ layout: content
 ---
 layout: two-cols
 ratio: 1/1
+eyebrow: "発展: Dockerfile も置き換えられるか"
+eyebrowNum: 7
 ---
 
 # 理由 1・2 には解決策がある
@@ -577,6 +631,8 @@ ratio: 1/1
 
 ---
 layout: content
+eyebrow: "発展: Dockerfile も置き換えられるか"
+eyebrowNum: 7
 ---
 
 # それでも見送った主因は理由 3
@@ -588,6 +644,8 @@ layout: content
 
 ---
 layout: content
+eyebrow: "発展: Dockerfile も置き換えられるか"
+eyebrowNum: 7
 ---
 
 # 学び: 技術的可否と運用判断を分ける
@@ -608,6 +666,8 @@ toc: まとめ
 
 ---
 layout: content
+eyebrow: まとめ
+eyebrowNum: 8
 ---
 
 # まとめ
@@ -620,6 +680,8 @@ layout: content
 
 ---
 layout: content
+eyebrow: まとめ
+eyebrowNum: 8
 ---
 
 # 参考リンク
@@ -631,6 +693,8 @@ layout: content
 
 ---
 layout: content
+eyebrow: まとめ
+eyebrowNum: 8
 ---
 
 # Appendix: よくある反論
