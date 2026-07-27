@@ -145,7 +145,21 @@ assume -c app-stg    # stg のコンソールがブラウザで開く。入力�
 - クレデンシャルから federation URL を生成 → **サインイン画面自体が出ない**
 - `assume -c` だけ打てば fzf ライクにプロファイルを補完選択
 - Firefox は専用の Granted Containers アドオンで **stg と prod を同時に別タブで表示**できる
-- 同等機能の aws-vault (`aws-vault login app-stg`) もあり。役割が被るのでどちらかに寄せる
+- 同等機能の aws-vault (`aws-vault login app-stg`) もあるが、開発状況に差がある (次のスライド)
+
+---
+layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
+---
+
+# 03. ツールの現在地: aws-vault と granted
+
+- **aws-vault** (99designs 製): README で更新終了 (abandoned) を宣言。最終リリースは 2023 年の v7.2.0
+  - 後継はコミュニティフォークの [ByteNess/aws-vault](https://github.com/ByteNess/aws-vault)
+- **granted**: 開発元の Common Fate 社は 2025 年に事業終了。プロジェクトは非営利団体 [fwd:cloudsec](https://fwdcloudsec.org/) に寄贈され、開発継続中
+  - 現リポジトリ: [fwdcloudsec/granted](https://github.com/fwdcloudsec/granted) / ドキュメント: [docs.granted.dev](https://docs.granted.dev/)
+- どちらも「作った会社の手を離れた」が、**コミュニティで生きているのは granted** → 新規に選ぶならこちら
 
 ---
 layout: content
