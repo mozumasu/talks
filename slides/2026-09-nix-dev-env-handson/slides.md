@@ -330,6 +330,27 @@ eyebrow: はじめての flake.nix
 eyebrowNum: 3
 ---
 
+# 補足: flake-utils を選ぶ場面
+
+```nix
+outputs = { self, nixpkgs, flake-utils }:
+  flake-utils.lib.eachDefaultSystem (system:
+    let pkgs = nixpkgs.legacyPackages.${system}; in {
+      devShells.default = pkgs.mkShell { packages = [ pkgs.jq ]; };
+      packages.default = pkgs.hello;   # 複数種類の outputs を 1 回のラップでまとめて展開
+    });
+```
+
+- per-system の outputs が複数種類あるとき有利。genAttrs だと種類ごとに `forAllSystems` を書く
+- 世の flake の多くが使っている。読める必要はある (lock に input +2)
+- 目安: devShells だけ → genAttrs / 複数種類 → flake-utils / モジュール分割したい規模 → flake-parts
+
+---
+layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
+---
+
 # nix develop で devShell に入る
 
 ```sh
