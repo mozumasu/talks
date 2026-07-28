@@ -280,15 +280,42 @@ eyebrow: はじめての flake.nix
 eyebrowNum: 3
 ---
 
-# flake.nix の読み方
+# flake.nix を書き換えていく (クリックで進む)
 
-- inputs: 依存する flake (実質 nixpkgs のリビジョン指定)
-- outputs: この flake が提供するもの (今日は devShells だけ使う)
-
-```nix [flake.nix]
+````md magic-move
+```nix
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
+  description = "A very basic flake";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  };
+  outputs = { self, nixpkgs }: {
+    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
+  };
+}
+```
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  };
+  outputs = { self, nixpkgs }:
+    let
+      system = "aarch64-darwin"; # Apple Silicon の場合
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      devShells.${system}.default = pkgs.mkShell {
+        packages = [ ];
+      };
+    };
+}
+```
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  };
   outputs = { self, nixpkgs }:
     let
       system = "aarch64-darwin"; # Apple Silicon の場合
@@ -300,6 +327,7 @@ eyebrowNum: 3
     };
 }
 ```
+````
 
 ---
 layout: content
@@ -452,20 +480,27 @@ eyebrowNum: 4
 
 # 実例: brew + mise のツールを全部移す
 
-- 移行対象: brew の `coreutils` `curl` `git`、mise の `gh` `jq` `nodejs`
+- 移行対象: brew の `coreutils` `curl` `git`、mise の `gh` `jq` `nodejs` (クリックで進む)
 
-```nix [flake.nix]
+````md magic-move
+```nix
+devShells.${system}.default = pkgs.mkShell {
+  packages = [ pkgs.git pkgs.jq ];
+};
+```
+```nix
 devShells.${system}.default = pkgs.mkShell {
   packages = [
-    pkgs.coreutils
-    pkgs.curl
+    pkgs.coreutils   # ← brew から
+    pkgs.curl        # ← brew から
     pkgs.git
-    pkgs.gh
+    pkgs.gh          # ← mise から
     pkgs.jq
-    pkgs.nodejs_24
+    pkgs.nodejs_24   # ← mise から
   ];
 };
 ```
+````
 
 ---
 layout: content
