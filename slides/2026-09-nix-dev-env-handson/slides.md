@@ -879,26 +879,33 @@ eyebrowNum: 8
 </div>
 
 ---
-layout: content
+layout: two-cols
+ratio: 1/1
 eyebrow: まとめ
 eyebrowNum: 8
 ---
 
 # Appendix: legacyPackages と import nixpkgs
 
-- nixpkgs の実体は「全パッケージの集合を**作る**巨大な関数」
-- `legacyPackages` は nixpkgs 自身が既定引数でその関数を呼んでおいた結果。`import` は同じ関数を自分の引数で呼び直す
+::left::
 
-```nix
-pkgs = nixpkgs.legacyPackages.${system};   # 既製品を参照。まずはこれ (速い)
-pkgs = import nixpkgs {                    # 呼び出し引数を変えたいときだけ
+- nixpkgs の実体は「全パッケージの集合を**作る**巨大な関数」
+- `legacyPackages` = nixpkgs 自身が呼んだ結果を参照
+- `import` = 同じ関数を自分の引数で呼び直す
+
+::right::
+
+```nix [既定で足りる場合 (まずはこれ。速い)]
+pkgs = nixpkgs.legacyPackages.${system};
+```
+
+```nix [config / overlays を渡したい場合だけ]
+pkgs = import nixpkgs {
   inherit system;
-  config.allowUnfree = true;               # 例: unfree パッケージを許可
+  config.allowUnfree = true;
   overlays = [ my-overlay ];
 };
 ```
-
-- 使い分け: 既定で足りるなら legacyPackages / `config`・`overlays` が要るなら import
 
 ---
 layout: end
