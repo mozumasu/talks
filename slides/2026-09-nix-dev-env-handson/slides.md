@@ -133,7 +133,17 @@ eyebrowNum: 1
 - `brew upgrade` は全部まとめて進む。無関係なツールが巻き添えで壊れ、戻す手段もない
 - 入れたことがどこにも宣言されない
 
-そして新メンバーが動かすと壊れ、こう言うことになる —「**自分のマシンでは動くのに**」
+---
+layout: content
+eyebrow: なぜ brew/mise をやめたのか
+eyebrowNum: 1
+center: true
+class: text-center
+---
+
+そして新メンバーのマシンでは壊れ、こう言うことになる —
+
+# 「自分のマシンでは動くのに」
 
 ---
 layout: content
