@@ -89,6 +89,7 @@ title: 選択肢のマップ
 layout: content
 eyebrowNum: 2
 eyebrow: 選択肢のマップ
+zoom: 0.75
 ---
 
 # 01. 正攻法: Identity Center に乗せてもらう
