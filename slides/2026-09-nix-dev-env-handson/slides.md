@@ -307,6 +307,29 @@ eyebrow: はじめての flake.nix
 eyebrowNum: 3
 ---
 
+# 補足: Intel Mac / Linux の人へ (genAttrs)
+
+```nix
+outputs = { self, nixpkgs }:
+  let
+    # system 名のリストから全 system 分の outputs を生成 (Linux 勢は *-linux を追加)
+    forAllSystems = nixpkgs.lib.genAttrs [ "aarch64-darwin" "x86_64-darwin" ];
+  in {
+    devShells = forAllSystems (system:
+      let pkgs = nixpkgs.legacyPackages.${system}; in {
+        default = pkgs.mkShell { packages = [ pkgs.git pkgs.jq ]; };
+      });
+  };
+```
+
+- flake-utils (`eachDefaultSystem`) と同等のことが、input を増やさず素の lib でできる
+
+---
+layout: content
+eyebrow: はじめての flake.nix
+eyebrowNum: 3
+---
+
 # nix develop で devShell に入る
 
 ```sh
