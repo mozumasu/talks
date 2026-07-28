@@ -233,7 +233,8 @@ aws login --profile app-stg
 
 - ただし制約がある
   - リフレッシュトークンによる自動更新は**最大 12 時間**。延長オプションなし
-  - どこかのブラウザでの認証が必須 → **完全なログインレスは不可**
+  - 認証は通常のブラウザサインインで行う → **アカウント ID 入力のつらみは解決しない** (解決するのはキー管理側だけ)
+  - 2 回目以降は "Continue with an active session" でワンクリックにはなる
 - 関連 issue (aws/aws-cli)
   - [#9978](https://github.com/aws/aws-cli/issues/9978): 保存済み `login_session` の自動選択 (open)
   - [#9869](https://github.com/aws/aws-cli/issues/9869): 平文キーが残っていると login のクレデンシャルより優先される罠
