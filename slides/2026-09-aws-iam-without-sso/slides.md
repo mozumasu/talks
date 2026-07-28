@@ -292,7 +292,7 @@ toc: 失敗談
 
 # 失敗談
 
-federation URL を自作したら
+自作 federation の拒絶と、消えない 403
 
 ---
 layout: content
@@ -320,6 +320,43 @@ aws sts assume-role \
   --role-arn arn:aws:iam::111111111111:role/cdk-hnb659fds-lookup-role-111111111111-ap-northeast-1 \
   --role-session-name console
 ```
+
+---
+layout: content
+eyebrowNum: 3
+eyebrow: 失敗談
+---
+
+# ツールを替えても 403 が消えない
+
+- `assume -c app-stg` → AccessDenied: **sts:TagSession** に explicit deny
+- aws-vault に乗り換え → region エラーを越えたら今度は **iam:GetUser** に explicit deny
+- 正体は 1 本の **MFA 必須ポリシー** (MFA なしセッションをほぼ全 deny)
+  - 表面のアクション名が毎回違うだけで、真因はずっと同じ
+  - **explicit deny は Allow をいくら足しても消えない**。ツールの乗り換えでも消えない
+
+<!--
+granted のソースを clone して裏取り: GetFederationToken 経路では
+セッションタグ (userID/account/principalArn) を必ず付け、無効化フラグは
+存在しない (pkg/cfaws/assumer_aws_iam.go)。だから TagSession deny を踏む。
+-->
+
+---
+layout: content
+eyebrowNum: 3
+eyebrow: 失敗談
+---
+
+# STS API と MFA の相性が明暗を分ける
+
+| STS API | 使われる場面 | MFA を渡せるか |
+| --- | --- | --- |
+| GetFederationToken | granted `assume -c` / `aws-vault login` | ❌ 不可 → MFA 必須環境では原理的に無理 |
+| GetSessionToken | CLI の一時セッション (`mfa_serial`) | ✅ TOTP |
+| AssumeRole | ロール切り替え・3 段構え | ✅ TOTP |
+
+- MFA 必須ポリシー下のコンソール直行は **AssumeRole 経由 (3 段構え) 一択**
+- おまけの罠: パスキー (FIDO) は STS に渡せない。CLI 用に **TOTP の追加登録**が要る
 
 ---
 layout: content
