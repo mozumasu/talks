@@ -335,12 +335,25 @@ eyebrow: はじめての flake.nix
 eyebrowNum: 3
 ---
 
-# 補足: Intel Mac / Linux の人へ (genAttrs)
+# 補足: 複数 system 対応 (クリックで進む)
 
+````md magic-move
 ```nix
+# 1. いまの形: system 1 つに固定 (Intel Mac / Linux の人は動かない)
 outputs = { self, nixpkgs }:
   let
-    # system 名のリストから全 system 分の outputs を生成 (Linux 勢は *-linux を追加)
+    system = "aarch64-darwin"; # Apple Silicon の場合
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
+    devShells.${system}.default = pkgs.mkShell {
+      packages = [ pkgs.git pkgs.jq ];
+    };
+  };
+```
+```nix
+# 2. genAttrs: system 名のリストから全 system 分を生成 (素の lib だけ)
+outputs = { self, nixpkgs }:
+  let
     forAllSystems = nixpkgs.lib.genAttrs [ "aarch64-darwin" "x86_64-darwin" ];
   in {
     devShells = forAllSystems (system:
@@ -349,8 +362,17 @@ outputs = { self, nixpkgs }:
       });
   };
 ```
-
-- flake-utils (`eachDefaultSystem`) と同等のことが、input を増やさず素の lib でできる
+```nix
+# 3. flake-utils: 同じことを eachDefaultSystem で (input が 2 つ増える)
+outputs = { self, nixpkgs, flake-utils }:
+  flake-utils.lib.eachDefaultSystem (system:
+    let pkgs = nixpkgs.legacyPackages.${system}; in {
+      devShells.default = pkgs.mkShell {
+        packages = [ pkgs.git pkgs.jq ];
+      };
+    });
+```
+````
 
 ---
 layout: content
@@ -358,20 +380,12 @@ eyebrow: はじめての flake.nix
 eyebrowNum: 3
 ---
 
-# 補足: flake-utils を選ぶ場面
+# 補足: genAttrs / flake-utils / flake-parts の使い分け
 
-```nix
-outputs = { self, nixpkgs, flake-utils }:
-  flake-utils.lib.eachDefaultSystem (system:
-    let pkgs = nixpkgs.legacyPackages.${system}; in {
-      devShells.default = pkgs.mkShell { packages = [ pkgs.jq ]; };
-      packages.default = pkgs.hello;   # 複数種類の outputs を 1 回のラップでまとめて展開
-    });
-```
-
-- per-system の outputs が複数種類あるとき有利。genAttrs だと種類ごとに `forAllSystems` を書く
-- 世の flake の多くが使っている。読める必要はある (lock に input +2)
-- 目安: devShells だけ → genAttrs / 複数種類 → flake-utils / モジュール分割したい規模 → flake-parts
+- genAttrs: 素の `nixpkgs.lib` だけで完結。devShells だけの flake ならこれで十分
+- flake-utils: per-system の outputs が複数種類 (devShells + packages + checks...) あるとき、1 回のラップでまとめて展開できる。genAttrs だと種類ごとに `forAllSystems` を書く
+- 世の flake の多くが flake-utils を使っている。読める必要はある (lock に input +2)
+- さらに大規模・モジュール分割したい規模になったら flake-parts
 
 ---
 layout: content
