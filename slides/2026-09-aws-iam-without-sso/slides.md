@@ -258,6 +258,23 @@ eyebrow: 選択肢のマップ
 - **サインイン URL のブックマーク**: `https://<アカウントID>.signin.aws.amazon.com/console` は ID が事前入力された状態で開く
 
 ---
+layout: content
+eyebrowNum: 2
+eyebrow: 選択肢のマップ
+---
+
+# どの手段が何を解決するか
+
+| 手段 | CLI のキー管理 | コンソールを入力ゼロで開く |
+| --- | --- | --- |
+| 01 Identity Center | ✅ 長期キー不要 | ✅ ポータルから 1 クリック |
+| 03 granted (`assume -c`) | ✅ Keychain 保管 | ✅ サインイン画面をスキップ |
+| 04 aws login | ✅ キーレス | ❌ ブラウザログイン必要 (12h) |
+| 05 軽減策 3 点 | — | 🔶 入力は残るが自動化で緩和 |
+
+- 「入力ゼロ」に効くのは **Identity Center か granted だけ**。先方に依頼できるまでの現実解が granted
+
+---
 layout: section
 color: mid
 toc: 失敗談
