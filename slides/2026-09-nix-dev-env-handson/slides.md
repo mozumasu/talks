@@ -29,7 +29,7 @@ role: ファインディ / Platform SRE
 ## 自己紹介
 
 - 開発環境: MacOS / WezTerm / Neovim / macSKK
-- 社内の Node.js モノレポの開発環境を brew + mise から flake.nix + direnv に移行した
+- 社内の Node.js モノレポの開発環境を brew + mise から flake.nix + direnv へ移行中
 
 - X: @mozumasu / GitHub: mozumasu
 
@@ -55,14 +55,14 @@ columns: 1
 layout: section
 color: blue
 eyebrow: Chapter 1
-toc: なぜ brew/mise をやめたのか
+toc: brew / mise のつらみ
 ---
 
-# なぜ brew/mise を<br>やめたのか
+# brew / mise のつらみ
 
 ---
 layout: content
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -81,7 +81,7 @@ mise install   # gh / jq / nodejs
 ---
 layout: two-cols
 ratio: 1/1
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -110,7 +110,7 @@ node = "24.16.0"   # のはずだった
 
 ---
 layout: content
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -123,7 +123,7 @@ eyebrowNum: 1
 
 ---
 layout: content
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -135,7 +135,7 @@ eyebrowNum: 1
 
 ---
 layout: content
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -149,7 +149,7 @@ eyebrowNum: 1
 
 ---
 layout: content
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -164,7 +164,7 @@ eyebrowNum: 1
 
 ---
 layout: content
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
@@ -179,7 +179,7 @@ eyebrowNum: 1
 ---
 layout: two-cols
 ratio: 1/1
-eyebrow: なぜ brew/mise をやめたのか
+eyebrow: brew / mise のつらみ
 eyebrowNum: 1
 ---
 
