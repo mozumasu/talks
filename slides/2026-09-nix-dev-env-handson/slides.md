@@ -137,9 +137,10 @@ eyebrowNum: 1
 layout: content
 eyebrow: brew / mise のつらみ
 eyebrowNum: 1
+center: true
 ---
 
-<div class="text-center mt-30">
+<div class="text-center">
 
 そして新メンバーのマシンでは壊れ、こう言うことになる —
 
