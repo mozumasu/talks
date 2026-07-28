@@ -137,13 +137,15 @@ eyebrowNum: 1
 layout: content
 eyebrow: なぜ brew/mise をやめたのか
 eyebrowNum: 1
-center: true
-class: text-center
 ---
+
+<div class="text-center mt-30">
 
 そして新メンバーのマシンでは壊れ、こう言うことになる —
 
 # 「自分のマシンでは動くのに」
+
+</div>
 
 ---
 layout: content
