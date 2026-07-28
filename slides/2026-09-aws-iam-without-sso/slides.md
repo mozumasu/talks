@@ -86,23 +86,34 @@ title: 選択肢のマップ
 <FindyAgendaItem num="5" title="どの道を選んでも効く軽減策 3 点" gradient />
 
 ---
-layout: content
+layout: two-cols
 eyebrowNum: 2
 eyebrow: 選択肢のマップ
-zoom: 0.75
+ratio: 1/1.2
+valign: center
 ---
 
 # 01. 正攻法: Identity Center に乗せてもらう
 
-- 基盤が既にあるなら、必要なのは構築ではなく**先方への依頼**
-  1. ユーザー (グループ) の作成、または IdP アカウントの発行
+::left::
+
+- 必要なのは構築ではなく**依頼**
+  1. ユーザー作成 (IdP アカウント)
   2. Permission Set の用意
-  3. 対象アカウントへの割り当て
-- CLI は sso-session 共有プロファイルで `aws sso login` 1 回で全アカウント対応
+  3. アカウントへの割り当て
+- CLI は `aws sso login` 1 回で全対応
+- **ベストだが自社では完結しない**
+
+<!--
+IdP アカウント発行は先方のポリシー次第で止まる、が依頼のハードル。
+-->
+
+
+::right::
 
 ```ini [~/.aws/config]
 [sso-session partner]
-sso_start_url = https://example.awsapps.com/start
+sso_start_url = https://xxx.awsapps.com/start
 sso_region = ap-northeast-1
 
 [profile app-stg]
@@ -110,8 +121,6 @@ sso_session = partner
 sso_account_id = 111111111111
 sso_role_name = AdministratorAccess
 ```
-
-- **ベストだが自社だけでは完結しない**。IdP アカウント発行が先方ポリシー次第で止まる
 
 ---
 layout: content
