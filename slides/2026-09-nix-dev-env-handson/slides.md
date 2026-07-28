@@ -282,6 +282,8 @@ eyebrowNum: 3
 
 # flake.nix を書き換えていく (クリックで進む)
 
+<div class="code-compact" style="--findy-code-compact-size: 0.68rem">
+
 ````md magic-move
 ```nix
 {
@@ -328,6 +330,8 @@ eyebrowNum: 3
 }
 ```
 ````
+
+</div>
 
 ---
 layout: content
