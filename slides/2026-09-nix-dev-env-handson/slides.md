@@ -673,6 +673,25 @@ eyebrow: direnv で自動化
 eyebrowNum: 5
 ---
 
+# mise の minimum_release_age は再現できる?
+
+- mise の `minimum_release_age = "7d"`: リリース 7 日未満を解決候補から外す (検出までの時間稼ぎ)
+- Nix に同じ設定はない。ただし守り方のモデルが違う
+
+| | 守り方 |
+| --- | --- |
+| mise | 「勝手に最新を取りに行く仕組み」へのブレーキ (7 日待つ) |
+| Nix | flake.lock の pin で、更新しない限り**そもそも新バージョンが入らない** |
+
+- 露出は lock 更新の瞬間だけ。「頻繁に更新しない + diff を見る」で同じ意図をカバー
+- nixpkgs 経由はレビュー + Hydra の反映ラグも挟まる (→ Appendix)
+
+---
+layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
+---
+
 # チェックポイント 4
 
 - リポジトリに `cd` するだけで `node --version` が devShell のものになる
@@ -906,6 +925,46 @@ pkgs = import nixpkgs {
   overlays = [ my-overlay ];
 };
 ```
+
+---
+layout: content
+eyebrow: まとめ
+eyebrowNum: 8
+---
+
+# Appendix: Hydra とは
+
+- NixOS プロジェクト公式の CI / ビルドファーム (<https://hydra.nixos.org>)。役割は 3 つ:
+  - **全パッケージの自動ビルド** — nixpkgs の master に入ったコミットを各プラットフォームで実ビルド
+  - **バイナリキャッシュの供給元** — 成果物が cache.nixos.org に置かれる。手元でコンパイルせず一瞬で入るのはこのおかげ
+  - **チャンネル前進のゲート** — nixpkgs-unstable は「所定のビルド・テストが通ったコミット」まで自動で進む
+- 上流リリース → nixpkgs PR → レビュー → Hydra → チャンネル反映、という経路のため、手元の flake.lock に届くまで**構造的なラグ**がある
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: まとめ
+eyebrowNum: 8
+---
+
+# Appendix: Hydra が担保するもの・しないもの
+
+::left::
+
+## 担保する (品質)
+
+- 各プラットフォームでビルドが通ること
+- 自動テスト (NixOS テストスイート) の合格
+- キャッシュのバイナリがそのソース由来であること
+
+::right::
+
+## 担保しない (セキュリティ)
+
+- **コードが悪意あるものでないこと**
+  - 2024 年の xz-utils 侵害は unstable にも入った
+- レビューで悪意を検出できるかはパッケージと committer 次第
+- 結論: 品質は Hydra が担保。悪意の非存在は誰も担保せず、**pin と経路の遅さで時間を稼ぐ**
 
 ---
 layout: end
