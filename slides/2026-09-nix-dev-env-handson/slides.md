@@ -739,6 +739,32 @@ eyebrow: "実戦: 社内モノレポでの移行"
 eyebrowNum: 6
 ---
 
+# 現在地: 移行は途中。それでいい
+
+- devShell へ移行済み: brew の `coreutils` `curl` `git` + mise の `gh` `jq` `nodejs` (+ `mkcert`)
+- `mise.toml` は消していない — 他のメンバーは今日も従来どおり動いている
+- flake は既存環境を壊さず**並走できる**。「全員で一斉に乗り換える日」を作らなくていい
+- Ch5 の段階導入 (exclude + `git add -N`) はこの並走のための道具だった
+
+---
+layout: content
+eyebrow: "実戦: 社内モノレポでの移行"
+eyebrowNum: 6
+---
+
+# あえて mise に残しているものもある
+
+- npm バックエンドで入れている CLI ツール群 (AI エージェント等) は mise のまま
+- 理由: この領域は npm レジストリから直接取るので、mise の `minimum_release_age` の保護がいちばん効いている (Ch5 参照)
+- 「全部 Nix に寄せる」が目的ではない。**定義の分散を無くしたい範囲**から順に移す
+- ここを Nix 外の `npm install -g` に移すと保護だけ失うので注意
+
+---
+layout: content
+eyebrow: "実戦: 社内モノレポでの移行"
+eyebrowNum: 6
+---
+
 # 移行してどうだったか
 
 - 新メンバーのセットアップ: 手順書の「brew install...」の列挙が `direnv allow` に置き換わる
