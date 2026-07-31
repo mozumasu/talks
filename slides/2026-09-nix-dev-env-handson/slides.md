@@ -932,6 +932,42 @@ eyebrow: まとめ
 eyebrowNum: 8
 ---
 
+# Appendix: 実例 — Terraform プロジェクト用 flake.nix
+
+- config が要る = **import の出番**。全部許可せず predicate で名前を限定する
+
+<div class="code-compact" style="--findy-code-compact-size: 0.6rem">
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          # terraform は BSL 1.1 (unfree 扱い) のため許可が必要
+          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [ "terraform" ];
+        };
+      in {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [ terraform terragrunt ];
+        };
+      });
+}
+```
+
+</div>
+
+---
+layout: content
+eyebrow: まとめ
+eyebrowNum: 8
+---
+
 # Appendix: Hydra とは
 
 - NixOS プロジェクト公式の CI / ビルドファーム (<https://hydra.nixos.org>)。役割は 3 つ:
