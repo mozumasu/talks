@@ -615,6 +615,18 @@ eyebrow: direnv で自動化
 eyebrowNum: 5
 ---
 
+# チェックポイント 4
+
+- リポジトリに `cd` するだけで `node --version` が devShell のものになる
+- リポジトリの外に出ると元の環境に戻る
+- 反応しないときは `direnv allow` を忘れていないか確認 (blocked と出る)
+
+---
+layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
+---
+
 # チームに flake を強制しない工夫
 
 - チームのリポジトリに個人環境ファイルをコミットしたくない場合
@@ -685,18 +697,6 @@ eyebrowNum: 5
 
 - 露出は lock 更新の瞬間だけ。「頻繁に更新しない + diff を見る」で同じ意図をカバー
 - nixpkgs 経由はレビュー + Hydra の反映ラグも挟まる (→ Appendix)
-
----
-layout: content
-eyebrow: direnv で自動化
-eyebrowNum: 5
----
-
-# チェックポイント 4
-
-- リポジトリに `cd` するだけで `node --version` が devShell のものになる
-- リポジトリの外に出ると元の環境に戻る
-- `nix flake update` で flake.lock の差分が見える
 
 ---
 layout: section
