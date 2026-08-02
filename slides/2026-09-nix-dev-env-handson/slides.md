@@ -640,8 +640,8 @@ echo '.direnv/' >> .git/info/exclude
 ```
 
 - リポジトリの `git status` は**完全に無音**。コミット混入の心配もない
+- 同じ flake は `use flake github:<you>/dotfiles?dir=flakes/my-monorepo` と**リモート参照もできる** — checkout 不要で全マシン共通、チームメイトに「試すだけ」をそのまま渡せる
 - 共有すると決めたら flake をリポジトリへ移してコミット (個人 → 合意 → 共有)
-- 自分用の flake テンプレ集を作っておくと `nix flake init -t` で量産できる
 
 ---
 layout: content
