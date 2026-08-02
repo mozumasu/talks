@@ -629,19 +629,19 @@ eyebrowNum: 5
 
 # チームに flake を強制しない工夫
 
-- チームのリポジトリに個人環境ファイルをコミットしたくない場合
-- 純粋に無視するものと「flake に見せたいもの」を分けて扱う
+- チームのリポジトリに個人環境ファイルをコミットしたくない → **flake を自分の dotfiles 側に置く**
+- リポジトリに置くのは `.envrc` 1 個だけ (未追跡 + 自分専用の無視リストへ)
 
 ```sh
-# direnv はファイルシステムから直接読む → 純粋に無視でよい
+# flake は dotfiles 側で普通に git 管理する (例: ~/dotfiles/flakes/my-monorepo/)
+echo 'use flake ~/dotfiles/flakes/my-monorepo' > .envrc
 echo '.envrc' >> .git/info/exclude
 echo '.direnv/' >> .git/info/exclude
-# flake は git が知るファイルしか見ない → パスだけ登録 (コミットには入らない)
-git add -N flake.nix flake.lock
 ```
 
-- `-N` (`--intent-to-add`) はパスだけ登録するので、コミットに混入しない
-- 共有すると決めたら普通に `git add` してコミット (個人 → 合意 → 共有)
+- リポジトリの `git status` は**完全に無音**。コミット混入の心配もない
+- 共有すると決めたら flake をリポジトリへ移してコミット (個人 → 合意 → 共有)
+- 自分用の flake テンプレ集を作っておくと `nix flake init -t` で量産できる
 
 ---
 layout: content
@@ -649,16 +649,17 @@ eyebrow: direnv で自動化
 eyebrowNum: 5
 ---
 
-# 補足: git add -N とは
+# 補足: flake をリポジトリ内に置きたい場合
+
+- 同居させたい場合は `git add -N` (`--intent-to-add`) で「パスだけ登録」する
 
 | コマンド | 何をする | 出番 |
 | --- | --- | --- |
 | `git add` | 内容をステージ | 通常のコミット |
 | `git add -N` | パスだけ登録 | flake に見せたいがコミットはしない |
 
-- 正式名: `-N` = `--intent-to-add`
-- 注意 1: `git commit -a` と `git add .` は `-N` のファイルも巻き込む (普通の `git commit` は安全)
-- 注意 2: flake 系を exclude に入れないのは意図的。ignore は未追跡ファイルにしか効かず、`-N` 後は守ってくれないので、入れると `-f` が要るだけで防御は増えない
+- flake は git が知るファイルしか見ないため、未追跡のままでは `nix develop` が失敗する
+- 難点: `git status` に new file が常駐する / `git commit -a` と `git add .` は巻き込む — **これが外置きを本編にした理由**
 
 ---
 layout: content
@@ -744,7 +745,7 @@ eyebrowNum: 6
 - devShell へ移行済み: brew の `coreutils` `curl` `git` + mise の `gh` `jq` `nodejs` (+ `mkcert`)
 - `mise.toml` は消していない — 他のメンバーは今日も従来どおり動いている
 - flake は既存環境を壊さず**並走できる**。「全員で一斉に乗り換える日」を作らなくていい
-- Ch5 の段階導入 (exclude + `git add -N`) はこの並走のための道具だった
+- Ch5 の段階導入 (dotfiles 側の flake + .envrc だけ) はこの並走のための道具だった
 
 ---
 layout: content
@@ -890,7 +891,7 @@ eyebrowNum: 8
 - flake.nix は「Docker の代わり」ではなく「brew + mise の代わり」
 - 定義の分散がバージョンのズレを生む。devShell は定義を 1 箇所に集約する
 - direnv と組み合わせると「cd するだけ」で環境が揃う
-- exclude と `git add -N` で個人導入から始め、チーム合意後に共有する
+- flake は dotfiles に置いて .envrc で参照し、チーム合意後にリポジトリへ移す
 - Dockerfile の置き換えは技術的には可能。見送った主因は技術ではなく運用 (バス係数)
 
 ---
