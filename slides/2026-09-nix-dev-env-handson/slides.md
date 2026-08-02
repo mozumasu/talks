@@ -629,8 +629,7 @@ eyebrowNum: 5
 
 # チームに flake を強制しない工夫
 
-- チームのリポジトリに個人環境ファイルをコミットしたくない → **flake を自分の dotfiles 側に置く**
-- リポジトリに置くのは `.envrc` 1 個だけ (未追跡 + 自分専用の無視リストへ)
+- 個人環境ファイルをコミットしたくない → **flake は dotfiles 側に置き**、リポジトリは未追跡の `.envrc` 1 個だけ
 
 ```sh
 # flake は dotfiles 側で普通に git 管理する (例: ~/dotfiles/flakes/my-monorepo/)
@@ -640,8 +639,26 @@ echo '.direnv/' >> .git/info/exclude
 ```
 
 - リポジトリの `git status` は**完全に無音**。コミット混入の心配もない
-- 同じ flake は `use flake github:<you>/dotfiles?dir=flakes/my-monorepo` と**リモート参照もできる** — checkout 不要で全マシン共通、チームメイトに「試すだけ」をそのまま渡せる
 - 共有すると決めたら flake をリポジトリへ移してコミット (個人 → 合意 → 共有)
+
+---
+layout: content
+eyebrow: direnv で自動化
+eyebrowNum: 5
+---
+
+# 布教: リモート参照で「試すだけ」を配る
+
+- 同じ flake は **GitHub 経由でも参照できる**。チームメイトに渡すのはこの 1 行だけ:
+
+```sh
+# 相手のリポジトリにもマシンにも、何もインストール指示を残さない
+echo 'use flake github:mozumasu/dotfiles?dir=flakes/my-monorepo' > .envrc
+```
+
+- checkout 不要・全マシン共通。相手の `git status` も汚さない
+- 注意: 反映は push 後 + フェッチキャッシュ (既定 約 1h)。開発中はローカル参照、配布はリモート
+- 段階導入が 4 段になる: 個人導入 → **布教** → チーム合意 → リポジトリへコミット
 
 ---
 layout: content
