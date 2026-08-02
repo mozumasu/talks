@@ -653,7 +653,7 @@ eyebrowNum: 5
 
 ```sh
 # 相手のリポジトリにもマシンにも、何もインストール指示を残さない
-echo 'use flake github:mozumasu/dotfiles?dir=flakes/my-monorepo' > .envrc
+echo 'use flake "github:mozumasu/dotfiles?dir=flakes/my-monorepo"' > .envrc
 ```
 
 - checkout 不要・全マシン共通。相手の `git status` も汚さない
