@@ -1012,6 +1012,39 @@ eyebrow: まとめ
 eyebrowNum: 8
 ---
 
+# Appendix: 共通 devShell を継承して上乗せする
+
+- 「共通設定は組織リポから、追加分は自分の flake で」は `mkShell` の **`inputsFrom`** でできる
+
+<div class="code-compact" style="--findy-code-compact-size: 0.6rem">
+
+```nix
+inputs = {
+  common.url = "github:my-org/nix-common";
+  common.inputs.nixpkgs.follows = "nixpkgs";   # ピンを統一 (lock の二重化防止)
+};
+outputs = { self, nixpkgs, common }:
+  let
+    system = "aarch64-darwin";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
+    devShells.${system}.default = pkgs.mkShell {
+      inputsFrom = [ common.devShells.${system}.backend ];   # 名前を選んで丸ごと継承
+      packages = [ pkgs.terraform ];                          # 自分の追加分
+    };
+  };
+```
+
+</div>
+
+- `inputsFrom` はパッケージ群と shellHook をマージする (共通側の環境変数も届く)
+
+---
+layout: content
+eyebrow: まとめ
+eyebrowNum: 8
+---
+
 # Appendix: Hydra とは
 
 - NixOS プロジェクト公式の CI / ビルドファーム (<https://hydra.nixos.org>)。役割は 3 つ:
