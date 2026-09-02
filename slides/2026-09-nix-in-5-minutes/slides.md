@@ -48,9 +48,13 @@ center: true
 
 <div class="text-center">
 
-そして新メンバーのマシンでは壊れ、こう言うことになる —
+そして人は言う ───
+
+<v-click>
 
 # 「自分のマシンでは動くのに」
+
+</v-click>
 
 </div>
 
@@ -257,6 +261,8 @@ layout: end
 
 # ご清聴いただきありがとうございました
 
-<https://x.com/mozumasu/status/2058515100626309361?s=20>
+<div class="absolute top-14 right-30">
+  <Tweet id="2058515100626309361" scale="0.55" />
+</div>
 
 <span class="op60">〜このスライドはシラフで作成されています〜</span>
