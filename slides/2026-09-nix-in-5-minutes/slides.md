@@ -261,8 +261,8 @@ layout: end
 
 # ご清聴いただきありがとうございました
 
-<div class="absolute top-14 right-30 overflow-hidden rounded-xl" style="height: 195px">
-  <Tweet id="2058515100626309361" scale="0.55" />
+<div class="absolute top-10 right-20 overflow-hidden rounded-xl" style="height: 266px">
+  <Tweet id="2058515100626309361" scale="0.75" />
 </div>
 
 <span class="op60">〜このスライドはシラフで作成されています〜</span>
