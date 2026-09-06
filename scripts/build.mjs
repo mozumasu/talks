@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { execSync } from "node:child_process";
 
 // ── 1. デッキの列挙 ─────────────────────────────
@@ -22,17 +22,35 @@ function parseFrontmatter(mdPath) {
   return fm;
 }
 
-const entries = decks.map((dir) => {
+const includeDrafts = process.env.INCLUDE_DRAFTS === "1";
+
+const allEntries = decks.map((dir) => {
   const fm = parseFrontmatter(`slides/${dir}/slides.md`);
   const date = dir.match(/^\d{4}-\d{2}(-\d{2})?/)?.[0] ?? "";
   // frontmatter の slug: があれば優先、なければディレクトリ名から日付を剥がす
   const slug = fm.slug ?? dir.replace(/^\d{4}-\d{2}(-\d{2})?-/, "");
-  return { dir, slug, date, title: fm.title ?? dir, event: fm.event ?? "" };
+  return {
+    dir,
+    slug,
+    date,
+    title: fm.title ?? dir,
+    event: fm.event ?? "",
+    draft: fm.draft === "true",
+  };
 });
+
+const entries = allEntries.filter((e) => includeDrafts || !e.draft);
+for (const e of allEntries.filter((e) => e.draft)) {
+  console.log(
+    includeDrafts
+      ? `draft: ${e.dir} (INCLUDE_DRAFTS=1 のためビルドに含める)`
+      : `draft: ${e.dir} をスキップ`,
+  );
+}
 
 // ── 3. slug の重複検出 ──────────────────────────
 const seen = new Map();
-for (const e of entries) {
+for (const e of allEntries) {
   if (seen.has(e.slug)) {
     console.error(
       `slug "${e.slug}" が重複: ${seen.get(e.slug)} と ${e.dir}\n` +
@@ -45,6 +63,7 @@ for (const e of entries) {
 
 // ── 4. 各デッキをビルドして dist/<slug> に集約 ──
 rmSync("dist", { recursive: true, force: true });
+mkdirSync("dist", { recursive: true });
 for (const e of entries) {
   console.log(`\n=== build: ${e.dir} -> /${e.slug}/ ===`);
   execSync(

@@ -1,6 +1,7 @@
 ---
 # 使うテーマに置換する (npm 公開テーマ名 or ローカルパス)
 theme: findy
+draft: true
 title: Talks as Code
 info: |
   イベント名
