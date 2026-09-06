@@ -52,6 +52,22 @@ pnpm export   # PDF/PNG エクスポート (playwright-chromium は devDependenc
 
 Claude Code から起動する場合は `ghost run -- portless <name> pnpm dev`。
 
+## 非公開 (作成中) のデッキ
+
+`slides/<deck>/slides.md` の headmatter に `draft: true` を書くと、
+そのデッキはビルドされず一覧にも載らない (`https://talks.mozumasu.com/<slug>/` も 404)。
+公開するときに行を消す。
+
+```yaml
+---
+draft: true
+title: ...
+---
+```
+
+draft も含めてビルドを確認したいときは `INCLUDE_DRAFTS=1 node scripts/build.mjs`。
+slug の重複検出は draft も対象なので、公開に切り替えた時点で衝突することはない。
+
 ## 注意
 
 - スライドの md は `.rumdl.toml` で formatter から除外している
