@@ -53,6 +53,29 @@ jobs:
             talks/pnpm-lock.yaml
             findy-slidev/pnpm-lock.yaml
 
+      # playwright-chromium の postinstall が ~/.cache/ms-playwright に Chromium (約 150MB) を
+      # 落とすので、バージョンをキーにキャッシュして 2 回目以降のダウンロードを省く。
+      # pnpm install より前に復元しておく必要がある
+      - name: Resolve playwright-chromium version
+        id: playwright
+        working-directory: talks
+        # lockfile のパッケージ宣言行 ("  playwright-chromium@1.61.1:") から取る。
+        # @slidev/cli の peer 表記にも同じ文字列が出るので行頭でアンカーする
+        run: |
+          set -euo pipefail
+          version=$(perl -ne 'print "$1\n" if /^  playwright-chromium@([0-9.]+):/' pnpm-lock.yaml | sort -u)
+          if [ -z "$version" ] || [ "$(echo "$version" | wc -l)" -ne 1 ]; then
+            echo "::error::playwright-chromium のバージョンを一意に解決できない: '${version}'"
+            exit 1
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ runner.arch }}-${{ steps.playwright.outputs.version }}
+
       # link: 参照はリンク先の依存を自動インストールしないため、テーマ側も install する
       - name: Install theme dependencies
         working-directory: findy-slidev
