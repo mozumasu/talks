@@ -1,6 +1,6 @@
 ---
 theme: findy
-draft: true
+draft: false
 title: CLIオタクのキーボード事情
 info: |
   CLIオタクのキーボード事情
