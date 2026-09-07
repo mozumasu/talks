@@ -18,8 +18,12 @@ const LEFT_COLS = [['Q', 'A', 'Z'], ['W', 'S', 'X'], ['E', 'D', 'C'], ['R', 'F',
 const RIGHT_COLS = [['Y', 'H', 'N'], ['U', 'J', 'M'], ['I', 'K', 'comma'], ['O', 'L', 'period'], ['P', 'semi', 'slash']]
 export const RIGHT_IDS = new Set([...RIGHT_COLS.flat(), 'del', 'lshift', 'bslash'])
 
+// ケースの各ピースがどちらの手に属するか。写真に重ねるとき、左は Q、右は Y を基準に写像する
+export type Side = 'left' | 'right'
+export type CasePiece = Placed & { side: Side }
+
 const PAD = 0.16
-const col = (x: number, y: number, rows: number): Placed => ({ x: x - PAD, y: y - PAD, w: 1 + PAD * 2, h: rows + PAD * 2 })
+const col = (x: number, y: number, rows: number, side: Side): CasePiece => ({ x: x - PAD, y: y - PAD, w: 1 + PAD * 2, h: rows + PAD * 2, side })
 
 export function toucanLayout(mona2 = mona2Centered()) {
   const ox = mona2.pos.Q.x // 左手の外側列の x
@@ -51,15 +55,15 @@ export function toucanLayout(mona2 = mona2Centered()) {
   })
 
   // ケース: 各列 3 段ぶんの矩形 + 左のディスプレイ列 + 右のトラックパッド + 親指クラスター
-  const casePieces: Placed[] = [
-    ...LEFT_COLS.map((ids) => col(pos[ids[0]].x, pos[ids[0]].y, 3)),
-    ...RIGHT_COLS.map((ids) => col(pos[ids[0]].x, pos[ids[0]].y, 3)),
-    { x: ox + 4.9, y: oy, w: 2.0, h: 3.4 }, // ディスプレイ列
-    { x: rx - 2.35, y: ry + 0.85, w: 3.2, h: 3.2, rot: -8 }, // トラックパッド列
-    { x: ox + 2.3, y: oy + 3.0, w: 4.1, h: 1.5, rot: 8 }, // 左の親指クラスター
-    { x: rx - 0.45, y: ry + 3.1, w: 4.0, h: 1.5, rot: -8 }, // 右の親指クラスター
+  const casePieces: CasePiece[] = [
+    ...LEFT_COLS.map((ids) => col(pos[ids[0]].x, pos[ids[0]].y, 3, 'left')),
+    ...RIGHT_COLS.map((ids) => col(pos[ids[0]].x, pos[ids[0]].y, 3, 'right')),
+    { x: ox + 4.9, y: oy, w: 2.0, h: 3.4, side: 'left' }, // ディスプレイ列
+    { x: rx - 2.35, y: ry + 0.85, w: 3.2, h: 3.2, rot: -8, side: 'right' }, // トラックパッド列
+    { x: ox + 2.3, y: oy + 3.0, w: 4.1, h: 1.5, rot: 8, side: 'left' }, // 左の親指クラスター
+    { x: rx - 0.45, y: ry + 3.1, w: 4.0, h: 1.5, rot: -8, side: 'right' }, // 右の親指クラスター
   ]
-  const display: Placed = { x: ox + 5.0, y: oy + 0.55, w: 1.0, h: 1.65 }
-  const trackpad: Placed = { x: rx - 2.16, y: ry + 1.07, w: 2.8, h: 2.8, rot: -8 }
+  const display: CasePiece = { x: ox + 5.0, y: oy + 0.55, w: 1.0, h: 1.65, side: 'left' }
+  const trackpad: CasePiece = { x: rx - 2.16, y: ry + 1.07, w: 2.8, h: 2.8, rot: -8, side: 'right' }
   return { pos, casePieces, display, trackpad }
 }

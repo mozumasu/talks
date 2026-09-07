@@ -287,7 +287,7 @@ transition: fade
 
 <ToucanToPhoto :stage="$clicks" />
 
-<div v-click="1" class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem">
+<div v-click="1" class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem; transition-delay: 1.3s">
   <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
     30% キーボード買っちゃった〜
   </FindySpeechBubble>

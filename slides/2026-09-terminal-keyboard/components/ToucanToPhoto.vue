@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { mona2Centered, rectStyle, type Placed } from './mona2'
-import { RIGHT_IDS, TOUCAN_PHOTO, toucanLayout } from './toucan2'
+import { RIGHT_IDS, TOUCAN_PHOTO, toucanLayout, type Side } from './toucan2'
 
 // stage 0: 前のスライドと同じ位置に Toucan2 の図を描く。
-// 1 以降: 各キーが写真の中の同じキーの位置へ縮みながら移動し、写真に溶け込む
+// 1 以降: ケースごと写真の中の実機の位置へ縮みながら移動し、着いてから写真に溶け込む
 const { stage = 0 } = defineProps<{ stage?: number }>()
 
 const LABELS: Record<string, string> = {
@@ -23,50 +23,47 @@ const ids = Object.keys(toucan.pos)
 const at = (p: Placed): Placed => ({ ...p, x: p.x + DRAW_ORIGIN.x, y: p.y + DRAW_ORIGIN.y })
 const center = (p: Placed) => ({ x: p.x + p.w / 2, y: p.y + p.h / 2 })
 
-// 写真のキー位置への写像。左手は Q、右手は Y の中心を基準に、キー間隔の比 k で縮める
+// 写真への写像。左手は Q、右手は Y の中心を基準に、キー間隔の比 k で全体を縮める
 const upx = PHOTO_RECT.w / TOUCAN_PHOTO.w // 写真 1px あたりの u
 const k = TOUCAN_PHOTO.pitch * upx // 写真上のキー間隔 (u)
-const anchors = {
+const anchors: Record<Side, { draw: { x: number, y: number }, photo: { x: number, y: number } }> = {
   left: { draw: center(at(toucan.pos.Q)), photo: { x: PHOTO_RECT.x + TOUCAN_PHOTO.q.x * upx, y: PHOTO_RECT.y + TOUCAN_PHOTO.q.y * upx } },
   right: { draw: center(at(toucan.pos.Y)), photo: { x: PHOTO_RECT.x + TOUCAN_PHOTO.y.x * upx, y: PHOTO_RECT.y + TOUCAN_PHOTO.y.y * upx } },
 }
-const toPhoto = (id: string): Placed => {
-  const a = RIGHT_IDS.has(id) ? anchors.right : anchors.left
-  const c = center(at(toucan.pos[id]))
+const toPhoto = (p: Placed, side: Side): Placed => {
+  const a = anchors[side]
+  const c = center(at(p))
   return {
-    x: a.photo.x + (c.x - a.draw.x) * k - k / 2,
-    y: a.photo.y + (c.y - a.draw.y) * k - k / 2,
-    w: k,
-    h: k,
-    rot: toucan.pos[id].rot,
+    x: a.photo.x + (c.x - a.draw.x) * k - (p.w * k) / 2,
+    y: a.photo.y + (c.y - a.draw.y) * k - (p.h * k) / 2,
+    w: p.w * k,
+    h: p.h * k,
+    rot: p.rot,
   }
 }
 
 const isPhoto = computed(() => stage >= 1)
-const keyStyle = (id: string, i: number) => {
-  const p = isPhoto.value ? toPhoto(id) : at(toucan.pos[id])
-  return {
-    ...rectStyle(p),
-    transform: p.rot ? `rotate(${p.rot}deg)` : undefined,
-    transitionDelay: `${(i % 12) * 15}ms`,
-  }
-}
-const pieceStyle = (p: Placed) => ({ ...rectStyle(at(p)), transform: p.rot ? `rotate(${p.rot}deg)` : undefined })
+const place = (p: Placed, side: Side) => (isPhoto.value ? toPhoto(p, side) : at(p))
+const styleOf = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate(${p.rot}deg)` : undefined })
+const keyStyle = (id: string, i: number) => ({
+  ...styleOf(place(toucan.pos[id], RIGHT_IDS.has(id) ? 'right' : 'left')),
+  transitionDelay: isPhoto.value ? `${(i % 12) * 15}ms, ${(i % 12) * 15}ms, ${(i % 12) * 15}ms, ${(i % 12) * 15}ms, 0.9s` : '0s',
+})
 const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
 </script>
 
 <template>
   <div class="ttp" :class="{ 'is-photo': isPhoto }">
     <img class="ttp__photo" :src="photoSrc" alt="Toucan2" :style="rectStyle(PHOTO_RECT)">
-    <div class="kb__case ttp__draw">
-      <div v-for="(piece, i) in toucan.casePieces" :key="i" class="kb__case-piece" :style="pieceStyle(piece)" />
+    <div class="kb__case ttp__fade">
+      <div v-for="(piece, i) in toucan.casePieces" :key="i" class="kb__case-piece ttp__move" :style="styleOf(place(piece, piece.side))" />
     </div>
-    <div class="ttp__display ttp__draw" :style="pieceStyle(toucan.display)" />
-    <div class="ttp__trackpad ttp__draw" :style="pieceStyle(toucan.trackpad)" />
+    <div class="ttp__display ttp__move ttp__fade" :style="styleOf(place(toucan.display, toucan.display.side))" />
+    <div class="ttp__trackpad ttp__move ttp__fade" :style="styleOf(place(toucan.trackpad, toucan.trackpad.side))" />
     <div
       v-for="(id, i) in ids"
       :key="id"
-      class="kb__key"
+      class="kb__key ttp__move ttp__fade"
       :class="{ 'is-long': (LABELS[id] ?? id).length >= 5 }"
       :style="keyStyle(id, i)"
     >
@@ -92,7 +89,7 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
   border-radius: 0.75rem;
   box-shadow: var(--findy-shadow-card, 0 4px 16px rgba(0, 0, 0, 0.15));
   opacity: 0;
-  transition: opacity 0.9s ease 0.2s;
+  transition: opacity 0.9s ease 0.55s;
 }
 .ttp.is-photo .ttp__photo {
   opacity: 1;
@@ -109,14 +106,8 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
   background: #2c2c2e;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
-.ttp__draw {
-  transition: opacity 0.4s ease;
-}
-.ttp.is-photo .ttp__draw {
-  opacity: 0;
-}
-/* キーは写真の位置まで縮みながら移動し、着いてから消える */
-.kb__key {
+/* 図の部品はすべて写真の中の位置まで縮みながら移動し、着いてから消える */
+.ttp__move {
   transition:
     left 1s cubic-bezier(0.4, 0, 0.2, 1),
     top 1s cubic-bezier(0.4, 0, 0.2, 1),
@@ -124,8 +115,14 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
     height 1s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.5s ease;
 }
-.ttp.is-photo .kb__key {
+.ttp__fade {
+  transition: opacity 0.5s ease;
+}
+.ttp.is-photo .ttp__fade {
   opacity: 0;
+  transition-delay: 0.9s;
+}
+.ttp.is-photo .ttp__move.ttp__fade {
   transition-delay: 0s, 0s, 0s, 0s, 0.9s;
 }
 </style>
