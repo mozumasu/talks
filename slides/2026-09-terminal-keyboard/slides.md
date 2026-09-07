@@ -272,6 +272,15 @@ eyebrow: 宣伝
 </div>
 
 ---
+layout: content
+clicks: 1
+---
+
+# 最後に
+
+<Mona2ToToucan :stage="$clicks" class="mt-2" />
+
+---
 layout: end
 ---
 
