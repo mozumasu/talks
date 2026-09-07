@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIsSlideActive } from '@slidev/client'
+import { useIsSlideActive, useNav } from '@slidev/client'
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { mona2Centered, rectStyle, type Placed } from './mona2'
 import { RIGHT_IDS, TOUCAN_PHOTO, toucanLayout, type Side } from './toucan2'
@@ -45,16 +45,20 @@ const toPhoto = (p: Placed, side: Side): Placed => {
   }
 }
 
-// スライドを離れたら図に戻し、戻ってきたときにもう一度再生する
+// スライドを離れたら図に戻し、戻ってきたときにもう一度再生する。
+// 印刷 / エクスポートでは全スライドが同時にアクティブになるので、待たずに最終状態にする
 const active = useIsSlideActive()
+const { isPrintMode } = useNav()
 const isPhoto = ref(false)
 let timer: ReturnType<typeof setTimeout> | undefined
 watch(active, (isActive) => {
   clearTimeout(timer)
-  if (isActive)
-    timer = setTimeout(() => { isPhoto.value = true }, ENTER_DELAY_MS)
-  else
+  if (!isActive)
     isPhoto.value = false
+  else if (isPrintMode.value)
+    isPhoto.value = true
+  else
+    timer = setTimeout(() => { isPhoto.value = true }, ENTER_DELAY_MS)
 }, { immediate: true })
 onBeforeUnmount(() => clearTimeout(timer))
 
