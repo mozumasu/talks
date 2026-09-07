@@ -275,10 +275,11 @@ eyebrow: 宣伝
 layout: end
 ---
 
-# おしまい
+<img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md" style="width: 22rem" />
 
-<img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md mt-4" style="width: 20rem" />
-
-<FindySpeechBubble image="https://github.com/mozumasu.png" class="absolute" style="right: 4rem; bottom: 5rem; white-space: nowrap">
-  30% キーボード買っちゃった〜
-</FindySpeechBubble>
+<div class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem">
+  <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
+    30% キーボード買っちゃった〜
+  </FindySpeechBubble>
+  <div class="text-4xl font-bold" style="color: var(--findy-brand)">おしまい</div>
+</div>
