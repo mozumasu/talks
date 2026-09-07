@@ -7,7 +7,6 @@ info: |
   https://mosh.connpass.com/event/400858/
 class: text-left
 comark: true
-routerMode: hash
 favicon: https://github.com/mozumasu.png
 addons:
   - slidev-addon-findy

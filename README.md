@@ -73,9 +73,11 @@ slug の重複検出は draft も対象なので、公開に切り替えた時�
 - スライドの md は `.rumdl.toml` で formatter から除外している
   (rumdl がスライド区切りの `---` を壊すため)。新しいページを
   `slides/pages/` 以外に置くなら exclude に追加する
-- 各デッキは `https://talks.mozumasu.com/<slug>/` のサブパスで配信されるため、
-  headmatter に `routerMode: hash` を書く。history モードだと
-  `/<slug>/2` のリロードで Cloudflare の SPA フォールバック (ルートの一覧ページ) が返る
+- `/<slug>/2` のようなページ URL は実ファイルが無いので、静的アセットに一致しない
+  リクエストだけ `worker.js` が受けて `/<slug>/index.html` を返す
+  (`not_found_handling: single-page-application` だとルートの一覧ページが返ってしまう)。
+  `_redirects` の 200 プロキシは、実在するファイルより先にルールが効いて画像や JS まで
+  飛ばされるため使えない
 - スライド内の画像は `slides/<deck>/public/` に置き、`:src="$asset('foo.jpg')"` /
   `:image="$asset('foo.jpg')"` で参照する。`$asset` は `setup/main.ts` で定義する
   ヘルパー (`slides/2026-09-terminal-keyboard/setup/main.ts` をコピーする) で、
