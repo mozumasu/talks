@@ -275,6 +275,44 @@ eyebrow: 宣伝
 </v-click>
 
 ---
+layout: content
+eyebrow: 宣伝
+---
+
+# キーボード沼が覗ける動画
+
+<div class="grid grid-cols-4 gap-4 mt-4">
+  <a v-click href="https://youtu.be/KjRYHc27fx0" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="$asset('yt-KjRYHc27fx0.jpg')" class="w-full aspect-video object-cover" />
+    <div class="p-3">
+      <div class="text-sm font-bold leading-snug">【キーボード界隈】あなたはまだ"キーボードの世界"を知らない。</div>
+      <div class="text-xs mt-1 op70">TECH WORLD</div>
+    </div>
+  </a>
+  <a v-click href="https://youtu.be/RPobvGLuwYg" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="$asset('yt-RPobvGLuwYg.jpg')" class="w-full aspect-video object-cover" />
+    <div class="p-3">
+      <div class="text-sm font-bold leading-snug">【分割キーボードあるある】エンジニア愛用のキーボード紹介</div>
+      <div class="text-xs mt-1 op70">Kyohei - OSS, 外資IT</div>
+    </div>
+  </a>
+  <a v-click href="https://youtu.be/DdNHv3nCVcw" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="$asset('yt-DdNHv3nCVcw.jpg')" class="w-full aspect-video object-cover" />
+    <div class="p-3">
+      <div class="text-sm font-bold leading-snug">キーボード沼の住人に Orca echo のキーマップを聞いてみよう</div>
+      <div class="text-xs mt-1 op70">ギズモード・ジャパン</div>
+    </div>
+  </a>
+  <a v-click href="https://youtu.be/YO2bUSs9dVg" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="$asset('yt-YO2bUSs9dVg.jpg')" class="w-full aspect-video object-cover" />
+    <div class="p-3">
+      <div class="text-sm font-bold leading-snug">【2025年版】Amazon ブラックフライデーでエンジニアが絶対買うべきガジェット 58 選</div>
+      <div class="text-xs mt-1 op70">adachin dev</div>
+    </div>
+  </a>
+</div>
+
+---
 layout: end
 ---
 
