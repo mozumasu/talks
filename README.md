@@ -86,6 +86,10 @@ slug の重複検出は draft も対象なので、公開に切り替えた時�
 - 一覧ページのサムネイルは `scripts/build.mjs` が各デッキの 1 ページ目を
   `slidev export --format png` で書き出して作る (`dist/<slug>/cover.png`)。
   Chromium が必要なので CI では `playwright install-deps` を実行している
+- OGP (`og:image` / `og:url` / `twitter:card` など) は `scripts/build.mjs` がビルド後の
+  `dist/<slug>/index.html` に足す。`og:image` は `cover.png`、`og:description` は
+  `event` から組み立てる。デッキの headmatter `seoMeta` で書いたタグはそのまま残るので、
+  個別に変えたいときは `seoMeta` に絶対 URL で書く (Slidev は `--base` を付けない)
 - `scripts/build.mjs` はデッキごとに入力 (デッキのファイル、`link:` 先のテーマとその
   lockfile、`pnpm-lock.yaml`、スクリプト自身) をハッシュし、`.cache/decks/<slug>/<hash>/`
   に成果物があればビルドと export を飛ばす。CI では `actions/cache` で持ち越す。
