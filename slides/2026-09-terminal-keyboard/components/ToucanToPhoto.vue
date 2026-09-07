@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { useIsSlideActive } from '@slidev/client'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import { mona2Centered, rectStyle, type Placed } from './mona2'
 import { RIGHT_IDS, TOUCAN_PHOTO, toucanLayout, type Side } from './toucan2'
 
-// stage 0: 前のスライドと同じ位置に Toucan2 の図を描く。
-// 1 以降: ケースごと写真の中の実機の位置へ縮みながら移動し、着いてから写真に溶け込む
-const { stage = 0 } = defineProps<{ stage?: number }>()
+// 前のスライドと同じ位置に Toucan2 の図を描いた状態で始まり、スライドが表示されると
+// クリックなしでケースごと写真の中の実機の位置へ縮みながら移動し、着いてから写真に溶け込む。
+// スロットの内容 (ふきだしなど) は溶け込みが終わってから出る
 
 const LABELS: Record<string, string> = {
   esc: 'esc', space: '', ctrl: 'control', del: 'delete', lshift: 'shift',
@@ -17,6 +18,8 @@ const LABELS: Record<string, string> = {
 const DRAW_ORIGIN = { x: 3.68, y: 3.29 }
 // end レイアウトで写真を置く位置。左 3.5rem (レイアウトの padding に揃える)、幅 22rem
 const PHOTO_RECT: Placed = { x: 3.5 / 2.1, y: 7.95 / 2.1, w: 22 / 2.1, h: 22 / 2.1 }
+// スライドの fade (0.5s) が終わって図が静止して見えてから動き出すまでの間
+const ENTER_DELAY_MS = 700
 
 const toucan = toucanLayout(mona2Centered())
 const ids = Object.keys(toucan.pos)
@@ -42,7 +45,19 @@ const toPhoto = (p: Placed, side: Side): Placed => {
   }
 }
 
-const isPhoto = computed(() => stage >= 1)
+// スライドを離れたら図に戻し、戻ってきたときにもう一度再生する
+const active = useIsSlideActive()
+const isPhoto = ref(false)
+let timer: ReturnType<typeof setTimeout> | undefined
+watch(active, (isActive) => {
+  clearTimeout(timer)
+  if (isActive)
+    timer = setTimeout(() => { isPhoto.value = true }, ENTER_DELAY_MS)
+  else
+    isPhoto.value = false
+}, { immediate: true })
+onBeforeUnmount(() => clearTimeout(timer))
+
 const place = (p: Placed, side: Side) => (isPhoto.value ? toPhoto(p, side) : at(p))
 const styleOf = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate(${p.rot}deg)` : undefined })
 const keyStyle = (id: string, i: number) => ({
@@ -68,6 +83,9 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
       :style="keyStyle(id, i)"
     >
       <span class="kb__label">{{ LABELS[id] ?? id }}</span>
+    </div>
+    <div class="ttp__after">
+      <slot />
     </div>
   </div>
 </template>
@@ -106,7 +124,11 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
   background: #2c2c2e;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
-/* 図の部品はすべて写真の中の位置まで縮みながら移動し、着いてから消える */
+/* 図の部品はすべて写真の中の位置まで縮みながら移動し、着いてから消える。
+   ttp__move と ttp__fade を両方持つ要素では後に書いた ttp__move の transition が勝つ必要がある */
+.ttp__fade {
+  transition: opacity 0.5s ease;
+}
 .ttp__move {
   transition:
     left 1s cubic-bezier(0.4, 0, 0.2, 1),
@@ -115,14 +137,24 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
     height 1s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.5s ease;
 }
-.ttp__fade {
-  transition: opacity 0.5s ease;
-}
 .ttp.is-photo .ttp__fade {
   opacity: 0;
   transition-delay: 0.9s;
 }
 .ttp.is-photo .ttp__move.ttp__fade {
   transition-delay: 0s, 0s, 0s, 0s, 0.9s;
+}
+/* スロットは v-click と同じ左からの滑り込みで、溶け込みが終わってから出す */
+.ttp__after {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(-0.6rem);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.ttp.is-photo .ttp__after {
+  opacity: 1;
+  transform: none;
+  transition-delay: 1.3s;
 }
 </style>
