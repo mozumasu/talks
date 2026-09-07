@@ -86,3 +86,7 @@ slug の重複検出は draft も対象なので、公開に切り替えた時�
 - 一覧ページのサムネイルは `scripts/build.mjs` が各デッキの 1 ページ目を
   `slidev export --format png` で書き出して作る (`dist/<slug>/cover.png`)。
   Chromium が必要なので CI では `playwright install-deps` を実行している
+- `scripts/build.mjs` はデッキごとに入力 (デッキのファイル、`link:` 先のテーマとその
+  lockfile、`pnpm-lock.yaml`、スクリプト自身) をハッシュし、`.cache/decks/<slug>/<hash>/`
+  に成果物があればビルドと export を飛ばす。CI では `actions/cache` で持ち越す。
+  強制的に全部ビルドし直すなら `DECK_CACHE=0 node scripts/build.mjs`
