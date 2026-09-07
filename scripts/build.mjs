@@ -50,9 +50,15 @@ for (const e of allEntries.filter((e) => e.draft)) {
   );
 }
 
-// ── 3. slug の重複検出 ──────────────────────────
+// ── 3. slug の検証と重複検出 ────────────────────
+// slug は URL とキャッシュのパスに使うので、英数字とハイフン以外は通さない
+const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
 const seen = new Map();
 for (const e of allEntries) {
+  if (!SLUG_RE.test(e.slug)) {
+    console.error(`slug "${e.slug}" (${e.dir}) が ${SLUG_RE} を満たしません`);
+    process.exit(1);
+  }
   if (seen.has(e.slug)) {
     console.error(
       `slug "${e.slug}" が重複: ${seen.get(e.slug)} と ${e.dir}\n` +
@@ -105,7 +111,15 @@ function hashInputs(e) {
   }
   addFile("pnpm-lock.yaml");
   addFile("scripts/build.mjs");
-  return h.digest("hex").slice(0, 16);
+  return h.digest("hex").slice(0, 32);
+}
+
+// 削除・改名されたデッキのキャッシュは誰も消さないので、現存する slug 以外を掃除する
+if (useCache && existsSync(CACHE_DIR)) {
+  const live = new Set(allEntries.map((e) => e.slug));
+  for (const slug of readdirSync(CACHE_DIR)) {
+    if (!live.has(slug)) rmSync(`${CACHE_DIR}/${slug}`, { recursive: true, force: true });
+  }
 }
 
 // ── 5. 各デッキをビルドして dist/<slug> に集約 ──
@@ -114,7 +128,8 @@ mkdirSync("dist", { recursive: true });
 for (const e of entries) {
   const hash = useCache ? hashInputs(e) : null;
   const cached = hash && `${CACHE_DIR}/${e.slug}/${hash}`;
-  if (cached && existsSync(cached)) {
+  // 中身の欠けたエントリを掴まないよう、必須ファイルの存在まで見てからヒット扱いにする
+  if (cached && existsSync(`${cached}/index.html`) && existsSync(`${cached}/cover.png`)) {
     console.log(`\n=== cache hit: ${e.dir} -> /${e.slug}/ (${hash}) ===`);
     cpSync(cached, `dist/${e.slug}`, { recursive: true });
     continue;
