@@ -73,5 +73,16 @@ slug の重複検出は draft も対象なので、公開に切り替えた時�
 - スライドの md は `.rumdl.toml` で formatter から除外している
   (rumdl がスライド区切りの `---` を壊すため)。新しいページを
   `slides/pages/` 以外に置くなら exclude に追加する
-- スライド内の画像は `slides/public/` に置き、静的 `src="/..."` ではなく
-  `:src="'/...'"` のバインディング形式で参照する (slide-import-guard 対策)
+- `/<slug>/2` のようなページ URL は実ファイルが無いので、静的アセットに一致しない
+  リクエストだけ `worker.js` が受けて `/<slug>/index.html` を返す
+  (`not_found_handling: single-page-application` だとルートの一覧ページが返ってしまう)。
+  `_redirects` の 200 プロキシは、実在するファイルより先にルールが効いて画像や JS まで
+  飛ばされるため使えない
+- スライド内の画像は `slides/<deck>/public/` に置き、`:src="$asset('foo.jpg')"` /
+  `:image="$asset('foo.jpg')"` で参照する。`$asset` は `setup/main.ts` で定義する
+  ヘルパー (`slides/2026-09-terminal-keyboard/setup/main.ts` をコピーする) で、
+  `--base /<slug>/` を前置する。静的 `src="/..."` は slide-import-guard に引っかかり、
+  `:src="'/...'"` は Vite の asset 変換を通らず base が付かないので、どちらも使わない
+- 一覧ページのサムネイルは `scripts/build.mjs` が各デッキの 1 ページ目を
+  `slidev export --format png` で書き出して作る (`dist/<slug>/cover.png`)。
+  Chromium が必要なので CI では `playwright install-deps` を実行している
