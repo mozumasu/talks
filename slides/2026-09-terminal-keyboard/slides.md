@@ -284,11 +284,11 @@ clicks: 1
 layout: end
 ---
 
-# ありがとうございました
+<img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md" style="width: 22rem" />
 
-<div class="flex items-center gap-8 mt-6" style="width: max-content">
-  <img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md" style="width: 20rem" />
+<div class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem">
   <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
     30% キーボード買っちゃった〜
   </FindySpeechBubble>
+  <div class="text-4xl font-bold" style="color: var(--findy-brand)">おしまい</div>
 </div>
