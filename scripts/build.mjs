@@ -323,7 +323,7 @@ writeFileSync(
     .meta { padding: .8rem 1rem 1rem; }
     .title { font-weight: 700; line-height: 1.4; }
     .event { margin-top: .3rem; font-size: .85rem; color: #666; }
-    .label { display: inline-block; margin-left: .3rem; padding: .1rem .5rem; border-radius: 999px; font-size: .7rem; font-weight: 600; vertical-align: middle; color: #fff; background: #0969da; }
+    .label { display: inline-block; margin-left: .3rem; padding: .05rem .4rem; border-radius: 4px; font-size: .7rem; font-weight: 600; vertical-align: middle; color: #555; background: #eee; }
     .links { padding: 0 1rem .9rem; font-size: .85rem; }
     .links a { color: #0969da; }
     /* OS のダークモードに追従する。同じ詳細度の指定を上書きするので、ライト用より後に置く */
@@ -332,7 +332,7 @@ writeFileSync(
       .card { background: #1c1c1e; border-color: #333; }
       .card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.5); }
       .event { color: #aaa; }
-      .label { color: #0d1117; background: #58a6ff; }
+      .label { color: #bbb; background: #333; }
       .links a { color: #58a6ff; }
     }
   </style>
