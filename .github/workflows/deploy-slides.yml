@@ -86,10 +86,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # サムネイル生成 (slidev export) は Chromium を使うため、OS 側の共有ライブラリを入れる。
-      # デッキごとに並列実行すると apt のロックが競合するので 1 つずつ実行する
+      # デッキごとに実行すると重複するので、playwright CLI を dlx で 1 回だけ動かす
+      # (playwright と playwright-chromium は同じバージョンで公開される)
       - name: Install Chromium system dependencies
         working-directory: talks
-        run: pnpm --filter "./slides/*" --workspace-concurrency=1 exec playwright install-deps chromium
+        env:
+          PLAYWRIGHT_VERSION: ${{ steps.playwright.outputs.version }}
+        run: pnpm dlx "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium
 
       - name: Build all decks
         working-directory: talks
