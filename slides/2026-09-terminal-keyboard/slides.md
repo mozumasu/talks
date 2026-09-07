@@ -278,15 +278,16 @@ clicks: 1
 
 # 最後に
 
-<Mona2ToToucan :stage="$clicks" class="mt-2" />
+<Mona2ToToucan :stage="$clicks" class="mt-6" />
 
 ---
 layout: end
+transition: fade
 ---
 
-<img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md" style="width: 22rem" />
+<ToucanToPhoto :stage="$clicks" />
 
-<div class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem">
+<div v-click="1" class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem">
   <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
     30% キーボード買っちゃった〜
   </FindySpeechBubble>
