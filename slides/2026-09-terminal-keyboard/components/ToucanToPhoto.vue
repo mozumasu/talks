@@ -161,4 +161,13 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
   transform: none;
   transition-delay: 1.3s;
 }
+/* end レイアウトの左上ロゴは、ページが切り替わった瞬間には出さず、ふきだしと同じタイミングで出す */
+:global(.slidev-layout.end:has(.ttp) .end-head) {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+:global(.slidev-layout.end:has(.ttp.is-photo) .end-head) {
+  opacity: 1;
+  transition-delay: 1.3s;
+}
 </style>
