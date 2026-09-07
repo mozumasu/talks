@@ -89,7 +89,7 @@ const pieceStyle = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate
       </div>
     </div>
     <div class="kb__caption">
-      <span>{{ isToucan ? 'Toucan2 に乗り換えて 6 キー減った' : 'moNa2' }}</span>
+      <span>{{ isToucan ? 'さらに 6 キー減った' : '' }}</span>
       <span class="kb__count"><b>{{ count }}</b> キー</span>
     </div>
   </div>
