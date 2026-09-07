@@ -2,6 +2,7 @@
 theme: findy
 draft: false
 title: CLIオタクのキーボード事情
+date: 2026-09-09
 info: |
   CLIオタクのキーボード事情
   https://mosh.connpass.com/event/400858/
