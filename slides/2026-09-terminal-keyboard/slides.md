@@ -273,7 +273,9 @@ layout: end
 
 # ありがとうございました
 
-<div class="flex items-center gap-8 mt-6">
+<div class="flex items-center gap-8 mt-6" style="width: max-content">
   <img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md" style="width: 20rem" />
-  <div class="text-2xl font-bold whitespace-nowrap">30% キーボード買っちゃった〜</div>
+  <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
+    30% キーボード買っちゃった〜
+  </FindySpeechBubble>
 </div>
