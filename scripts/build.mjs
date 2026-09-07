@@ -113,7 +113,6 @@ writeFileSync(
   <style>
     :root { color-scheme: light dark; }
     body { margin: 0; padding: 2rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: #fafafa; color: #222; }
-    @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } .card { background: #1c1c1e; border-color: #333; } .event { color: #aaa; } }
     h1 { margin: 0 0 1.5rem; font-size: 1.75rem; }
     ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); max-width: 1200px; }
     .card { border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #fff; transition: transform .15s ease, box-shadow .15s ease; }
@@ -123,6 +122,13 @@ writeFileSync(
     .meta { padding: .8rem 1rem 1rem; }
     .title { font-weight: 700; line-height: 1.4; }
     .event { margin-top: .3rem; font-size: .85rem; color: #666; }
+    /* OS のダークモードに追従する。同じ詳細度の指定を上書きするので、ライト用より後に置く */
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; color: #eee; }
+      .card { background: #1c1c1e; border-color: #333; }
+      .card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.5); }
+      .event { color: #aaa; }
+    }
   </style>
 </head>
 <body>
