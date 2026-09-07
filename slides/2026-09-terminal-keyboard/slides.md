@@ -133,6 +133,8 @@ ratio: 1/1.2
 valign: center
 ---
 
+<div v-click="3">
+
 ## 割り当てる機能
 
 - スクロール
@@ -140,7 +142,9 @@ valign: center
 - 明るさ
 - ズーム
 
-<v-click>
+</div>
+
+<v-click at="4">
 
 機能を1箇所に集約できる
 
@@ -148,9 +152,9 @@ valign: center
 
 ::right::
 
-<div class="mx-auto" style="width: 24rem">
+<div v-click="1" class="mx-auto" style="width: 24rem">
   <FindyAnnotatedImage :image="$asset('encoder.jpg')" alt="moNa2 のロータリーエンコーダー" caption="moNa2 のロータリーエンコーダー">
-    <FindyImageRegion label="ここ" label-position="above-left" color="high" :x="58" :y="33" :w="26" :h="34" />
+    <FindyImageRegion v-click="2" label="ここ" label-position="above-left" color="high" :x="58" :y="33" :w="26" :h="34" />
   </FindyAnnotatedImage>
 </div>
 
