@@ -95,12 +95,13 @@ jobs:
         run: pnpm dlx "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium
 
       # scripts/build.mjs は入力のハッシュが一致するデッキをビルドせず .cache/decks から
-      # 再利用する。キーを run_id にして毎回保存し、restore-keys で直近のものを復元する
+      # 再利用する。キーはビルド入力のハッシュにし、入力が変わらなければ新しいエントリを
+      # 保存しない。変わったときは restore-keys で直近のものを復元して差分だけビルドする
       - name: Restore deck build cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: talks/.cache/decks
-          key: decks-${{ github.run_id }}
+          key: decks-${{ hashFiles('talks/slides/**', 'talks/pnpm-lock.yaml', 'talks/wrangler.jsonc', 'talks/scripts/build.mjs', 'findy-slidev/packages/**', 'findy-slidev/pnpm-lock.yaml') }}
           restore-keys: |
             decks-
 
