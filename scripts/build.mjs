@@ -1,5 +1,7 @@
-import { mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { dirname, resolve } from "node:path";
 
 // ── 1. デッキの列挙 ─────────────────────────────
 // withFileTypes を付けると名前だけでなく「ディレクトリか?」も分かる
@@ -61,10 +63,63 @@ for (const e of allEntries) {
   seen.set(e.slug, e.dir);
 }
 
-// ── 4. 各デッキをビルドして dist/<slug> に集約 ──
+// ── 4. デッキごとのビルドキャッシュ ─────────────
+// 入力 (デッキのファイル、link: 参照しているテーマ、lockfile、このスクリプト) の
+// ハッシュが一致するビルド成果物が .cache/decks/<slug>/<hash>/ にあれば再利用する。
+// CI では .cache/decks を actions/cache で持ち越す。DECK_CACHE=0 で無効化できる
+const CACHE_DIR = ".cache/decks";
+const useCache = process.env.DECK_CACHE !== "0";
+
+function* walk(dir) {
+  for (const entry of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+    if (entry.name === "node_modules" || entry.name === ".git") continue;
+    const p = `${dir}/${entry.name}`;
+    if (entry.isDirectory()) yield* walk(p);
+    else if (entry.isFile()) yield p;
+  }
+}
+
+function hashInputs(e) {
+  const h = createHash("sha256");
+  const addFile = (p) => {
+    h.update(p);
+    h.update(readFileSync(p));
+  };
+  const addTree = (dir) => {
+    for (const p of walk(dir)) addFile(p);
+  };
+  addTree(`slides/${e.dir}`);
+  // link: 参照のテーマ・アドオンは lockfile に内容が載らないので、実体と
+  // リンク先リポジトリの lockfile (テーマ側の依存) を辿ってハッシュする
+  const pkg = JSON.parse(readFileSync(`slides/${e.dir}/package.json`, "utf8"));
+  for (const spec of Object.values({ ...pkg.dependencies, ...pkg.devDependencies })) {
+    if (typeof spec !== "string" || !spec.startsWith("link:")) continue;
+    const linked = resolve(`slides/${e.dir}`, spec.slice("link:".length));
+    addTree(linked);
+    for (let dir = linked; dir !== dirname(dir); dir = dirname(dir)) {
+      if (existsSync(`${dir}/pnpm-lock.yaml`)) {
+        addFile(`${dir}/pnpm-lock.yaml`);
+        break;
+      }
+    }
+  }
+  addFile("pnpm-lock.yaml");
+  addFile("scripts/build.mjs");
+  return h.digest("hex").slice(0, 16);
+}
+
+// ── 5. 各デッキをビルドして dist/<slug> に集約 ──
 rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist", { recursive: true });
 for (const e of entries) {
+  const hash = useCache ? hashInputs(e) : null;
+  const cached = hash && `${CACHE_DIR}/${e.slug}/${hash}`;
+  if (cached && existsSync(cached)) {
+    console.log(`\n=== cache hit: ${e.dir} -> /${e.slug}/ (${hash}) ===`);
+    cpSync(cached, `dist/${e.slug}`, { recursive: true });
+    continue;
+  }
+
   console.log(`\n=== build: ${e.dir} -> /${e.slug}/ ===`);
   execSync(
     `pnpm --filter ./slides/${e.dir} exec slidev build slides.md --base /${e.slug}/ --out ../../dist/${e.slug}`,
@@ -82,9 +137,15 @@ for (const e of entries) {
   const exported = readdirSync(exportDir).find((f) => f.endsWith(".png"));
   renameSync(`${exportDir}/${exported}`, `dist/${e.slug}/cover.png`);
   rmSync(exportDir, { recursive: true, force: true });
+
+  if (cached) {
+    // 同じ slug の古いハッシュは捨ててキャッシュが肥大化しないようにする
+    rmSync(`${CACHE_DIR}/${e.slug}`, { recursive: true, force: true });
+    cpSync(`dist/${e.slug}`, cached, { recursive: true });
+  }
 }
 
-// ── 5. 一覧ページの生成 ─────────────────────────
+// ── 6. 一覧ページの生成 ─────────────────────────
 const escapeHtml = (s) =>
   s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 

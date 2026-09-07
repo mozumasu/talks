@@ -94,6 +94,16 @@ jobs:
           PLAYWRIGHT_VERSION: ${{ steps.playwright.outputs.version }}
         run: pnpm dlx "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium
 
+      # scripts/build.mjs は入力のハッシュが一致するデッキをビルドせず .cache/decks から
+      # 再利用する。キーを run_id にして毎回保存し、restore-keys で直近のものを復元する
+      - name: Restore deck build cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: talks/.cache/decks
+          key: decks-${{ github.run_id }}
+          restore-keys: |
+            decks-
+
       - name: Build all decks
         working-directory: talks
         run: pnpm build
