@@ -1,0 +1,73 @@
+.kb {
+  --u: 2.1rem;
+  --gap: 0.18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+.kb__canvas {
+  position: relative;
+  margin: 0.55rem;
+}
+.kb__case {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(0 1px 0 #b8b8be) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.14));
+}
+.kb__case-piece {
+  position: absolute;
+  border-radius: 0.35rem;
+  background: #d6d6db;
+}
+.kb__knob,
+.kb__ball {
+  position: absolute;
+  border-radius: 50%;
+}
+.kb__knob {
+  background: radial-gradient(circle, #f4f4f6 0 38%, #b9b9bf 40% 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.kb__ball {
+  background: radial-gradient(circle at 35% 35%, #ffffff, #c4c4ca 55%, #8e8e93);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.kb__key {
+  box-sizing: border-box;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  border-radius: 0.28rem;
+  background: #fbfbfd;
+  border: 1px solid #c9c9cf;
+  box-shadow: 0 1px 0 #b0b0b6;
+  color: #6e6e73;
+  font-size: 0.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  white-space: nowrap;
+}
+.kb__key.is-long .kb__label {
+  font-size: 0.4rem;
+}
+.kb__top {
+  font-size: 0.42rem;
+  line-height: 1;
+  color: #8e8e93;
+}
+.kb__label {
+  line-height: 1;
+}
+.kb__caption {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  font-size: 1.1rem;
+}
+.kb__count b {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}

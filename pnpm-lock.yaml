@@ -31,6 +31,25 @@ importers:
         specifier: ^1.61.1
         version: 1.61.1
 
+  slides/2026-09-terminal-keyboard:
+    dependencies:
+      '@slidev/cli':
+        specifier: ^52.11.0
+        version: 52.18.0(@nuxt/kit@3.21.9)(@types/markdown-it@14.1.2)(@types/node@22.20.1)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(lightningcss@1.33.0)(markdown-it@14.3.0)(playwright-chromium@1.61.1)(postcss@8.5.20)(rolldown@1.1.5)
+      slidev-addon-findy:
+        specifier: link:../../../findy-slidev/packages/slidev-addon-findy
+        version: link:../../../findy-slidev/packages/slidev-addon-findy
+      slidev-theme-findy:
+        specifier: link:../../../findy-slidev/packages/slidev-theme-findy
+        version: link:../../../findy-slidev/packages/slidev-theme-findy
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.40(typescript@6.0.3)
+    devDependencies:
+      playwright-chromium:
+        specifier: ^1.61.1
+        version: 1.61.1
+
 packages:
 
   '@antfu/install-pkg@1.1.0':
