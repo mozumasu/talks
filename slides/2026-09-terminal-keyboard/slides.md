@@ -264,7 +264,7 @@ eyebrow: 宣伝
   </a>
 </div>
 
-<v-click>
+<v-click at="2">
 
 <div class="text-center mt-8 text-2xl">
 
