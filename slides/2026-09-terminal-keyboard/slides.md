@@ -236,33 +236,15 @@ eyebrow: 宣伝
 # 9〜10 月のキーボードイベント
 
 <div class="grid grid-cols-3 gap-5 mt-4">
-  <a v-click="1" href="https://keyflea.connpass.com/event/389888/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('event-keyflea.png')" class="w-full h-28 object-cover" />
-    <div class="p-3">
-      <div class="text-base font-bold leading-snug">キーボードフリーマーケット トーキョー 2026</div>
-      <div class="text-sm mt-1"><b>9/19 (土)</b> 13:00〜16:00</div>
-      <div class="text-sm op70">AP 秋葉原</div>
-      <div class="text-sm mt-2">自作キーボードの余り物・訳アリ品が並ぶフリマ。1,000 円 (15 時以降無料)</div>
-    </div>
-  </a>
-  <a v-click="1" href="https://tkx.yushakobo.jp/tkx2026/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('event-tkx.jpg')" class="w-full h-28 object-cover object-left" />
-    <div class="p-3">
-      <div class="text-base font-bold leading-snug">TOKYO KEYBOARD EXPO 2026</div>
-      <div class="text-sm mt-1"><b>9/23 (水・祝)</b> 11:00〜16:30</div>
-      <div class="text-sm op70">東京流通センター F ホール</div>
-      <div class="text-sm mt-2">世界中のブランドが集まる日本最大級の展示・販売会。前売 1,000 円 / 当日 1,500 円</div>
-    </div>
-  </a>
-  <a v-click="1" href="https://tenkey.connpass.com/event/397843/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('event-tenkey.png')" class="w-full h-28 object-cover" />
-    <div class="p-3">
-      <div class="text-base font-bold leading-snug">天下一キーボードわいわい会 Vol.12</div>
-      <div class="text-sm mt-1"><b>10/3 (土)</b> 13:00〜17:00</div>
-      <div class="text-sm op70">DMM.com セミナールーム (六本木一丁目)</div>
-      <div class="text-sm mt-2">自分のキーボードを持ち寄る定員 370 名の交流会。申込は 9/26 まで</div>
-    </div>
-  </a>
+  <FindyLinkCard v-click="1" href="https://keyflea.connpass.com/event/389888/" :image="$asset('event-keyflea.png')" title="キーボードフリーマーケット トーキョー 2026" meta="9/19 (土) 13:00〜16:00" sub="AP 秋葉原">
+    自作キーボードの余り物・訳アリ品が並ぶフリマ。1,000 円 (15 時以降無料)
+  </FindyLinkCard>
+  <FindyLinkCard v-click="1" href="https://tkx.yushakobo.jp/tkx2026/" :image="$asset('event-tkx.jpg')" image-position="left" title="TOKYO KEYBOARD EXPO 2026" meta="9/23 (水・祝) 11:00〜16:30" sub="東京流通センター F ホール">
+    世界中のブランドが集まる日本最大級の展示・販売会。前売 1,000 円 / 当日 1,500 円
+  </FindyLinkCard>
+  <FindyLinkCard v-click="1" href="https://tenkey.connpass.com/event/397843/" :image="$asset('event-tenkey.png')" title="天下一キーボードわいわい会 Vol.12" meta="10/3 (土) 13:00〜17:00" sub="DMM.com セミナールーム (六本木一丁目)">
+    自分のキーボードを持ち寄る定員 370 名の交流会。申込は 9/26 まで
+  </FindyLinkCard>
 </div>
 
 <v-click at="2">
@@ -283,34 +265,10 @@ eyebrow: 宣伝
 # キーボード沼が覗ける動画
 
 <div class="grid grid-cols-4 gap-4 mt-4">
-  <a v-click="1" href="https://youtu.be/KjRYHc27fx0" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('yt-KjRYHc27fx0.jpg')" class="w-full aspect-video object-cover" />
-    <div class="p-3">
-      <div class="text-sm font-bold leading-snug">【キーボード界隈】あなたはまだ"キーボードの世界"を知らない。</div>
-      <div class="text-xs mt-1 op70">TECH WORLD</div>
-    </div>
-  </a>
-  <a v-click="1" href="https://youtu.be/RPobvGLuwYg" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('yt-RPobvGLuwYg.jpg')" class="w-full aspect-video object-cover" />
-    <div class="p-3">
-      <div class="text-sm font-bold leading-snug">【分割キーボードあるある】エンジニア愛用のキーボード紹介</div>
-      <div class="text-xs mt-1 op70">Kyohei - OSS, 外資IT</div>
-    </div>
-  </a>
-  <a v-click="1" href="https://youtu.be/DdNHv3nCVcw" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('yt-DdNHv3nCVcw.jpg')" class="w-full aspect-video object-cover" />
-    <div class="p-3">
-      <div class="text-sm font-bold leading-snug">キーボード沼の住人に Orca echo のキーマップを聞いてみよう</div>
-      <div class="text-xs mt-1 op70">ギズモード・ジャパン</div>
-    </div>
-  </a>
-  <a v-click="1" href="https://youtu.be/YO2bUSs9dVg" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="$asset('yt-YO2bUSs9dVg.jpg')" class="w-full aspect-video object-cover" />
-    <div class="p-3">
-      <div class="text-sm font-bold leading-snug">【2025年版】Amazon ブラックフライデーでエンジニアが絶対買うべきガジェット 58 選</div>
-      <div class="text-xs mt-1 op70">adachin dev</div>
-    </div>
-  </a>
+  <FindyLinkCard v-click="1" href="https://youtu.be/KjRYHc27fx0" :image="$asset('yt-KjRYHc27fx0.jpg')" image-height="8rem" title="【キーボード界隈】あなたはまだ&quot;キーボードの世界&quot;を知らない。" sub="TECH WORLD" />
+  <FindyLinkCard v-click="1" href="https://youtu.be/RPobvGLuwYg" :image="$asset('yt-RPobvGLuwYg.jpg')" image-height="8rem" title="【分割キーボードあるある】エンジニア愛用のキーボード紹介" sub="Kyohei - OSS, 外資IT" />
+  <FindyLinkCard v-click="1" href="https://youtu.be/DdNHv3nCVcw" :image="$asset('yt-DdNHv3nCVcw.jpg')" image-height="8rem" title="キーボード沼の住人に Orca echo のキーマップを聞いてみよう" sub="ギズモード・ジャパン" />
+  <FindyLinkCard v-click="1" href="https://youtu.be/YO2bUSs9dVg" :image="$asset('yt-YO2bUSs9dVg.jpg')" image-height="8rem" title="【2025年版】Amazon ブラックフライデーでエンジニアが絶対買うべきガジェット 58 選" sub="adachin dev" />
 </div>
 
 ---
