@@ -7,6 +7,7 @@ info: |
   https://mosh.connpass.com/event/400858/
 class: text-left
 comark: true
+routerMode: hash
 favicon: https://github.com/mozumasu.png
 addons:
   - slidev-addon-findy
@@ -38,15 +39,15 @@ role: ファインディ / Platform SRE
 
 <div class="grid grid-cols-3 gap-3 mt-4">
   <figure v-click class="m-0">
-    <img :src="'/desk-underside.jpg'" class="w-full h-32 object-cover rounded-lg" />
+    <img :src="$asset('desk-underside.jpg')" class="w-full h-32 object-cover rounded-lg" />
     <figcaption class="text-sm text-center mt-1 op70">机の裏に貼ったり</figcaption>
   </figure>
   <figure v-click class="m-0">
-    <img :src="'/oshi-pouch.jpg'" class="w-full h-32 object-cover rounded-lg" />
+    <img :src="$asset('oshi-pouch.jpg')" class="w-full h-32 object-cover rounded-lg" />
     <figcaption class="text-sm text-center mt-1 op70">推し活ポーチに入れたり</figcaption>
   </figure>
   <figure v-click class="m-0">
-    <img :src="'/hanami.jpg'" class="w-full h-32 object-cover rounded-lg" />
+    <img :src="$asset('hanami.jpg')" class="w-full h-32 object-cover rounded-lg" />
     <figcaption class="text-sm text-center mt-1 op70">花見をしたり</figcaption>
   </figure>
 </div>
@@ -148,7 +149,7 @@ valign: center
 ::right::
 
 <div class="mx-auto" style="width: 24rem">
-  <FindyAnnotatedImage image="/encoder.jpg" alt="moNa2 のロータリーエンコーダー" caption="moNa2 のロータリーエンコーダー">
+  <FindyAnnotatedImage :image="$asset('encoder.jpg')" alt="moNa2 のロータリーエンコーダー" caption="moNa2 のロータリーエンコーダー">
     <FindyImageRegion label="ここ" label-position="above-left" color="high" :x="58" :y="33" :w="26" :h="34" />
   </FindyAnnotatedImage>
 </div>
@@ -236,7 +237,7 @@ eyebrow: 宣伝
 
 <div class="grid grid-cols-3 gap-5 mt-4">
   <a v-click href="https://keyflea.connpass.com/event/389888/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="'/event-keyflea.png'" class="w-full h-28 object-cover" />
+    <img :src="$asset('event-keyflea.png')" class="w-full h-28 object-cover" />
     <div class="p-3">
       <div class="text-base font-bold leading-snug">キーボードフリーマーケット トーキョー 2026</div>
       <div class="text-sm mt-1"><b>9/19 (土)</b> 13:00〜16:00</div>
@@ -245,7 +246,7 @@ eyebrow: 宣伝
     </div>
   </a>
   <a v-click href="https://tkx.yushakobo.jp/tkx2026/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="'/event-tkx.jpg'" class="w-full h-28 object-cover object-left" />
+    <img :src="$asset('event-tkx.jpg')" class="w-full h-28 object-cover object-left" />
     <div class="p-3">
       <div class="text-base font-bold leading-snug">TOKYO KEYBOARD EXPO 2026</div>
       <div class="text-sm mt-1"><b>9/23 (水・祝)</b> 11:00〜16:30</div>
@@ -254,7 +255,7 @@ eyebrow: 宣伝
     </div>
   </a>
   <a v-click href="https://tenkey.connpass.com/event/397843/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
-    <img :src="'/event-tenkey.png'" class="w-full h-28 object-cover" />
+    <img :src="$asset('event-tenkey.png')" class="w-full h-28 object-cover" />
     <div class="p-3">
       <div class="text-base font-bold leading-snug">天下一キーボードわいわい会 Vol.12</div>
       <div class="text-sm mt-1"><b>10/3 (土)</b> 13:00〜17:00</div>
