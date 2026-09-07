@@ -17,23 +17,32 @@ const keys = Object.keys(mona2.pos)
 // Toucan2 は片手 3 行 × 5 列 + 親指 3 キー。moNa2 から外側 3 列の 4 段目と最内列を
 // 落とし、右の \ は親指クラスターへ移す。落ちるキーは 6 個 (42 → 36)
 const REMOVED = new Set(['cmd', 'opt', 'tab', 'fn', 'quote', 'ret'])
+const ox = mona2.pos.Q.x // 左手の外側列の x
 const rx = mona2.pos.Y.x - 1 // 右手の最内列 (quote / ret) の x
 const oy = mona2.pos.E.y // 一番高い列の上端 = 基準の y
 const toucanPos: Record<string, Placed> = { ...mona2.pos }
-toucanPos.bslash = { x: rx + 2.05, y: oy + 3.5, w: 1, h: 1, rot: -4 }
+// 親指 3 キーは C / V / B (右は N / M とトラックパッド) の真下に、外へ行くほど下がる弧で並ぶ
+Object.assign(toucanPos, {
+  esc: { x: ox + 2.2, y: oy + 3.35, w: 1, h: 1, rot: 0 },
+  space: { x: ox + 3.25, y: oy + 3.5, w: 1, h: 1, rot: 8 },
+  ctrl: { x: ox + 4.3, y: oy + 3.8, w: 1, h: 1, rot: 18 },
+  del: { x: rx + 0.6, y: oy + 3.8, w: 1, h: 1, rot: -18 },
+  lshift: { x: rx + 1.65, y: oy + 3.5, w: 1, h: 1, rot: -8 },
+  bslash: { x: rx + 2.7, y: oy + 3.35, w: 1, h: 1, rot: 0 },
+})
 
 // ケース: 各列 3 段ぶんの矩形 + 左のディスプレイ列 + 右のトラックパッド + 親指クラスター
 const PAD = 0.16
 const col = (x: number, y: number, rows: number): Placed => ({ x: x - PAD, y: y - PAD, w: 1 + PAD * 2, h: rows + PAD * 2 })
 const leftIds = [['Q', 'A', 'Z'], ['W', 'S', 'X'], ['E', 'D', 'C'], ['R', 'F', 'V'], ['T', 'G', 'B']]
 const rightIds = [['Y', 'H', 'N'], ['U', 'J', 'M'], ['I', 'K', 'comma'], ['O', 'L', 'period'], ['P', 'semi', 'slash']]
-const ox = mona2.pos.Q.x
 const toucanCase: Placed[] = [
   ...leftIds.map((ids) => col(mona2.pos[ids[0]].x, mona2.pos[ids[0]].y, 3)),
   ...rightIds.map((ids) => col(mona2.pos[ids[0]].x, mona2.pos[ids[0]].y, 3)),
   col(ox + 5, oy + 0.2, 3), // ディスプレイ列
   { x: rx - 0.75, y: oy + 0.3, w: 1.75, h: 2.6, rot: -6 }, // トラックパッド列
-  ...mona2.casePieces.slice(-2), // 親指クラスターはそのまま
+  { x: ox + 1.9, y: oy + 3.15, w: 3.75, h: 1.55, rot: 10 }, // 左の親指クラスター
+  { x: rx + 0.3, y: oy + 3.15, w: 3.75, h: 1.55, rot: -10 }, // 右の親指クラスター
 ]
 const display: Placed = { x: ox + 5.1, y: oy + 0.6, w: 0.8, h: 1.3 }
 const trackpad: Placed = { x: rx - 0.65, y: oy + 0.65, w: 1.55, h: 1.55, rot: -6 }
