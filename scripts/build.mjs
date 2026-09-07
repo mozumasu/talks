@@ -26,17 +26,30 @@ function parseFrontmatter(mdPath) {
 
 const includeDrafts = process.env.INCLUDE_DRAFTS === "1";
 
+const escapeHtml = (s) =>
+  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+// 一覧のソートキー。frontmatter の date: (YYYY-MM-DD) が無ければディレクトリ名の
+// 日付を使い、月までしか無ければ 1 日扱いにする
+function deckDate(dir, fm) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(fm.date ?? "")) return fm.date;
+  const m = dir.match(/^(\d{4}-\d{2})(-\d{2})?/);
+  if (!m) return "";
+  return m[1] + (m[2] ?? "-01");
+}
+
 const allEntries = decks.map((dir) => {
   const fm = parseFrontmatter(`slides/${dir}/slides.md`);
-  const date = dir.match(/^\d{4}-\d{2}(-\d{2})?/)?.[0] ?? "";
   // frontmatter の slug: があれば優先、なければディレクトリ名から日付を剥がす
   const slug = fm.slug ?? dir.replace(/^\d{4}-\d{2}(-\d{2})?-/, "");
   return {
+    kind: "deck",
     dir,
     slug,
-    date,
+    date: deckDate(dir, fm),
     title: fm.title ?? dir,
     event: fm.event ?? "",
+    docswell: fm.docswell ?? "",
     draft: fm.draft === "true",
   };
 });
@@ -76,9 +89,6 @@ const SITE_URL = (() => {
   return `https://${pattern}`;
 })();
 
-const escapeHtml = (s) =>
-  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-
 const metaAttr = (t) => (t.property ? `property="${t.property}"` : `name="${t.name}"`);
 
 // tags: [{ property | name, content }]。同名タグがあれば残し、無いものだけ </head> の前に足す。
@@ -95,7 +105,63 @@ function injectMeta(htmlPath, tags, replace = []) {
   writeFileSync(htmlPath, html.replace("</head>", `${metas}\n</head>`));
 }
 
-// ── 5. デッキごとのビルドキャッシュ ─────────────
+// ── 5. docswell の RSS 取得 ─────────────────────
+// 依存を増やさず正規表現で抜く。RSS の値はそのまま HTML に出すので信用しない
+const DOCSWELL_FEED = "https://www.docswell.com/user/mozumasu/feed";
+const MONTHS = { Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12" };
+
+// pubDate は RFC 822 で年が 2 桁 ("Thu, 02 Apr 26 11:30:00 +0900")。Date.parse に
+// 任せると世紀の解釈が処理系依存なので自前で YYYY-MM-DD に直す
+function parsePubDate(s) {
+  const m = s.match(/^\w{3}, (\d{1,2}) (\w{3}) (\d{2}|\d{4}) /);
+  if (!m || !MONTHS[m[2]]) return null;
+  const year = m[3].length === 2 ? `20${m[3]}` : m[3];
+  return `${year}-${MONTHS[m[2]]}-${m[1].padStart(2, "0")}`;
+}
+
+// 突合用。RSS の link には ?ref=rss が付くので query を落として比べる
+const canonical = (url) => url.replace(/[?#].*$/, "").replace(/\/$/, "");
+
+async function fetchDocswell() {
+  let xml;
+  try {
+    const res = await fetch(DOCSWELL_FEED);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    xml = await res.text();
+  } catch (err) {
+    console.error(`docswell の RSS 取得に失敗: ${DOCSWELL_FEED}\n${err}`);
+    process.exit(1);
+  }
+  const items = [];
+  for (const [, body] of xml.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
+    const title = body.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/)?.[1].trim();
+    const link = body.match(/<link>\s*([^<\s]+)\s*<\/link>/)?.[1];
+    const date = parsePubDate(body.match(/<pubDate>\s*([^<]+?)\s*<\/pubDate>/)?.[1] ?? "");
+    const image = body.match(/<media:thumbnail\b[^>]*\burl="([^"]+)"/)?.[1];
+    if (!title || !link || !date || !image || !link.startsWith("https://") || !image.startsWith("https://")) {
+      console.error(`docswell の RSS item を解釈できない (構造が変わった?):\n${body}`);
+      process.exit(1);
+    }
+    items.push({
+      kind: "docswell",
+      // docswell 側が付ける "[スライド] " の接頭辞は一覧では不要
+      title: title.replace(/^\[スライド\]\s*/, ""),
+      link,
+      date,
+      image,
+    });
+  }
+  if (items.length === 0) {
+    console.error(`docswell の RSS に item が無い (構造が変わった?): ${DOCSWELL_FEED}`);
+    process.exit(1);
+  }
+  return items;
+}
+
+const docswellItems = await fetchDocswell();
+console.log(`docswell: ${docswellItems.length} 件`);
+
+// ── 6. デッキごとのビルドキャッシュ ─────────────
 // 入力 (デッキのファイル、link: 参照しているテーマ、lockfile、このスクリプト) の
 // ハッシュが一致するビルド成果物が .cache/decks/<slug>/<hash>/ にあれば再利用する。
 // CI では .cache/decks を actions/cache で持ち越す。DECK_CACHE=0 で無効化できる
@@ -141,7 +207,7 @@ function hashInputs(e) {
   return h.digest("hex").slice(0, 16);
 }
 
-// ── 6. 各デッキをビルドして dist/<slug> に集約 ──
+// ── 7. 各デッキをビルドして dist/<slug> に集約 ──
 rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist", { recursive: true });
 for (const e of entries) {
@@ -197,20 +263,37 @@ for (const e of entries) {
   }
 }
 
-// ── 7. 一覧ページの生成 ─────────────────────────
-const list = entries
-  .map(
-    (e) => `    <li class="card">
+// ── 8. 一覧ページの生成 ─────────────────────────
+// デッキの frontmatter docswell: と一致する RSS item は同じ登壇なので、デッキ側に寄せる
+const linkedFromDecks = new Set(entries.filter((e) => e.docswell).map((e) => canonical(e.docswell)));
+const listEntries = [...entries, ...docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)))]
+  .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+
+const deckCard = (e) => `    <li class="card">
       <a href="/${e.slug}/">
         <img src="/${e.slug}/cover.png" alt="" loading="lazy">
         <div class="meta">
           <div class="title">${escapeHtml(e.title)}</div>
           ${e.event ? `<div class="event">${escapeHtml(e.event)}</div>` : ""}
         </div>
+      </a>${
+        e.docswell
+          ? `
+      <div class="links"><a href="${escapeHtml(e.docswell)}" target="_blank" rel="noopener">docswell ›</a></div>`
+          : ""
+      }
+    </li>`;
+
+const docswellCard = (d) => `    <li class="card">
+      <a href="${escapeHtml(d.link)}" target="_blank" rel="noopener">
+        <img src="${escapeHtml(d.image)}" alt="" loading="lazy">
+        <div class="meta">
+          <div class="title">${escapeHtml(d.title)} <span class="label">docswell</span></div>
+        </div>
       </a>
-    </li>`,
-  )
-  .join("\n");
+    </li>`;
+
+const list = listEntries.map((e) => (e.kind === "deck" ? deckCard(e) : docswellCard(e))).join("\n");
 
 writeFileSync(
   "dist/index.html",
@@ -225,8 +308,8 @@ writeFileSync(
   <meta property="og:title" content="Talks by mozumasu">
   <meta property="og:description" content="mozumasu の登壇資料">
   <meta property="og:url" content="${SITE_URL}/">
-  <meta property="og:site_name" content="Talks by mozumasu">${entries[0] ? `
-  <meta property="og:image" content="${SITE_URL}/${entries[0].slug}/cover.png">
+  <meta property="og:site_name" content="Talks by mozumasu">${listEntries[0] ? `
+  <meta property="og:image" content="${escapeHtml(listEntries[0].kind === "docswell" ? listEntries[0].image : `${SITE_URL}/${listEntries[0].slug}/cover.png`)}">
   <meta name="twitter:card" content="summary_large_image">` : ""}
   <style>
     :root { color-scheme: light dark; }
@@ -240,12 +323,17 @@ writeFileSync(
     .meta { padding: .8rem 1rem 1rem; }
     .title { font-weight: 700; line-height: 1.4; }
     .event { margin-top: .3rem; font-size: .85rem; color: #666; }
+    .label { display: inline-block; margin-left: .3rem; padding: .05rem .4rem; border-radius: 4px; font-size: .7rem; font-weight: 600; vertical-align: middle; color: #555; background: #eee; }
+    .links { padding: 0 1rem .9rem; font-size: .85rem; }
+    .links a { color: #0969da; }
     /* OS のダークモードに追従する。同じ詳細度の指定を上書きするので、ライト用より後に置く */
     @media (prefers-color-scheme: dark) {
       body { background: #111; color: #eee; }
       .card { background: #1c1c1e; border-color: #333; }
       .card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.5); }
       .event { color: #aaa; }
+      .label { color: #bbb; background: #333; }
+      .links a { color: #58a6ff; }
     }
   </style>
 </head>
@@ -258,4 +346,4 @@ ${list}
 </html>
 `,
 );
-console.log(`\ndist/index.html を生成 (${entries.length} 件)`);
+console.log(`\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${entries.length} + docswell ${listEntries.length - entries.length})`);

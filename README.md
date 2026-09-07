@@ -68,6 +68,31 @@ title: ...
 draft も含めてビルドを確認したいときは `INCLUDE_DRAFTS=1 node scripts/build.mjs`。
 slug の重複検出は draft も対象なので、公開に切り替えた時点で衝突することはない。
 
+## 一覧の並び順と docswell
+
+一覧 (`https://talks.mozumasu.com/`) には、このリポジトリのデッキに加えて
+docswell (<https://www.docswell.com/user/mozumasu>) で公開しているスライドも載る。
+`scripts/build.mjs` がビルド時に RSS `https://www.docswell.com/user/mozumasu/feed` を取得し、
+全エントリを日付降順で並べる。RSS の取得に失敗するとビルドは失敗する。
+
+デッキ側は headmatter に次を書く。
+
+```yaml
+---
+title: ...
+date: 2026-09-09          # 一覧のソートキー。無ければディレクトリ名の日付 (月のみなら 1 日扱い)
+docswell: https://www.docswell.com/s/mozumasu/XXXX  # 同じ登壇を docswell にも上げたとき
+---
+```
+
+`docswell:` を書くと、RSS 側の同じ URL のエントリはデッキのカードにまとめられ、
+カード内に「docswell ›」リンクが付く。タイトル一致などの自動突合はしない。
+docswell 単独のエントリは RSS のサムネイルを直リンクし、別タブで docswell に遷移する。
+
+docswell に新しくスライドを投稿しただけでは何も push されないので、
+一覧に反映するには GitHub Actions のデプロイ workflow を手動で `workflow_dispatch` する
+(`gh workflow run deploy-slides.yml` など)。cron での定期ビルドは入れていない。
+
 ## 注意
 
 - スライドの md は `.rumdl.toml` で formatter から除外している
