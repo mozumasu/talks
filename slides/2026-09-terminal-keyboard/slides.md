@@ -228,6 +228,53 @@ eyebrow: キーマップの決め方
 </v-click>
 
 ---
+layout: content
+eyebrow: 宣伝
+---
+
+# 9〜10 月のキーボードイベント
+
+<div class="grid grid-cols-3 gap-5 mt-4">
+  <a v-click href="https://keyflea.connpass.com/event/389888/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="'/event-keyflea.png'" class="w-full h-28 object-cover" />
+    <div class="p-3">
+      <div class="text-base font-bold leading-snug">キーボードフリーマーケット トーキョー 2026</div>
+      <div class="text-sm mt-1"><b>9/19 (土)</b> 13:00〜16:00</div>
+      <div class="text-sm op70">AP 秋葉原</div>
+      <div class="text-sm mt-2">自作キーボードの余り物・訳アリ品が並ぶフリマ。1,000 円 (15 時以降無料)</div>
+    </div>
+  </a>
+  <a v-click href="https://tkx.yushakobo.jp/tkx2026/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="'/event-tkx.jpg'" class="w-full h-28 object-cover object-left" />
+    <div class="p-3">
+      <div class="text-base font-bold leading-snug">TOKYO KEYBOARD EXPO 2026</div>
+      <div class="text-sm mt-1"><b>9/23 (水・祝)</b> 11:00〜16:30</div>
+      <div class="text-sm op70">東京流通センター F ホール</div>
+      <div class="text-sm mt-2">世界中のブランドが集まる日本最大級の展示・販売会。前売 1,000 円 / 当日 1,500 円</div>
+    </div>
+  </a>
+  <a v-click href="https://tenkey.connpass.com/event/397843/" target="_blank" class="no-external-mark block rounded-xl overflow-hidden shadow-sm !text-current !no-underline" style="border: 1px solid #e5e7eb">
+    <img :src="'/event-tenkey.png'" class="w-full h-28 object-cover" />
+    <div class="p-3">
+      <div class="text-base font-bold leading-snug">天下一キーボードわいわい会 Vol.12</div>
+      <div class="text-sm mt-1"><b>10/3 (土)</b> 13:00〜17:00</div>
+      <div class="text-sm op70">DMM.com セミナールーム (六本木一丁目)</div>
+      <div class="text-sm mt-2">自分のキーボードを持ち寄る定員 370 名の交流会。申込は 9/26 まで</div>
+    </div>
+  </a>
+</div>
+
+<v-click>
+
+<div class="text-center mt-8 text-2xl">
+
+お気に入りのキーボードを見つけに行こう😼
+
+</div>
+
+</v-click>
+
+---
 layout: end
 ---
 
