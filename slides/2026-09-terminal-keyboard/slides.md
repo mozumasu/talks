@@ -273,7 +273,7 @@ eyebrow: 宣伝
 
 ---
 layout: content
-clicks: 1
+clicks: 2
 ---
 
 # 最後に

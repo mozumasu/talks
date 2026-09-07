@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { CANVAS_H, CANVAS_W, mona2Centered, rectStyle, type Placed } from './mona2'
 
-// stage 0: moNa2 (42 キー)、1 以降: Toucan2 (36 キー) の配列へ移動する
+// stage 0: moNa2 (42 キー)、1: Toucan2 (36 キー) の配列へ移動、2 以降: 実機の写真に置き換わる
 const { stage = 0 } = defineProps<{ stage?: number }>()
 
 const LABELS: Record<string, string> = {
@@ -48,6 +48,9 @@ const display: Placed = { x: ox + 5.1, y: oy + 0.6, w: 0.8, h: 1.3 }
 const trackpad: Placed = { x: rx - 0.65, y: oy + 0.65, w: 1.55, h: 1.55, rot: -6 }
 
 const isToucan = computed(() => stage >= 1)
+const isPhoto = computed(() => stage >= 2)
+// 写真は図と同じ幅で、図の中心に重ねる
+const photo: Placed = { x: (CANVAS_W - 15.5) / 2, y: (CANVAS_H - 5.05) / 2 + 0.3, w: 15.5, h: 5.05 }
 const isGone = (id: string) => isToucan.value && REMOVED.has(id)
 const count = computed(() => keys.length - (isToucan.value ? REMOVED.size : 0))
 
@@ -59,11 +62,12 @@ const keyStyle = (id: string, i: number) => {
     transitionDelay: `${(i % 12) * 20}ms`,
   }
 }
+const photoSrc = `${import.meta.env.BASE_URL}toucan2-top.jpg`
 const pieceStyle = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate(${p.rot}deg)` : undefined })
 </script>
 
 <template>
-  <div class="kb" :class="{ 'is-toucan': isToucan }">
+  <div class="kb" :class="{ 'is-toucan': isToucan, 'is-photo': isPhoto }">
     <div
       class="kb__canvas"
       :style="{ width: `calc(var(--u) * ${CANVAS_W})`, height: `calc(var(--u) * ${CANVAS_H})` }"
@@ -78,6 +82,7 @@ const pieceStyle = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate
       <div class="kb__ball kb__mona2-only" :style="rectStyle(mona2.ball)" />
       <div class="kb__display kb__toucan-only" :style="pieceStyle(display)" />
       <div class="kb__trackpad kb__toucan-only" :style="pieceStyle(trackpad)" />
+      <img class="kb__photo" :src="photoSrc" alt="Toucan2" :style="rectStyle(photo)">
       <div
         v-for="(id, i) in keys"
         :key="id"
@@ -89,7 +94,7 @@ const pieceStyle = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate
       </div>
     </div>
     <div class="kb__caption">
-      <span>{{ isToucan ? 'さらに 6 キー減った' : '' }}</span>
+      <span>{{ isPhoto ? '実物' : isToucan ? 'さらに 6 キー減った' : '' }}</span>
       <span class="kb__count"><b>{{ count }}</b> キー</span>
     </div>
   </div>
@@ -127,6 +132,23 @@ const pieceStyle = (p: Placed) => ({ ...rectStyle(p), transform: p.rot ? `rotate
   border-radius: 0.3rem;
   background: #2c2c2e;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.kb__photo {
+  position: absolute;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  box-shadow: var(--findy-shadow-card, 0 4px 16px rgba(0, 0, 0, 0.15));
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.kb.is-photo .kb__photo {
+  opacity: 1;
+}
+.kb.is-photo .kb__case--toucan,
+.kb.is-photo .kb__toucan-only,
+.kb.is-photo .kb__key {
+  opacity: 0;
+  transition-delay: 0s;
 }
 .kb__key {
   transition:
