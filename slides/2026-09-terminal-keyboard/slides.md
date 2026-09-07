@@ -65,8 +65,6 @@ toc: 40% キーボードってどんなもん?
 
 # 40% キーボードってどんなもん?
 
-キーはどこまで減らせるのか
-
 ---
 layout: content
 eyebrowNum: 1
@@ -165,8 +163,6 @@ toc: キーマップの決め方
 ---
 
 # キーマップの決め方
-
-設定前に整理しておくといいこと
 
 ---
 layout: content
@@ -280,3 +276,10 @@ layout: end
 ---
 
 # ありがとうございました
+
+<div class="flex items-center gap-8 mt-6" style="width: max-content">
+  <img :src="$asset('toucan2.jpg')" class="rounded-xl shadow-md" style="width: 20rem" />
+  <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
+    30% キーボード買っちゃった〜
+  </FindySpeechBubble>
+</div>
