@@ -63,7 +63,39 @@ for (const e of allEntries) {
   seen.set(e.slug, e.dir);
 }
 
-// ── 4. デッキごとのビルドキャッシュ ─────────────
+// ── 4. OGP 用のメタタグ注入 ─────────────────────
+// og:image / og:url は絶対 URL でないと SNS のクローラが解決しないが、Slidev の seoMeta は
+// --base を付けてくれない。配信元 URL を知っているのはここだけなので、ビルド後の
+// index.html に不足分を足す。デッキが seoMeta で明示したタグは上書きしない
+const SITE_URL = (() => {
+  const pattern = readFileSync("wrangler.jsonc", "utf8").match(/"pattern":\s*"([^"]+)"/)?.[1];
+  if (!pattern) {
+    console.error("wrangler.jsonc の routes[].pattern から配信元ドメインを取れません");
+    process.exit(1);
+  }
+  return `https://${pattern}`;
+})();
+
+const escapeHtml = (s) =>
+  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+const metaAttr = (t) => (t.property ? `property="${t.property}"` : `name="${t.name}"`);
+
+// tags: [{ property | name, content }]。同名タグがあれば残し、無いものだけ </head> の前に足す。
+// replace に挙げたタグは中身を差し替える (Slidev が info の生値を入れる description 用)
+function injectMeta(htmlPath, tags, replace = []) {
+  let html = readFileSync(htmlPath, "utf8");
+  for (const t of replace) {
+    html = html.replace(new RegExp(`<meta ${metaAttr(t)} content="[^"]*">`), `<meta ${metaAttr(t)} content="${escapeHtml(t.content)}">`);
+  }
+  const metas = tags
+    .filter((t) => !html.includes(metaAttr(t)))
+    .map((t) => `<meta ${metaAttr(t)} content="${escapeHtml(t.content)}">`)
+    .join("\n");
+  writeFileSync(htmlPath, html.replace("</head>", `${metas}\n</head>`));
+}
+
+// ── 5. デッキごとのビルドキャッシュ ─────────────
 // 入力 (デッキのファイル、link: 参照しているテーマ、lockfile、このスクリプト) の
 // ハッシュが一致するビルド成果物が .cache/decks/<slug>/<hash>/ にあれば再利用する。
 // CI では .cache/decks を actions/cache で持ち越す。DECK_CACHE=0 で無効化できる
@@ -104,11 +136,12 @@ function hashInputs(e) {
     }
   }
   addFile("pnpm-lock.yaml");
+  addFile("wrangler.jsonc"); // SITE_URL の元。og:url に入る
   addFile("scripts/build.mjs");
   return h.digest("hex").slice(0, 16);
 }
 
-// ── 5. 各デッキをビルドして dist/<slug> に集約 ──
+// ── 6. 各デッキをビルドして dist/<slug> に集約 ──
 rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist", { recursive: true });
 for (const e of entries) {
@@ -127,16 +160,35 @@ for (const e of entries) {
   );
   rmSync(`dist/${e.slug}/_redirects`, { force: true }); // Netlify 用の _redirects は不要なので削除
 
-  // 一覧のサムネイルとして 1 ページ目を PNG に書き出す (dist/<slug>/cover.png)
+  // 一覧のサムネイルと og:image を兼ねて 1 ページ目を PNG に書き出す (dist/<slug>/cover.png)。
+  // scale 1.2 で 1200x675 になり、OGP が推奨する 1200 幅に揃う
   const exportDir = `dist/${e.slug}/.cover-export`;
   execSync(
-    `pnpm --filter ./slides/${e.dir} exec slidev export slides.md --format png --range 1 --scale 1 --output ../../${exportDir}`,
+    `pnpm --filter ./slides/${e.dir} exec slidev export slides.md --format png --range 1 --scale 1.2 --output ../../${exportDir}`,
     { stdio: "inherit" },
   );
   // 出力名は Slidev のバージョンで 1.png / 01.png が揺れる
   const exported = readdirSync(exportDir).find((f) => f.endsWith(".png"));
   renameSync(`${exportDir}/${exported}`, `dist/${e.slug}/cover.png`);
   rmSync(exportDir, { recursive: true, force: true });
+
+  const deckUrl = `${SITE_URL}/${e.slug}/`;
+  const description = e.event ? `${e.event} の登壇資料` : "登壇資料";
+  injectMeta(
+    `dist/${e.slug}/index.html`,
+    [
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: deckUrl },
+      { property: "og:image", content: `${deckUrl}cover.png` },
+      { property: "og:site_name", content: "Talks by mozumasu" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    [
+      { property: "og:title", content: e.title },
+      { property: "og:description", content: description },
+      { name: "description", content: description },
+    ],
+  );
 
   if (cached) {
     // 同じ slug の古いハッシュは捨ててキャッシュが肥大化しないようにする
@@ -145,10 +197,7 @@ for (const e of entries) {
   }
 }
 
-// ── 6. 一覧ページの生成 ─────────────────────────
-const escapeHtml = (s) =>
-  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-
+// ── 7. 一覧ページの生成 ─────────────────────────
 const list = entries
   .map(
     (e) => `    <li class="card">
@@ -171,6 +220,14 @@ writeFileSync(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Talks by mozumasu</title>
+  <meta name="description" content="mozumasu の登壇資料">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Talks by mozumasu">
+  <meta property="og:description" content="mozumasu の登壇資料">
+  <meta property="og:url" content="${SITE_URL}/">
+  <meta property="og:site_name" content="Talks by mozumasu">${entries[0] ? `
+  <meta property="og:image" content="${SITE_URL}/${entries[0].slug}/cover.png">
+  <meta name="twitter:card" content="summary_large_image">` : ""}
   <style>
     :root { color-scheme: light dark; }
     body { margin: 0; padding: 2rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: #fafafa; color: #222; }
