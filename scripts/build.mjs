@@ -1,4 +1,4 @@
-import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { execSync } from "node:child_process";
 
 // ── 1. デッキの列挙 ─────────────────────────────
@@ -71,14 +71,33 @@ for (const e of entries) {
     { stdio: "inherit" },
   );
   rmSync(`dist/${e.slug}/_redirects`, { force: true }); // Netlify 用の _redirects は不要なので削除
+
+  // 一覧のサムネイルとして 1 ページ目を PNG に書き出す (dist/<slug>/cover.png)
+  const exportDir = `dist/${e.slug}/.cover-export`;
+  execSync(
+    `pnpm --filter ./slides/${e.dir} exec slidev export slides.md --format png --range 1 --scale 1 --output ../../${exportDir}`,
+    { stdio: "inherit" },
+  );
+  // 出力名は Slidev のバージョンで 1.png / 01.png が揺れる
+  const exported = readdirSync(exportDir).find((f) => f.endsWith(".png"));
+  renameSync(`${exportDir}/${exported}`, `dist/${e.slug}/cover.png`);
+  rmSync(exportDir, { recursive: true, force: true });
 }
 
 // ── 5. 一覧ページの生成 ─────────────────────────
+const escapeHtml = (s) =>
+  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
 const list = entries
   .map(
-    (e) => `    <li>
-      <a href="/${e.slug}/">${e.title}</a>
-      <small>${[e.event, e.date].filter(Boolean).join(" · ")}</small>
+    (e) => `    <li class="card">
+      <a href="/${e.slug}/">
+        <img src="/${e.slug}/cover.png" alt="" loading="lazy">
+        <div class="meta">
+          <div class="title">${escapeHtml(e.title)}</div>
+          ${e.event ? `<div class="event">${escapeHtml(e.event)}</div>` : ""}
+        </div>
+      </a>
     </li>`,
   )
   .join("\n");
@@ -91,6 +110,20 @@ writeFileSync(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Talks by mozumasu</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; padding: 2rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: #fafafa; color: #222; }
+    @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } .card { background: #1c1c1e; border-color: #333; } .event { color: #aaa; } }
+    h1 { margin: 0 0 1.5rem; font-size: 1.75rem; }
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); max-width: 1200px; }
+    .card { border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #fff; transition: transform .15s ease, box-shadow .15s ease; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+    .card a { display: block; color: inherit; text-decoration: none; }
+    .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+    .meta { padding: .8rem 1rem 1rem; }
+    .title { font-weight: 700; line-height: 1.4; }
+    .event { margin-top: .3rem; font-size: .85rem; color: #666; }
+  </style>
 </head>
 <body>
   <h1>Talks</h1>
