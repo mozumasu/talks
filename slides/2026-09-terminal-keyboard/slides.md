@@ -118,11 +118,18 @@ eyebrow: キー数を減らす Tips
 </div>
 <div v-click class="flex items-center gap-4">
   <span class="font-light op40" style="font-size: 6rem; line-height: 1">}</span>
-  <span class="text-2xl font-bold">CLI のキーバインドで代用</span>
+  <span class="text-3xl font-bold">CLI のキーバインドで代用</span>
 </div>
 </div>
 
 <div v-click="3" class="mt-8 text-3xl font-bold text-center" style="color: #d93025">7 キーも省略できる!</div>
+
+<style>
+/* このスライドは箇条書きが主役で余白が多いので、他のスライドより一回り大きくする */
+li {
+  font-size: 1.6rem;
+}
+</style>
 
 ---
 layout: two-cols
