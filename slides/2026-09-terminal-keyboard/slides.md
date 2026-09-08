@@ -228,7 +228,8 @@ eyebrow: キーマップの決め方
 | 後ろから 2 つめの引数を入力 | <kbd>esc</kbd> → <kbd>2</kbd> → <kbd>esc</kbd> → <kbd>.</kbd> |
 
 <FindyPromoOverlay
-  v-click
+  v-click="1"
+  :reveal-at="2"
   href="https://kichijojipm.connpass.com/event/404746/"
   :image="$asset('event-terminal-night.jpg')"
   cta="Terminal Night 3 に来なさい!"
