@@ -122,6 +122,8 @@ eyebrow: キー数を減らす Tips
 </div>
 </div>
 
+<div v-click="3" class="mt-8 text-3xl font-bold text-center" style="color: #d93025">7 キーも省略できる!</div>
+
 ---
 layout: two-cols
 title: 2. ロータリーエンコーダーはいいぞ
