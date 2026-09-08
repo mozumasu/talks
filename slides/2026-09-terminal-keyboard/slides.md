@@ -225,7 +225,7 @@ eyebrow: キーマップの決め方
   <div class="promo-overlay__text">
     <p>このキーバインドにピンとこなかった<br>そこのあなた!</p>
     <p class="promo-overlay__cta">Terminal Night 3 に来なさい!</p>
-    <p class="promo-overlay__meta">10/15 (木) 19:00〜 @ ログラス (三田)</p>
+    <p class="promo-overlay__meta">10/15 (木) 19:00〜 @Loglass</p>
   </div>
 </div>
 
