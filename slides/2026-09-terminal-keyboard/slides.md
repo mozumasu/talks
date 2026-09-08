@@ -218,15 +218,62 @@ eyebrow: キーマップの決め方
 | 後ろから引数を順に辿って入力 | <kbd>esc</kbd> → <kbd>,</kbd> ※要設定 |
 | 後ろから 2 つめの引数を入力 | <kbd>esc</kbd> → <kbd>2</kbd> → <kbd>esc</kbd> → <kbd>.</kbd> |
 
-<v-click>
-
-<div class="text-center mt-8 text-2xl">
-
-**Terminal Night (10/15) に行こう!**
-
+<div v-click class="promo-overlay">
+  <a href="https://kichijojipm.connpass.com/event/404746/" target="_blank" class="promo-overlay__image no-external-mark">
+    <img :src="$asset('event-terminal-night.jpg')" alt="Terminal Night 3">
+  </a>
+  <div class="promo-overlay__text">
+    <p>このキーバインドにピンとこなかった<br>そこのあなた!</p>
+    <p class="promo-overlay__cta">Terminal Night 3 に来なさい!</p>
+    <p class="promo-overlay__meta">10/15 (木) 19:00〜 @ ログラス (三田)</p>
+  </div>
 </div>
 
-</v-click>
+<style>
+/* スライド全体に薄いグレーを重ね、その上に告知を出す */
+.promo-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding: 0 4rem;
+  background: rgba(228, 230, 236, 0.9);
+}
+.promo-overlay__image {
+  display: block;
+  flex: none;
+  width: 17rem;
+  line-height: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: var(--findy-shadow-card, 0 4px 16px rgba(0, 0, 0, 0.2));
+  border-bottom: none;
+  text-decoration: none;
+}
+.promo-overlay__image img {
+  display: block;
+  width: 100%;
+}
+.promo-overlay__text {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.promo-overlay__cta {
+  margin-top: 1rem;
+  font-size: 2.25rem;
+  color: var(--findy-brand);
+}
+.promo-overlay__meta {
+  margin-top: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.7;
+}
+</style>
 
 ---
 layout: content
