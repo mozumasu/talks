@@ -1,0 +1,65 @@
+/* 「頭 if { 本体 }」の説明で、頭と本体を色で対応づける */
+.rule-head {
+  color: #1a56db;
+  font-weight: 600;
+}
+.rule-body {
+  color: #047857;
+  font-weight: 600;
+}
+.rule-name {
+  color: #b45309;
+  font-weight: 600;
+}
+
+/* 図の骨格。等幅で頭と本体の位置を揃える */
+.rule-shape {
+  font-family: var(--slidev-code-font-family, ui-monospace, monospace);
+  letter-spacing: 0.01em;
+}
+
+/* 骨格の図をコードブロックと同じ見た目にする (テーマのトークンを流用) */
+.slidev-layout .rule-shape-block {
+  background: var(--slidev-code-background);
+  color: var(--slidev-code-foreground);
+  border-radius: var(--slidev-code-radius);
+  padding: 0.6rem var(--slidev-code-padding);
+  margin: 0.45rem 0;
+  font-family: var(--slidev-code-font-family, ui-monospace, monospace);
+  font-size: 0.74rem;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+/* 暗い背景の上では明るい色にする */
+.rule-shape-block .rule-head {
+  color: #7cc4ff;
+}
+.rule-shape-block .rule-body {
+  color: #7ee0a8;
+}
+.rule-shape-block .rule-name {
+  color: #f0b866;
+}
+
+/* ルール 6 種の一覧。6 行を 1 枚に収めるため行間を詰める */
+.slidev-layout .rule-table {
+  margin-top: 1.1rem;
+}
+.slidev-layout .rule-table table {
+  font-size: 0.62em;
+  line-height: 1.4;
+}
+.slidev-layout .rule-table th,
+.slidev-layout .rule-table td {
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+/* v-click で出る要素は左から滑り込む */
+.slidev-vclick-target {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.slidev-vclick-hidden {
+  transform: translateX(-0.6rem);
+}
