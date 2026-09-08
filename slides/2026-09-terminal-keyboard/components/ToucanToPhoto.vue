@@ -161,12 +161,18 @@ const photoSrc = `${import.meta.env.BASE_URL}${TOUCAN_PHOTO.src}`
   transform: none;
   transition-delay: 1.3s;
 }
-/* end レイアウトの左上ロゴは、ページが切り替わった瞬間には出さず、ふきだしと同じタイミングで出す */
+/* end レイアウトの左上ロゴと背景のウォーターマークは、ページが切り替わった瞬間には出さず、
+   ふきだしと同じタイミングで出す。ウォーターマークは外側に inline の opacity があるので img 側を動かす */
 :global(.slidev-layout.end:has(.ttp) .end-head) {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-:global(.slidev-layout.end:has(.ttp.is-photo) .end-head) {
+:global(.slidev-layout.end:has(.ttp) .findy-watermark__img) {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+:global(.slidev-layout.end:has(.ttp.is-photo) .end-head),
+:global(.slidev-layout.end:has(.ttp.is-photo) .findy-watermark__img) {
   opacity: 1;
   transition-delay: 1.3s;
 }
