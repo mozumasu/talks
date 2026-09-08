@@ -339,6 +339,8 @@ transition: fade
     <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
       30% キーボード買っちゃった〜
     </FindySpeechBubble>
+    <v-click at="1">
     <div class="text-4xl font-bold" style="color: var(--findy-brand)">おしまい</div>
+    </v-click>
   </div>
 </ToucanToPhoto>
