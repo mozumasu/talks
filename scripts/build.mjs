@@ -94,6 +94,9 @@ const SITE_URL = (() => {
 })();
 // 一覧ページの共通スタイルと背景の配信元。ローカル確認では BRAND_BASE で差し替える
 const BRAND = process.env.BRAND_BASE ?? "https://mozumasu.com";
+// INDEX_ONLY=1: デッキをビルドせず dist/index.html だけ生成する (一覧のローカル確認用)。
+// カバー画像は手元に無いので本番から読む
+const indexOnly = process.env.INDEX_ONLY === "1";
 
 const metaAttr = (t) => (t.property ? `property="${t.property}"` : `name="${t.name}"`);
 
@@ -222,9 +225,9 @@ if (useCache && existsSync(CACHE_DIR)) {
 }
 
 // ── 7. 各デッキをビルドして dist/<slug> に集約 ──
-rmSync("dist", { recursive: true, force: true });
+if (!indexOnly) rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist", { recursive: true });
-for (const e of entries) {
+for (const e of indexOnly ? [] : entries) {
   const hash = useCache ? hashInputs(e) : null;
   const cached = hash && `${CACHE_DIR}/${e.slug}/${hash}`;
   // 中身の欠けたエントリを掴まないよう、必須ファイルの存在まで見てからヒット扱いにする
@@ -284,5 +287,5 @@ const linkedFromDecks = new Set(entries.filter((e) => e.docswell).map((e) => can
 const listEntries = [...entries, ...docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)))]
   .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 
-writeFileSync("dist/index.html", renderIndex({ listEntries, siteUrl: SITE_URL, brand: BRAND }));
+writeFileSync("dist/index.html", renderIndex({ listEntries, siteUrl: SITE_URL, brand: BRAND, assetBase: indexOnly ? SITE_URL : "" }));
 console.log(`\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${entries.length} + docswell ${listEntries.length - entries.length})`);

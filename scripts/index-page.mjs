@@ -7,8 +7,8 @@ export const escapeHtml = (s) =>
 
 const dateText = (d) => (d ? `<time datetime="${escapeHtml(d)}">${escapeHtml(d.replace(/-/g, "."))}</time>` : "");
 
-const deckCard = (e) => `      <article class="card glass">
-        <a class="thumb" href="/${e.slug}/"><img src="/${e.slug}/cover.png" alt="" loading="lazy"><span class="badge">slides</span></a>
+const deckCard = (e, assetBase) => `      <article class="card glass">
+        <a class="thumb" href="/${e.slug}/"><img src="${assetBase}/${e.slug}/cover.png" alt="" loading="lazy"><span class="badge">slides</span></a>
         <div class="body">
           <div class="meta">${dateText(e.date)}${e.event ? `<span class="venue">${escapeHtml(e.event)}</span>` : ""}</div>
           <h3><a href="/${e.slug}/">${escapeHtml(e.title)}</a></h3>${
@@ -28,10 +28,11 @@ const docswellCard = (d) => `      <article class="card glass">
         </div>
       </article>`;
 
-export function renderIndex({ listEntries, siteUrl, brand }) {
+// assetBase: デッキのカバー画像の置き場。本番は "" (同じオリジン)、ローカル確認では本番 URL
+export function renderIndex({ listEntries, siteUrl, brand, assetBase = "" }) {
   const first = listEntries[0];
   const ogImage = first ? (first.kind === "docswell" ? first.image : `${siteUrl}/${first.slug}/cover.png`) : "";
-  const cards = listEntries.map((e) => (e.kind === "deck" ? deckCard(e) : docswellCard(e))).join("\n");
+  const cards = listEntries.map((e) => (e.kind === "deck" ? deckCard(e, assetBase) : docswellCard(e))).join("\n");
   return `<!doctype html>
 <html lang="ja">
 <head>
