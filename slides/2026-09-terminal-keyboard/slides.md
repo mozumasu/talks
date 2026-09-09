@@ -278,7 +278,7 @@ eyebrow: 宣伝
   <FindyLinkCard v-click="1" href="https://youtu.be/KjRYHc27fx0" :image="$asset('yt-KjRYHc27fx0.jpg')" image-height="8rem" title="【キーボード界隈】あなたはまだ&quot;キーボードの世界&quot;を知らない。" sub="TECH WORLD" />
   <FindyLinkCard v-click="1" href="https://youtu.be/RPobvGLuwYg" :image="$asset('yt-RPobvGLuwYg.jpg')" image-height="8rem" title="【分割キーボードあるある】エンジニア愛用のキーボード紹介" sub="Kyohei - OSS, 外資IT" />
   <FindyLinkCard v-click="1" href="https://youtu.be/DdNHv3nCVcw" :image="$asset('yt-DdNHv3nCVcw.jpg')" image-height="8rem" title="キーボード沼の住人に Orca echo のキーマップを聞いてみよう" sub="ギズモード・ジャパン" />
-  <FindyLinkCard v-click="1" href="https://youtu.be/YO2bUSs9dVg" :image="$asset('yt-YO2bUSs9dVg.jpg')" image-height="8rem" title="coming soon" sub="adachin dev" />
+  <FindyLinkCard v-click="1" href="https://youtu.be/tMpT-gfGZp8" :image="$asset('yt-YO2bUSs9dVg.jpg')" image-height="8rem" title="話題の分割キーボード「Keychron Orca echo」を先行体験！打鍵感と完成度がヤバい⌨️" sub="adachin dev" />
 </div>
 
 ---
