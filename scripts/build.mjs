@@ -2,6 +2,7 @@ import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, r
 import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
+import { escapeHtml, renderIndex } from "./index-page.mjs";
 
 // ── 1. デッキの列挙 ─────────────────────────────
 // withFileTypes を付けると名前だけでなく「ディレクトリか?」も分かる
@@ -25,9 +26,6 @@ function parseFrontmatter(mdPath) {
 }
 
 const includeDrafts = process.env.INCLUDE_DRAFTS === "1";
-
-const escapeHtml = (s) =>
-  s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 // 一覧のソートキー。frontmatter の date: (YYYY-MM-DD) が無ければディレクトリ名の
 // 日付を使い、月までしか無ければ 1 日扱いにする
@@ -94,6 +92,8 @@ const SITE_URL = (() => {
   }
   return `https://${pattern}`;
 })();
+// 一覧ページの共通スタイルと背景の配信元。ローカル確認では BRAND_BASE で差し替える
+const BRAND = process.env.BRAND_BASE ?? "https://mozumasu.com";
 
 const metaAttr = (t) => (t.property ? `property="${t.property}"` : `name="${t.name}"`);
 
@@ -284,81 +284,5 @@ const linkedFromDecks = new Set(entries.filter((e) => e.docswell).map((e) => can
 const listEntries = [...entries, ...docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)))]
   .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 
-const deckCard = (e) => `    <li class="card">
-      <a href="/${e.slug}/">
-        <img src="/${e.slug}/cover.png" alt="" loading="lazy">
-        <div class="meta">
-          <div class="title">${escapeHtml(e.title)}</div>
-          ${e.event ? `<div class="event">${escapeHtml(e.event)}</div>` : ""}
-        </div>
-      </a>${
-        e.docswell
-          ? `
-      <div class="links"><a href="${escapeHtml(e.docswell)}" target="_blank" rel="noopener">docswell ›</a></div>`
-          : ""
-      }
-    </li>`;
-
-const docswellCard = (d) => `    <li class="card">
-      <a href="${escapeHtml(d.link)}" target="_blank" rel="noopener">
-        <img src="${escapeHtml(d.image)}" alt="" loading="lazy">
-        <div class="meta">
-          <div class="title">${escapeHtml(d.title)} <span class="label">docswell</span></div>
-        </div>
-      </a>
-    </li>`;
-
-const list = listEntries.map((e) => (e.kind === "deck" ? deckCard(e) : docswellCard(e))).join("\n");
-
-writeFileSync(
-  "dist/index.html",
-  `<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Talks by mozumasu</title>
-  <meta name="description" content="mozumasu の登壇資料">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Talks by mozumasu">
-  <meta property="og:description" content="mozumasu の登壇資料">
-  <meta property="og:url" content="${SITE_URL}/">
-  <meta property="og:site_name" content="Talks by mozumasu">${listEntries[0] ? `
-  <meta property="og:image" content="${escapeHtml(listEntries[0].kind === "docswell" ? listEntries[0].image : `${SITE_URL}/${listEntries[0].slug}/cover.png`)}">
-  <meta name="twitter:card" content="summary_large_image">` : ""}
-  <style>
-    :root { color-scheme: light dark; }
-    body { margin: 0; padding: 2rem 1.5rem; font-family: system-ui, -apple-system, sans-serif; background: #fafafa; color: #222; }
-    h1 { margin: 0 0 1.5rem; font-size: 1.75rem; }
-    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); max-width: 1200px; }
-    .card { border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #fff; transition: transform .15s ease, box-shadow .15s ease; }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
-    .card a { display: block; color: inherit; text-decoration: none; }
-    .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-    .meta { padding: .8rem 1rem 1rem; }
-    .title { font-weight: 700; line-height: 1.4; }
-    .event { margin-top: .3rem; font-size: .85rem; color: #666; }
-    .label { display: inline-block; margin-left: .3rem; padding: .05rem .4rem; border-radius: 4px; font-size: .7rem; font-weight: 600; vertical-align: middle; color: #555; background: #eee; }
-    .links { padding: 0 1rem .9rem; font-size: .85rem; }
-    .links a { color: #0969da; }
-    /* OS のダークモードに追従する。同じ詳細度の指定を上書きするので、ライト用より後に置く */
-    @media (prefers-color-scheme: dark) {
-      body { background: #111; color: #eee; }
-      .card { background: #1c1c1e; border-color: #333; }
-      .card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.5); }
-      .event { color: #aaa; }
-      .label { color: #bbb; background: #333; }
-      .links a { color: #58a6ff; }
-    }
-  </style>
-</head>
-<body>
-  <h1>Talks</h1>
-  <ul>
-${list}
-  </ul>
-</body>
-</html>
-`,
-);
+writeFileSync("dist/index.html", renderIndex({ listEntries, siteUrl: SITE_URL, brand: BRAND }));
 console.log(`\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${entries.length} + docswell ${listEntries.length - entries.length})`);
