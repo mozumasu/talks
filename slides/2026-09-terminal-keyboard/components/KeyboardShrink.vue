@@ -10,8 +10,8 @@ type Key = { l: string; w?: number; gone?: number; gap?: number; t?: string; sen
 
 const NUMPAD = 1
 const FN = 2
-const NUM = 3
-const ARROW = 4
+const ARROW = 3
+const NUM = 4
 const EXTRA = 5
 const SPLIT = 6
 
@@ -108,8 +108,8 @@ const captions = [
   'フルサイズ',
   'テンキーが無くなって (テンキーレス)',
   'ファンクションキーが無くなって',
-  '数字キーが無くなって',
-  '矢印キーも無くなった',
+  '矢印キーが無くなって',
+  '数字キーも無くなった',
   '記号と右側の修飾キーも削った',
   '分割キーボードにあてはめると',
 ]
