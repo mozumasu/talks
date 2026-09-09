@@ -297,7 +297,7 @@ transition: fade
 
 <ToucanToPhoto>
   <div class="absolute flex flex-col items-end gap-4" style="right: 4rem; bottom: 4.5rem">
-    <FindySpeechBubble image="https://github.com/mozumasu.png" style="white-space: nowrap">
+    <FindySpeechBubble :image="$asset('mozumasu.jpg')" style="white-space: nowrap">
       30% キーボード買っちゃった〜
     </FindySpeechBubble>
     <v-click at="1">
