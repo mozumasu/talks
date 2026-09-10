@@ -68,6 +68,29 @@ title: ...
 draft も含めてビルドを確認したいときは `INCLUDE_DRAFTS=1 node scripts/build.mjs`。
 slug の重複検出は draft も対象なので、公開に切り替えた時点で衝突することはない。
 
+## 一覧に載せないデッキ (URL を知っている人にだけ見せる)
+
+レビュー依頼など、配信はするが一覧には出したくないときは `unlisted: true` を書く。
+`dist/<slug>/` は作られ `https://talks.mozumasu.com/<slug>/` で開けるが、
+一覧には載らず、`<meta name="robots" content="noindex, nofollow">` が入る。
+
+```yaml
+---
+unlisted: true
+title: ...
+---
+```
+
+`unlisted` は URL に関与しないので、公開するときは行を消すだけでよく URL は変わらない。
+public リポジトリなので slug は隠せない。閲覧者を本当に制限したいときは
+Cloudflare Access を `talks.mozumasu.com/<slug>/*` に掛ける (デッキ側の変更は不要)。
+
+| | ビルド | 一覧 | URL |
+| --- | --- | --- | --- |
+| (指定なし) | する | 載る | 開ける |
+| `unlisted: true` | する | 載らない | 開ける |
+| `draft: true` | しない | 載らない | 404 |
+
 ## 一覧の並び順と docswell
 
 一覧 (`https://talks.mozumasu.com/`) には、このリポジトリのデッキに加えて
