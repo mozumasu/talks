@@ -1,6 +1,6 @@
 ---
 theme: findy
-draft: true
+unlisted: true
 title: Rego / conftest 入門
 date: 2026-09-16
 info: |
