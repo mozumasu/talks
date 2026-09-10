@@ -185,3 +185,6 @@ vite.config.ts.timestamp-*
 
 # wrangler
 .wrangler/
+
+# スライドの見た目確認用に slidev export した PNG
+.export-check/

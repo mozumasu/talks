@@ -31,6 +31,28 @@ importers:
         specifier: ^1.61.1
         version: 1.61.1
 
+  slides/2026-09-rego-conftest-intro:
+    dependencies:
+      '@slidev/cli':
+        specifier: ^52.11.0
+        version: 52.18.0(@nuxt/kit@3.21.9)(@types/markdown-it@14.1.2)(@types/node@22.20.1)(@vue/compiler-sfc@3.5.40)(esbuild@0.28.1)(lightningcss@1.33.0)(markdown-it@14.3.0)(playwright-chromium@1.61.1)(postcss@8.5.20)(rolldown@1.1.5)
+      slidev-addon-findy:
+        specifier: link:../../../findy-slidev/packages/slidev-addon-findy
+        version: link:../../../findy-slidev/packages/slidev-addon-findy
+      slidev-theme-findy:
+        specifier: link:../../../findy-slidev/packages/slidev-theme-findy
+        version: link:../../../findy-slidev/packages/slidev-theme-findy
+      vue:
+        specifier: ^3.5.0
+        version: 3.5.40(typescript@6.0.3)
+    devDependencies:
+      '@shikijs/transformers':
+        specifier: 4.3.1
+        version: 4.3.1
+      playwright-chromium:
+        specifier: ^1.61.1
+        version: 1.61.1
+
   slides/2026-09-terminal-keyboard:
     dependencies:
       '@slidev/cli':
@@ -1280,6 +1302,10 @@ packages:
 
   '@shikijs/themes@4.3.1':
     resolution: {integrity: sha512-dgpoJ4WqNi2yTmizQHBJ5zcX6j2lE6icN/0yt4l1kkf16jrY/pwPLoTb1ETsWMz0OBLf9ZNvwmxft+cH+N9qSA==}
+    engines: {node: '>=20'}
+
+  '@shikijs/transformers@4.3.1':
+    resolution: {integrity: sha512-z6ir0bGDgWcF2FduktEfPgIsdOtIlDiLAjFBgBzE42Q9xHbkkIXZtORHzlLVB71iZP9elEcqKg6keajvOUwE2A==}
     engines: {node: '>=20'}
 
   '@shikijs/twoslash@4.3.1':
@@ -4939,6 +4965,11 @@ snapshots:
 
   '@shikijs/themes@4.3.1':
     dependencies:
+      '@shikijs/types': 4.3.1
+
+  '@shikijs/transformers@4.3.1':
+    dependencies:
+      '@shikijs/core': 4.3.1
       '@shikijs/types': 4.3.1
 
   '@shikijs/twoslash@4.3.1(typescript@6.0.3)':
