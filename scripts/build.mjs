@@ -49,6 +49,9 @@ const allEntries = decks.map((dir) => {
     event: fm.event ?? "",
     docswell: fm.docswell ?? "",
     draft: fm.draft === "true",
+    // unlisted: 配信はするが一覧に載せない (URL を知っている人にだけ見せる)。
+    // draft がビルドごと止めるのに対し、こちらは dist/<slug>/ を作る
+    unlisted: fm.unlisted === "true",
   };
 });
 
@@ -59,6 +62,11 @@ for (const e of allEntries.filter((e) => e.draft)) {
       ? `draft: ${e.dir} (INCLUDE_DRAFTS=1 のためビルドに含める)`
       : `draft: ${e.dir} をスキップ`,
   );
+}
+// 一覧に載せるデッキ。ビルド対象 (entries) とは別に持つ
+const listed = entries.filter((e) => !e.unlisted);
+for (const e of entries.filter((e) => e.unlisted)) {
+  console.log(`unlisted: ${e.dir} -> /${e.slug}/ (ビルドするが一覧に載せない)`);
 }
 
 // ── 3. slug の検証と重複検出 ────────────────────
@@ -266,6 +274,8 @@ for (const e of indexOnly ? [] : entries) {
       { property: "og:image", content: `${deckUrl}cover.png` },
       { property: "og:site_name", content: "Talks by mozumasu" },
       { name: "twitter:card", content: "summary_large_image" },
+      // 一覧に無いデッキが検索結果から辿れると unlisted の意味が無いので、クローラにも隠す
+      ...(e.unlisted ? [{ name: "robots", content: "noindex, nofollow" }] : []),
     ],
     [
       { property: "og:title", content: e.title },
@@ -283,9 +293,9 @@ for (const e of indexOnly ? [] : entries) {
 
 // ── 8. 一覧ページの生成 ─────────────────────────
 // デッキの frontmatter docswell: と一致する RSS item は同じ登壇なので、デッキ側に寄せる
-const linkedFromDecks = new Set(entries.filter((e) => e.docswell).map((e) => canonical(e.docswell)));
-const listEntries = [...entries, ...docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)))]
+const linkedFromDecks = new Set(listed.filter((e) => e.docswell).map((e) => canonical(e.docswell)));
+const listEntries = [...listed, ...docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)))]
   .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 
 writeFileSync("dist/index.html", renderIndex({ listEntries, siteUrl: SITE_URL, brand: BRAND, assetBase: indexOnly ? SITE_URL : "" }));
-console.log(`\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${entries.length} + docswell ${listEntries.length - entries.length})`);
+console.log(`\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${listed.length} + docswell ${listEntries.length - listed.length})`);
