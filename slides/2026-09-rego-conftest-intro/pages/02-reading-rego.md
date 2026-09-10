@@ -10,7 +10,7 @@ toc: Rego の読み方
 
 ---
 layout: two-cols
-class: rule-intro
+class: code-sm
 eyebrowNum: 2
 ratio: 1/1.3
 eyebrow: Rego の読み方
@@ -60,6 +60,7 @@ CREATE VIEW deny AS SELECT ... FROM tags WHERE length(tag) >= 6 と同じ気持�
 
 ---
 layout: content
+class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ---
@@ -67,24 +68,33 @@ eyebrow: Rego の読み方
 ## ルールの構造
 
 <div class="text-sm mb-3">
-ルール = ヘッド (<span class="rule-name">ルール名</span> + <span class="rule-head">値の作り方</span>) + <span class="rule-body">ボディ (body)</span>
+ルール = <span class="rule-head">ヘッド</span> (<span class="rule-name">ルール名</span> + <span class="rule-head">値の作り方</span>) + <span class="rule-body">ボディ</span>
 </div>
-<div class="grid grid-cols-2 gap-x-5 mt-3">
+<div class="grid grid-cols-2 gap-x-5 mt-3 items-start">
 
 <pre class="rule-shape-block has-anno-tl"><span class="anno anno-head anno-tl" data-label="ヘッド"><span class="rule-name">&lt;ルール名&gt;</span> <span class="rule-head">&lt;値の作り方&gt;</span></span> if &#123;
     <span class="anno anno-body anno-tl" data-label="ボディ"><span class="rule-body">&lt;ボディ&gt;</span></span>
 &#125;</pre>
 
-<pre class="rule-shape-block"><span class="rule-name">deny</span> <span class="rule-head">contains msg</span> if &#123;
-    <span class="rule-body">input.debug == true</span>
-    <span class="rule-body">msg := "..."</span>
-# ボディは式の集まり。すべて成立するとヘッドの値が決まる
-&#125;</pre>
+<FindyAnnotatedCode :line-height="1.6">
+
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+```
+
+<FindyCodeRegion :line="1" text="deny" color="#f0b866" />
+<FindyCodeRegion :line="1" text="contains msg" color="#7cc4ff" />
+<FindyCodeRegion :line="2" :end-line="3" color="#7ee0a8" />
+
+</FindyAnnotatedCode>
 
 </div>
 
 
-<div class="rule-table">
+<div class="compact-table">
 
 | 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 |
 | --- | --- | --- |
@@ -104,26 +114,86 @@ eyebrow: Rego の読み方
 
 ---
 layout: two-cols
+title: 省略できる部分
+class: code-sm
+eyebrowNum: 2
+eyebrow: Rego の読み方
+ratio: 1/1.2
+valign: center
+---
+
+完全形は `ヘッド if { ボディ }`。省略した部分は既定値になる
+
+<div class="compact-table">
+
+| 省略するもの | 意味 |
+| --- | --- |
+| <span class="rule-body">ボディ</span> | 条件なしで常に成り立つ = **定数** |
+| <span class="rule-head">値の作り方</span> | 値は **true** |
+| `{ }` | 式が 1 つなら省略できる |
+
+</div>
+
+::right::
+
+<FindyAnnotatedCode>
+
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+
+max_size := 10
+
+is_big if input.size > max_size
+```
+
+<FindyCodeRegion :line="6" label="ボディを省略 → 常に 10" color="#7ee0a8" />
+<FindyCodeRegion :line="8" label="値の作り方を省略 → true。{ } も省略" color="#7cc4ff" />
+
+</FindyAnnotatedCode>
+
+<!--
+どれも同じ「ヘッド if { ボディ }」の省略形。max_size は「ボディが無いルール」であって変数ではない。
+is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
+-->
+
+---
+layout: two-cols
 title: ".rego ファイルの構成要素"
+class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1
 valign: center
 ---
 
-<pre class="rule-shape-block">package main        <span class="anno-comment"># 必須。1 ファイルに 1 つ</span>
+<FindyAnnotatedCode :line-height="1.7">
 
-import rego.v1      <span class="anno-comment"># Rego のバージョンを指定</span>
+```rego
+package main        # 必須。1 ファイルに 1 つ
 
-<span v-click="1" class="anno anno-rule-outline anno-tl" data-label="ルール"><span v-click="2" class="anno anno-head" data-label="ヘッド">deny contains msg</span> if &#123;
-<span v-click="3" class="anno anno-body" data-label="ボディ">    is_big
-    msg := "size 超過"</span>
-&#125;
+import rego.v1      # Rego のバージョンを指定
 
-<span v-click="2" class="anno anno-head" data-label="ヘッド (ボディなし)">max_size := 10</span>
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
 
-<span v-click="2" class="anno anno-head">is_big</span> if <span v-click="3" class="anno anno-body">input.size &gt; max_size</span></span>
-</pre>
+max_size := 10
+
+is_big if input.size > max_size
+```
+
+<FindyCodeRegion v-click="1" :line="5" :end-line="12" label="ルール" label-position="right" color="#ff8080" />
+<FindyCodeRegion v-click="2" :line="5" text="deny contains msg" label="ヘッド" color="#7cc4ff" />
+<FindyCodeRegion v-click="3" :line="10" label="ヘッド (ボディなし)" color="#7cc4ff" />
+<FindyCodeRegion v-click="4" :line="12" text="is_big" label="ヘッド" color="#7cc4ff" />
+<FindyCodeRegion v-click="5" :line="6" :end-line="7" label="ボディ" label-position="below-left" color="#7ee0a8" />
+<FindyCodeRegion v-click="6" :line="12" text="input.size > max_size" label="ボディ" label-position="right" color="#7ee0a8" />
+
+</FindyAnnotatedCode>
 
 ::right::
 
@@ -131,11 +201,11 @@ import rego.v1      <span class="anno-comment"># Rego のバージョンを指�
 
 - <span v-mark.circle.red="1">Q1. ルールはどこでしょう</span>
 - <span v-mark.circle.blue="2">Q2. ヘッドはどこでしょう</span>
-- <span v-mark.circle.green="3">Q3. ボディはどこでしょう</span>
+- <span v-mark.circle.green="5">Q3. ボディはどこでしょう</span>
 
 </div>
 
-<div v-click="4" class="mt-6">
+<div v-click="7" class="mt-6">
 <FindyCallout label="「変数」は構成要素ではない">
 <code>max_size := 10</code> はボディの無い<strong>ルール</strong>。<br>
 <code>msg</code> は式の中の<strong>ローカル変数</strong>で、ルールの外からは見えない

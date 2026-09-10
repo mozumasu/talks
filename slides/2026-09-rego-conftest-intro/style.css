@@ -128,22 +128,22 @@
   color: #0f1e33;
 }
 
-/* 「ルール」のスライド。枠ラベルを載せるので Slidev の自動サイズより小さく固定する */
-.rule-intro pre,
-.rule-intro pre code {
+/* 枠ラベルを載せるスライド。Slidev の行数連動の自動サイズより小さく固定する */
+.code-sm pre,
+.code-sm pre code {
   font-size: 0.66rem !important;
 }
 
-/* ルール 6 種の一覧。6 行を 1 枚に収めるため行間を詰める */
-.slidev-layout .rule-table {
-  margin-top: 1.1rem;
+/* コードブロックと同居させる表。行数を 1 枚に収めるため文字と行間を詰める */
+.slidev-layout .compact-table {
+  margin-top: 0.7rem;
 }
-.slidev-layout .rule-table table {
+.slidev-layout .compact-table table {
   font-size: 0.62em;
   line-height: 1.4;
 }
-.slidev-layout .rule-table th,
-.slidev-layout .rule-table td {
+.slidev-layout .compact-table th,
+.slidev-layout .compact-table td {
   padding-top: 0.25em;
   padding-bottom: 0.25em;
 }
