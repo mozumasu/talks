@@ -1,3 +1,4 @@
+import { transformerNotationHighlight } from "@shikijs/transformers";
 import type { LanguageRegistration, ShikiSetupReturn } from "@slidev/types";
 import { defineShikiSetup } from "@slidev/types";
 
@@ -32,6 +33,9 @@ const rego: LanguageRegistration = {
   repository: {},
 };
 
+// `# [!code highlight]` 記法。Slidev 標準の {1-2} レンジ指定と違い、
+// ハイライト外の行に slidev-code-dishonored (opacity .3) が付かない
 export default defineShikiSetup((): ShikiSetupReturn => ({
   langs: [rego],
+  transformers: [transformerNotationHighlight()],
 }));

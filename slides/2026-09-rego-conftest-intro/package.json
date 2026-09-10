@@ -15,6 +15,7 @@
     "vue": "^3.5.0"
   },
   "devDependencies": {
+    "@shikijs/transformers": "4.3.1",
     "playwright-chromium": "^1.61.1"
   }
 }
