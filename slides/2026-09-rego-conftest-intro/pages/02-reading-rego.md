@@ -10,6 +10,7 @@ toc: Rego の読み方
 
 ---
 layout: two-cols
+class: rule-intro
 eyebrowNum: 2
 ratio: 1/1.3
 eyebrow: Rego の読み方
@@ -21,8 +22,8 @@ eyebrow: Rego の読み方
 
 ## ルール
 
-条件が成り立つときに値が決まる **名前付きの条件** と  
- **条件を満たすものの集まり** に名前を付けたもの
+「名前 + 条件」の宣言。条件が成り立つときだけ、名前に値が入る  
+右の例では、条件がすべて成り立った `msg` が `deny` に集まる
 
 ::left::
 
@@ -36,19 +37,20 @@ for tag in tags:          # ループ
 
 ::right::
 
-
-<div class="anno-box anno-rule" data-label="ルール">
+<FindyAnnotatedCode>
 
 ```rego
-# Rego: 成り立つ条件を書く
-deny contains msg if { # deny という名前を持つ条件
+deny contains msg if {
 	some tag in input.tags
 	count(tag) >= 6
 	msg := sprintf("%s は長い", [tag])
 }
 ```
 
-</div>
+<FindyCodeRegion :line="1" text="deny" label="名前" color="#3b82f6" />
+<FindyCodeRegion :line="2" :end-line="4" label="条件" label-position="below-left" color="#10b981" />
+
+</FindyAnnotatedCode>
 
 <!--
 他の言語に対応物が無いのがここ。関数でも変数でもなく、SQL のビューが一番近い。
@@ -99,63 +101,6 @@ eyebrow: Rego の読み方
 用語は公式ドキュメントに合わせている (rule = head + body)。英語のドキュメントを読むときにそのまま繋がる。
 どのルールも同じ「ヘッド if { ボディ }」で、名前が違うだけ。
 -->
-
----
-layout: two-cols
-title: "どこまでが Rego で、どこからが conftest か"
-eyebrowNum: 2
-eyebrow: Rego の読み方
-ratio: 1/1
-valign: center
----
-
-#### Rego が予約している語
-
-```text
-package  import  as  default  else
-not  with  some  every  in  if
-contains  null  true  false
-```
-
-入り口の `input` / `data` も特別。これらはルール名にできない
-
-```sh
-$ opa check --strict policy/
-rego_parse_error: not
-```
-
-::right::
-
-#### conftest が探しに来る名前
-
-<div class="text-sm">
-
-| ツール | 探すルール名 |
-| --- | --- |
-| conftest | `deny` / `violation` / `warn` |
-| Gatekeeper (k8s) | `violation` |
-| 自分で `opa eval` | 好きな名前 |
-
-</div>
-
-<v-click>
-
-<div class="mt-4">
-<FindyCallout label="deny は Rego の予約語ではない">
-<code>mydeny</code> にリネームすると conftest は探しに来ず、<code>0 tests, 0 passed</code> で緑になる
-</FindyCallout>
-</div>
-
-</v-click>
-
-<!--
-ここを混同すると「deny という書き方を覚える」で止まってしまう。
-言語として決まっているのは左の予約語だけで、deny / violation / warn は conftest の都合。
-後半に出てくる finding も conftest が見に来る名前ではなく、exceptions.rego が deny に変換している。
-opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
--->
-
-
 
 ---
 layout: two-cols
@@ -261,6 +206,64 @@ deny contains msg if {
 input はファイルの中身がそのまま input になる。ポリシーは -p で渡したディレクトリの *.rego 全部。
 package main が conftest のデフォルト namespace。
 -->
+
+---
+layout: two-cols
+title: "ルール名は自由。ただし制約は 2 つ"
+eyebrowNum: 2
+eyebrow: Rego の読み方
+ratio: 1/1
+valign: center
+---
+
+#### ① 言語の制約: 予約語・グローバル変数は不可
+
+<div class="text-sm leading-relaxed">
+
+`package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
+
+`input` / `data` は全部の値の入り口 (`input.debug`、`data.main.deny`) なので、ルール名で隠せない
+
+</div>
+
+```sh
+$ opa check --strict policy/
+policy/a.rego:5: rego_parse_error:
+  not keyword cannot be used for rule name
+```
+
+::right::
+
+#### ② ツールの制約: 拾う名前が決まっている
+
+<div class="text-sm">
+
+| ツール | 拾うルール名 |
+| --- | --- |
+| conftest | `deny` / `violation` / `warn` |
+| Gatekeeper (k8s) | `violation` |
+| 自分で `opa eval` | 好きな名前 |
+
+</div>
+
+<v-click>
+
+<div class="mt-4">
+<FindyCallout label="deny は Rego の予約語ではなく conftest との約束">
+<code>mydeny</code> にリネームすると conftest は拾わず、<code>0 tests, 0 passed</code> で緑になる
+</FindyCallout>
+</div>
+
+</v-click>
+
+<!--
+さっき conftest が deny を拾ったのは Rego の仕様ではなく conftest の約束。
+言語として決まっているのは左の予約語だけで、deny / violation / warn は conftest の都合。
+ここを混同すると「deny という書き方を覚える」で止まってしまう。
+後半に出てくる finding も conftest が見に来る名前ではなく、exceptions.rego が deny に変換している。
+opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
+-->
+
 ---
 layout: two-cols
 title: "さっそくRegoを読んでみよう"
