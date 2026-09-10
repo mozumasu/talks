@@ -128,37 +128,10 @@
   color: #0f1e33;
 }
 
-/* コードブロックの縁を枠にして、左上にラベルを載せる (pre をこの div で包む) */
-.anno-box {
-  position: relative;
-  margin: 0;
-}
-.anno-box .slidev-code-wrapper,
-.anno-box pre {
-  margin: 0;
-}
-.anno-box pre {
-  border: 2px solid var(--anno-color);
-}
-.anno-box::before {
-  content: attr(data-label);
-  position: absolute;
-  z-index: 1;
-  top: -0.65em;
-  left: 1.1rem;
-  padding: 0.1em 0.7em;
-  border-radius: 999px;
-  background: var(--anno-color);
-  color: #0f1e33;
-  font-size: 0.7rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.anno-rule {
-  --anno-color: #7cc4ff;
-}
-.anno-set {
-  --anno-color: #7ee0a8;
+/* 「ルール」のスライド。枠ラベルを載せるので Slidev の自動サイズより小さく固定する */
+.rule-intro pre,
+.rule-intro pre code {
+  font-size: 0.66rem !important;
 }
 
 /* ルール 6 種の一覧。6 行を 1 枚に収めるため行間を詰める */

@@ -10,6 +10,7 @@ toc: Rego の読み方
 
 ---
 layout: two-cols
+class: rule-intro
 eyebrowNum: 2
 ratio: 1/1.3
 eyebrow: Rego の読み方
@@ -21,8 +22,8 @@ eyebrow: Rego の読み方
 
 ## ルール
 
-条件が成り立つときに値が決まる **名前付きの条件** と  
- **条件を満たすものの集まり** に名前を付けたもの
+「名前 + 条件」の宣言。条件が成り立つときだけ、名前に値が入る  
+右の例では、条件がすべて成り立った `msg` が `deny` に集まる
 
 ::left::
 
@@ -36,19 +37,20 @@ for tag in tags:          # ループ
 
 ::right::
 
-
-<div class="anno-box anno-rule" data-label="ルール">
+<FindyAnnotatedCode>
 
 ```rego
-# Rego: 成り立つ条件を書く
-deny contains msg if { # deny という名前を持つ条件
+deny contains msg if {
 	some tag in input.tags
 	count(tag) >= 6
 	msg := sprintf("%s は長い", [tag])
 }
 ```
 
-</div>
+<FindyCodeRegion :line="1" text="deny" label="名前" color="#3b82f6" />
+<FindyCodeRegion :line="2" :end-line="4" label="条件" label-position="below-left" color="#10b981" />
+
+</FindyAnnotatedCode>
 
 <!--
 他の言語に対応物が無いのがここ。関数でも変数でもなく、SQL のビューが一番近い。
