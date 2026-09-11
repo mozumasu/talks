@@ -220,11 +220,12 @@ deny というルール名は namespace ごとに独立している。同じ den
 
 ---
 layout: two-cols
-title: パッケージ全体を opa eval で覗く
+title: 「deny が出ない」を opa eval で追う
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
-ratio: 1/1.1
-valign: center
+ratio: 1/1.15
+valign: top
+class: code-sm tight-code
 ---
 
 ```rego
@@ -240,38 +241,123 @@ deny contains msg if {
 }
 ```
 
-::right::
-
-```sh
-$ opa eval -d policy -i big.json 'data.main'
-```
-
 ```json
-// size: 20
-{ "deny": ["size 超過"],
-  "is_big": true, "max_size": 10 }
+// input.json
+{ "Size": 30 }
 ```
+
+::right::
 
 <v-click>
 
-```json
-// size: 3
-{ "deny": [], "max_size": 10 }
+```sh
+$ conftest test -p policy/ input.json
+1 test, 1 passed, 0 warnings, 0 failures
+# 30 > 10 なのに PASS。conftest は deny が空としか言わない
 ```
 
-<div class="mt-2 text-sm op80">
+</v-click>
 
-`is_big` が消えた = false ではなく **undefined**。
-集合ルールは不成立でも `[]` なので `count(deny) == 0` と書ける
+<v-click>
 
+```sh
+$ opa eval -d policy -i input.json 'data.main' --format pretty
+{ "deny": [], "max_size": 10 }
+# is_big が無い = 成り立っていない
+```
+
+</v-click>
+
+<v-click>
+
+```sh
+$ opa eval -d policy -i input.json 'input.size' --format pretty
+undefined
+# input.size 自体が無い → input.json のキーが Size だった
+```
+
+</v-click>
+
+<v-click>
+
+<div class="mt-1">
+<FindyCallout label="opa eval = OPA 本体のコマンド。聞いたクエリの答えをそのまま返す">
+conftest は deny しか見せない。「なぜ出ない / なぜ出る」は途中のルールや input を 1 つずつ聞いて追う
+</FindyCallout>
 </div>
 
 </v-click>
 
 <!--
-data.main を丸ごと出すと、deny も自作ルールも同じ土俵に並んでいるのが見える。
-size 3 のとき is_big はキーごと消える (undefined)。一方、集合ルールは不成立でも空集合になる。
-だから count(deny) == 0 と書けるが、count(is_big) とは書けない。次のスライドの話につながる。
+conftest は deny が空なら PASS としか言わない。期待と違うときに中を見る道具が opa eval。
+data.main でルール全部を並べると is_big がキーごと無い (undefined)。is_big の条件 input.size を聞くと undefined。
+input.json のキーが Size で、ポリシーは size を見ていた。Terraform の plan JSON でも同じ手順で
+「どの階層のキーが違うか」を追える (後半の落とし穴に出てくる [_] の配列忘れも同じ)。
+実行結果は opa 1.19.1 / conftest 0.69.0 で確認したもの。
+-->
+
+---
+layout: two-cols
+title: opa eval の出力は value だけ見る
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
+ratio: 1/1
+valign: center
+class: code-sm
+---
+
+<FindyAnnotatedCode>
+
+```json
+// opa eval -d policy -i big.json 'data.main'
+{
+  "result": [
+    {
+      "expressions": [
+        {
+          "value": { "deny": ["size 超過"],
+                     "is_big": true, "max_size": 10 },
+          "text": "data.main",
+          "location": { "row": 1, "col": 1 }
+        }
+      ]
+    }
+  ]
+}
+```
+
+<FindyCodeRegion :line="3" text="&quot;result&quot;" color="#f0b866" />
+<FindyCodeRegion :line="5" text="&quot;expressions&quot;" color="#7cc4ff" />
+<FindyCodeRegion :line="7" :end-line="8" color="#7ee0a8" />
+<FindyCodeRegion :line="9" :end-line="10" color="#9ca3af" />
+
+</FindyAnnotatedCode>
+
+::right::
+
+<FindyLegend size="0.95rem">
+  <FindyLegendItem color="#f0b866" term="result">クエリ 1 回分の結果。配列だが普段は 1 件</FindyLegendItem>
+  <FindyLegendItem color="#7cc4ff" term="expressions">クエリの式ごと。今回は <code>data.main</code> の 1 件</FindyLegendItem>
+  <FindyLegendItem color="#7ee0a8" term="value">式の答え。<strong>見るのはここだけ</strong></FindyLegendItem>
+  <FindyLegendItem color="#9ca3af" term="text / location">評価した式とその位置。読み飛ばしてよい</FindyLegendItem>
+</FindyLegend>
+
+<v-click>
+
+<div class="mt-3">
+<FindyCallout label="value だけ出す">
+<code>--format pretty</code> を付けると value だけが整形されて出る。他のスライドはこの形で載せている<br>
+クエリが undefined のときは <code>{}</code> だけが返る
+</FindyCallout>
+</div>
+
+</v-click>
+
+<!--
+result / expressions が配列なのは、opa eval が複数クエリ・複数解を返せる作りだから。
+普段の使い方では 1 件ずつなので、value まで潜って読む。
+--format pretty は value だけを整形して出す。raw なら 1 行 JSON。
+undefined は result 自体が無くなり {} だけになる。次の「undefined と false は違う」で効く。
 -->
 
 ---

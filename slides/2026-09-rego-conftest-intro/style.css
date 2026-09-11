@@ -169,6 +169,17 @@
   font-size: 0.6rem !important;
   line-height: 1.5 !important;
 }
+/* コードブロックを縦に 3 つ以上積むスライド。ブロック間の余白を詰める */
+.tight-code .slidev-code-wrapper,
+.tight-code pre {
+  margin-top: 0.4rem !important;
+  margin-bottom: 0.4rem !important;
+}
+.tight-code pre {
+  padding-top: 0.7rem !important;
+  padding-bottom: 0.7rem !important;
+}
+
 /* コマンドと対応する .rego を同じ行に並べ、行ごとに高さを揃える */
 .ns-grid {
   display: grid;

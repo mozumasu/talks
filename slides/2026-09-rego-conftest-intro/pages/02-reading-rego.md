@@ -255,7 +255,7 @@ policy/a.rego:5: rego_parse_error:
 | --- | --- |
 | conftest | `deny` / `violation` / `warn` |
 | Gatekeeper (k8s) | `violation` |
-| 自分で `opa eval` | 好きな名前 |
+| OPA 本体 (`opa eval`、後述) | パスで指定した好きな名前 |
 
 </div>
 
