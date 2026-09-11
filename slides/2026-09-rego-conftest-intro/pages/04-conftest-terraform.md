@@ -78,6 +78,95 @@ plan JSON は variables / prior_state を jq で落としてから artifact に�
 
 ---
 layout: two-cols
+title: ".tf が input になるとどんな形か: conftest parse で見る"
+eyebrowNum: 4
+eyebrow: conftest で Terraform を検査する
+ratio: 1/1.1
+valign: center
+class: code-sm tight-code
+---
+
+<FindyAnnotatedCode>
+
+```hcl
+# terraform.tf
+terraform {
+  cloud {
+    workspaces {
+      name = "myapp-staging-network"
+    }
+  }
+}
+```
+
+<FindyCodeRegion :line="2" text="terraform" color="#3b82f6" />
+<FindyCodeRegion :line="3" text="cloud" color="#10b981" />
+<FindyCodeRegion :line="4" text="workspaces" color="#f0b866" />
+
+</FindyAnnotatedCode>
+
+<v-click>
+
+<FindyAnnotatedCode>
+
+```rego
+deny contains msg if {
+	ws := input.terraform[_].cloud[_].workspaces[_]
+	not contains(ws.name, "staging")
+	msg := sprintf("%s: staging が無い", [ws.name])
+}
+```
+
+<FindyCodeRegion :line="2" text="terraform[_]" color="#3b82f6" />
+<FindyCodeRegion :line="2" text="cloud[_]" color="#10b981" />
+<FindyCodeRegion :line="2" text="workspaces[_]" color="#f0b866" />
+
+</FindyAnnotatedCode>
+
+</v-click>
+
+::right::
+
+<FindyAnnotatedCode>
+
+```json
+// $ conftest parse --parser hcl2 terraform.tf
+{
+  "terraform": [{
+    "cloud": [{
+      "workspaces": [{
+        "name": "myapp-staging-network"
+      }]
+    }]
+  }]
+}
+```
+
+<FindyCodeRegion :line="3" text="&quot;terraform&quot;: [" color="#3b82f6" />
+<FindyCodeRegion :line="4" text="&quot;cloud&quot;: [" color="#10b981" />
+<FindyCodeRegion :line="5" text="&quot;workspaces&quot;: [" color="#f0b866" />
+
+</FindyAnnotatedCode>
+
+<v-click at="1">
+
+<div class="mt-2">
+<FindyCallout label="ブロックは 1 個でも配列">
+HCL のブロック名が JSON のキーになり、値は必ず配列。だから Rego では <code>[_]</code> を 1 段ずつ挟んで辿る
+</FindyCallout>
+</div>
+
+</v-click>
+
+<!--
+ポリシーを書く前に conftest parse で input の形を出しておくと、キー名と配列の段数をそのまま写せる。
+terraform { cloud { workspaces {} } } と 1 個ずつでも terraform[_].cloud[_].workspaces[_]。
+plan JSON も同じ発想で、jq で階層を確認してから書く。
+実行結果は conftest 0.69.0 で確認したもの。
+-->
+
+---
+layout: two-cols
 title: "--combine の input はファイルの配列"
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
@@ -88,10 +177,9 @@ valign: center
 <v-clicks>
 
 - 要素は `{path, contents}`。`path` は実行ディレクトリ相対
-- ブロックは **1 個でも必ず配列**
-  → `cloud[_].workspaces[_]` と辿る
+- `contents` は前のページの parse 結果そのもの
 - 変数参照は `"${var.x}"` という **文字列**
-- 迷ったら `conftest parse --parser hcl2` で形を見る
+- `--combine` なしだとファイルごとに評価され、`path` が input に入らない
 
 </v-clicks>
 
