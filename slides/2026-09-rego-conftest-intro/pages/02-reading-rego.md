@@ -231,8 +231,10 @@ valign: center
 
 <div class="text-sm leading-relaxed">
 
+予約語  
 `package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
 
+グローバル変数  
 `input` / `data` は全部の値の入り口 (`input.debug`、`data.main.deny`) なので、ルール名で隠せない
 
 </div>
