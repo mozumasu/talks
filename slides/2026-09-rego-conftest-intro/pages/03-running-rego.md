@@ -86,7 +86,7 @@ valign: center
 ---
 
 ```json
-// input.json
+// input.json (チェック対象)
 {
   "environment": "production",
   "debug": true
@@ -108,7 +108,7 @@ FAIL - input.json - main -
 ::right::
 
 ```rego
-# policy/debug.rego
+# policy/debug.rego (ポリシー)
 package main
 
 import rego.v1
