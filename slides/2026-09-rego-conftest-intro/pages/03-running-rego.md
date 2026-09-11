@@ -428,52 +428,67 @@ conftest の deny 形式では出番が少ないのでスライドからは外�
 
 ---
 layout: two-cols
-title: 繰り返しは「存在する」と「すべて」
+title: ループは書かない。some で列挙、every で全件
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
+class: code-sm tight-code
 ---
+
+```json
+// input.json
+{ "services": {
+    "api":   { "replicas": 1, "owner": "sre" },
+    "web":   { "replicas": 3, "owner": "" },
+    "batch": { "replicas": 1, "owner": "data" } } }
+```
 
 <v-clicks>
 
-- `some name, cfg in input.services`
-  → 条件を満たす要素が **1 つでもあれば** その分 msg が出る
-- `every cfg in input.services { ... }`
-  → **すべて** 満たすときだけ真
+- `some` = 条件を満たす要素を**列挙**。for + if + append を 1 行で
+- `every` = **全件**満たすときだけ真。1 つでも外れると undefined
 - ループ変数を進める、break する、という発想はない
 
 </v-clicks>
 
 ::right::
 
-<div class="code-compact">
-
 ```rego
 deny contains msg if {
-	some name, cfg in input.services
-	cfg.replicas < 2
+	some name, cfg in input.services   # 全要素を試す
+	cfg.replicas < 2                   # 満たした要素だけ残る
 	msg := sprintf("%s: replicas は 2 以上", [name])
 }
 ```
 
-<v-click>
+<v-click at="1">
 
-```rego
-all_owned if {
-	every cfg in input.services {
-		cfg.owner != ""
-	}
-}
+```json
+"deny": ["api: replicas は 2 以上", "batch: replicas は 2 以上"]
 ```
 
 </v-click>
 
-</div>
+<v-click at="2">
+
+```rego
+all_owned if {
+	every cfg in input.services { cfg.owner != "" }
+}
+```
+
+```json
+// web の owner が空 → all_owned は出力に無い (undefined)
+```
+
+</v-click>
 
 <!--
 some は for ループの代わり。全要素が自動で試され、条件を満たした要素ごとに msg が生成される。
-every は「1 つでも満たさなければ undefined」。
+api と batch の 2 件が deny に入り、web は replicas 3 なので入らない。
+every は「1 つでも満たさなければ undefined」。web の owner が空なので all_owned は消える。
+出力は opa 1.19.1 で確認したもの。
 -->
 
 ---
