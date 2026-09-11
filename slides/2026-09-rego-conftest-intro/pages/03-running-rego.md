@@ -362,47 +362,68 @@ undefined は result 自体が無くなり {} だけになる。次の「undefin
 
 ---
 layout: two-cols
-title: undefined と false は違う
+title: 「キーが無い」は黙って通る
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
+class: code-sm tight-code
 ---
 
 <v-clicks>
 
-- 条件が成り立たないとき、ルールの値は `false` ではなく **undefined**
-- キーが無い参照 (`input.user.role` で `user` が無い) も undefined
-- undefined は「偽」でも「エラー」でもなく **「値が無い」**
-- `default allow := false` で undefined を false に倒す
+- 成り立たない・キーが無い → 値は `false` ではなく **undefined**
+- undefined の行があるルールは丸ごと不成立。deny は出ず、conftest は**緑**
+- 条件ごとに「キーが無かったらどうしたい?」を考える。**弾きたい条件**は undefined でも真になる形 (`not ... ==`) で書く
 
 </v-clicks>
 
 ::right::
 
 ```rego
-default allow := false
-
-allow if {
-	input.user.role == "admin"
+# 事故る: tags が無いと != が undefined → deny が黙る
+deny contains "env が prod ではない" if {
+	input.tags.env != "prod"
 }
 ```
 
-<v-click>
+<v-click at="3">
 
 ```rego
-# not は「偽 または undefined」で真
-deny contains msg if {
-	not input.owner   # owner が無い / false
-	msg := "owner を設定してください"
+# 防げる: not は undefined でも真
+deny contains "env が prod ではない" if {
+	not input.tags.env == "prod"
 }
 ```
 
 </v-click>
 
+<v-click at="2">
+
+<div class="compact-table">
+
+| input の tags | `!=` | `not ==` |
+| --- | --- | --- |
+| `env: dev` | deny | deny |
+| `env: prod` | 通る | 通る |
+| tags 自体が無い | **通る (事故)** | deny |
+
+</div>
+
+</v-click>
+
 <!--
-壊れたポリシー (タイポなど) も undefined になるだけでエラーが出ない。
-CI は「違反ゼロ」と同じ顔で緑になる。これが後で出てくる「テストが採点者」の理由。
+壊れたポリシー (タイポ、キー欠落) も undefined になるだけでエラーが出ない。
+CI は「違反ゼロ」と同じ顔で緑になる。18 枚目の Size のキー違いと同じ現象。
+not は「偽 または undefined」で真なので、欠落を弾く側に倒せる。後半の「落とし穴 a. negation の罠」
+「b. fail-closed」はこの続き。
+not 必須という話ではない。input.debug == true で deny する条件は、debug が無い plan を通して正しい。
+欠落を弾きたい条件だけ書き方を変える。弾き方は 3 通り: not ... == (1 行で済む) /
+欠落専用の deny を分ける (メッセージで「無い」と「違う」を区別) /
+object.get で既定値を入れてから比較 (not の中で変数を使いたいとき)。
+真偽ルールを allow == false のように比べたいときは default allow := false で undefined を false に倒す。
+conftest の deny 形式では出番が少ないのでスライドからは外した。
+表の結果は opa 1.19.1 で確認したもの。
 -->
 
 ---
