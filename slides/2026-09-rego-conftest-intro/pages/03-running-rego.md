@@ -493,16 +493,19 @@ every は「1 つでも満たさなければ undefined」。web の owner が空
 
 ---
 layout: two-cols
-title: ヘルパー関数と組み込み関数
+title: ヘルパー関数 (自作) と組み込み関数
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
+class: code-sm
 ---
 
 <div class="text-sm">
 
-| 組み込み | 用途 |
+**組み込み関数** (用意されているもの)
+
+| 関数 | 用途 |
 | --- | --- |
 | `split(s, "/")` | 分割 |
 | `sprintf("%v", [x])` | 整形 |
@@ -513,9 +516,9 @@ valign: center
 
 <v-click>
 
-<div class="mt-3 text-sm op80">
+<div class="mt-3 text-sm">
 
-関数は `名前(引数) if { ... }`。deny と同じく条件の集まり
+**ヘルパー関数** (自作) は `名前(引数) if { ... }`。deny の条件を切り出して名前を付けたもの
 
 </div>
 
@@ -523,7 +526,7 @@ valign: center
 
 ::right::
 
-<div class="code-compact">
+<FindyAnnotatedCode>
 
 ```rego
 allowed := {"10.0.0.0/12", "172.16.0.0/12"}
@@ -535,7 +538,14 @@ cidr_allowed(cidr) if {
 }
 ```
 
+<FindyCodeRegion :line="3" text="cidr_allowed(cidr)" label="ヘルパー関数 (自作)" color="#f0b866" />
+<FindyCodeRegion :line="5" label="組み込み" label-position="right" color="#7cc4ff" />
+
+</FindyAnnotatedCode>
+
 <v-click>
+
+<FindyAnnotatedCode>
 
 ```rego
 deny contains msg if {
@@ -545,9 +555,11 @@ deny contains msg if {
 }
 ```
 
-</v-click>
+<FindyCodeRegion :line="3" text="cidr_allowed(cidr)" label="呼び出し" label-position="right" color="#f0b866" />
 
-</div>
+</FindyAnnotatedCode>
+
+</v-click>
 
 <!--
 object.get はキーが無いときに第 3 引数を返す。「無い」を null に変換してから判定に進む。
