@@ -135,14 +135,16 @@ input はファイルの中身がそのまま input になる。ポリシーは 
 package main が conftest のデフォルト namespace。
 -->
 ---
-layout: two-cols
+layout: content
 title: package を分けて --namespace で選ぶ
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
-ratio: 1/1.15
-valign: center
 class: ns-demo
 ---
+
+<div class="ns-grid">
+
+<div v-click="1">
 
 ```sh
 # 既定は package main だけ
@@ -151,7 +153,22 @@ FAIL - input.json - main - debug を無効に
 1 test, 0 passed, 1 failure
 ```
 
-<v-click>
+</div>
+
+<div>
+
+```rego
+# policy/debug.rego
+package main
+deny contains msg if {
+	input.debug == true
+	msg := "debug を無効に"
+}
+```
+
+</div>
+
+<div v-click="2">
 
 ```sh
 # naming の deny を見に行く
@@ -160,9 +177,22 @@ FAIL - input.json - naming - 名前に _ は使えない
 1 test, 0 passed, 1 failure
 ```
 
-</v-click>
+</div>
 
-<v-click>
+<div>
+
+```rego
+# policy/naming.rego
+package naming # [!code highlight]
+deny contains msg if {
+	contains(input.name, "_")
+	msg := "名前に _ は使えない"
+}
+```
+
+</div>
+
+<div v-click="3">
 
 ```sh
 # 全部まとめて
@@ -172,39 +202,15 @@ FAIL - input.json - naming - 名前に _ は使えない
 2 tests, 0 passed, 2 failures
 ```
 
-</v-click>
+</div>
 
-::right::
-
-```rego
-# policy/debug.rego
-package main
-
-deny contains msg if {
-	input.debug == true
-	msg := "debug を無効に"
-}
-```
-
-```rego
-# policy/naming.rego
-package naming # [!code highlight]
-
-deny contains msg if {
-	contains(input.name, "_")
-	msg := "名前に _ は使えない"
-}
-```
-
-<v-click at="3">
-
-<div class="mt-3">
+<div v-click="3">
 <FindyCallout label="使いどころ">
 plan JSON 用と HCL 用のように<strong>入力の形が違うポリシー</strong>を同じ <code>policy/</code> に置き、CI のジョブごとに <code>--namespace</code> で使い分ける
 </FindyCallout>
 </div>
 
-</v-click>
+</div>
 
 <!--
 deny というルール名は namespace ごとに独立している。同じ deny を別 package に書いても衝突しない。
