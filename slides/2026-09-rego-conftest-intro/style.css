@@ -159,3 +159,86 @@
 .slidev-vclick-hidden {
   transform: translateX(-0.6rem);
 }
+
+/* 登場人物 3 つの関係図。列 = ノード / 矢印 の交互、行 = 吹き出し / ノード / 下向き矢印 / deny */
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 4.5rem 1fr 4.5rem 1fr 4.5rem 1fr;
+  grid-template-rows: auto auto 2.2rem auto;
+  align-items: center;
+  margin-top: 2.6rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+.flow-node {
+  padding: 0.9rem 0.6rem;
+  border-radius: var(--findy-card-radius-sm, 0.6rem);
+  background: var(--findy-blue-5);
+  color: var(--findy-fg);
+  text-align: center;
+}
+.flow-node--file {
+  background: #eef1f5;
+}
+.flow-node strong {
+  color: inherit;
+}
+.flow-arrow-wrap {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+.flow-node--deny {
+  background: #fdecec;
+  border: 1px solid #f5b5b5;
+  color: #b91c1c;
+  font-size: 0.95rem;
+}
+.flow-glyph {
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin: 0 auto 0.4rem;
+  color: var(--findy-brand);
+}
+.flow-term {
+  display: block;
+  font-family: var(--findy-font-en);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--findy-brand);
+  margin-bottom: 0.15rem;
+}
+.flow-arrow {
+  width: 100%;
+  height: 1.2rem;
+  stroke: var(--findy-brand);
+  fill: var(--findy-brand);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.flow-arrow--left { transform: scaleX(-1); }
+.flow-arrow--down { transform: rotate(90deg); width: 2rem; height: 100%; }
+.flow-note {
+  align-self: end;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  background: var(--findy-white, #fff);
+  border: 1px solid var(--findy-hairline);
+  box-shadow: var(--findy-shadow-card);
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+.flow-note b {
+  display: block;
+  color: var(--findy-brand);
+  font-size: 0.7rem;
+  margin-bottom: 0.1rem;
+}
+.flow-node.slidev-vclick-hidden,
+.flow-arrow.slidev-vclick-hidden,
+.flow-arrow-wrap.slidev-vclick-hidden,
+.flow-note.slidev-vclick-hidden {
+  transform: none;
+}
