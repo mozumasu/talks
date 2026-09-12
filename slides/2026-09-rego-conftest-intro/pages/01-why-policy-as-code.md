@@ -114,7 +114,7 @@ eyebrow: なぜ Policy as Code か
 
 <div v-click="1" class="flow-note" style="grid-column: 2 / span 2; grid-row: 1">
 <b>① ファイルを読む</b>
-Terraform や YAML のファイルを input にする
+.tf や YAML を読み込み、JSON の形に変換する
 </div>
 <svg v-click="1" class="flow-arrow" style="grid-column: 2; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
 
@@ -124,8 +124,8 @@ Terraform / YAML 向けの<br>CLI ラッパー
 </div>
 
 <div v-click="2" class="flow-note" style="grid-column: 4 / span 2; grid-row: 1">
-<b>② ファイルを渡して評価</b>
-ファイルの内容を input として OPA に渡す
+<b>② 渡して評価</b>
+変換した JSON を OPA に渡し、評価を頼む
 </div>
 <svg v-click="2" class="flow-arrow" style="grid-column: 4; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
 
