@@ -80,10 +80,9 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
-class: code-sm code-tight
 ---
 
-# inputを渡してConftestでRegoを実行する
+# ファイルを用意
 
 ```json [input.json (チェック対象)]
 {
@@ -91,18 +90,6 @@ class: code-sm code-tight
   "debug": true
 }
 ```
-
-<v-click>
-
-```sh
-$ conftest test -p policy/ input.json
-FAIL - input.json - main -
-  production では debug を無効に
-
-1 test, 0 passed, 0 warnings, 1 failure
-```
-
-</v-click>
 
 ::right::
 
@@ -118,20 +105,93 @@ deny contains msg if {
 }
 ```
 
-<v-click at="2">
+<!--
+用意するのはこの 2 つだけ。チェック対象の JSON と、ポリシーの .rego。
+input はファイルの中身がそのまま input になる。
+-->
 
-<div class="mt-3 text-sm op80">
+---
+layout: two-cols
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
+ratio: 1.3/1
+valign: center
+---
 
-`debug: false` にすると 2 行目が偽 → deny は空 → PASS
+# conftest test で実行する
 
-</div>
+<div class="code-compact">
+
+<FindyAnnotatedCode>
+
+```sh
+$ conftest test -p policy/ input.json
+FAIL - input.json - main - production では debug を無効に
+
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+<FindyCodeRegion v-click="1" :line="1" text="-p policy/" label="ポリシー" color="#3b82f6" />
+<FindyCodeRegion v-click="2" :line="1" text="input.json" label="チェック対象" label-position="right" color="#10b981" />
+<FindyCodeRegion v-click="3" :line="2" text="main" color="#a78bfa" />
+<FindyCodeRegion v-click="3" :line="2" text="production では debug を無効に" label="deny の msg" label-position="below-left" color="#f0b866" />
+<FindyCodeRegion v-click="4" :line="4" label="集計" color="#ef4444" />
+
+</FindyAnnotatedCode>
+
+<v-click at="5">
+
+```sh [debug: false にすると]
+$ conftest test -p policy/ input.json
+
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
 
 </v-click>
 
+</div>
+
+::right::
+
+<div class="text-sm leading-relaxed">
+
+<div v-click="1">
+
+**`-p`** に渡したディレクトリの `*.rego` を全部読む
+
+</div>
+
+<div v-click="2" class="mt-2">
+
+引数のファイルが **`input`** になる
+
+</div>
+
+<div v-click="3" class="mt-2">
+
+`deny` に入った **msg がそのまま FAIL 行**になる。<span style="color:#7c3aed">main</span> は package 名
+
+</div>
+
+<div v-click="4" class="mt-2">
+
+最後の行が集計。failure が 1 つでもあれば**終了コード 1** で CI が止まる
+
+</div>
+
+<div v-click="5" class="mt-4">
+
+条件が 1 つ偽になると `deny` は空 → **PASS**
+
+</div>
+
+</div>
+
 <!--
-input はファイルの中身がそのまま input になる。ポリシーは -p で渡したディレクトリの *.rego 全部。
-package main が conftest のデフォルト namespace。
+package main が conftest のデフォルト namespace。他の package を見るには --namespace (次のスライド)。
+出力は conftest 0.69.0 の実物。FAIL 行の形式は "FAIL - <ファイル> - <namespace> - <msg>"。
 -->
+
 ---
 layout: content
 eyebrowNum: 3
