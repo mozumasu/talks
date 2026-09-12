@@ -127,17 +127,6 @@ valign: center
 - `{}`
 - ボディ
 
-<v-click at="4">
-
-```rego
-# 省略前
-max_size := 10 if { true }
-
-is_big := true if { input.size > max_size }
-```
-
-</v-click>
-
 ::right::
 
 ````md magic-move {at:1}
@@ -182,14 +171,12 @@ max_size := 10  # ボディを省略 → 常に 10 (定数)
 is_big if input.size > max_size  # 値の作り方を省略 → true。{ } も省略
 ```
 ```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
+# 省略前
+max_size := 10 if { true }
+is_big := true if { input.size > max_size }
 
 # 省略後
 max_size := 10
-
 is_big if input.size > max_size
 ```
 ````
@@ -199,7 +186,7 @@ is_big if input.size > max_size
 max_size は「ボディが無いルール」であって変数ではない。
 is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
 完全形 3 つは opa 1.19.1 の check --strict を通し、eval で同じ結果になることを確認済み。
-最後のクリックで左に省略前を出し、右の省略後と並べて見比べる。
+最後のクリックで deny を外し、省略前と省略後を上下に並べて見比べる。
 -->
 
 ---
