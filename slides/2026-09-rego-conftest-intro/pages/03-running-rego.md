@@ -461,18 +461,38 @@ class: code-sm code-tight
 
 # 「キーが無い」は黙って通る
 
-<v-clicks>
+<div class="text-base leading-relaxed">
 
-- 成り立たない・キーが無い → 値は `false` ではなく **undefined**
-- undefined の行があるルールは丸ごと不成立。deny は出ず、conftest は**緑**
-- 条件ごとに「キーが無かったらどうしたい?」を考える。**弾きたい条件**は undefined でも真になる形 (`not ... ==`) で書く
+<div v-click="1">
 
-</v-clicks>
+**1. キーが無い → 式は `false` ではなく undefined**
+
+</div>
+
+<div v-click="1" class="mt-1">
+
+**2. undefined を含むルールは黙って不成立** → deny が出ない → conftest は緑
+
+</div>
+
+<div v-click="2" class="mt-4">
+
+**3.** 条件ごとに「キーが無かったら通す? 弾く?」を決める
+
+</div>
+
+<div v-click="3" class="mt-1">
+
+**4.** 弾きたい条件は `not x == 値` で書く。`not` は undefined でも真
+
+</div>
+
+</div>
 
 ::right::
 
 ```rego
-# 事故る: tags が無いと != が undefined → deny が黙る
+# 事故る: tags が無いと != が undefined → ルールごと黙る
 deny contains "env が prod ではない" if {
 	input.tags.env != "prod"
 }
