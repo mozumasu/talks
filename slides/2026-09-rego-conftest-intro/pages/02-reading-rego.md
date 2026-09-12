@@ -20,10 +20,14 @@ eyebrow: Rego の読み方
 
 手続きではなく、`ルール` という単位で成り立つ条件を宣言する言語
 
+<div v-click="1">
+
 ## ルール
 
 「名前 + 条件」の宣言。条件が成り立つときだけ、名前に値が入る  
 右の例では、条件がすべて成り立った `msg` が `deny` に集まる
+
+</div>
 
 ::left::
 
@@ -47,8 +51,8 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion :line="1" text="deny" label="名前" color="#3b82f6" />
-<FindyCodeRegion :line="2" :end-line="4" label="条件" label-position="below-left" color="#10b981" />
+<FindyCodeRegion v-click="1" :line="1" text="deny" label="名前" color="#3b82f6" />
+<FindyCodeRegion v-click="1" :line="2" :end-line="4" label="条件" label-position="below-left" color="#10b981" />
 
 </FindyAnnotatedCode>
 
