@@ -135,14 +135,15 @@ Terraform / YAML 向けの<br>CLI ラッパー
 </div>
 
 <div v-click="3" class="flow-note" style="grid-column: 6 / span 2; grid-row: 1">
-<b>③ ポリシールールを提供</b>
-Rego で書かれたルールを使って評価する
+<b>③ ルールを読み込む</b>
+.rego に書いたルールで判定する
 </div>
 <svg v-click="3" class="flow-arrow flow-arrow--left" style="grid-column: 6; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
 
-<div v-click="3" class="flow-node" style="grid-column: 7; grid-row: 2">
+<div v-click="3" class="flow-node flow-node--file" style="grid-column: 7; grid-row: 2">
+<svg class="flow-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5"/><path d="M9 13h7M9 17h7"/></svg>
 <span class="flow-term">Rego</span>
-OPA のポリシー<br>記述言語
+ポリシーを書いた<br><code>.rego</code> ファイル
 </div>
 
 <div v-click="4" class="flow-arrow-wrap" style="grid-column: 5; grid-row: 3"><svg class="flow-arrow flow-arrow--down" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg></div>
