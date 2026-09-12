@@ -193,31 +193,19 @@ package main が conftest のデフォルト namespace。他の package を見�
 -->
 
 ---
-layout: content
+layout: two-cols
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
-class: code-xs ns-demo
+ratio: 1/1.25
+valign: top
+class: code-sm code-tight
 ---
 
-# package を分けて --namespace で選ぶ
+# package を分けると、指定した package だけ評価される
 
-<div class="ns-grid">
+<FindyAnnotatedCode :line-height="1.45">
 
-<div v-click="1">
-
-```sh
-# 既定は package main だけ
-$ conftest test -p policy/ input.json
-FAIL - input.json - main - debug を無効に
-1 test, 0 passed, 1 failure
-```
-
-</div>
-
-<div>
-
-```rego
-# policy/debug.rego
+```rego [policy/debug.rego]
 package main
 deny contains msg if {
 	input.debug == true
@@ -225,56 +213,97 @@ deny contains msg if {
 }
 ```
 
-</div>
+<FindyCodeRegion :line="1" text="main" color="#3b82f6" />
 
-<div v-click="2">
+</FindyAnnotatedCode>
 
-```sh
-# naming の deny を見に行く
-$ conftest test -p policy/ --namespace naming input.json
-FAIL - input.json - naming - 名前に _ は使えない
-1 test, 0 passed, 1 failure
-```
+<FindyAnnotatedCode :line-height="1.45">
 
-</div>
-
-<div>
-
-```rego
-# policy/naming.rego
-package naming # [!code highlight]
+```rego [policy/naming.rego]
+package naming
 deny contains msg if {
 	contains(input.name, "_")
 	msg := "名前に _ は使えない"
 }
 ```
 
+<FindyCodeRegion :line="1" text="naming" color="#a78bfa" />
+
+</FindyAnnotatedCode>
+
+<div v-click="4" class="mt-3 text-xs op80">
+
+**使いどころ**: plan JSON 用と HCL 用のように入力の形が違うポリシーを同じ `policy/` に置き、CI のジョブごとに `--namespace` で使い分ける
+
 </div>
 
-<div v-click="3">
+::right::
+
+<div class="text-sm">
+
+<div v-click="1">
+
+**指定なし** → <span style="color:#2563eb">main</span> だけ
+
+<FindyAnnotatedCode :line-height="1.45">
 
 ```sh
-# 全部まとめて
+$ conftest test -p policy/ input.json
+FAIL - input.json - main - debug を無効に
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+<FindyCodeRegion :line="2" text="main" color="#3b82f6" />
+
+</FindyAnnotatedCode>
+
+</div>
+
+<div v-click="2" class="mt-1">
+
+**`--namespace naming`** → <span style="color:#7c3aed">naming</span> だけ
+
+<FindyAnnotatedCode :line-height="1.45">
+
+```sh
+$ conftest test -p policy/ --namespace naming input.json
+FAIL - input.json - naming - 名前に _ は使えない
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+<FindyCodeRegion :line="2" text="naming" color="#a78bfa" />
+
+</FindyAnnotatedCode>
+
+</div>
+
+<div v-click="3" class="mt-1">
+
+**`--all-namespaces`** → 全部
+
+<FindyAnnotatedCode :line-height="1.45">
+
+```sh
 $ conftest test -p policy/ --all-namespaces input.json
 FAIL - input.json - main - debug を無効に
 FAIL - input.json - naming - 名前に _ は使えない
-2 tests, 0 passed, 2 failures
+2 tests, 0 passed, 0 warnings, 2 failures, 0 exceptions
 ```
 
-</div>
+<FindyCodeRegion :line="2" text="main" color="#3b82f6" />
+<FindyCodeRegion :line="3" text="naming" color="#a78bfa" />
 
-<div v-click="3">
-<FindyCallout label="使いどころ">
-plan JSON 用と HCL 用のように<strong>入力の形が違うポリシー</strong>を同じ <code>policy/</code> に置き、CI のジョブごとに <code>--namespace</code> で使い分ける
-</FindyCallout>
+</FindyAnnotatedCode>
+
 </div>
 
 </div>
 
 <!--
-deny というルール名は namespace ごとに独立している。同じ deny を別 package に書いても衝突しない。
+package は conftest が評価する単位。指定しなければ main だけを見るので、別 package に書いた deny は無視される。
+deny というルール名は package ごとに独立していて、同じ deny を別 package に書いても衝突しない。
 --namespace は複数回指定できる。--all-namespaces は policy/ 配下の package を全部見る。
-実行結果は conftest 0.63.0 で実際に確認したもの。
+実行結果は conftest 0.69.0 の実物 (input は {"debug": true, "name": "my_app"})。
 -->
 
 ---
