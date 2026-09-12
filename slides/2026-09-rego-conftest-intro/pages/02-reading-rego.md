@@ -155,7 +155,8 @@ is_big if input.size > max_size  # { } も省略
 ````
 
 </div>
-<div class="col-start-1 row-start-1 marker-regions" v-click="4">
+<span v-click="5" class="hidden" />
+<div v-if="$clicks >= 4" class="col-start-1 row-start-1 marker-regions">
 
 <FindyAnnotatedCode>
 
@@ -169,10 +170,10 @@ max_size := 10
 is_big if input.size > max_size
 ```
 
-<FindyCodeRegion :line="2" text="if { true }" color="#facc15" />
-<FindyCodeRegion :line="3" text=":= true" color="#facc15" />
-<FindyCodeRegion :line="3" text="{ " color="#facc15" />
-<FindyCodeRegion :line="3" text=" }" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="2" text="if { true }" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=":= true" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text="{ " color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=" }" color="#facc15" />
 
 </FindyAnnotatedCode>
 
