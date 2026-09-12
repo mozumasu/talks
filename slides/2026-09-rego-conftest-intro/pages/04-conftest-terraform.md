@@ -82,7 +82,7 @@ eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.1
 valign: center
-class: code-sm tight-code
+class: code-sm code-tight
 ---
 
 # .tf が input になるとどんな形か: conftest parse で見る

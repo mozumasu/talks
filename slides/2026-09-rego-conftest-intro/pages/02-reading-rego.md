@@ -94,7 +94,7 @@ deny contains msg if {
 </div>
 
 
-<div class="compact-table">
+<div class="table-compact">
 
 | 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 |
 | --- | --- | --- |
@@ -156,7 +156,7 @@ is_big if input.size > max_size  # { } も省略
 
 </div>
 <span v-click="5" class="hidden" />
-<div v-if="$clicks >= 4" class="col-start-1 row-start-1 marker-regions">
+<div v-if="$clicks >= 4" class="col-start-1 row-start-1">
 
 <FindyAnnotatedCode>
 
@@ -170,10 +170,10 @@ max_size := 10
 is_big if input.size > max_size
 ```
 
-<FindyCodeRegion v-if="$clicks >= 5" :line="2" text="if { true }" color="#facc15" />
-<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=":= true" color="#facc15" />
-<FindyCodeRegion v-if="$clicks >= 5" :line="3" text="{ " color="#facc15" />
-<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=" }" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="2" text="if { true }" variant="marker" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=":= true" variant="marker" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text="{ " variant="marker" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=" }" variant="marker" color="#facc15" />
 
 </FindyAnnotatedCode>
 

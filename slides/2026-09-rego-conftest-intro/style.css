@@ -128,58 +128,15 @@
   color: #0f1e33;
 }
 
-/* 枠ラベルを載せるスライド。Slidev の行数連動の自動サイズより小さく固定する */
-.code-sm pre,
-.code-sm pre code {
-  font-size: 0.66rem !important;
-}
-
-/* コードブロックと同居させる表。行数を 1 枚に収めるため文字と行間を詰める */
-.slidev-layout .compact-table {
-  margin-top: 0.7rem;
-}
-.slidev-layout .compact-table table {
-  font-size: 0.62em;
-  line-height: 1.4;
-}
-.slidev-layout .compact-table th,
-.slidev-layout .compact-table td {
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
-}
-
-/* flake.nix 全体 (20 行超) を 2 カラムの右半分に収める */
-.env-setup .slidev-code,
-.env-setup pre,
-.env-setup code {
-  font-size: 0.62rem !important;
+/* flake.nix 全体 (20 行超) を 2 カラムの右半分に収める (code-xs よりさらに小さく、行間も詰める) */
+.env-setup .slidev-code {
   line-height: 1.45 !important;
 }
-.env-setup .flake-code .slidev-code,
-.env-setup .flake-code pre,
-.env-setup .flake-code code {
-  font-size: 0.5rem !important;
+.flake-code {
+  --findy-code-compact-size: 0.5rem;
+}
+.flake-code .slidev-code {
   line-height: 1.3 !important;
-}
-
-/* コードブロックが 5 つ載るので Slidev の自動サイズより小さく固定する */
-.ns-demo .slidev-code,
-.ns-demo pre,
-.ns-demo code {
-  font-size: 0.6rem !important;
-  line-height: 1.5 !important;
-}
-/* コードブロックを縦に 3 つ以上積むスライド。ブロック間の余白を詰める。
-   margin は wrapper にだけ付ける (pre にも付けると影付きカードの内側で pre が浮き、縁に隙間が出る) */
-.tight-code .slidev-code-wrapper {
-  margin-top: 0.4rem !important;
-  margin-bottom: 0.4rem !important;
-}
-.tight-code pre {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0.7rem !important;
-  padding-bottom: 0.7rem !important;
 }
 
 /* コマンドと対応する .rego を同じ行に並べ、行ごとに高さを揃える */
@@ -201,11 +158,4 @@
 }
 .slidev-vclick-hidden {
   transform: translateX(-0.6rem);
-}
-
-/* 省略前のコードで消える部分をマーカーで塗ったように見せる (枠線なし・塗り強め) */
-.slidev-layout .marker-regions .findy-code-region {
-  border-color: transparent;
-  background: color-mix(in srgb, var(--region-color) 45%, transparent);
-  border-radius: 3px;
 }

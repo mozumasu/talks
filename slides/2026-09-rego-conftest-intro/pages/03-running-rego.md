@@ -8,7 +8,7 @@ toc: Regoを実行してみよう
 
 ---
 layout: two-cols
-class: env-setup
+class: code-xs env-setup
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.1
@@ -137,7 +137,7 @@ package main が conftest のデフォルト namespace。
 layout: content
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
-class: ns-demo
+class: code-xs ns-demo
 ---
 
 # package を分けて --namespace で選ぶ
@@ -224,7 +224,7 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.15
 valign: top
-class: code-sm tight-code
+class: code-sm code-tight
 ---
 
 # 「deny が出ない」を opa eval で追う
@@ -368,7 +368,7 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
-class: code-sm tight-code
+class: code-sm code-tight
 ---
 
 # 「キーが無い」は黙って通る
@@ -403,7 +403,7 @@ deny contains "env が prod ではない" if {
 
 <v-click at="2">
 
-<div class="compact-table">
+<div class="table-compact">
 
 | input の tags | `!=` | `not ==` |
 | --- | --- | --- |
@@ -435,7 +435,7 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
-class: code-sm tight-code
+class: code-sm code-tight
 ---
 
 # ループは書かない。some で列挙、every で全件
