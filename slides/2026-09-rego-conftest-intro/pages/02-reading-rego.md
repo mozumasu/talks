@@ -114,13 +114,14 @@ deny contains msg if {
 
 ---
 layout: two-cols
-title: 省略できる部分
 class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1.2
 valign: center
 ---
+
+# 省略できる部分
 
 完全形は `ヘッド if { ボディ }`。省略した部分は既定値になる
 
@@ -161,13 +162,14 @@ is_big は値を書いていないので true。条件が成り立たないと u
 
 ---
 layout: two-cols
-title: ".rego ファイルの構成要素"
 class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1
 valign: center
 ---
+
+# .rego ファイルの構成要素
 
 <FindyAnnotatedCode :line-height="1.7">
 
@@ -220,12 +222,13 @@ msg はボディの中だけで有効な変数。ここを混ぜると次のス�
 
 ---
 layout: two-cols
-title: "ルール名は自由。ただし制約は 2 つ"
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1
 valign: center
 ---
+
+# ルール名は自由。ただし制約は 2 つ
 
 #### ① 言語の制約: 予約語・グローバル変数は不可
 
@@ -279,12 +282,13 @@ opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
 
 ---
 layout: two-cols
-title: "さっそくRegoを読んでみよう"
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1.2
 valign: center
 ---
+
+# さっそくRegoを読んでみよう
 
 <v-clicks>
 

@@ -78,13 +78,14 @@ plan JSON は variables / prior_state を jq で落としてから artifact に�
 
 ---
 layout: two-cols
-title: ".tf が input になるとどんな形か: conftest parse で見る"
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.1
 valign: center
 class: code-sm tight-code
 ---
+
+# .tf が input になるとどんな形か: conftest parse で見る
 
 <FindyAnnotatedCode>
 
@@ -167,12 +168,13 @@ plan JSON も同じ発想で、jq で階層を確認してから書く。
 
 ---
 layout: two-cols
-title: "--combine の input はファイルの配列"
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.2
 valign: center
 ---
+
+# --combine の input はファイルの配列
 
 <v-clicks>
 
@@ -211,12 +213,13 @@ terraform { cloud { workspaces {} } } と 1 個ずつでも terraform[_].cloud[_
 
 ---
 layout: two-cols
-title: "HCL ポリシーの例: env が workspace 名に含まれること"
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.2
 valign: center
 ---
+
+# HCL ポリシーの例: env が workspace 名に含まれること
 
 <div class="code-compact">
 

@@ -10,12 +10,13 @@ toc: 運用のしくみ
 
 ---
 layout: two-cols
-title: 例外は「禁止」ではなく「理由の明示を強制」
 eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
 ---
+
+# 例外は「禁止」ではなく「理由の明示を強制」
 
 <v-clicks>
 
@@ -103,12 +104,13 @@ allowlist は plan JSON 系統 (policy/main) の deny には効かない。CIDR 
 
 ---
 layout: two-cols
-title: METADATA 注釈でポリシー一覧を自動生成
 eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
 ---
+
+# METADATA 注釈でポリシー一覧を自動生成
 
 <v-clicks>
 

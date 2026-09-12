@@ -17,8 +17,6 @@ valign: center
 
 # ConftestでRegoを動かす環境を用意
 
-::left::
-
 1. ハンズオン用のリポジトリを用意
 
 ```sh
@@ -78,12 +76,13 @@ opa eval を使うために open-policy-agent も入れておく。
 
 ---
 layout: two-cols
-title: inputを渡してConftestでRegoを実行する
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 ---
+
+# inputを渡してConftestでRegoを実行する
 
 ```json
 // input.json (チェック対象)
@@ -136,11 +135,12 @@ package main が conftest のデフォルト namespace。
 -->
 ---
 layout: content
-title: package を分けて --namespace で選ぶ
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 class: ns-demo
 ---
+
+# package を分けて --namespace で選ぶ
 
 <div class="ns-grid">
 
@@ -220,13 +220,14 @@ deny というルール名は namespace ごとに独立している。同じ den
 
 ---
 layout: two-cols
-title: 「deny が出ない」を opa eval で追う
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.15
 valign: top
 class: code-sm tight-code
 ---
+
+# 「deny が出ない」を opa eval で追う
 
 ```rego
 package main
@@ -298,13 +299,14 @@ input.json のキーが Size で、ポリシーは size を見ていた。Terraf
 
 ---
 layout: two-cols
-title: opa eval の出力は value だけ見る
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1
 valign: center
 class: code-sm
 ---
+
+# opa eval の出力は value だけ見る
 
 <FindyAnnotatedCode>
 
@@ -362,13 +364,14 @@ undefined は result 自体が無くなり {} だけになる。次の「undefin
 
 ---
 layout: two-cols
-title: 「キーが無い」は黙って通る
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm tight-code
 ---
+
+# 「キーが無い」は黙って通る
 
 <v-clicks>
 
@@ -428,13 +431,14 @@ conftest の deny 形式では出番が少ないのでスライドからは外�
 
 ---
 layout: two-cols
-title: ループは書かない。some で列挙、every で全件
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm tight-code
 ---
+
+# ループは書かない。some で列挙、every で全件
 
 ```json
 // input.json
@@ -493,13 +497,14 @@ every は「1 つでも満たさなければ undefined」。web の owner が空
 
 ---
 layout: two-cols
-title: ヘルパー関数 (自作) と組み込み関数
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm
 ---
+
+# ヘルパー関数 (自作) と組み込み関数
 
 <div class="text-sm">
 
@@ -568,12 +573,13 @@ object.get はキーが無いときに第 3 引数を返す。「無い」を nu
 
 ---
 layout: two-cols
-title: テストが採点者
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 ---
+
+# テストが採点者
 
 <v-clicks>
 
