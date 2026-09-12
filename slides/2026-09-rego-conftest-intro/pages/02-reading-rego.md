@@ -123,17 +123,20 @@ valign: center
 
 # 省略できる部分
 
-完全形は `ヘッド if { ボディ }`。右の 3 つは全部この形
+- 値の作り方
+- `{}`
+- ボディ
 
-<div class="compact-table">
+<v-click at="4">
 
-| 省略するもの | 意味 |
-| --- | --- |
-| <span class="rule-body">ボディ</span> | 条件なしで常に成り立つ = **定数** |
-| <span class="rule-head">値の作り方</span> | 値は **true** |
-| `{ }` | 式が 1 つなら省略できる |
+```rego
+# 省略前
+max_size := 10 if { true }
 
-</div>
+is_big := true if { input.size > max_size }
+```
+
+</v-click>
 
 ::right::
 
@@ -178,6 +181,17 @@ max_size := 10  # ボディを省略 → 常に 10 (定数)
 
 is_big if input.size > max_size  # 値の作り方を省略 → true。{ } も省略
 ```
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+
+# 省略後
+max_size := 10
+
+is_big if input.size > max_size
+```
 ````
 
 <!--
@@ -185,6 +199,7 @@ is_big if input.size > max_size  # 値の作り方を省略 → true。{ } も�
 max_size は「ボディが無いルール」であって変数ではない。
 is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
 完全形 3 つは opa 1.19.1 の check --strict を通し、eval で同じ結果になることを確認済み。
+最後のクリックで左に省略前を出し、右の省略後と並べて見比べる。
 -->
 
 ---
