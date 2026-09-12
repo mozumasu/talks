@@ -358,12 +358,14 @@ layout: two-cols
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1
-valign: center
+valign: top
 ---
 
 # ルール名は自由。ただし制約は 2 つ
 
 #### ① 言語の制約: 予約語・グローバル変数は不可
+
+<div v-click="1">
 
 <div class="text-sm leading-relaxed">
 
@@ -381,9 +383,13 @@ policy/a.rego:5: rego_parse_error:
   not keyword cannot be used for rule name
 ```
 
+</div>
+
 ::right::
 
 #### ② ツールの制約: 拾う名前が決まっている
+
+<div v-click="2">
 
 <div class="text-sm">
 
@@ -395,7 +401,9 @@ policy/a.rego:5: rego_parse_error:
 
 </div>
 
-<v-click>
+</div>
+
+<v-click at="3">
 
 <div class="mt-4">
 <FindyCallout label="deny は Rego の予約語ではなく conftest との約束">
@@ -413,49 +421,3 @@ policy/a.rego:5: rego_parse_error:
 opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
 -->
 
----
-layout: two-cols
-eyebrowNum: 2
-eyebrow: Rego の読み方
-ratio: 1/1.2
-valign: center
----
-
-# さっそくRegoを読んでみよう
-
-<v-clicks>
-
-- ルールの中の各行は **AND**
-- 全部真なら `msg` が `deny` 集合に入る
-- 1 行でも偽なら **deny には何も入らない**
-
-</v-clicks>
-
-::right::
-
-```rego {none|6-7|5,8|6-7}{at:1}
-package main
-
-import rego.v1
-
-deny contains msg if {
-	input.environment == "production"  # AND
-	input.debug == true                # AND
-	msg := "production では debug を無効に"
-}
-```
-
-<v-click>
-
-<div class="mt-3 text-sm op80">
-
-`deny contains msg if { ... }` = 「この条件がすべて真なら msg は deny に含まれる」
-
-</div>
-
-</v-click>
-
-<!--
-「実行する」ではなく「成り立つものを探す」。合否は deny 集合が空かどうかで決まる。
-合格判定を書くのではなく、違反を列挙する。
--->
