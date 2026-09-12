@@ -359,6 +359,7 @@ eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1
 valign: top
+class: code-sm code-tight
 ---
 
 # ルール名は自由。ただし制約は 2 つ
@@ -376,6 +377,11 @@ valign: top
 `input` / `data` は全部の値の入り口 (`input.debug`、`data.main.deny`) なので、ルール名で隠せない
 
 </div>
+
+```rego
+# policy/a.rego の 5 行目。not をルール名にすると
+not contains msg if { input.debug }
+```
 
 ```sh
 $ opa check --strict policy/
