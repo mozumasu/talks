@@ -255,8 +255,8 @@ max_size := 10 if { true }
 is_big := true if { input.size > max_size }
 
 # 省略後
-max_size := 10
-is_big if input.size > max_size
+max_size := 10  # ボディを省略 → 常に 10
+is_big if input.size > max_size  # 値の作り方と { } を省略 → true
 ```
 ````
 
@@ -271,8 +271,8 @@ max_size := 10 if { true }
 is_big := true if { input.size > max_size }
 
 # 省略後
-max_size := 10
-is_big if input.size > max_size
+max_size := 10  # ボディを省略 → 常に 10
+is_big if input.size > max_size  # 値の作り方と { } を省略 → true
 ```
 
 <FindyCodeRegion v-if="$clicks >= 5" :line="2" text="if { true }" variant="marker" color="#facc15" />
