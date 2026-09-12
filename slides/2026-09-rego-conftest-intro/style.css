@@ -242,3 +242,12 @@
 .flow-note.slidev-vclick-hidden {
   transform: none;
 }
+
+/* 同じグリッドセルで差し替える要素は、滑り込みのアニメーションを切って瞬時に入れ替える
+   (フェードと移動が重なるとチラつく) */
+.no-slide.slidev-vclick-target {
+  transition: none;
+}
+.no-slide.slidev-vclick-hidden {
+  transform: none;
+}

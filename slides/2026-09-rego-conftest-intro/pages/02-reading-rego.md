@@ -200,7 +200,7 @@ valign: center
 ::right::
 
 <div class="grid">
-<div class="col-start-1 row-start-1" v-click.hide="4">
+<div class="col-start-1 row-start-1 no-slide" v-click.hide="4">
 
 ````md magic-move {at:1}
 ```rego
@@ -227,7 +227,7 @@ is_big if input.size > max_size  # { } も省略
 
 </div>
 <span v-click="5" class="hidden" />
-<div v-if="$clicks >= 4" class="col-start-1 row-start-1">
+<div v-click="4" class="col-start-1 row-start-1 no-slide">
 
 <FindyAnnotatedCode>
 
