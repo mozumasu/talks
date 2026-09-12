@@ -105,23 +105,16 @@ deny contains msg if {
 -->
 
 ---
-layout: content
+layout: two-cols
 eyebrowNum: 2
 eyebrow: Rego の読み方
+ratio: 1.1/1
+valign: center
 ---
 
 # ルールの構造
 
-<div class="mb-3">
-ルール = <span class="rule-head">ヘッド</span> (<span class="rule-name">ルール名</span> + <span class="rule-head">値の作り方</span>) + <span class="rule-body">ボディ</span>
-</div>
-<div class="grid grid-cols-2 gap-x-6 mt-12 items-start">
-
-<pre class="rule-shape-block has-anno-tl"><span class="anno anno-head anno-tl" data-label="ヘッド"><span class="rule-name">&lt;ルール名&gt;</span> <span class="rule-head">&lt;値の作り方&gt;</span></span> if &#123;
-    <span class="anno anno-body anno-tl" data-label="ボディ"><span class="rule-body">&lt;ボディ&gt;</span></span>
-&#125;</pre>
-
-<FindyAnnotatedCode :line-height="1.6">
+<FindyAnnotatedCode :line-height="1.7">
 
 ```rego
 deny contains msg if {
@@ -130,18 +123,48 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion v-click="1" :line="1" text="deny" label="ルール名" color="#f0b866" />
-<FindyCodeRegion v-click="2" :line="1" text="contains msg" label="値の作り方" color="#7cc4ff" />
-<FindyCodeRegion v-click="3" :line="2" :end-line="3" label="ボディ" label-position="below-left" color="#7ee0a8" />
+<FindyCodeRegion v-if="$clicks >= 1 && $clicks < 3" :line="1" text="deny contains msg" label="ヘッド" color="#7cc4ff" />
+<FindyCodeRegion v-if="$clicks >= 2" :line="2" :end-line="3" label="ボディ" label-position="below-left" color="#7ee0a8" />
+<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="deny" label="ルール名" color="#f0b866" />
+<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="contains msg" label="値の作り方" color="#7cc4ff" />
 
 </FindyAnnotatedCode>
+
+::right::
+
+<div class="text-base leading-relaxed">
+
+<div v-click="1">
+
+**<span class="rule-head">ヘッド</span>**: 何を、どんな値で出すか
+
+</div>
+
+<div v-click="2" class="mt-2">
+
+**<span class="rule-body">ボディ</span>**: 成り立つべき条件 (各行は AND)
+
+</div>
+
+<div v-click="3" class="mt-5">
+
+ヘッドの中身は 2 つ
+
+- **<span class="rule-name">ルール名</span>**: `deny`
+- **<span class="rule-head">値の作り方</span>**: `contains msg` (msg を集合に入れる)
+
+<pre class="rule-shape-block mt-3"><span class="rule-name">&lt;ルール名&gt;</span> <span class="rule-head">&lt;値の作り方&gt;</span> if &#123;
+    <span class="rule-body">&lt;ボディ&gt;</span>
+&#125;</pre>
+
+</div>
 
 </div>
 
 <!--
 用語は公式ドキュメントに合わせている (rule = head + body)。英語のドキュメントを読むときにそのまま繋がる。
-どのルールも同じ「ヘッド if { ボディ }」で、名前が違うだけ。
-左の骨格と右の実例を同じ色で対応させている。クリックでルール名 → 値の作り方 → ボディの順に指す。
+まずヘッドとボディの 2 つに分け、次にヘッドをルール名と値の作り方に分ける。
+最後に骨格を出して「どのルールも同じ形で、名前と値の作り方が違うだけ」に繋げる。
 -->
 
 ---
@@ -188,7 +211,6 @@ layout: two-cols
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/3
-valign: center
 ---
 
 # 省略できる部分
