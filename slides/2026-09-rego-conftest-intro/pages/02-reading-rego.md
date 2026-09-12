@@ -113,29 +113,17 @@ deny contains msg if {
 -->
 
 ---
-layout: two-cols
+layout: content
 class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
-ratio: 1/1.2
-valign: center
 ---
 
 # 省略できる部分
 
-完全形は `ヘッド if { ボディ }`。右の 3 つは全部この形
+完全形は `ヘッド if { ボディ }`。下の 3 つは全部この形
 
-<div class="compact-table">
-
-| 省略するもの | 意味 |
-| --- | --- |
-| <span v-click="1"><span class="rule-body">ボディ</span></span> | <span v-click="1">条件なしで常に成り立つ = **定数**</span> |
-| <span v-click="2"><span class="rule-head">値の作り方</span></span> | <span v-click="2">値は **true**</span> |
-| <span v-click="3">`{ }`</span> | <span v-click="3">式が 1 つなら省略できる</span> |
-
-</div>
-
-::right::
+<div class="mx-auto mt-2" style="width: 36rem">
 
 ````md magic-move {at:1}
 ```rego
@@ -179,6 +167,16 @@ max_size := 10
 is_big if input.size > max_size
 ```
 ````
+
+<div class="mt-3 text-base min-h-8">
+<v-switch>
+  <template #1><span class="rule-body">ボディ</span> を省略 → 条件なしで常に成り立つ = <strong>定数</strong></template>
+  <template #2><span class="rule-head">値の作り方</span> を省略 → 値は <strong>true</strong></template>
+  <template #3><code>{ }</code> を省略 → 式が 1 つなら書かなくてよい</template>
+</v-switch>
+</div>
+
+</div>
 
 <!--
 最初は 3 つとも完全形で書いてある。クリックごとに 1 か所ずつ消して、普段見る短い形に縮める。
