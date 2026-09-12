@@ -187,20 +187,20 @@ conftest のポリシーで書くのはほぼ集合ルール (deny) と、その
 layout: two-cols
 eyebrowNum: 2
 eyebrow: Rego の読み方
-ratio: 1/1.8
+ratio: 1/3
 valign: center
 ---
 
 # 省略できる部分
 
+- ボディ
 - 値の作り方
 - `{}`
-- ボディ
 
 ::right::
 
 <div class="grid">
-<div class="col-start-1 row-start-1 no-slide" v-click.hide="4">
+<div class="col-start-1 row-start-1 no-slide" v-click.hide="5">
 
 ````md magic-move {at:1}
 ```rego
@@ -223,13 +223,21 @@ max_size := 10  # ボディを省略 → 常に 10
 
 is_big if input.size > max_size  # { } も省略
 ```
+```rego
+# 省略前
+max_size := 10 if { true }
+is_big := true if { input.size > max_size }
+
+# 省略後
+max_size := 10
+is_big if input.size > max_size
+```
 ````
 
 </div>
-<span v-click="5" class="hidden" />
-<div v-click="4" class="col-start-1 row-start-1 no-slide">
+<div v-click="5" class="col-start-1 row-start-1 no-slide">
 
-<FindyAnnotatedCode>
+<FindyAnnotatedCode :line-height="1.65">
 
 ```rego
 # 省略前
@@ -268,7 +276,7 @@ ratio: 1/1
 valign: center
 ---
 
-# .rego ファイルの構成要素
+# Regoの構造おさらい
 
 <FindyAnnotatedCode :line-height="1.7">
 
