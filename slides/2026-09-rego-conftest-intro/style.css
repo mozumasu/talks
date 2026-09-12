@@ -26,7 +26,7 @@
   padding: 0.6rem var(--slidev-code-padding);
   margin: 0.45rem 0;
   font-family: var(--slidev-code-font-family, ui-monospace, monospace);
-  font-size: 0.74rem;
+  font-size: 1.1rem;
   line-height: 1.55;
   overflow-x: auto;
 }

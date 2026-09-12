@@ -106,17 +106,16 @@ deny contains msg if {
 
 ---
 layout: content
-class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ---
 
-## ルールの構造
+# ルールの構造
 
-<div class="text-sm mb-3">
+<div class="mb-3">
 ルール = <span class="rule-head">ヘッド</span> (<span class="rule-name">ルール名</span> + <span class="rule-head">値の作り方</span>) + <span class="rule-body">ボディ</span>
 </div>
-<div class="grid grid-cols-2 gap-x-5 mt-3 items-start">
+<div class="grid grid-cols-2 gap-x-6 mt-12 items-start">
 
 <pre class="rule-shape-block has-anno-tl"><span class="anno anno-head anno-tl" data-label="ヘッド"><span class="rule-name">&lt;ルール名&gt;</span> <span class="rule-head">&lt;値の作り方&gt;</span></span> if &#123;
     <span class="anno anno-body anno-tl" data-label="ボディ"><span class="rule-body">&lt;ボディ&gt;</span></span>
@@ -131,31 +130,57 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion :line="1" text="deny" color="#f0b866" />
-<FindyCodeRegion :line="1" text="contains msg" color="#7cc4ff" />
-<FindyCodeRegion :line="2" :end-line="3" color="#7ee0a8" />
+<FindyCodeRegion v-click="1" :line="1" text="deny" label="ルール名" color="#f0b866" />
+<FindyCodeRegion v-click="2" :line="1" text="contains msg" label="値の作り方" color="#7cc4ff" />
+<FindyCodeRegion v-click="3" :line="2" :end-line="3" label="ボディ" label-position="below-left" color="#7ee0a8" />
 
 </FindyAnnotatedCode>
-
-</div>
-
-
-<div class="table-compact">
-
-| 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 |
-| --- | --- | --- |
-| 定数 | `name := 値` (ボディなし) | その値 |
-| 真偽ルール | `name if { ... }` | 成立なら true、不成立なら **undefined** |
-| 集合ルール | `name contains x if { ... }` | 条件を満たした x の集合。同名を複数書くと合算 |
-| オブジェクトルール | `name[key] := value if { ... }` | key → value のマップ |
-| 関数 | `name(引数) := 値 if { ... }` | 引数ごとの値 |
-| 内包表記 | `{x \| 条件}` / `[x \| 条件]` | 式の中に埋め込んだ集合 / 配列 |
 
 </div>
 
 <!--
 用語は公式ドキュメントに合わせている (rule = head + body)。英語のドキュメントを読むときにそのまま繋がる。
 どのルールも同じ「ヘッド if { ボディ }」で、名前が違うだけ。
+左の骨格と右の実例を同じ色で対応させている。クリックでルール名 → 値の作り方 → ボディの順に指す。
+-->
+
+---
+layout: content
+eyebrowNum: 2
+eyebrow: Rego の読み方
+---
+
+# ルールの種類は 3 つ覚えれば足りる
+
+<div class="text-sm">
+
+| 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 | 今日の例 |
+| --- | --- | --- | --- |
+| 集合ルール | `name contains x if { ... }` | 条件を満たした x の集合。同名を複数書くと合算 | `deny` |
+| 真偽ルール | `name if { ... }` | 成立なら true、不成立なら **undefined** | `is_big` |
+| 定数 | `name := 値` (ボディなし) | その値 | `max_size` |
+
+</div>
+
+<v-click>
+
+<div class="mt-5 text-sm op80">
+
+**残り 2 つ**は出てきたときに読めれば十分
+
+| 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 |
+| --- | --- | --- |
+| 関数 | `name(引数) := 値 if { ... }` | 引数ごとの値 (3 章のヘルパー関数で登場) |
+| オブジェクトルール | `name[key] := value if { ... }` | key → value のマップ |
+
+</div>
+
+</v-click>
+
+<!--
+conftest のポリシーで書くのはほぼ集合ルール (deny) と、その条件を切り出した真偽ルール、閾値の定数。
+関数は 3 章で cidr_allowed(cidr) として出てくる。オブジェクトルールは今日のデッキには出てこない。
+内包表記 {x | 条件} はルールではなく式の書き方なので、ここには入れていない。
 -->
 
 ---
