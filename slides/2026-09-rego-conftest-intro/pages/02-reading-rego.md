@@ -393,7 +393,7 @@ policy/a.rego:5: rego_parse_error:
 
 </div>
 
-<div class="col-span-2 mt-1">
+<div class="col-span-2 mt-2 pt-3 border-t border-gray-200">
 
 #### ② ツールの制約: 拾う名前が決まっている
 
