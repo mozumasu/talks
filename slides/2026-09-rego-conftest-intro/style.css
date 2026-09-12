@@ -169,13 +169,15 @@
   font-size: 0.6rem !important;
   line-height: 1.5 !important;
 }
-/* コードブロックを縦に 3 つ以上積むスライド。ブロック間の余白を詰める */
-.tight-code .slidev-code-wrapper,
-.tight-code pre {
+/* コードブロックを縦に 3 つ以上積むスライド。ブロック間の余白を詰める。
+   margin は wrapper にだけ付ける (pre にも付けると影付きカードの内側で pre が浮き、縁に隙間が出る) */
+.tight-code .slidev-code-wrapper {
   margin-top: 0.4rem !important;
   margin-bottom: 0.4rem !important;
 }
 .tight-code pre {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
   padding-top: 0.7rem !important;
   padding-bottom: 0.7rem !important;
 }
