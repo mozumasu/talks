@@ -354,32 +354,34 @@ msg はボディの中だけで有効な変数。ここを混ぜると次のス�
 -->
 
 ---
-layout: two-cols
+layout: content
 eyebrowNum: 2
 eyebrow: Rego の読み方
-ratio: 1/1
-valign: top
 class: code-sm code-tight
 ---
 
 # ルール名は自由。ただし制約は 2 つ
 
+<div class="grid grid-cols-[1fr_1.15fr] gap-x-8 gap-y-2 items-start text-sm">
+
+<div class="col-span-2">
+
 #### ① 言語の制約: 予約語・グローバル変数は不可
-
-<div v-click="1">
-
-<div class="text-sm leading-relaxed">
-
-予約語  
-`package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
-
-グローバル変数  
-`input` / `data` は全部の値の入り口 (`input.debug`、`data.main.deny`) なので、ルール名で隠せない
 
 </div>
 
+<div v-click="1" class="leading-relaxed">
+
+予約語: `package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
+
+グローバル変数 `input` / `data` も不可 (全部の値の入り口なので、ルール名で隠せない)
+
+</div>
+
+<div v-click="1">
+
 ```rego
-# policy/a.rego の 5 行目。not をルール名にすると
+# not をルール名にすると
 not contains msg if { input.debug }
 ```
 
@@ -391,13 +393,13 @@ policy/a.rego:5: rego_parse_error:
 
 </div>
 
-::right::
+<div class="col-span-2 mt-1">
 
 #### ② ツールの制約: 拾う名前が決まっている
 
-<div v-click="2">
+</div>
 
-<div class="text-sm">
+<div v-click="2" class="table-compact" style="font-size: 1.3rem">
 
 | ツール | 拾うルール名 |
 | --- | --- |
@@ -407,17 +409,13 @@ policy/a.rego:5: rego_parse_error:
 
 </div>
 
-</div>
-
-<v-click at="3">
-
-<div class="mt-4">
+<div v-click="3">
 <FindyCallout label="deny は Rego の予約語ではなく conftest との約束">
 <code>mydeny</code> にリネームすると conftest は拾わず、<code>0 tests, 0 passed</code> で緑になる
 </FindyCallout>
 </div>
 
-</v-click>
+</div>
 
 <!--
 さっき conftest が deny を拾ったのは Rego の仕様ではなく conftest の約束。
@@ -425,5 +423,5 @@ policy/a.rego:5: rego_parse_error:
 ここを混同すると「deny という書き方を覚える」で止まってしまう。
 後半に出てくる finding も conftest が見に来る名前ではなく、exceptions.rego が deny に変換している。
 opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
+エラー文は opa 1.19.1 の実出力。
 -->
-
