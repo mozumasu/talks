@@ -577,45 +577,82 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
+class: code-sm code-tight
 ---
 
 # テストが採点者
 
+<div class="text-sm">
+
+前の CIDR ポリシーに 3 つの input を通すと
+
+</div>
+
+<div class="table-compact">
+
+| input | deny の中身 | `count(deny)` |
+| --- | --- | --- |
+| `ok` (10.1.0.0/16) | `[]` | 0 |
+| `ng` (192.168.0.0/16) | `["…は割当外です"]` | 1 |
+| `{}` (欠落) | `["CIDR null は…"]` | 1 |
+
+</div>
+
 <v-clicks>
 
-- `*_test.rego` に `test_` ルールを書く
-- `with input as {...}` で入力を差し替え
-- `count(deny) == N` の **完全一致**
-- 3 ケース: 準拠 pass / 違反 deny / 欠落 deny
-- 実行は `conftest verify -p policy/`
+<div class="text-sm mt-3">
+
+`count(deny)` = **違反の件数**。テストは input ごとにこの数を固定する
+
+</div>
+
+<div class="text-sm mt-2">
+
+`with input as` はその 1 行だけ input を差し替え。`test_` ルールが真なら pass
+
+</div>
 
 </v-clicks>
 
 ::right::
 
-<div class="code-compact">
-
 ```rego
 # cidr_test.rego (package / import は省略)
 ok := {"cidr": "10.1.0.0/16"}
 ng := {"cidr": "192.168.0.0/16"}
-
 test_allowed_passes if {
 	count(deny) == 0 with input as ok
 }
-
 test_out_of_range_denied if {
 	count(deny) == 1 with input as ng
 }
-
 test_missing_denied if {
 	count(deny) == 1 with input as {}
 }
 ```
 
-</div>
+<v-click at="3">
+
+```sh
+$ conftest verify -p policy/
+3 tests, 3 passed, 0 warnings, 0 failures
+```
+
+</v-click>
+
+<v-click at="4">
+
+```sh
+# ポリシーの "cidr" を "cidrs" にタイポすると
+FAIL - policy/cidr_test.rego - data.main.test_allowed_passes
+```
+
+</v-click>
 
 <!--
-壊れたポリシーはエラーを出さず deny が空になるだけ。
-「違反入力で deny が出る」テストが唯一の検出器。テストの無い Rego は「壊れても緑」で運用されることになる。
+壊れたポリシーはエラーを出さず、deny が空になるか全部に出るかのどちらかに倒れる。
+CI の conftest test は「違反ゼロ」と同じ顔で緑になるので、期待する件数を固定したテストが唯一の検出器。
+タイポの例では cidr が常に null になり ok まで deny されるので、test_allowed_passes が落ちる。
+テストの無い Rego は「壊れても緑」で運用されることになる。
+結果は opa 1.19.1 / conftest 0.69.0 で確認したもの。
 -->

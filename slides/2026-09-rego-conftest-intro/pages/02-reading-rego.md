@@ -24,8 +24,8 @@ eyebrow: Rego の読み方
 
 ## ルール
 
-「名前 + 条件」の宣言。条件が成り立つときだけ、名前に値が入る  
-右の例では、条件がすべて成り立った `msg` が `deny` に集まる
+**名前 + 条件** の宣言  
+条件が成り立つときだけ、名前に値が入る  
 
 </div>
 
@@ -44,6 +44,7 @@ for tag in tags:          # ループ
 <FindyAnnotatedCode>
 
 ```rego
+# Rego: 条件を宣言
 deny contains msg if {
 	some tag in input.tags
 	count(tag) >= 6
@@ -51,15 +52,56 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion v-click="1" :line="1" text="deny" label="名前" color="#3b82f6" />
-<FindyCodeRegion v-click="1" :line="2" :end-line="4" label="条件" label-position="below-left" color="#10b981" />
+<FindyCodeRegion v-click="2" :line="2" text="deny" label="名前" color="#3b82f6" />
+<FindyCodeRegion v-click="3" :line="3" :end-line="5" label="条件" label-position="below-left" color="#10b981" />
 
 </FindyAnnotatedCode>
 
+---
+layout: two-cols
+eyebrowNum: 2
+eyebrow: Rego の読み方
+ratio: 1/1.2
+valign: center
+---
+
+# さっそくRegoを読んでみよう
+
+<v-clicks>
+
+- ルールの中の各行は **AND**
+- 全部真なら `msg` が `deny` 集合に入る
+- 1 行でも偽なら **deny には何も入らない**
+
+</v-clicks>
+
+::right::
+
+```rego {none|6-7|5,8|6-7}{at:1}
+package main
+
+import rego.v1
+
+deny contains msg if {
+	input.environment == "production"  # AND
+	input.debug == true                # AND
+	msg := "production では debug を無効に"
+}
+```
+
+<v-click>
+
+<div class="mt-3 text-sm op80">
+
+`deny contains msg if { ... }` = 「この条件がすべて真なら msg は deny に含まれる」
+
+</div>
+
+</v-click>
+
 <!--
-他の言語に対応物が無いのがここ。関数でも変数でもなく、SQL のビューが一番近い。
-CREATE VIEW deny AS SELECT ... FROM tags WHERE length(tag) >= 6 と同じ気持ち。
-ボディは「手順」ではなく「あり得る値の組み合わせ全部に対するフィルタ」。
+「実行する」ではなく「成り立つものを探す」。合否は deny 集合が空かどうかで決まる。
+合格判定を書くのではなく、違反を列挙する。
 -->
 
 ---
