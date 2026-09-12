@@ -80,12 +80,12 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
+class: code-sm code-tight
 ---
 
 # inputを渡してConftestでRegoを実行する
 
-```json
-// input.json (チェック対象)
+```json [input.json (チェック対象)]
 {
   "environment": "production",
   "debug": true
@@ -106,8 +106,7 @@ FAIL - input.json - main -
 
 ::right::
 
-```rego
-# policy/debug.rego (ポリシー)
+```rego [policy/debug.rego (ポリシー)]
 package main
 
 import rego.v1
