@@ -123,22 +123,51 @@ valign: center
 
 # 省略できる部分
 
-完全形は `ヘッド if { ボディ }`。省略した部分は既定値になる
+完全形は `ヘッド if { ボディ }`。右の 3 つは全部この形
 
 <div class="compact-table">
 
 | 省略するもの | 意味 |
 | --- | --- |
-| <span class="rule-body">ボディ</span> | 条件なしで常に成り立つ = **定数** |
-| <span class="rule-head">値の作り方</span> | 値は **true** |
-| `{ }` | 式が 1 つなら省略できる |
+| <span v-click="1"><span class="rule-body">ボディ</span></span> | <span v-click="1">条件なしで常に成り立つ = **定数**</span> |
+| <span v-click="2"><span class="rule-head">値の作り方</span></span> | <span v-click="2">値は **true**</span> |
+| <span v-click="3">`{ }`</span> | <span v-click="3">式が 1 つなら省略できる</span> |
 
 </div>
 
 ::right::
 
-<FindyAnnotatedCode>
+````md magic-move {at:1}
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
 
+max_size := 10 if { true }
+
+is_big := true if { input.size > max_size }
+```
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+
+max_size := 10
+
+is_big := true if { input.size > max_size }
+```
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+
+max_size := 10
+
+is_big if { input.size > max_size }
+```
 ```rego
 deny contains msg if {
 	is_big
@@ -149,15 +178,13 @@ max_size := 10
 
 is_big if input.size > max_size
 ```
-
-<FindyCodeRegion :line="6" label="ボディを省略 → 常に 10" color="#7ee0a8" />
-<FindyCodeRegion :line="8" label="値の作り方を省略 → true。{ } も省略" color="#7cc4ff" />
-
-</FindyAnnotatedCode>
+````
 
 <!--
-どれも同じ「ヘッド if { ボディ }」の省略形。max_size は「ボディが無いルール」であって変数ではない。
+最初は 3 つとも完全形で書いてある。クリックごとに 1 か所ずつ消して、普段見る短い形に縮める。
+max_size は「ボディが無いルール」であって変数ではない。
 is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
+完全形 3 つは opa 1.19.1 の check --strict を通し、eval で同じ結果になることを確認済み。
 -->
 
 ---
