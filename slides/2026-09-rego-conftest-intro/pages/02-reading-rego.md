@@ -332,7 +332,9 @@ valign: center
 
 ::right::
 
-```rego {none|6-7|5,8|6-7}{at:1}
+<FindyAnnotatedCode>
+
+```rego
 package main
 
 import rego.v1
@@ -343,6 +345,12 @@ deny contains msg if {
 	msg := "production では debug を無効に"
 }
 ```
+
+<FindyCodeRegion v-click="1" :line="6" :end-line="7" color="#10b981" />
+<FindyCodeRegion v-click="2" :line="5" text="deny contains msg" label="全部真なら msg が deny に入る" color="#3b82f6" />
+<FindyCodeRegion v-click="2" :line="8" text='msg := "production では debug を無効に"' color="#3b82f6" />
+
+</FindyAnnotatedCode>
 
 <v-click>
 
