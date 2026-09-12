@@ -115,7 +115,7 @@ valign: center
 # ルールの構造
 
 <div class="mb-4">
-ルール = <span class="rule-head">ヘッド</span> + <span class="rule-body">ボディ</span>
+ルール = <code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code>
 </div>
 
 <FindyAnnotatedCode :line-height="1.7">
