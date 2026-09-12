@@ -113,17 +113,29 @@ deny contains msg if {
 -->
 
 ---
-layout: content
+layout: two-cols
 class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
+ratio: 1/1.4
+valign: center
 ---
 
 # 省略できる部分
 
-完全形は `ヘッド if { ボディ }`。下の 3 つは全部この形
+完全形は `ヘッド if { ボディ }`。右の 3 つは全部この形
 
-<div class="mx-auto mt-2" style="width: 36rem">
+<div class="compact-table">
+
+| 省略するもの | 意味 |
+| --- | --- |
+| <span class="rule-body">ボディ</span> | 条件なしで常に成り立つ = **定数** |
+| <span class="rule-head">値の作り方</span> | 値は **true** |
+| `{ }` | 式が 1 つなら省略できる |
+
+</div>
+
+::right::
 
 ````md magic-move {at:1}
 ```rego
@@ -142,7 +154,7 @@ deny contains msg if {
 	msg := "size 超過"
 }
 
-max_size := 10
+max_size := 10  # ボディを省略 → 常に 10 (定数)
 
 is_big := true if { input.size > max_size }
 ```
@@ -152,9 +164,9 @@ deny contains msg if {
 	msg := "size 超過"
 }
 
-max_size := 10
+max_size := 10  # ボディを省略 → 常に 10 (定数)
 
-is_big if { input.size > max_size }
+is_big if { input.size > max_size }  # 値の作り方を省略 → true
 ```
 ```rego
 deny contains msg if {
@@ -162,21 +174,11 @@ deny contains msg if {
 	msg := "size 超過"
 }
 
-max_size := 10
+max_size := 10  # ボディを省略 → 常に 10 (定数)
 
-is_big if input.size > max_size
+is_big if input.size > max_size  # 値の作り方を省略 → true。{ } も省略
 ```
 ````
-
-<div class="mt-3 text-base min-h-8">
-<v-switch>
-  <template #1><span class="rule-body">ボディ</span> を省略 → 条件なしで常に成り立つ = <strong>定数</strong></template>
-  <template #2><span class="rule-head">値の作り方</span> を省略 → 値は <strong>true</strong></template>
-  <template #3><code>{ }</code> を省略 → 式が 1 つなら書かなくてよい</template>
-</v-switch>
-</div>
-
-</div>
 
 <!--
 最初は 3 つとも完全形で書いてある。クリックごとに 1 か所ずつ消して、普段見る短い形に縮める。
