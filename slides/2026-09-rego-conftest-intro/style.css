@@ -200,3 +200,10 @@
 .slidev-vclick-hidden {
   transform: translateX(-0.6rem);
 }
+
+/* 省略前のコードで消える部分をマーカーで塗ったように見せる (枠線なし・塗り強め) */
+.slidev-layout .marker-regions .findy-code-region {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--region-color) 45%, transparent);
+  border-radius: 3px;
+}

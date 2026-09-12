@@ -114,10 +114,9 @@ deny contains msg if {
 
 ---
 layout: two-cols
-class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
-ratio: 1/1.4
+ratio: 1/1.8
 valign: center
 ---
 
@@ -129,47 +128,37 @@ valign: center
 
 ::right::
 
+<div class="grid">
+<div class="col-start-1 row-start-1" v-click.hide="4">
+
 ````md magic-move {at:1}
 ```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
-
 max_size := 10 if { true }
 
 is_big := true if { input.size > max_size }
 ```
 ```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
-
-max_size := 10  # ボディを省略 → 常に 10 (定数)
+max_size := 10  # ボディを省略 → 常に 10
 
 is_big := true if { input.size > max_size }
 ```
 ```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
-
-max_size := 10  # ボディを省略 → 常に 10 (定数)
+max_size := 10  # ボディを省略 → 常に 10
 
 is_big if { input.size > max_size }  # 値の作り方を省略 → true
 ```
 ```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
+max_size := 10  # ボディを省略 → 常に 10
 
-max_size := 10  # ボディを省略 → 常に 10 (定数)
-
-is_big if input.size > max_size  # 値の作り方を省略 → true。{ } も省略
+is_big if input.size > max_size  # { } も省略
 ```
+````
+
+</div>
+<div class="col-start-1 row-start-1 marker-regions" v-click="4">
+
+<FindyAnnotatedCode>
+
 ```rego
 # 省略前
 max_size := 10 if { true }
@@ -179,14 +168,23 @@ is_big := true if { input.size > max_size }
 max_size := 10
 is_big if input.size > max_size
 ```
-````
+
+<FindyCodeRegion :line="2" text="if { true }" color="#facc15" />
+<FindyCodeRegion :line="3" text=":= true" color="#facc15" />
+<FindyCodeRegion :line="3" text="{ " color="#facc15" />
+<FindyCodeRegion :line="3" text=" }" color="#facc15" />
+
+</FindyAnnotatedCode>
+
+</div>
+</div>
 
 <!--
-最初は 3 つとも完全形で書いてある。クリックごとに 1 か所ずつ消して、普段見る短い形に縮める。
+最初は 2 つとも完全形で書いてある。クリックごとに 1 か所ずつ消して、普段見る短い形に縮める。
 max_size は「ボディが無いルール」であって変数ではない。
 is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
-完全形 3 つは opa 1.19.1 の check --strict を通し、eval で同じ結果になることを確認済み。
-最後のクリックで deny を外し、省略前と省略後を上下に並べて見比べる。
+完全形 2 つは opa 1.19.1 の check --strict を通し、eval で同じ結果になることを確認済み。
+最後のクリックで省略前と省略後を上下に並べて見比べる。
 -->
 
 ---
