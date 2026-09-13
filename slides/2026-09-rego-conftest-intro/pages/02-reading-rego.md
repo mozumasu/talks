@@ -300,19 +300,21 @@ is_big は値を書いていないので true。条件が成り立たないと u
 -->
 
 ---
-layout: two-cols
-class: code-sm
+layout: content
+class: code-sm code-tight
 eyebrowNum: 2
 eyebrow: Rego の読み方
-ratio: 1/1
-valign: center
 ---
 
 # Regoの構造おさらい
 
-<FindyAnnotatedCode :line-height="1.7">
+<div class="grid grid-cols-2 gap-x-8 items-start">
 
-```rego
+<div>
+
+<FindyAnnotatedCode :line-height="1.5">
+
+```rego [policy/size.rego]
 package main        # 必須。1 ファイルに 1 つ
 
 import rego.v1      # Rego のバージョンを指定
@@ -336,9 +338,11 @@ is_big if input.size > max_size
 
 </FindyAnnotatedCode>
 
-::right::
+</div>
 
-<div class="quiz mt-2">
+<div>
+
+<div class="quiz">
 
 - <span v-mark.circle.red="1">Q1. ルールはどこでしょう</span>
 - <span v-mark.circle.blue="2">Q2. ヘッドはどこでしょう</span>
@@ -353,10 +357,24 @@ is_big if input.size > max_size
 </FindyCallout>
 </div>
 
-<div v-click="8" class="mt-3 code-tight">
+</div>
+
+</div>
+
+<div v-click="8" class="grid grid-cols-[1fr_1.6fr] gap-x-8 items-start mt-2 pt-2 border-t border-gray-200">
+
+<div>
+
+```json
+// input.json
+{ "size": 30 }
+```
+
+</div>
+
+<div>
 
 ```sh
-# input.json は { "size": 30 }
 $ opa eval -d policy/ -i input.json 'data.main' --format pretty
 { "deny": ["size 超過"], "is_big": true, "max_size": 10 }
 # ルール 3 つが見える。msg は無い (opa eval は 3 章で)
@@ -364,10 +382,13 @@ $ opa eval -d policy/ -i input.json 'data.main' --format pretty
 
 </div>
 
+</div>
+
 <!--
 package はファイルの名前空間。conftest は既定で package main の deny を見る。
 「変数を宣言する」文法は無い。max_size は data.main.max_size として外から引けるルールで、
 msg はボディの中だけで有効な変数。ここを混ぜると次のスライドの表が読めなくなる。
+最後に opa eval で data.main を見せ、ルール 3 つは出て msg は出ないことを実物で示す (opa 1.19.1)。
 -->
 
 ---
