@@ -7,69 +7,94 @@ toc: Regoを実行してみよう
 # Regoを実行してみよう
 
 ---
-layout: two-cols
+layout: content
 class: code-xs env-setup
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
-ratio: 1/1.1
-valign: center
 ---
 
 # ConftestでRegoを動かす環境を用意
 
-1. ハンズオン用のリポジトリを用意
+<FindyTabs :tabs="{ nix: 'Nix', brew: 'Homebrew' }">
+
+<template v-slot:nix>
+
+<div class="env-cols">
+<div>
+
+1. ハンズオンのリポジトリを取ってくる
 
 ```sh
-gh repo create rego-handson
-ghq get rego-handson
-# rego-handsonディレクトリに移動
+ghq get mozumasu/rego-playground
+cd $(ghq root)/github.com/mozumasu/rego-playground
+```
+
+2. flake でツールを入れる
+
+```sh
+direnv allow
+conftest --version
+opa version
+```
+
+</div>
+<div>
+
+同梱の flake.nix。自分のリポジトリで使うときは `packages` にこの 2 行を足すだけ
+
+```nix [flake.nix (抜粋)]
+devShells.default = pkgs.mkShell {
+  packages = [
+    pkgs.open-policy-agent # [!code highlight]
+    pkgs.conftest # [!code highlight]
+  ];
+};
+```
+
+</div>
+</div>
+
+</template>
+
+<template v-slot:brew>
+
+<div class="env-cols">
+<div>
+
+1. ハンズオンのリポジトリを取ってくる
+
+```sh
+git clone https://github.com/mozumasu/rego-playground
+cd rego-playground
 ```
 
 2. 必要なツールをインストール
 
 ```sh
-# flake.nixのテンプレートを使う場合
-nix flake init --template github:mozumasu/nix-templates
-# pkgs.conftest と pkgs.open-policy-agent を 追記する
-direnv allow
-```
-
-::right::
-
-生成された flake.nix に 2 行追記する
-
-<div class="flake-code">
-
-```nix
-{
-  description = "defalut flake.nix";
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-  };
-  outputs =
-    { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in
-      {
-        devShells.default = pkgs.mkShell {
-          packages = [
-            pkgs.conftest # [!code highlight]
-            pkgs.open-policy-agent # [!code highlight]
-          ];
-        };
-      }
-    );
-}
+brew install conftest opa
 ```
 
 </div>
+<div>
+
+入ったことを確認する
+
+```sh
+conftest --version
+opa version
+```
+
+</div>
+</div>
+
+</template>
+
+</FindyTabs>
 
 <!--
-テンプレートを取ってきて packages に 2 行足すだけ。
+どちらのタブも rego-playground を取ってくるところから。Nix なら同梱の flake.nix で direnv allow だけ
+(自分のリポジトリで使うときは packages にこの 2 行を足すだけ)、
+Homebrew なら brew install で conftest と opa を入れる。
 conftest は OPA をライブラリとして内蔵しているが opa コマンドは同梱しないので、
 opa eval を使うために open-policy-agent も入れておく。
 -->

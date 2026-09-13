@@ -132,11 +132,34 @@
 .env-setup .slidev-code {
   line-height: 1.45 !important;
 }
-.flake-code {
-  --findy-code-compact-size: 0.5rem;
+/* タブの各パネル内で two-cols 相当の 2 カラムを組む (ratio 1/1.1)。
+   上詰めにしないと flake.nix の高さ分でパネルが伸び footer に食い込む */
+.env-setup .env-cols {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 2rem;
+  align-items: stretch;
+  margin-top: 1rem;
+  font-size: 1.4rem;
 }
-.flake-code .slidev-code {
-  line-height: 1.3 !important;
+.env-setup .env-cols > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* 左カラムは右の flake.nix の高さいっぱいに広げ、上端・下端を右と揃える */
+.env-setup .env-cols > div:first-child {
+  justify-content: space-between;
+}
+/* flex item になった ol は li の margin を外へ畳まないので、右の p 側だけ li と同じ余白を足す */
+.env-setup .env-cols > div > ol:first-child {
+  margin-top: 0;
+}
+.env-setup .env-cols > div > p:first-child {
+  margin-top: 0.3em;
+}
+.env-setup .env-cols .slidev-code-wrapper:last-child {
+  margin-bottom: 0;
 }
 
 /* v-click で出る要素は左から滑り込む */
