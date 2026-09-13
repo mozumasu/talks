@@ -114,8 +114,8 @@ valign: center
 
 # ルールの構造
 
-<div class="mb-4">
-ルール = <code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code>
+<div class="mb-5 formula">
+ルール = <code class="rule-shape"><span v-if="$clicks < 3" class="rule-head">ヘッド</span><span v-else class="anno anno-head anno-tl" data-label="ヘッド"><span class="rule-name">ルール名</span> <span class="rule-head">値の作り方</span></span> if { <span class="rule-body">ボディ</span> }</code>
 </div>
 
 <FindyAnnotatedCode :line-height="1.7">
@@ -127,10 +127,10 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion v-if="$clicks >= 1 && $clicks < 3" :line="1" text="deny contains msg" label="ヘッド" color="#7cc4ff" />
+<FindyCodeRegion v-if="$clicks >= 1" :line="1" text="deny contains msg" label="ヘッド" color="#7cc4ff" :pad="$clicks >= 3 ? '0.38em' : '0.18em'" />
 <FindyCodeRegion v-if="$clicks >= 2" :line="2" :end-line="3" label="ボディ" label-position="below-left" color="#7ee0a8" />
-<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="deny" label="ルール名" color="#f0b866" />
-<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="contains msg" label="値の作り方" color="#7cc4ff" />
+<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="deny" color="#f0b866" />
+<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="contains msg" color="#7cc4ff" />
 
 </FindyAnnotatedCode>
 
@@ -372,9 +372,11 @@ class: code-sm code-tight
 
 <div v-click="1" class="leading-relaxed">
 
-予約語: `package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
+**予約語**:  
+  `package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
 
-グローバル変数 `input` / `data` も不可 (全部の値の入り口なので、ルール名で隠せない)
+**グローバル変数**:  
+  `input` / `data`
 
 </div>
 

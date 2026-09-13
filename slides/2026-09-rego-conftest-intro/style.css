@@ -238,3 +238,22 @@
 .no-slide.slidev-vclick-hidden {
   transform: none;
 }
+
+/* 式の中の「ヘッド」を展開したときの枠。コード側の枠と同じ色 (#7cc4ff) で対応させる */
+.formula {
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+.formula .anno.anno-head {
+  border-color: #7cc4ff;
+  padding: 0 0.35em;
+  margin-top: 0.9em;
+}
+.formula .anno.anno-head::after {
+  font-size: 0.55em;
+  top: -1.15em;
+}
+.formula .anno.anno-head::after {
+  background: #7cc4ff;
+  color: #0f1e33;
+}
