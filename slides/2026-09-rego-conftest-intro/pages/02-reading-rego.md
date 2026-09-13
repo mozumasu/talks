@@ -433,7 +433,7 @@ policy/a.rego:5: rego_parse_error:
 
 </div>
 
-<div class="col-span-2 mt-2 pt-3 border-t border-gray-200">
+<div class="col-span-2 pt-2 border-t border-gray-200">
 
 #### ② ツールの制約: 拾う名前が決まっている
 
@@ -450,9 +450,14 @@ policy/a.rego:5: rego_parse_error:
 </div>
 
 <div v-click="3">
-<FindyCallout label="deny は Rego の予約語ではなく conftest との約束">
-<code>mydeny</code> にリネームすると conftest は拾わず、<code>0 tests, 0 passed</code> で緑になる
-</FindyCallout>
+
+**deny は Rego の予約語ではなく conftest との約束**。`mydeny` にリネームすると、違反があっても緑
+
+```sh
+$ conftest test -p policy/ input.json
+0 tests, 0 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
 </div>
 
 </div>
