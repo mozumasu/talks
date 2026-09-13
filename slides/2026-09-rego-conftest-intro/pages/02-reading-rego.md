@@ -67,6 +67,12 @@ valign: center
 
 # さっそくRegoを読んでみよう
 
+<div class="text-sm op80 mb-3">
+
+`input` = チェック対象の JSON。conftest に渡したファイルの中身がそのまま入る
+
+</div>
+
 <v-clicks>
 
 - ルールの中の各行は **AND**
@@ -350,6 +356,7 @@ is_big if input.size > max_size
 <div v-click="8" class="mt-3 code-tight">
 
 ```sh
+# input.json は { "size": 30 }
 $ opa eval -d policy/ -i input.json 'data.main' --format pretty
 { "deny": ["size 超過"], "is_big": true, "max_size": 10 }
 # ルール 3 つが見える。msg は無い (opa eval は 3 章で)
