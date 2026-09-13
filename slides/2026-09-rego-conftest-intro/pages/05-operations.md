@@ -377,6 +377,7 @@ eyebrow: 運用のしくみ
 layout: content
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+class: code-tight
 ---
 
 # ハンズオン: mozumasu/rego-playground
@@ -384,23 +385,25 @@ eyebrow: 運用のしくみ
 <div class="grid grid-cols-3 gap-x-6 gap-y-1 mt-2 text-sm">
 <div>
 
-1. hello deny
-2. undefined
-3. iteration
+- 00 まず動かす (test / eval / namespace)
+- 01 hello deny
+- 02 「キーが無い」は黙って通る
+- 03 壊しても静か (テストが検出器)
 
 </div>
 <div>
 
-4. helpers
-5. tests
-6. plan JSON
+- 04 some / every
+- 05 ヘルパー関数
+- 06 テストを書く
+- 07 plan JSON (negation の罠)
 
 </div>
 <div>
 
-7. HCL
-8. exceptions allowlist
-9. METADATA
+- 08 HCL (conftest parse / path)
+- 09 exceptions allowlist
+- 10 METADATA
 
 </div>
 </div>
@@ -409,8 +412,9 @@ eyebrow: 運用のしくみ
 
 ```sh
 git clone https://github.com/mozumasu/rego-playground
-cd rego-playground && direnv allow    # conftest / opa / terraform が入る
-cd exercises/01_hello_deny
+cd rego-playground && direnv allow    # conftest / opa が入る
+cd exercises/00_run_conftest          # 00 は TODO なし。今日のコマンドを手で打つ
+cd ../01_hello_deny
 conftest verify -p policy/            # TODO を埋めて全通過なら合格
 ```
 
@@ -427,7 +431,8 @@ conftest verify -p policy/            # TODO を埋めて全通過なら合格
 </v-click>
 
 <!--
-今日の章立てと同じ順。06 で plan JSON、07 で HCL、08 で allowlist と、実運用に必要なものを一通りなぞる。
+今日の章立てと同じ順 (2 章 = 00〜02、3 章 = 03〜06、4 章 = 07〜08、5 章 = 09〜10)。
+00 だけ TODO が無く、3 章で見せた conftest test / opa eval / --namespace / mydeny を手で打って確かめる。
 -->
 
 ---
