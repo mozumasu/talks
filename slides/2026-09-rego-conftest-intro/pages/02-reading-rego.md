@@ -340,11 +340,21 @@ is_big if input.size > max_size
 
 </div>
 
-<div v-click="7" class="mt-6">
+<div v-click="7" class="mt-4">
 <FindyCallout label="「変数」は構成要素ではない">
 <code>max_size := 10</code> はボディの無い<strong>ルール</strong>。<br>
 <code>msg</code> は式の中の<strong>ローカル変数</strong>で、ルールの外からは見えない
 </FindyCallout>
+</div>
+
+<div v-click="8" class="mt-3 code-tight">
+
+```sh
+$ opa eval -d policy/ -i input.json 'data.main' --format pretty
+{ "deny": ["size 超過"], "is_big": true, "max_size": 10 }
+# ルール 3 つが見える。msg は無い (opa eval は 3 章で)
+```
+
 </div>
 
 <!--
