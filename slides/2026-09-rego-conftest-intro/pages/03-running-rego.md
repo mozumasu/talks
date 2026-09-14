@@ -746,7 +746,7 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
-class: code-sm
+class: code-sm code-tight
 footerLink: { label: "ハンズオン 06_helpers", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/06_helpers" }
 ---
 
@@ -779,7 +779,7 @@ footerLink: { label: "ハンズオン 06_helpers", href: "https://github.com/moz
 
 <FindyAnnotatedCode>
 
-```rego
+```rego [policy/cidr.rego]
 allowed := {"10.0.0.0/12", "172.16.0.0/12"}
 
 cidr_allowed(cidr) if {
@@ -800,6 +800,7 @@ cidr_allowed(cidr) if {
 <FindyAnnotatedCode>
 
 ```rego
+# policy/cidr.rego (続き)
 deny contains msg if {
 	cidr := object.get(input, ["cidr"], null)
 	not cidr_allowed(cidr)
@@ -807,7 +808,7 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion :line="3" text="cidr_allowed(cidr)" label="呼び出し" label-position="right" color="#f0b866" />
+<FindyCodeRegion :line="4" text="cidr_allowed(cidr)" label="呼び出し" label-position="right" color="#f0b866" />
 
 </FindyAnnotatedCode>
 
