@@ -14,16 +14,16 @@ eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ---
 
-# conftest のコマンドは 2 つ
+# conftest のコマンドは 2 つ。中身を覗くのは opa eval
 
 <div class="text-sm">
 
-| | `conftest test` | `conftest verify` |
-| --- | --- | --- |
-| 対象 | **実データ** (plan JSON / `.tf`) | **ポリシー自体** (`*_test.rego`) |
-| 場面 | PR の CI、ローカルの洗い出し | ポリシーを書いた・直したとき |
-| 失敗 | Terraform 側に違反がある | ポリシーが壊れている |
-| 例 | `conftest test -p policy/ plan.json` | `conftest verify -p policy/` |
+| | `conftest test` | `conftest verify` | `opa eval` |
+| --- | --- | --- | --- |
+| 対象 | **実データ** (plan JSON / `.tf`) | **ポリシー自体** (`*_test.rego`) | 聞いた**式の値** |
+| 出力 | `deny` の中身と合否 | テストの pass / fail | `data.main`、途中のルール、`input` の一部 |
+| 場面 | PR の CI、ローカルの洗い出し | ポリシーを書いた・直したとき | 「deny が出ない / 出る」を追うとき |
+| 例 | `conftest test -p policy/ plan.json` | `conftest verify -p policy/` | `opa eval -d policy/ -i plan.json 'data.main'` |
 
 </div>
 
@@ -31,7 +31,7 @@ eyebrow: conftest で Terraform を検査する
 
 <div class="mt-5">
 <FindyCallout label="覚え方">
-test は Terraform を採点、verify は Rego を採点
+test は Terraform を採点、verify は Rego を採点。conftest は合否しか言わないので、中身は opa eval で覗く
 </FindyCallout>
 </div>
 
