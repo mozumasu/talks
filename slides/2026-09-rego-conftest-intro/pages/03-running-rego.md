@@ -342,7 +342,7 @@ class: code-sm code-tight
 
 # 「deny が出ない」を opa eval で追う
 
-```rego
+```rego [policy/size.rego]
 package main
 
 max_size := 10
@@ -355,8 +355,7 @@ deny contains msg if {
 }
 ```
 
-```json
-// input.json
+```json [input.json]
 { "Size": 30 }
 ```
 
