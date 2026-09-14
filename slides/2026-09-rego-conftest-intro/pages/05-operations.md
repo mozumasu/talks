@@ -12,6 +12,81 @@ toc: 運用のしくみ
 layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+ratio: 1/1
+valign: top
+class: code-xs code-tight
+footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
+---
+
+# 免除の判定は 1 箇所に集める
+
+<div class="text-sm mb-2"><strong class="text-red-600">Before</strong>: ルールごとに免除を呼ぶ。書き忘れると静かに消える</div>
+
+```rego
+deny contains msg if {
+	...                                  # 条件
+	not excepted(path, "workspace_env_match")
+	msg := "..."
+}
+
+deny contains msg if {
+	...                                  # 条件
+	# excepted を書き忘れた。エラーは出ない
+	msg := "..."
+}
+```
+
+<div v-click="1" class="mt-2">
+<FindyCallout label="書き忘れても緑" variant="warn">
+allowlist に載せたのに免除されない。ルールが増えるほど起きる
+</FindyCallout>
+</div>
+
+::right::
+
+<div class="text-sm mb-2"><strong class="text-green-700">After</strong>: ルールは <code>finding</code> を出すだけ</div>
+
+```rego
+finding contains v if {
+	...                                  # 条件
+	v := {"path": path, "rule": "workspace_env_match", "msg": "..."}
+}
+
+finding contains v if {
+	...                                  # 条件
+	v := {"path": path, "rule": "workspace_separator", "msg": "..."}
+}
+```
+
+<div v-click="2" class="mt-2">
+
+```rego
+# exceptions.rego: deny を書くのはここだけ
+deny contains v.msg if {
+	some v in finding
+	not excepted(v.path, v.rule)
+}
+```
+
+</div>
+
+<div v-click="3" class="mt-2 text-sm">
+
+ルールは違反を報告するだけ。免除を知っているのは `exceptions.rego` だけ
+
+</div>
+
+<!--
+各 deny ルールが免除ヘルパーを呼ぶ規約は「人が守る」前提。silent pass の言語なので、
+1 箇所書き忘れただけで allowlist が効かなくなり、しかもエラーにならない。
+finding → deny の変換を 1 箇所に置けば、ルール側は免除の存在を知らなくてよい。
+deny / violation / warn を conftest が直接拾うので、中間集合の名前は予約語以外 (finding) にする。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 5
+eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
 footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
