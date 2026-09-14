@@ -479,6 +479,77 @@ undefined は result 自体が無くなり {} だけになる。次の「undefin
 layout: two-cols
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
+ratio: 1/1.1
+valign: center
+class: code-sm code-tight
+---
+
+# input は検査対象、data はルールの値と設定
+
+<div v-click="1">
+
+```text
+input                    # conftest test に渡したファイル 1 件
+└─ size: 30              # big.json の中身
+```
+
+</div>
+
+<div v-click="2">
+
+````md magic-move {at:3}
+```text
+data                     # ルールの値がここに載る
+└─ main                  # package main
+   ├─ deny: ["size 超過"]
+   ├─ is_big: true
+   └─ max_size: 10
+```
+```text
+data                     # ルールの値がここに載る
+├─ main                  # package main
+│  ├─ deny: ["size 超過"]
+│  ├─ is_big: true
+│  └─ max_size: 10
+└─ exceptions: [...]     # --data exceptions.yaml (5 章)
+```
+````
+
+</div>
+
+::right::
+
+<div class="table-compact data-table">
+
+| | `input` | `data` |
+| --- | --- | --- |
+| 中身 | 検査対象 1 件 | ルールの値 + `--data` で渡した設定 |
+| 誰が入れる | conftest がファイルごとに差し替える | `package` ごとに自動で載る |
+| 変わる単位 | ファイルごと | 評価中ずっと同じ |
+| 書き方 | `input.size` | `data.main.max_size` |
+
+</div>
+
+<div v-click="4" class="mt-4">
+<FindyCallout label="ルールの中で max_size とだけ書けるのはなぜ?">
+<code>data.main.max_size</code> の省略形。同じ <code>package</code> の中では <code>data.main.</code> を省ける
+</FindyCallout>
+</div>
+
+<!--
+input と data は Rego から見える 2 本の根。input は conftest がファイルごとに差し替え、
+data にはポリシーのルールの値が package 名の下に自動で載る。--data で渡した YAML も同じ木に生える。
+5 章の allowlist (data.exceptions) はここの伏線。
+-->
+
+<style>
+.data-table td:first-child { white-space: nowrap; }
+</style>
+
+---
+layout: two-cols
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
