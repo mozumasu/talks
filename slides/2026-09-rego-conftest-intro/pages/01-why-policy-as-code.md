@@ -86,7 +86,7 @@ eyebrow: なぜ Policy as Code か
 
 <div class="mt-6 text-center text-xl">
 
-**conftest = 「ファイルを読んで、Rego に渡して、deny を並べる」だけのツール**
+**自分が触るのは 2 つ**: ルールを書く (Rego) と、実行する (conftest)。OPA は conftest の中にいる
 
 </div>
 
