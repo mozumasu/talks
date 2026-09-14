@@ -50,6 +50,8 @@ footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.
 
 # 入力は 2 系統: plan JSON と HCL
 
+<div class="text-sm">
+
 | | plan JSON | HCL |
 | --- | --- | --- |
 | 作り方 | `terraform show -json tfplan` | `--parser hcl2 --combine *.tf` |
@@ -57,18 +59,18 @@ footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.
 | 必要なもの | `terraform init` と plan | ファイルだけ (plan 不要) |
 | 置き場の例 | `policy/main/*.rego` | `policy/hcl/*.rego` |
 
-<div class="grid grid-cols-2 gap-6 mt-6">
+</div>
+
+<div class="grid grid-cols-2 gap-6 mt-5 text-sm">
 <div v-click>
-
-**HCL が必要な理由**
+<FindyCallout label="HCL が必要な理由">
 workspace 名は plan JSON に現れない
-
+</FindyCallout>
 </div>
 <div v-click>
-
-**plan JSON が必要な理由**
-`instance_type = var.x` は HCL では値が分からない
-
+<FindyCallout label="plan JSON が必要な理由">
+<code>instance_type = var.x</code> は HCL では値が分からない
+</FindyCallout>
 </div>
 </div>
 
