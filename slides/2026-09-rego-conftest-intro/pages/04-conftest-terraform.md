@@ -174,27 +174,51 @@ plan JSON も同じ発想で、jq で階層を確認してから書く。
 layout: two-cols
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
-ratio: 1/1.2
-valign: center
+ratio: 1/1.1
+valign: top
+class: code-sm
 footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
 ---
 
-# --combine の input はファイルの配列
+# ファイルのパスも検査したい: --combine で input にパスが入る
 
-<v-clicks>
+<div class="text-sm leading-relaxed">
 
-- 要素は `{path, contents}`。`path` は実行ディレクトリ相対
-- `contents` は前のページの parse 結果そのもの
-- 変数参照は `"${var.x}"` という **文字列**
-- `--combine` なしだとファイルごとに評価され、`path` が input に入らない
+**やりたいこと**: `environments/staging/` 配下の `.tf` は workspace 名に `staging` を含むこと
 
-</v-clicks>
+<div v-click="1" class="mt-2">
+
+`.tf` の中身だけでは分からない。**置かれているパス**が要る
+
+</div>
+
+<div v-click="2" class="mt-3">
+
+```sh
+conftest test -p policy/ --parser hcl2 --combine \
+  environments/**/*.tf
+```
+
+</div>
+
+<div v-click="3" class="mt-3">
+
+- `--combine` で input が **ファイルの配列**になる
+- `path` は実行ディレクトリ相対。`contents` は前のページの parse 結果そのもの
+- 付けないとファイルごとに評価され、`path` が input に入らない
+
+</div>
+
+</div>
 
 ::right::
 
-<div class="code-compact">
+<div v-click="2" class="code-compact">
+
+<FindyAnnotatedCode>
 
 ```json
+// $ conftest parse --parser hcl2 --combine environments/**/*.tf
 [{
   "path": "environments/staging/network/terraform.tf",
   "contents": {
@@ -209,11 +233,18 @@ footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.co
 }]
 ```
 
+<FindyCodeRegion v-click="3" :line="3" text="&quot;path&quot;" label="どこにあるか" color="#f0b866" />
+<FindyCodeRegion v-click="3" :line="4" text="&quot;contents&quot;" label="中身 (parse 結果)" label-position="right" color="#3b82f6" />
+
+</FindyAnnotatedCode>
+
 </div>
 
 <!--
-terraform { cloud { workspaces {} } } と 1 個ずつでも terraform[_].cloud[_].workspaces[_] と辿る。
---combine を付けないとファイルごとに評価され、path が input に入らないので「パスと名前の突合」ができない。
+前のページは 1 ファイルの中身だけ。パスと突き合わせたいので --combine で複数ファイルを 1 つの input にまとめ、
+各要素に path を持たせる。付けないとファイルごとに評価され、path が input に入らないので「パスと名前の突合」ができない。
+変数参照は "${var.x}" という文字列で入る (値は分からない)。
+実行結果は conftest 0.69.0 で確認したもの。
 -->
 
 ---
