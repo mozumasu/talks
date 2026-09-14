@@ -210,7 +210,9 @@ eyebrow: Rego の読み方
 
 </v-click>
 
-<div v-click class="mt-4 text-base">あれ、<code>name if { ... }</code> と <code>name := 値</code> は <code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code> の形をしていない…?</div>
+<FindyPromoOverlay v-click="2">
+  あれ、<code>name if { ... }</code> と <code>name := 値</code> は<br><code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code> の形をしていない…?
+</FindyPromoOverlay>
 
 <!--
 conftest のポリシーで書くのはほぼ集合ルール (deny) と、その条件を切り出した真偽ルール、閾値の定数。
