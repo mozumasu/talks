@@ -14,6 +14,7 @@ eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
 ---
 
 # 例外は「禁止」ではなく「理由の明示を強制」
@@ -108,6 +109,7 @@ eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 11_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/11_metadata_docs" }
 ---
 
 # METADATA 注釈でポリシー一覧を自動生成
@@ -385,25 +387,25 @@ class: code-tight
 <div class="grid grid-cols-3 gap-x-6 gap-y-1 mt-2 text-sm">
 <div>
 
-- 00 まず動かす (test / eval / namespace)
-- 01 hello deny
-- 02 「キーが無い」は黙って通る
-- 03 壊しても静か (テストが検出器)
+- 01 まず動かす (test / eval / namespace)
+- 02 hello deny
+- 03 「キーが無い」は黙って通る
+- 04 壊しても静か (テストが検出器)
 
 </div>
 <div>
 
-- 04 some / every
-- 05 ヘルパー関数
-- 06 テストを書く
-- 07 plan JSON (negation の罠)
+- 05 some / every
+- 06 ヘルパー関数
+- 07 テストを書く
+- 08 plan JSON (negation の罠)
 
 </div>
 <div>
 
-- 08 HCL (conftest parse / path)
-- 09 exceptions allowlist
-- 10 METADATA
+- 09 HCL (conftest parse / path)
+- 10 exceptions allowlist
+- 11 METADATA
 
 </div>
 </div>
@@ -413,8 +415,8 @@ class: code-tight
 ```sh
 git clone https://github.com/mozumasu/rego-playground
 cd rego-playground && direnv allow    # conftest / opa が入る
-cd exercises/00_run_conftest          # 00 は TODO なし。今日のコマンドを手で打つ
-cd ../01_hello_deny
+cd exercises/01_run_conftest          # 01 は TODO なし。今日のコマンドを手で打つ
+cd ../02_hello_deny
 conftest verify -p policy/            # TODO を埋めて全通過なら合格
 ```
 
@@ -431,8 +433,8 @@ conftest verify -p policy/            # TODO を埋めて全通過なら合格
 </v-click>
 
 <!--
-今日の章立てと同じ順 (2 章 = 00〜02、3 章 = 03〜06、4 章 = 07〜08、5 章 = 09〜10)。
-00 だけ TODO が無く、3 章で見せた conftest test / opa eval / --namespace / mydeny を手で打って確かめる。
+今日の章立てと同じ順 (2 章 = 01〜03、3 章 = 04〜07、4 章 = 08〜09、5 章 = 10〜11)。
+01 だけ TODO が無く、3 章で見せた conftest test / opa eval / --namespace / mydeny を手で打って確かめる。
 -->
 
 ---

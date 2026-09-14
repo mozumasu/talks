@@ -45,6 +45,7 @@ CI では test を各 Terraform リポジトリの PR で、verify をポリシ�
 layout: content
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
+footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
 ---
 
 # 入力は 2 系統: plan JSON と HCL
@@ -83,6 +84,7 @@ eyebrow: conftest で Terraform を検査する
 ratio: 1/1.1
 valign: center
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
 ---
 
 # .tf が input になるとどんな形か: conftest parse で見る
@@ -172,6 +174,7 @@ eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
 ---
 
 # --combine の input はファイルの配列
@@ -217,6 +220,7 @@ eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
 ---
 
 # HCL ポリシーの例: env が workspace 名に含まれること

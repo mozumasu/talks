@@ -105,6 +105,7 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # ファイルを用意
@@ -141,6 +142,7 @@ eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1.3/1
 valign: center
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # conftest test で実行する
@@ -224,6 +226,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.25
 valign: top
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # package を分けると、指定した package だけ評価される
@@ -338,6 +341,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.15
 valign: top
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # 「deny が出ない」を opa eval で追う
@@ -416,6 +420,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1
 valign: center
 class: code-sm
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # opa eval の出力は value だけ見る
@@ -481,6 +486,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.1
 valign: center
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # input は検査対象、data はルールの値と設定
@@ -552,6 +558,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 03_undefined", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/03_undefined" }
 ---
 
 # 「キーが無い」は黙って通る
@@ -639,6 +646,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/05_iteration" }
 ---
 
 # ループは書かない。some で列挙、every で全件
@@ -705,6 +713,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm
+footerLink: { label: "ハンズオン 06_helpers", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/06_helpers" }
 ---
 
 # ヘルパー関数 (自作) と組み込み関数
@@ -781,6 +790,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 04_silent_failure", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/04_silent_failure" }
 ---
 
 # テストが採点者

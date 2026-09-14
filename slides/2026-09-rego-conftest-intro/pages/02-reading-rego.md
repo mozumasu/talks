@@ -314,6 +314,7 @@ layout: content
 class: code-sm code-tight
 eyebrowNum: 2
 eyebrow: Rego の読み方
+footerLink: { label: "ハンズオン 02_hello_deny", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/02_hello_deny" }
 ---
 
 # Regoの構造おさらい
@@ -406,6 +407,7 @@ layout: content
 eyebrowNum: 2
 eyebrow: Rego の読み方
 class: code-sm code-tight
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
 ---
 
 # ルール名は自由。ただし制約は 2 つ
