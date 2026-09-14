@@ -78,23 +78,14 @@ eyebrow: なぜ Policy as Code か
   </FindyTermCard>
   <FindyTermCard term="conftest">
     Terraform / YAML 向けの CLI ラッパー
-    <template #note>OPA を内蔵。ファイルを input にして deny を集めるだけ</template>
+    <template #note>OPA を内蔵。ファイルを渡して deny を集めるだけ</template>
   </FindyTermCard>
 </FindyTermCardList>
 
-<v-click>
-
-<div class="mt-6 text-center text-xl">
-
-**自分が触るのは 2 つ**: ルールを書く (Rego) と、実行する (conftest)。OPA は conftest の中にいる
-
-</div>
-
-</v-click>
-
 <!--
+自分が触るのは 2 つ: ルールを書く (Rego) と実行する (conftest)。OPA は conftest の中にいる。
 conftest は OPA を内蔵しているので別途 OPA のインストールは不要。
-覚えることは Rego の書き方と conftest のコマンド 2 つだけ。
+3 つがどう繋がるかは次の図で。
 -->
 
 ---
