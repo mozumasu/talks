@@ -9,42 +9,81 @@ toc: 運用のしくみ
 例外・ドキュメント・導入の手順
 
 ---
-layout: two-cols
+layout: content
 eyebrowNum: 5
 eyebrow: 運用のしくみ
-ratio: 1/1
-valign: top
-class: code-xs code-tight
+class: code-sm code-tight
 footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
 ---
 
-# 免除の判定は 1 箇所に集める
+# 免除の判定をルールごとに書くと、書き忘れで静かに消える
 
-<div class="text-sm mb-2"><strong class="text-red-600">Before</strong>: ルールごとに免除を呼ぶ。書き忘れると静かに消える</div>
+<div class="grid grid-cols-[1.1fr_1fr] gap-x-8 items-start">
+<div>
 
 ```rego
 deny contains msg if {
-	...                                  # 条件
-	not excepted(path, "workspace_env_match")
+	...                                        # 条件
+	not excepted(path, "workspace_env_match")  # 免除なら deny しない
 	msg := "..."
 }
 
 deny contains msg if {
-	...                                  # 条件
+	...                                        # 条件
 	# excepted を書き忘れた。エラーは出ない
 	msg := "..."
 }
 ```
 
-<div v-click="1" class="mt-2">
+</div>
+<div class="text-sm leading-relaxed">
+
+<div v-click="1">
+
+ルールを書く人が毎回 `not excepted(...)` を呼ぶ約束
+
+</div>
+
+<div v-click="2" class="mt-3">
 <FindyCallout label="書き忘れても緑" variant="warn">
-allowlist に載せたのに免除されない。ルールが増えるほど起きる
+そのルールだけ allowlist が効かず、載せたのに FAIL する。壊れても緑になる言語なので、テストでしか気付けない。ルールが増えるほど起きる
 </FindyCallout>
 </div>
 
-::right::
+</div>
+</div>
 
-<div class="text-sm mb-2"><strong class="text-green-700">After</strong>: ルールは <code>finding</code> を出すだけ</div>
+<!--
+各 deny ルールが免除ヘルパーを呼ぶ規約は「人が守る」前提。silent pass の言語なので、
+1 箇所書き忘れただけで allowlist が効かなくなり、しかもエラーにならない。
+-->
+
+---
+layout: content
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+class: code-sm code-tight
+footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
+---
+
+# 免除の判定は 1 箇所に集める: ルールは finding を出すだけ
+
+<div class="flow-fanin">
+<div v-click="1" class="flow-node flow-node--rule" style="grid-column: 1; grid-row: 1"><span class="flow-term">rule</span>workspace_env_match</div>
+<div v-click="1" class="flow-node flow-node--rule" style="grid-column: 1; grid-row: 2"><span class="flow-term">rule</span>workspace_separator</div>
+<svg v-click="2" class="flow-arrow" style="grid-column: 2; grid-row: 1" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<svg v-click="2" class="flow-arrow" style="grid-column: 2; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="2" class="flow-node" style="grid-column: 3; grid-row: 1 / span 2"><span class="flow-term">finding</span>同名ルールの出力が<br>1 つの集合に合算される</div>
+<svg v-click="3" class="flow-arrow" style="grid-column: 4; grid-row: 1 / span 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="3" class="flow-node flow-node--file" style="grid-column: 5; grid-row: 1 / span 2"><span class="flow-term">exceptions.rego</span>1 件ずつ allowlist と突合し<br>免除でなければ deny に</div>
+<svg v-click="4" class="flow-arrow flow-arrow--left" style="grid-column: 6; grid-row: 1 / span 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="4" class="flow-node flow-node--file" style="grid-column: 7; grid-row: 1 / span 2"><span class="flow-term">--data</span>.conftest-exceptions.yaml</div>
+<div v-click="5" class="flow-arrow-wrap" style="grid-column: 5; grid-row: 3"><svg class="flow-arrow flow-arrow--down" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg></div>
+<div v-click="5" class="flow-node flow-node--deny" style="grid-column: 5; grid-row: 4">deny</div>
+</div>
+
+<div class="grid grid-cols-[1.15fr_1fr] gap-x-6 items-start mt-2">
+<div>
 
 ```rego
 finding contains v if {
@@ -58,7 +97,8 @@ finding contains v if {
 }
 ```
 
-<div v-click="2" class="mt-2">
+</div>
+<div v-click="3">
 
 ```rego
 # exceptions.rego: deny を書くのはここだけ
@@ -69,18 +109,12 @@ deny contains v.msg if {
 ```
 
 </div>
-
-<div v-click="3" class="mt-2 text-sm">
-
-ルールは違反を報告するだけ。免除を知っているのは `exceptions.rego` だけ
-
 </div>
 
 <!--
-各 deny ルールが免除ヘルパーを呼ぶ規約は「人が守る」前提。silent pass の言語なので、
-1 箇所書き忘れただけで allowlist が効かなくなり、しかもエラーにならない。
-finding → deny の変換を 1 箇所に置けば、ルール側は免除の存在を知らなくてよい。
-deny / violation / warn を conftest が直接拾うので、中間集合の名前は予約語以外 (finding) にする。
+finding contains v を同名で複数書くと、2 章の集合ルールと同じで 1 つの集合 finding に合算される。
+exceptions.rego はその集合を 1 件ずつ見て、allowlist (--data で渡した data.exceptions) に一致しなければ deny に入れる。
+ルール側は免除の存在を知らなくてよい。deny / violation / warn を conftest が直接拾うので、中間集合の名前は予約語以外 (finding) にする。
 -->
 
 ---
