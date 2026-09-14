@@ -776,6 +776,7 @@ allowed := {"10.0.0.0/12", "172.16.0.0/12"}
 cidr_allowed(cidr) if {
 	some range in allowed
 	net.cidr_contains(range, cidr)
+	# "10.0.0.0/16" → split → ["10.0.0.0", "16"] → [1] → "16" → 16
 	to_number(split(cidr, "/")[1]) == 16
 }
 ```
