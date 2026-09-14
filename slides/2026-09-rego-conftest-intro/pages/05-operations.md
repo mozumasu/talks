@@ -302,6 +302,8 @@ $ scripts/gen-policy-docs.sh --check
 </div>
 
 <!--
+package スコープの # METADATA は package に 1 つしか書けない (2 ファイル目に書くとコンパイルエラー)。
+複数ファイルで package hcl を共有しているので、各 rule の直前 (rule スコープ) に書く。
 ポリシーを追加したら METADATA も書く。書き忘れは README の差分検出で CI が落ちるので気づける。
 allowlist の rule 名は README の表からコピーする運用にすると typo が減る。
 -->
@@ -359,59 +361,76 @@ conftest-check.yml は plan JSON を artifact で受け取るか、fixture デ�
 -->
 
 ---
-layout: content
+layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+ratio: 1/1.15
+valign: top
+class: code-xs code-tight
+footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
 ---
 
-# 落とし穴 3 つ
+# 落とし穴: 値が未確定だと not の中の参照ごと消える
 
-<div class="grid gap-4 mt-2 text-sm code-compact" style="grid-template-columns: 1.3fr 1fr 1fr">
-<div v-click>
+<div class="text-sm mb-2">plan 時に CIDR が決まらない VPC (IPAM から採番)。<code>after</code> に無く <code>after_unknown</code> に入る</div>
 
-## a. negation の罠
-
-```rego
-# キー欠落で rule ごと消える
-not is_string(x.y.z)
+```json [plan.json (抜粋)]
+{ "address": "aws_vpc.ipam", "type": "aws_vpc",
+  "change": {
+    "actions": ["create"],
+    "after": { "enable_dns_support": true },
+    "after_unknown": { "cidr_block": true } } }
 ```
 
+<div v-click="3" class="mt-3">
+<FindyCallout label="fail-closed: 検証できない値は deny に倒す">
+未確定・欠落・<code>"${var.x}"</code> の文字列は「違反ではない」ではなく「検証できない」。通すと本番で初めて分かる
+</FindyCallout>
+</div>
+
+::right::
+
+<div v-click="1">
+
 ```rego
-# 値を取ってから判定する
-v := object.get(x, ["y", "z"], null)
-not is_string(v)
+# 事故る
+deny contains msg if {
+	some rc in input.resource_changes
+	rc.type == "aws_vpc"
+	not is_string(rc.change.after.cidr_block)  # 参照が無い → ここで不成立
+	msg := sprintf("%s: CIDR が確定していない", [rc.address])
+}
 ```
 
-`not` の中の参照は外に巻き上げられ、欠落だと代入が不成立になる
+```sh
+$ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
+[]                        # 未確定なのに通る
+```
 
 </div>
-<div v-click>
 
-## b. fail-closed
+<div v-click="2" class="mt-2">
 
-値が確定しない (`after_unknown`)、ブロックが無い、形が不正
+```rego
+# 防げる: 無ければ null に落としてから判定する
+# → ["aws_vpc.ipam: CIDR が確定していない"]
+deny contains msg if {
+	some rc in input.resource_changes
+	rc.type == "aws_vpc"
+	cidr := object.get(rc.change, ["after", "cidr_block"], null)
+	not is_string(cidr)                        # null なので真
+	msg := sprintf("%s: CIDR が確定していない", [rc.address])
+}
+```
 
-→ 「検証できない」は **deny に倒す**
-
-「違反ではない」に倒すと a. と組み合わさって素通りする
-
-</div>
-<div v-click>
-
-## c. METADATA の位置
-
-`package hcl` を複数ファイルで共有している
-
-→ package スコープの `# METADATA` は **1 つしか書けない**
-
-各 rule の直前 (rule スコープ) に書く
-
-</div>
 </div>
 
 <!--
-a. は VPC CIDR ポリシーの初版で実際に踏んだバグ。欠落入力 (after_unknown) のテストで発覚した。
-c. は 2 ファイル目に package スコープを書くとコンパイルエラーになる。
+3 章の「not は undefined でも真」は式の話。not の中に rc.change.after.cidr_block のような参照を書くと、
+OPA はその参照を not の外に巻き上げて先に評価するため、キーが無いとそこで不成立になり not まで届かない。
+object.get で「無ければ null」に落としてから判定すれば、必ず not に到達する。
+VPC CIDR ポリシーの初版で実際に踏んだバグ。欠落入力のテスト (最小 3 ケースの 3 つ目) で発覚した。
+出力は opa 1.19.1 で確認したもの。
 -->
 
 ---
