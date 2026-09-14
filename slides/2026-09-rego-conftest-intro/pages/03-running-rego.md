@@ -832,8 +832,8 @@ footerLink: { label: "ハンズオン 04_silent_failure", href: "https://github.
 | input | deny の中身 | `count(deny)` |
 | --- | --- | --- |
 | `ok` (10.1.0.0/16) | `[]` | 0 |
-| `ng` (192.168.0.0/16) | `["…は割当外です"]` | 1 |
-| `{}` (欠落) | `["CIDR null は…"]` | 1 |
+| `ng` (192.168.0.0/16) | `["…割当外"]` | 1 |
+| `{}` (欠落) | `["CIDR null…"]` | 1 |
 
 </div>
 
@@ -841,13 +841,19 @@ footerLink: { label: "ハンズオン 04_silent_failure", href: "https://github.
 
 <div class="text-sm mt-3">
 
-`count(deny)` = **違反の件数**。テストは input ごとにこの数を固定する
+`count(deny)` = **違反の件数**。input ごとに期待する件数を書く
 
 </div>
 
 <div class="text-sm mt-2">
 
-`with input as` はその 1 行だけ input を差し替え。`test_` ルールが真なら pass
+`with input as ok` = この式の間だけ input を `ok` に**差し替える**。ファイル無しで入力を作れる
+
+</div>
+
+<div class="text-sm mt-2">
+
+`test_` で始まるルールがテスト。verify が 1 本ずつ評価し、**真なら pass、undefined なら FAIL**
 
 </div>
 
