@@ -280,3 +280,19 @@
   background: #7cc4ff;
   color: #0f1e33;
 }
+
+/* finding → exceptions.rego → deny の合流図。列 = ノード / 矢印 の交互、
+   行 1-2 = 2 本のルールが finding に合流、行 3-4 = allowlist が exceptions.rego に下から入る */
+.flow-fanin {
+  display: grid;
+  grid-template-columns: 1fr 3rem 1fr 3rem 1.3fr 3rem 1fr;
+  grid-template-rows: auto auto 1.4rem auto;
+  gap: 0.4rem 0;
+  align-items: center;
+  margin-top: 0.2rem;
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+.flow-fanin .flow-node { padding: 0.5rem 0.5rem; }
+.flow-fanin .flow-term { font-size: 0.9rem; }
+.flow-fanin .flow-node--deny { padding: 0.5rem 1rem; font-size: 0.85rem; }
