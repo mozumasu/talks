@@ -556,7 +556,7 @@ layout: two-cols
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 ratio: 1/1.2
-valign: center
+valign: top
 class: code-sm code-tight
 footerLink: { label: "ハンズオン 03_undefined", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/03_undefined" }
 ---
@@ -565,19 +565,26 @@ footerLink: { label: "ハンズオン 03_undefined", href: "https://github.com/m
 
 <div class="text-base leading-relaxed">
 
-<div v-click="1">
+**Q.** `tags` が無い input を渡すと、`deny` の値は?
 
-**1. キーが無い → 式は `false` ではなく undefined**
+```json [input.json]
+{ "name": "app" }
+```
+
+<div v-click="1" class="mt-3">
+
+**A.** 空。つまり<strong class="text-red-600">通る</strong>
 
 </div>
 
-<div v-click="1" class="mt-1">
+<div v-click="1" class="mt-2 text-sm">
 
-**2. undefined を含むルールは黙って不成立** → deny が出ない → conftest は緑
+1. キーが無い → 式は `false` ではなく **undefined**<br>
+2. undefined を含むルールは**黙って不成立** → deny が出ない → conftest は緑
 
 </div>
 
-<div v-click="2" class="mt-4">
+<div v-click="2" class="mt-3">
 
 **3.** 条件ごとに「キーが無かったら通す? 弾く?」を決める
 
@@ -585,7 +592,7 @@ footerLink: { label: "ハンズオン 03_undefined", href: "https://github.com/m
 
 <div v-click="3" class="mt-1">
 
-**4.** 弾きたい条件は `not x == 値` で書く。`not` は undefined でも真
+**4.** 弾きたい条件は `not x == 値`。`not` は undefined でも真
 
 </div>
 
@@ -593,17 +600,30 @@ footerLink: { label: "ハンズオン 03_undefined", href: "https://github.com/m
 
 ::right::
 
-```rego
-# 事故る: tags が無いと != が undefined → ルールごと黙る
+<FindyAnnotatedCode :line-height="1.5">
+
+```rego [policy/main.rego]
 deny contains "env が prod ではない" if {
 	input.tags.env != "prod"
 }
 ```
 
+<FindyCodeRegion v-click="1" :line="2" text="input.tags.env" label="undefined → ルールごと黙る" label-position="right" color="#ef4444" />
+
+</FindyAnnotatedCode>
+
+<v-click at="1">
+
+```sh
+$ opa eval -d policy -i input.json 'data.main.deny' --format pretty
+[]
+```
+
+</v-click>
+
 <v-click at="3">
 
 ```rego
-# 防げる: not は undefined でも真
 deny contains "env が prod ではない" if {
 	not input.tags.env == "prod"
 }
