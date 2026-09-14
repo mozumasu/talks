@@ -660,16 +660,17 @@ conftest の deny 形式では出番が少ないのでスライドからは外�
 -->
 
 ---
-layout: two-cols
+layout: content
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
-ratio: 1/1.2
-valign: center
-class: code-sm code-tight
+class: code-xs code-tight
 footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/05_iteration" }
 ---
 
 # some で列挙、every で全件
+
+<div class="grid grid-cols-[1fr_1fr] gap-x-6 items-start">
+<div>
 
 ```json
 // input.json
@@ -679,63 +680,67 @@ footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/m
     "batch": { "replicas": 1, "owner": "data" } } }
 ```
 
-<div class="text-sm leading-relaxed">
+</div>
+<div class="text-sm leading-relaxed pt-1">
 
+`in` は **services の 3 件を 1 つずつ変数に入れて**条件を試す。変数が 1 つなら値、2 つならキーと値
+
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-x-6 items-start mt-1">
 <div v-click="1">
 
-**`some`** = 条件を満たす要素を**列挙**する。満たした件ごとに msg が 1 つ
-
-</div>
-
-<div v-click="2" class="mt-2">
-
-**`every`** = **全件**満たすときだけ真。1 つでも外れると undefined
-
-</div>
-
-<div v-click="3" class="mt-3 op80">
-
-`in` の前の変数が 1 つなら**値**、2 つなら**キーと値** (`svc` は service。名前は自由)
-
-</div>
-
-</div>
-
-::right::
-
-<v-click at="1">
+<div class="text-sm mb-1"><strong>some</strong> = 条件を満たした件だけ残す (列挙)</div>
 
 ```rego
 deny contains msg if {
-	some name, svc in input.services   # name = "api", svc = その値
-	svc.replicas < 2                   # 条件を満たした件だけ残る
+	some name, svc in input.services
+	svc.replicas < 2
 	msg := sprintf("%s: replicas は 2 以上", [name])
 }
 ```
 
-```json
-"deny": ["api: replicas は 2 以上", "batch: replicas は 2 以上"]
-```
+<div class="table-compact">
 
-</v-click>
+| name | `svc.replicas < 2` | |
+| --- | --- | --- |
+| api | 1 < 2 | ✅ msg を出す |
+| web | 3 < 2 | ❌ この件は消える |
+| batch | 1 < 2 | ✅ msg を出す |
 
-<v-click at="2">
+</div>
+
+<div class="text-xs mt-1">→ <code>deny</code> は api と batch の 2 件</div>
+
+</div>
+<div v-click="2">
+
+<div class="text-sm mb-1"><strong>every</strong> = 全件満たすときだけ真</div>
 
 ```rego
 all_owned if {
-	every svc in input.services { svc.owner != "" }   # svc = 値だけ
+	every svc in input.services { svc.owner != "" }
 }
 ```
 
-```json
-// web の owner が空 → all_owned は出力に無い (undefined)
-```
+<div class="table-compact">
 
-</v-click>
+| svc | `svc.owner != ""` | |
+| --- | --- | --- |
+| api | "sre" | ✅ |
+| web | "" | ❌ 1 つでも外れると |
+| batch | "data" | ✅ |
+
+</div>
+
+<div class="text-xs mt-1">→ <code>all_owned</code> は <strong>undefined</strong> (出力に現れない)</div>
+
+</div>
+</div>
 
 <!--
-some は for ループの代わり。全要素が自動で試され、条件を満たした要素ごとに msg が生成される。
-api と batch の 2 件が deny に入り、web は replicas 3 なので入らない。
+some は for ループの代わり。3 件が順に name, svc に入り、条件を満たした件ごとに msg が生成される。
 every は「1 つでも満たさなければ undefined」。web の owner が空なので all_owned は消える。
 出力は opa 1.19.1 で確認したもの。
 -->
