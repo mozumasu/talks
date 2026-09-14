@@ -516,7 +516,7 @@ data                     # ルールの値がここに載る
 │  ├─ deny: ["size 超過"]
 │  ├─ is_big: true
 │  └─ max_size: 10
-└─ exceptions: [...]     # --data exceptions.yaml (5 章)
+└─ exceptions: [...]     # --data で渡した YAML の先頭キー (5 章)
 ```
 ````
 
