@@ -213,51 +213,6 @@ eyebrowNum: 5
 eyebrow: 運用のしくみ
 ---
 
-# 導入の流れ: warn 期間は設けない
-
-<div class="grid grid-cols-4 gap-3 text-sm">
-  <div class="rounded-lg px-3 py-2" style="background: color-mix(in srgb, var(--findy-brand) 8%, transparent)"><b style="color: var(--findy-brand)">1</b>&nbsp; ローカルで既存違反を洗い出す</div>
-  <div class="rounded-lg px-3 py-2" style="background: color-mix(in srgb, var(--findy-brand) 16%, transparent)"><b style="color: var(--findy-brand)">2</b>&nbsp; リネームか例外登録かを決める</div>
-  <div class="rounded-lg px-3 py-2" style="background: color-mix(in srgb, var(--findy-brand) 24%, transparent)"><b style="color: var(--findy-brand)">3</b>&nbsp; workflow + allowlist を 1 PR で入れる</div>
-  <div class="rounded-lg px-3 py-2 text-white" style="background: var(--findy-brand)"><b>4</b>&nbsp; 導入 PR 自身で緑を確認</div>
-</div>
-
-<v-click>
-
-<div class="code-compact mt-4">
-
-```sh
-# リポジトリのルートで実行する (environments/ 内からだと env 検査が静かに無効化)
-conftest test --policy ../policies/policy --namespace hcl \
-  --parser hcl2 --combine --data .conftest-exceptions.yaml \
-  $(find . -name '*.tf' -not -path '*/.terraform/*' | perl -pe 's|^\./||')
-```
-
-</div>
-
-</v-click>
-
-<v-click>
-
-<div class="mt-4">
-<FindyCallout variant="warn" label="warn 期間を作らない理由">
-warn は誰も見ない。導入 PR が緑になる = 既存違反はすべてリネーム済みか理由つきで免除済み、という状態から始める
-</FindyCallout>
-</div>
-
-</v-click>
-
-<!--
-洗い出しはポリシーリポジトリを隣に clone して --policy ../policies/policy で実行する。
-allowlist は導入 PR に同梱し、レビューで reason を読んでもらう。
--->
-
----
-layout: content
-eyebrowNum: 5
-eyebrow: 運用のしくみ
----
-
 # 落とし穴 3 つ
 
 <div class="grid gap-4 mt-2 text-sm code-compact" style="grid-template-columns: 1.3fr 1fr 1fr">
