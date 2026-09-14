@@ -210,6 +210,8 @@ eyebrow: Rego の読み方
 
 </v-click>
 
+<div v-click class="mt-4 text-base">あれ、<code>name if { ... }</code> と <code>name := 値</code> は <code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code> の形をしていない…?</div>
+
 <!--
 conftest のポリシーで書くのはほぼ集合ルール (deny) と、その条件を切り出した真偽ルール、閾値の定数。
 関数は 3 章で cidr_allowed(cidr) として出てくる。オブジェクトルールは今日のデッキには出てこない。
@@ -224,6 +226,12 @@ ratio: 1/3
 ---
 
 # 省略できる部分
+
+<div class="mb-3">実は全部 <code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code>。書かなくていい部分を省いているだけ</div>
+
+::left::
+
+省略できるもの:
 
 - ボディ
 - 値の作り方
