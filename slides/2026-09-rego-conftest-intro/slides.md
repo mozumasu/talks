@@ -2,7 +2,7 @@
 theme: findy
 unlisted: true
 title: Rego / conftest 入門
-date: 2026-09-16
+date: 2026-09-11
 info: |
   Rego / conftest 入門
   社内勉強会
@@ -39,10 +39,6 @@ role: Platform SRE
 Rego と conftest を知らない人が、Terraform の Policy as Code の運用 (ポリシー追加・例外登録・導入) を引き継げる状態になる
 </FindyCallout>
 </div>
-
-<!--
-前提: Terraform は書ける。Rego / OPA / conftest は初めて、という人向け。
--->
 
 ---
 layout: toc
@@ -90,7 +86,7 @@ layout: content
 
 <div class="mt-6 takeaway">
 
-まずは rego-playground の 01〜05 を手を動かして通す。そこまでで Rego は読める
+まずは rego-playground の 01〜06 を手を動かして通す。そこまでで Rego は読める
 
 </div>
 

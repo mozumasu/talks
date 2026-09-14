@@ -78,21 +78,77 @@ eyebrow: なぜ Policy as Code か
   </FindyTermCard>
   <FindyTermCard term="conftest">
     Terraform / YAML 向けの CLI ラッパー
-    <template #note>OPA を内蔵。ファイルを input にして deny を集めるだけ</template>
+    <template #note>OPA を内蔵。ファイルを渡して deny を集めるだけ</template>
   </FindyTermCard>
 </FindyTermCardList>
 
-<v-click>
+<!--
+自分が触るのは 2 つ: ルールを書く (Rego) と実行する (conftest)。OPA は conftest の中にいる。
+conftest は OPA を内蔵しているので別途 OPA のインストールは不要。
+3 つがどう繋がるかは次の図で。
+-->
 
-<div class="mt-6 text-center text-xl">
+---
+layout: content
+eyebrowNum: 1
+eyebrow: なぜ Policy as Code か
+---
 
-**conftest = 「ファイルを読んで、Rego に渡して、deny を並べる」だけのツール**
+# 3 つの関係
+
+<div class="flow">
+
+<div class="flow-node flow-node--file" style="grid-column: 1; grid-row: 2">
+<svg class="flow-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5"/><path d="M9 13h7M9 17h7"/></svg>
+<strong>Terraform / YAML<br>ファイル</strong>
+</div>
+
+<div v-click="1" class="flow-note" style="grid-column: 2 / span 2; grid-row: 1">
+<b>① ファイルを読む</b>
+.tf や YAML を読み込み、JSON の形に変換する
+</div>
+<svg v-click="1" class="flow-arrow" style="grid-column: 2; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+
+<div v-click="1" class="flow-node" style="grid-column: 3; grid-row: 2">
+<span class="flow-term">conftest</span>
+Terraform / YAML 向けの<br>CLI ラッパー
+</div>
+
+<div v-click="2" class="flow-note" style="grid-column: 4 / span 2; grid-row: 1">
+<b>② 渡して評価</b>
+変換した JSON を OPA に渡し、評価を頼む
+</div>
+<svg v-click="2" class="flow-arrow" style="grid-column: 4; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+
+<div v-click="2" class="flow-node" style="grid-column: 5; grid-row: 2">
+<span class="flow-term">OPA</span>
+ポリシーを評価する<br>エンジン
+</div>
+
+<div v-click="3" class="flow-note" style="grid-column: 6 / span 2; grid-row: 1">
+<b>③ ルールを読み込む</b>
+.rego に書いたルールで判定する
+</div>
+<svg v-click="3" class="flow-arrow flow-arrow--left" style="grid-column: 6; grid-row: 2" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+
+<div v-click="3" class="flow-node flow-node--file" style="grid-column: 7; grid-row: 2">
+<svg class="flow-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8l5 5v15H6z"/><path d="M14 2v5h5"/><path d="M9 13h7M9 17h7"/></svg>
+<span class="flow-term">Rego</span>
+ポリシーを書いた<br><code>.rego</code> ファイル
+</div>
+
+<div v-click="4" class="flow-arrow-wrap" style="grid-column: 5; grid-row: 3"><svg class="flow-arrow flow-arrow--down" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg></div>
+<div v-click="4" class="flow-node flow-node--deny" style="grid-column: 4 / span 3; grid-row: 4">
+<strong>deny / ポリシー違反</strong>
+</div>
+<div v-click="4" class="flow-note" style="grid-column: 7; grid-row: 4">
+<b>④ 評価結果を返す</b>
+ポリシー違反 (deny) を返す
+</div>
 
 </div>
 
-</v-click>
-
 <!--
-conftest は OPA を内蔵しているので別途 OPA のインストールは不要。
-覚えることは Rego の書き方と conftest のコマンド 2 つだけ。
+conftest がファイルを読んで OPA に渡し、OPA が Rego のルールで評価して deny を返す。
+利用者が触るのは Rego (書く) と conftest (実行する) の 2 つで、OPA は conftest の中にいる。
 -->

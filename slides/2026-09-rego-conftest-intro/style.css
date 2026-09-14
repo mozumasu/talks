@@ -26,7 +26,7 @@
   padding: 0.6rem var(--slidev-code-padding);
   margin: 0.45rem 0;
   font-family: var(--slidev-code-font-family, ui-monospace, monospace);
-  font-size: 0.74rem;
+  font-size: 1.1rem;
   line-height: 1.55;
   overflow-x: auto;
 }
@@ -128,46 +128,38 @@
   color: #0f1e33;
 }
 
-/* 枠ラベルを載せるスライド。Slidev の行数連動の自動サイズより小さく固定する */
-.code-sm pre,
-.code-sm pre code {
-  font-size: 0.66rem !important;
-}
-
-/* コードブロックと同居させる表。行数を 1 枚に収めるため文字と行間を詰める */
-.slidev-layout .compact-table {
-  margin-top: 0.7rem;
-}
-.slidev-layout .compact-table table {
-  font-size: 0.62em;
-  line-height: 1.4;
-}
-.slidev-layout .compact-table th,
-.slidev-layout .compact-table td {
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
-}
-
-/* flake.nix 全体 (20 行超) を 2 カラムの右半分に収める */
-.env-setup .slidev-code,
-.env-setup pre,
-.env-setup code {
-  font-size: 0.62rem !important;
+/* flake.nix 全体 (20 行超) を 2 カラムの右半分に収める (code-xs よりさらに小さく、行間も詰める) */
+.env-setup .slidev-code {
   line-height: 1.45 !important;
 }
-.env-setup .flake-code .slidev-code,
-.env-setup .flake-code pre,
-.env-setup .flake-code code {
-  font-size: 0.5rem !important;
-  line-height: 1.3 !important;
+/* タブの各パネル内で two-cols 相当の 2 カラムを組む (ratio 1/1.1)。
+   上詰めにしないと flake.nix の高さ分でパネルが伸び footer に食い込む */
+.env-setup .env-cols {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 2rem;
+  align-items: stretch;
+  margin-top: 1rem;
+  font-size: 1.4rem;
 }
-
-/* コードブロックが 5 つ載るので Slidev の自動サイズより小さく固定する */
-.ns-demo .slidev-code,
-.ns-demo pre,
-.ns-demo code {
-  font-size: 0.6rem !important;
-  line-height: 1.5 !important;
+.env-setup .env-cols > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* 左カラムは右の flake.nix の高さいっぱいに広げ、上端・下端を右と揃える */
+.env-setup .env-cols > div:first-child {
+  justify-content: space-between;
+}
+/* flex item になった ol は li の margin を外へ畳まないので、右の p 側だけ li と同じ余白を足す */
+.env-setup .env-cols > div > ol:first-child {
+  margin-top: 0;
+}
+.env-setup .env-cols > div > p:first-child {
+  margin-top: 0.3em;
+}
+.env-setup .env-cols .slidev-code-wrapper:last-child {
+  margin-bottom: 0;
 }
 
 /* v-click で出る要素は左から滑り込む */
@@ -176,4 +168,115 @@
 }
 .slidev-vclick-hidden {
   transform: translateX(-0.6rem);
+}
+
+/* 登場人物 3 つの関係図。列 = ノード / 矢印 の交互、行 = 吹き出し / ノード / 下向き矢印 / deny */
+.flow {
+  display: grid;
+  grid-template-columns: 1fr 4.5rem 1fr 4.5rem 1fr 4.5rem 1fr;
+  grid-template-rows: auto auto 2.2rem auto;
+  align-items: center;
+  margin-top: 2.6rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+.flow-node {
+  padding: 0.9rem 0.6rem;
+  border-radius: var(--findy-card-radius-sm, 0.6rem);
+  background: var(--findy-blue-5);
+  color: var(--findy-fg);
+  text-align: center;
+}
+.flow-node--file {
+  background: #eef1f5;
+}
+.flow-node strong {
+  color: inherit;
+}
+.flow-arrow-wrap {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+.flow-node--deny {
+  background: #fdecec;
+  border: 1px solid #f5b5b5;
+  color: #b91c1c;
+  font-size: 0.95rem;
+}
+.flow-glyph {
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin: 0 auto 0.4rem;
+  color: var(--findy-brand);
+}
+.flow-term {
+  display: block;
+  font-family: var(--findy-font-en);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--findy-brand);
+  margin-bottom: 0.15rem;
+}
+.flow-arrow {
+  width: 100%;
+  height: 1.2rem;
+  stroke: var(--findy-brand);
+  fill: var(--findy-brand);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.flow-arrow--left { transform: scaleX(-1); }
+.flow-arrow--down { transform: rotate(90deg); width: 2rem; height: 100%; }
+.flow-note {
+  align-self: end;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  background: var(--findy-white, #fff);
+  border: 1px solid var(--findy-hairline);
+  box-shadow: var(--findy-shadow-card);
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+.flow-note b {
+  display: block;
+  color: var(--findy-brand);
+  font-size: 0.7rem;
+  margin-bottom: 0.1rem;
+}
+.flow-node.slidev-vclick-hidden,
+.flow-arrow.slidev-vclick-hidden,
+.flow-arrow-wrap.slidev-vclick-hidden,
+.flow-note.slidev-vclick-hidden {
+  transform: none;
+}
+
+/* 同じグリッドセルで差し替える要素は、滑り込みのアニメーションを切って瞬時に入れ替える
+   (フェードと移動が重なるとチラつく) */
+.no-slide.slidev-vclick-target {
+  transition: none;
+}
+.no-slide.slidev-vclick-hidden {
+  transform: none;
+}
+
+/* 式の中の「ヘッド」を展開したときの枠。コード側の枠と同じ色 (#7cc4ff) で対応させる */
+.formula {
+  font-size: 0.92em;
+  white-space: nowrap;
+}
+.formula .anno.anno-head {
+  border-color: #7cc4ff;
+  padding: 0 0.35em;
+  margin-top: 0.9em;
+}
+.formula .anno.anno-head::after {
+  font-size: 0.55em;
+  top: -1.15em;
+}
+.formula .anno.anno-head::after {
+  background: #7cc4ff;
+  color: #0f1e33;
 }

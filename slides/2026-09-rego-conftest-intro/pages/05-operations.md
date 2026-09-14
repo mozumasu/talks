@@ -10,12 +10,89 @@ toc: 運用のしくみ
 
 ---
 layout: two-cols
-title: 例外は「禁止」ではなく「理由の明示を強制」
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+ratio: 1/1
+valign: top
+class: code-xs code-tight
+footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
+---
+
+# 免除の判定は 1 箇所に集める
+
+<div class="text-sm mb-2"><strong class="text-red-600">Before</strong>: ルールごとに免除を呼ぶ。書き忘れると静かに消える</div>
+
+```rego
+deny contains msg if {
+	...                                  # 条件
+	not excepted(path, "workspace_env_match")
+	msg := "..."
+}
+
+deny contains msg if {
+	...                                  # 条件
+	# excepted を書き忘れた。エラーは出ない
+	msg := "..."
+}
+```
+
+<div v-click="1" class="mt-2">
+<FindyCallout label="書き忘れても緑" variant="warn">
+allowlist に載せたのに免除されない。ルールが増えるほど起きる
+</FindyCallout>
+</div>
+
+::right::
+
+<div class="text-sm mb-2"><strong class="text-green-700">After</strong>: ルールは <code>finding</code> を出すだけ</div>
+
+```rego
+finding contains v if {
+	...                                  # 条件
+	v := {"path": path, "rule": "workspace_env_match", "msg": "..."}
+}
+
+finding contains v if {
+	...                                  # 条件
+	v := {"path": path, "rule": "workspace_separator", "msg": "..."}
+}
+```
+
+<div v-click="2" class="mt-2">
+
+```rego
+# exceptions.rego: deny を書くのはここだけ
+deny contains v.msg if {
+	some v in finding
+	not excepted(v.path, v.rule)
+}
+```
+
+</div>
+
+<div v-click="3" class="mt-2 text-sm">
+
+ルールは違反を報告するだけ。免除を知っているのは `exceptions.rego` だけ
+
+</div>
+
+<!--
+各 deny ルールが免除ヘルパーを呼ぶ規約は「人が守る」前提。silent pass の言語なので、
+1 箇所書き忘れただけで allowlist が効かなくなり、しかもエラーにならない。
+finding → deny の変換を 1 箇所に置けば、ルール側は免除の存在を知らなくてよい。
+deny / violation / warn を conftest が直接拾うので、中間集合の名前は予約語以外 (finding) にする。
+-->
+
+---
+layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
 ---
+
+# 例外は「禁止」ではなく「理由の明示を強制」
 
 <v-clicks>
 
@@ -103,12 +180,90 @@ allowlist は plan JSON 系統 (policy/main) の deny には効かない。CIDR 
 
 ---
 layout: two-cols
-title: METADATA 注釈でポリシー一覧を自動生成
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+ratio: 1/1.15
+valign: top
+class: code-sm code-tight
+footerLink: { label: "ハンズオン 07_write_tests", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/07_write_tests" }
+---
+
+# テストの規律: コードパスごとに 1 件、最小 3 ケース
+
+<div class="text-sm leading-relaxed">
+
+<v-clicks>
+
+1. **準拠入力が pass** — 誤爆しない
+2. **違反入力が deny** — ポリシーが生きている (壊れても緑、への対策)
+3. **欠落 / 未確定入力が deny** — fail-closed の回帰防止
+
+</v-clicks>
+
+<div v-click="4" class="mt-3">
+
+境界値のバリエーションや対称ケースは同じコードパスの別入力。**網羅しない**
+
+</div>
+
+<div v-click="5" class="mt-2">
+
+件数は `count(deny) == N` の**完全一致**。`> 0` は別ルールの誤発火を見逃す
+
+</div>
+
+</div>
+
+::right::
+
+<div v-click="6">
+
+<div class="text-sm mb-1"><code>finding</code> 方式ならさらに 2 点を固定する</div>
+
+```rego
+# rule 識別子そのもの。タイポは「免除されないだけ」で気付けない
+test_rule_id if {
+	{v.rule | some v in finding} == {"workspace_env_match"}
+		with input as ng
+}
+
+# allowlist に載せたら deny が消える
+test_excepted if {
+	ex := [{"path": "environments/staging/a.tf",
+	        "rule": "workspace_env_match", "reason": "旧名を維持"}]
+	count(deny) == 0 with input as ng with data.exceptions as ex
+}
+```
+
+</div>
+
+<div v-click="7" class="mt-2">
+
+```sh
+$ conftest verify -p policy/
+3 tests, 3 passed, 0 warnings, 0 failures, 0 exceptions, 0 skipped
+```
+
+</div>
+
+<!--
+3 ケースは 3 章「テストが採点者」の ok / ng / {} と同じ構成。ここでは規律として名前を付ける。
+網羅しないのは保守コストに見合わないから。コードパスが増えたときだけテストを足す。
+finding 方式では rule 識別子の typo が「免除されないだけ」で気付けないので、識別子の値そのものを固定する。
+with data.exceptions as で allowlist を注入し、免除が効くことも 1 件で固定する。
+出力は conftest 0.69.0 で、このスライドの 2 テスト + reason 空で免除されないテストの 3 本を実行したもの。
+-->
+
+---
+layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
+footerLink: { label: "ハンズオン 11_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/11_metadata_docs" }
 ---
+
+# METADATA 注釈でポリシー一覧を自動生成
 
 <v-clicks>
 
@@ -147,6 +302,8 @@ $ scripts/gen-policy-docs.sh --check
 </div>
 
 <!--
+package スコープの # METADATA は package に 1 つしか書けない (2 ファイル目に書くとコンパイルエラー)。
+複数ファイルで package hcl を共有しているので、各 rule の直前 (rule スコープ) に書く。
 ポリシーを追加したら METADATA も書く。書き忘れは README の差分検出で CI が落ちるので気づける。
 allowlist の rule 名は README の表からコピーする運用にすると typo が減る。
 -->
@@ -204,104 +361,76 @@ conftest-check.yml は plan JSON を artifact で受け取るか、fixture デ�
 -->
 
 ---
-layout: content
+layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+ratio: 1/1.15
+valign: top
+class: code-xs code-tight
+footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
 ---
 
-# 導入の流れ: warn 期間は設けない
+# 落とし穴: 値が未確定だと not の中の参照ごと消える
 
-<div class="grid grid-cols-4 gap-3 text-sm">
-  <div class="rounded-lg px-3 py-2" style="background: color-mix(in srgb, var(--findy-brand) 8%, transparent)"><b style="color: var(--findy-brand)">1</b>&nbsp; ローカルで既存違反を洗い出す</div>
-  <div class="rounded-lg px-3 py-2" style="background: color-mix(in srgb, var(--findy-brand) 16%, transparent)"><b style="color: var(--findy-brand)">2</b>&nbsp; リネームか例外登録かを決める</div>
-  <div class="rounded-lg px-3 py-2" style="background: color-mix(in srgb, var(--findy-brand) 24%, transparent)"><b style="color: var(--findy-brand)">3</b>&nbsp; workflow + allowlist を 1 PR で入れる</div>
-  <div class="rounded-lg px-3 py-2 text-white" style="background: var(--findy-brand)"><b>4</b>&nbsp; 導入 PR 自身で緑を確認</div>
-</div>
+<div class="text-sm mb-2">plan 時に CIDR が決まらない VPC (IPAM から採番)。<code>after</code> に無く <code>after_unknown</code> に入る</div>
 
-<v-click>
-
-<div class="code-compact mt-4">
-
-```sh
-# リポジトリのルートで実行する (environments/ 内からだと env 検査が静かに無効化)
-conftest test --policy ../policies/policy --namespace hcl \
-  --parser hcl2 --combine --data .conftest-exceptions.yaml \
-  $(find . -name '*.tf' -not -path '*/.terraform/*' | perl -pe 's|^\./||')
+```json [plan.json (抜粋)]
+{ "address": "aws_vpc.ipam", "type": "aws_vpc",
+  "change": {
+    "actions": ["create"],
+    "after": { "enable_dns_support": true },
+    "after_unknown": { "cidr_block": true } } }
 ```
 
-</div>
-
-</v-click>
-
-<v-click>
-
-<div class="mt-4">
-<FindyCallout variant="warn" label="warn 期間を作らない理由">
-warn は誰も見ない。導入 PR が緑になる = 既存違反はすべてリネーム済みか理由つきで免除済み、という状態から始める
+<div v-click="3" class="mt-3">
+<FindyCallout label="fail-closed: 検証できない値は deny に倒す">
+未確定・欠落・<code>"${var.x}"</code> の文字列は「違反ではない」ではなく「検証できない」。通すと本番で初めて分かる
 </FindyCallout>
 </div>
 
-</v-click>
+::right::
 
-<!--
-洗い出しはポリシーリポジトリを隣に clone して --policy ../policies/policy で実行する。
-allowlist は導入 PR に同梱し、レビューで reason を読んでもらう。
--->
-
----
-layout: content
-eyebrowNum: 5
-eyebrow: 運用のしくみ
----
-
-# 落とし穴 3 つ
-
-<div class="grid gap-4 mt-2 text-sm code-compact" style="grid-template-columns: 1.3fr 1fr 1fr">
-<div v-click>
-
-## a. negation の罠
+<div v-click="1">
 
 ```rego
-# キー欠落で rule ごと消える
-not is_string(x.y.z)
+# 事故る
+deny contains msg if {
+	some rc in input.resource_changes
+	rc.type == "aws_vpc"
+	not is_string(rc.change.after.cidr_block)  # 参照が無い → ここで不成立
+	msg := sprintf("%s: CIDR が確定していない", [rc.address])
+}
 ```
+
+```sh
+$ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
+[]                        # 未確定なのに通る
+```
+
+</div>
+
+<div v-click="2" class="mt-2">
 
 ```rego
-# 値を取ってから判定する
-v := object.get(x, ["y", "z"], null)
-not is_string(v)
+# 防げる: 無ければ null に落としてから判定する
+# → ["aws_vpc.ipam: CIDR が確定していない"]
+deny contains msg if {
+	some rc in input.resource_changes
+	rc.type == "aws_vpc"
+	cidr := object.get(rc.change, ["after", "cidr_block"], null)
+	not is_string(cidr)                        # null なので真
+	msg := sprintf("%s: CIDR が確定していない", [rc.address])
+}
 ```
 
-`not` の中の参照は外に巻き上げられ、欠落だと代入が不成立になる
-
-</div>
-<div v-click>
-
-## b. fail-closed
-
-値が確定しない (`after_unknown`)、ブロックが無い、形が不正
-
-→ 「検証できない」は **deny に倒す**
-
-「違反ではない」に倒すと a. と組み合わさって素通りする
-
-</div>
-<div v-click>
-
-## c. METADATA の位置
-
-`package hcl` を複数ファイルで共有している
-
-→ package スコープの `# METADATA` は **1 つしか書けない**
-
-各 rule の直前 (rule スコープ) に書く
-
-</div>
 </div>
 
 <!--
-a. は VPC CIDR ポリシーの初版で実際に踏んだバグ。欠落入力 (after_unknown) のテストで発覚した。
-c. は 2 ファイル目に package スコープを書くとコンパイルエラーになる。
+3 章の「not は undefined でも真」は式の話。not の中に rc.change.after.cidr_block のような参照を書くと、
+OPA はその参照を not の外に巻き上げて先に評価するため、キーが無いとそこで不成立になり not まで届かない。
+object.get で「無ければ null」に落としてから判定すれば、必ず not に到達する。
+VPC CIDR ポリシーの初版で実際に踏んだバグ。欠落入力のテスト (最小 3 ケースの 3 つ目) で発覚した。
+出力は opa 1.19.1 で確認したもの。
 -->
 
 ---
@@ -370,63 +499,6 @@ eyebrow: 運用のしくみ
 
 </v-clicks>
 </div>
-
----
-layout: content
-eyebrowNum: 5
-eyebrow: 運用のしくみ
----
-
-# ハンズオン: mozumasu/rego-playground
-
-<div class="grid grid-cols-3 gap-x-6 gap-y-1 mt-2 text-sm">
-<div>
-
-1. hello deny
-2. undefined
-3. iteration
-
-</div>
-<div>
-
-4. helpers
-5. tests
-6. plan JSON
-
-</div>
-<div>
-
-7. HCL
-8. exceptions allowlist
-9. METADATA
-
-</div>
-</div>
-
-<v-click>
-
-```sh
-git clone https://github.com/mozumasu/rego-playground
-cd rego-playground && direnv allow    # conftest / opa / terraform が入る
-cd exercises/01_hello_deny
-conftest verify -p policy/            # TODO を埋めて全通過なら合格
-```
-
-</v-click>
-
-<v-click>
-
-<div class="mt-4">
-<FindyCallout label="進め方">
-各章の README を読み、<code>policy/*.rego</code> の <code># TODO</code> を埋める。テストが採点者
-</FindyCallout>
-</div>
-
-</v-click>
-
-<!--
-今日の章立てと同じ順。06 で plan JSON、07 で HCL、08 で allowlist と、実運用に必要なものを一通りなぞる。
--->
 
 ---
 layout: content

@@ -20,10 +20,14 @@ eyebrow: Rego の読み方
 
 手続きではなく、`ルール` という単位で成り立つ条件を宣言する言語
 
+<div v-click="1">
+
 ## ルール
 
-「名前 + 条件」の宣言。条件が成り立つときだけ、名前に値が入る  
-右の例では、条件がすべて成り立った `msg` が `deny` に集まる
+**名前 + 条件** の宣言  
+条件が成り立つときだけ、名前に値が入る  
+
+</div>
 
 ::left::
 
@@ -40,6 +44,7 @@ for tag in tags:          # ループ
 <FindyAnnotatedCode>
 
 ```rego
+# Rego: 条件を宣言
 deny contains msg if {
 	some tag in input.tags
 	count(tag) >= 6
@@ -47,301 +52,26 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion :line="1" text="deny" label="名前" color="#3b82f6" />
-<FindyCodeRegion :line="2" :end-line="4" label="条件" label-position="below-left" color="#10b981" />
+<FindyCodeRegion v-click="2" :line="2" text="deny" label="名前" color="#3b82f6" />
+<FindyCodeRegion v-click="3" :line="3" :end-line="5" label="条件" label-position="below-left" color="#10b981" />
 
 </FindyAnnotatedCode>
-
-<!--
-他の言語に対応物が無いのがここ。関数でも変数でもなく、SQL のビューが一番近い。
-CREATE VIEW deny AS SELECT ... FROM tags WHERE length(tag) >= 6 と同じ気持ち。
-ボディは「手順」ではなく「あり得る値の組み合わせ全部に対するフィルタ」。
--->
-
----
-layout: content
-class: code-sm
-eyebrowNum: 2
-eyebrow: Rego の読み方
----
-
-## ルールの構造
-
-<div class="text-sm mb-3">
-ルール = <span class="rule-head">ヘッド</span> (<span class="rule-name">ルール名</span> + <span class="rule-head">値の作り方</span>) + <span class="rule-body">ボディ</span>
-</div>
-<div class="grid grid-cols-2 gap-x-5 mt-3 items-start">
-
-<pre class="rule-shape-block has-anno-tl"><span class="anno anno-head anno-tl" data-label="ヘッド"><span class="rule-name">&lt;ルール名&gt;</span> <span class="rule-head">&lt;値の作り方&gt;</span></span> if &#123;
-    <span class="anno anno-body anno-tl" data-label="ボディ"><span class="rule-body">&lt;ボディ&gt;</span></span>
-&#125;</pre>
-
-<FindyAnnotatedCode :line-height="1.6">
-
-```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
-```
-
-<FindyCodeRegion :line="1" text="deny" color="#f0b866" />
-<FindyCodeRegion :line="1" text="contains msg" color="#7cc4ff" />
-<FindyCodeRegion :line="2" :end-line="3" color="#7ee0a8" />
-
-</FindyAnnotatedCode>
-
-</div>
-
-
-<div class="compact-table">
-
-| 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 |
-| --- | --- | --- |
-| 定数 | `name := 値` (ボディなし) | その値 |
-| 真偽ルール | `name if { ... }` | 成立なら true、不成立なら **undefined** |
-| 集合ルール | `name contains x if { ... }` | 条件を満たした x の集合。同名を複数書くと合算 |
-| オブジェクトルール | `name[key] := value if { ... }` | key → value のマップ |
-| 関数 | `name(引数) := 値 if { ... }` | 引数ごとの値 |
-| 内包表記 | `{x \| 条件}` / `[x \| 条件]` | 式の中に埋め込んだ集合 / 配列 |
-
-</div>
-
-<!--
-用語は公式ドキュメントに合わせている (rule = head + body)。英語のドキュメントを読むときにそのまま繋がる。
-どのルールも同じ「ヘッド if { ボディ }」で、名前が違うだけ。
--->
 
 ---
 layout: two-cols
-title: 省略できる部分
-class: code-sm
 eyebrowNum: 2
 eyebrow: Rego の読み方
 ratio: 1/1.2
 valign: center
 ---
 
-完全形は `ヘッド if { ボディ }`。省略した部分は既定値になる
+# さっそくRegoを読んでみよう
 
-<div class="compact-table">
+<div class="text-sm op80 mb-3">
 
-| 省略するもの | 意味 |
-| --- | --- |
-| <span class="rule-body">ボディ</span> | 条件なしで常に成り立つ = **定数** |
-| <span class="rule-head">値の作り方</span> | 値は **true** |
-| `{ }` | 式が 1 つなら省略できる |
+`input` = チェック対象の JSON。conftest に渡したファイルの中身がそのまま入る
 
 </div>
-
-::right::
-
-<FindyAnnotatedCode>
-
-```rego
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
-
-max_size := 10
-
-is_big if input.size > max_size
-```
-
-<FindyCodeRegion :line="6" label="ボディを省略 → 常に 10" color="#7ee0a8" />
-<FindyCodeRegion :line="8" label="値の作り方を省略 → true。{ } も省略" color="#7cc4ff" />
-
-</FindyAnnotatedCode>
-
-<!--
-どれも同じ「ヘッド if { ボディ }」の省略形。max_size は「ボディが無いルール」であって変数ではない。
-is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
--->
-
----
-layout: two-cols
-title: ".rego ファイルの構成要素"
-class: code-sm
-eyebrowNum: 2
-eyebrow: Rego の読み方
-ratio: 1/1
-valign: center
----
-
-<FindyAnnotatedCode :line-height="1.7">
-
-```rego
-package main        # 必須。1 ファイルに 1 つ
-
-import rego.v1      # Rego のバージョンを指定
-
-deny contains msg if {
-	is_big
-	msg := "size 超過"
-}
-
-max_size := 10
-
-is_big if input.size > max_size
-```
-
-<FindyCodeRegion v-click="1" :line="5" :end-line="12" label="ルール" label-position="right" color="#ff8080" />
-<FindyCodeRegion v-click="2" :line="5" text="deny contains msg" label="ヘッド" color="#7cc4ff" />
-<FindyCodeRegion v-click="3" :line="10" label="ヘッド (ボディなし)" color="#7cc4ff" />
-<FindyCodeRegion v-click="4" :line="12" text="is_big" label="ヘッド" color="#7cc4ff" />
-<FindyCodeRegion v-click="5" :line="6" :end-line="7" label="ボディ" label-position="below-left" color="#7ee0a8" />
-<FindyCodeRegion v-click="6" :line="12" text="input.size > max_size" label="ボディ" label-position="right" color="#7ee0a8" />
-
-</FindyAnnotatedCode>
-
-::right::
-
-<div class="quiz mt-2">
-
-- <span v-mark.circle.red="1">Q1. ルールはどこでしょう</span>
-- <span v-mark.circle.blue="2">Q2. ヘッドはどこでしょう</span>
-- <span v-mark.circle.green="5">Q3. ボディはどこでしょう</span>
-
-</div>
-
-<div v-click="7" class="mt-6">
-<FindyCallout label="「変数」は構成要素ではない">
-<code>max_size := 10</code> はボディの無い<strong>ルール</strong>。<br>
-<code>msg</code> は式の中の<strong>ローカル変数</strong>で、ルールの外からは見えない
-</FindyCallout>
-</div>
-
-<!--
-package はファイルの名前空間。conftest は既定で package main の deny を見る。
-「変数を宣言する」文法は無い。max_size は data.main.max_size として外から引けるルールで、
-msg はボディの中だけで有効な変数。ここを混ぜると次のスライドの表が読めなくなる。
--->
-
----
-layout: two-cols
-title: "最小の例: input と実行結果を並べて読む"
-eyebrowNum: 2
-eyebrow: Rego の読み方
-ratio: 1/1.2
-valign: center
----
-
-```json
-// input.json
-{
-  "environment": "production",
-  "debug": true
-}
-```
-
-<v-click>
-
-```sh
-$ conftest test -p policy/ input.json
-FAIL - input.json - main -
-  production では debug を無効に
-
-1 test, 0 passed, 0 warnings, 1 failure
-```
-
-</v-click>
-
-::right::
-
-```rego
-# policy/debug.rego
-package main
-
-import rego.v1
-
-deny contains msg if {
-	input.environment == "production"
-	input.debug == true
-	msg := "production では debug を無効に"
-}
-```
-
-<v-click at="2">
-
-<div class="mt-3 text-sm op80">
-
-`debug: false` にすると 2 行目が偽 → deny は空 → PASS
-
-</div>
-
-</v-click>
-
-<!--
-input はファイルの中身がそのまま input になる。ポリシーは -p で渡したディレクトリの *.rego 全部。
-package main が conftest のデフォルト namespace。
--->
-
----
-layout: two-cols
-title: "ルール名は自由。ただし制約は 2 つ"
-eyebrowNum: 2
-eyebrow: Rego の読み方
-ratio: 1/1
-valign: center
----
-
-#### ① 言語の制約: 予約語・グローバル変数は不可
-
-<div class="text-sm leading-relaxed">
-
-`package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
-
-`input` / `data` は全部の値の入り口 (`input.debug`、`data.main.deny`) なので、ルール名で隠せない
-
-</div>
-
-```sh
-$ opa check --strict policy/
-policy/a.rego:5: rego_parse_error:
-  not keyword cannot be used for rule name
-```
-
-::right::
-
-#### ② ツールの制約: 拾う名前が決まっている
-
-<div class="text-sm">
-
-| ツール | 拾うルール名 |
-| --- | --- |
-| conftest | `deny` / `violation` / `warn` |
-| Gatekeeper (k8s) | `violation` |
-| 自分で `opa eval` | 好きな名前 |
-
-</div>
-
-<v-click>
-
-<div class="mt-4">
-<FindyCallout label="deny は Rego の予約語ではなく conftest との約束">
-<code>mydeny</code> にリネームすると conftest は拾わず、<code>0 tests, 0 passed</code> で緑になる
-</FindyCallout>
-</div>
-
-</v-click>
-
-<!--
-さっき conftest が deny を拾ったのは Rego の仕様ではなく conftest の約束。
-言語として決まっているのは左の予約語だけで、deny / violation / warn は conftest の都合。
-ここを混同すると「deny という書き方を覚える」で止まってしまう。
-後半に出てくる finding も conftest が見に来る名前ではなく、exceptions.rego が deny に変換している。
-opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
--->
-
----
-layout: two-cols
-title: "さっそくRegoを読んでみよう"
-eyebrowNum: 2
-eyebrow: Rego の読み方
-ratio: 1/1.2
-valign: center
----
 
 <v-clicks>
 
@@ -378,4 +108,377 @@ deny contains msg if {
 <!--
 「実行する」ではなく「成り立つものを探す」。合否は deny 集合が空かどうかで決まる。
 合格判定を書くのではなく、違反を列挙する。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 2
+eyebrow: Rego の読み方
+ratio: 1.1/1
+valign: center
+---
+
+# ルールの構造
+
+<div class="mb-5 formula">
+ルール = <code class="rule-shape"><span v-if="$clicks < 3" class="rule-head">ヘッド</span><span v-else class="anno anno-head anno-tl" data-label="ヘッド"><span class="rule-name">ルール名</span> <span class="rule-head">値の作り方</span></span> if { <span class="rule-body">ボディ</span> }</code>
+</div>
+
+<FindyAnnotatedCode :line-height="1.7">
+
+```rego
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+```
+
+<FindyCodeRegion v-if="$clicks >= 1" :line="1" text="deny contains msg" label="ヘッド" color="#7cc4ff" :pad="$clicks >= 3 ? '0.38em' : '0.18em'" />
+<FindyCodeRegion v-if="$clicks >= 2" :line="2" :end-line="3" label="ボディ" label-position="below-left" color="#7ee0a8" />
+<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="deny" color="#f0b866" />
+<FindyCodeRegion v-if="$clicks >= 3" :line="1" text="contains msg" color="#7cc4ff" />
+
+</FindyAnnotatedCode>
+
+::right::
+
+<div class="text-base leading-relaxed">
+
+<div v-click="1">
+
+**<span class="rule-head">ヘッド</span>**: 何を、どんな値で出すか
+
+</div>
+
+<div v-click="2" class="mt-2">
+
+**<span class="rule-body">ボディ</span>**: 成り立つべき条件 (各行は AND)
+
+</div>
+
+<div v-click="3" class="mt-5">
+
+ヘッドの中身は 2 つ
+
+- **<span class="rule-name">ルール名</span>**: `deny`
+- **<span class="rule-head">値の作り方</span>**: `contains msg` (msg を集合に入れる)
+
+<pre class="rule-shape-block mt-3"><span class="rule-name">&lt;ルール名&gt;</span> <span class="rule-head">&lt;値の作り方&gt;</span> if &#123;
+    <span class="rule-body">&lt;ボディ&gt;</span>
+&#125;</pre>
+
+</div>
+
+</div>
+
+<!--
+用語は公式ドキュメントに合わせている (rule = head + body)。英語のドキュメントを読むときにそのまま繋がる。
+まずヘッドとボディの 2 つに分け、次にヘッドをルール名と値の作り方に分ける。
+最後に骨格を出して「どのルールも同じ形で、名前と値の作り方が違うだけ」に繋げる。
+-->
+
+---
+layout: content
+eyebrowNum: 2
+eyebrow: Rego の読み方
+---
+
+# ルールの種類は 3 つ覚えれば足りる
+
+<div class="text-sm">
+
+| 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 | 今日の例 |
+| --- | --- | --- | --- |
+| 集合ルール | `name contains x if { ... }` | 条件を満たした x の集合。同名を複数書くと合算 | `deny` |
+| 真偽ルール | <span v-mark.box.red="2">`name if { ... }`</span> | 成立なら true、不成立なら **undefined** | `is_big` |
+| 定数 | <span v-mark.box.red="2">`name := 値`</span> (ボディなし) | その値 | `max_size` |
+
+</div>
+
+<v-click>
+
+<div class="mt-5 text-sm op80">
+
+**残り 2 つ**は出てきたときに読めれば十分
+
+| 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 |
+| --- | --- | --- |
+| 関数 | `name(引数) := 値 if { ... }` | 引数ごとの値 (3 章のヘルパー関数で登場) |
+| オブジェクトルール | `name[key] := value if { ... }` | key → value のマップ |
+
+</div>
+
+</v-click>
+
+<FindyPromoOverlay v-click="3">
+  あれ、<code>name if { ... }</code> と <code>name := 値</code> は<br><code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code> の形をしていない…?
+</FindyPromoOverlay>
+
+<!--
+conftest のポリシーで書くのはほぼ集合ルール (deny) と、その条件を切り出した真偽ルール、閾値の定数。
+関数は 3 章で cidr_allowed(cidr) として出てくる。オブジェクトルールは今日のデッキには出てこない。
+内包表記 {x | 条件} はルールではなく式の書き方なので、ここには入れていない。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 2
+eyebrow: Rego の読み方
+ratio: 1/3
+---
+
+# 省略できる部分
+
+<div class="mb-3">実は全部 <code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code>。書かなくていい部分を省いているだけ</div>
+
+::left::
+
+省略できるもの:
+
+- ボディ
+- 値の作り方
+- `{}`
+
+::right::
+
+<div class="grid">
+<div class="col-start-1 row-start-1 no-slide" v-click.hide="5">
+
+````md magic-move {at:1}
+```rego
+max_size := 10 if { true }
+
+is_big := true if { input.size > max_size }
+```
+```rego
+max_size := 10  # ボディを省略 → 常に 10
+
+is_big := true if { input.size > max_size }
+```
+```rego
+max_size := 10  # ボディを省略 → 常に 10
+
+is_big if { input.size > max_size }  # 値の作り方を省略 → true
+```
+```rego
+max_size := 10  # ボディを省略 → 常に 10
+
+is_big if input.size > max_size  # { } も省略
+```
+```rego
+# 省略前
+max_size := 10 if { true }
+is_big := true if { input.size > max_size }
+
+# 省略後
+max_size := 10  # ボディを省略 → 常に 10
+is_big if input.size > max_size  # 値の作り方と { } を省略 → true
+```
+````
+
+</div>
+<div v-click="5" class="col-start-1 row-start-1 no-slide">
+
+<FindyAnnotatedCode :line-height="1.65">
+
+```rego
+# 省略前
+max_size := 10 if { true }
+is_big := true if { input.size > max_size }
+
+# 省略後
+max_size := 10  # ボディを省略 → 常に 10
+is_big if input.size > max_size  # 値の作り方と { } を省略 → true
+```
+
+<FindyCodeRegion v-if="$clicks >= 5" :line="2" text="if { true }" variant="marker" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=":= true" variant="marker" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text="{ " variant="marker" color="#facc15" />
+<FindyCodeRegion v-if="$clicks >= 5" :line="3" text=" }" variant="marker" color="#facc15" />
+
+</FindyAnnotatedCode>
+
+</div>
+</div>
+
+<!--
+最初は 2 つとも完全形で書いてある。クリックごとに 1 か所ずつ消して、普段見る短い形に縮める。
+max_size は「ボディが無いルール」であって変数ではない。
+is_big は値を書いていないので true。条件が成り立たないと undefined になる (次のスライド以降で効いてくる)。
+完全形 2 つは opa 1.19.1 の check --strict を通し、eval で同じ結果になることを確認済み。
+最後のクリックで省略前と省略後を上下に並べて見比べる。
+-->
+
+---
+layout: content
+class: code-sm code-tight
+eyebrowNum: 2
+eyebrow: Rego の読み方
+footerLink: { label: "ハンズオン 02_hello_deny", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/02_hello_deny" }
+---
+
+# Regoの構造おさらい
+
+<div class="grid grid-cols-2 gap-x-8 items-start">
+
+<div>
+
+<FindyAnnotatedCode :line-height="1.5">
+
+```rego [policy/size.rego]
+package main        # 必須。1 ファイルに 1 つ
+
+import rego.v1      # Rego のバージョンを指定
+
+deny contains msg if {
+	is_big
+	msg := "size 超過"
+}
+
+max_size := 10
+
+is_big if input.size > max_size
+```
+
+<FindyCodeRegion v-click="1" :line="5" :end-line="12" label="ルール" label-position="right" color="#ff8080" />
+<FindyCodeRegion v-click="2" :line="5" text="deny contains msg" label="ヘッド" color="#7cc4ff" />
+<FindyCodeRegion v-click="3" :line="10" label="ヘッド (ボディなし)" color="#7cc4ff" />
+<FindyCodeRegion v-click="4" :line="12" text="is_big" label="ヘッド" color="#7cc4ff" />
+<FindyCodeRegion v-click="5" :line="6" :end-line="7" label="ボディ" label-position="below-left" color="#7ee0a8" />
+<FindyCodeRegion v-click="6" :line="12" text="input.size > max_size" label="ボディ" label-position="right" color="#7ee0a8" />
+
+</FindyAnnotatedCode>
+
+</div>
+
+<div>
+
+<div class="quiz">
+
+- <span v-mark.circle.red="1">Q1. ルールはどこでしょう</span>
+- <span v-mark.circle.blue="2">Q2. ヘッドはどこでしょう</span>
+- <span v-mark.circle.green="5">Q3. ボディはどこでしょう</span>
+
+</div>
+
+<div v-click="7" class="mt-4">
+<FindyCallout label="変数に見えるもの、正体は 2 種類">
+<code>max_size := 10</code> は<strong>ルール</strong> (ボディなし)。外から <code>data.main.max_size</code> で引ける<br>
+<code>msg</code> は<strong>ローカル変数</strong>。ボディの中だけで有効
+</FindyCallout>
+</div>
+
+</div>
+
+</div>
+
+<div v-click="8" class="grid grid-cols-[1fr_1.6fr] gap-x-8 items-start mt-2 pt-2 border-t border-gray-200">
+
+<div>
+
+```json
+// input.json
+{ "size": 30 }
+```
+
+</div>
+
+<div>
+
+```sh
+$ opa eval -d policy/ -i input.json 'data.main' --format pretty
+{ "deny": ["size 超過"], "is_big": true, "max_size": 10 }
+# ルール 3 つが見える。msg は無い (opa eval は 3 章で)
+```
+
+</div>
+
+</div>
+
+<!--
+package はファイルの名前空間。conftest は既定で package main の deny を見る。
+「変数を宣言する」文法は無い。max_size は data.main.max_size として外から引けるルールで、
+msg はボディの中だけで有効な変数。ここを混ぜると次のスライドの表が読めなくなる。
+最後に opa eval で data.main を見せ、ルール 3 つは出て msg は出ないことを実物で示す (opa 1.19.1)。
+-->
+
+---
+layout: content
+eyebrowNum: 2
+eyebrow: Rego の読み方
+class: code-sm code-tight
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
+---
+
+# ルール名は自由。ただし制約は 2 つ
+
+<div class="grid grid-cols-[1fr_1.15fr] gap-x-8 gap-y-2 items-start text-sm">
+
+<div class="col-span-2">
+
+#### ① 言語の制約: 予約語・グローバル変数は不可
+
+</div>
+
+<div v-click="1" class="leading-relaxed">
+
+**予約語**:  
+  `package` `import` `as` `default` `else` `not` `with` `some` `every` `in` `if` `contains` `null` `true` `false`
+
+**グローバル変数**:  
+  `input` / `data`
+
+</div>
+
+<div v-click="1">
+
+```rego
+# not をルール名にすると
+not contains msg if { input.debug }
+```
+
+```sh
+$ opa check --strict policy/
+policy/a.rego:5: rego_parse_error:
+  not keyword cannot be used for rule name
+```
+
+</div>
+
+<div class="col-span-2 pt-2 border-t border-gray-200">
+
+#### ② ツールの制約: 拾う名前が決まっている
+
+</div>
+
+<div v-click="2" class="table-compact" style="font-size: 1.3rem">
+
+| ツール | 拾うルール名 |
+| --- | --- |
+| conftest | `deny` / `violation` / `warn` |
+| Gatekeeper (k8s) | `violation` |
+| OPA 本体 (`opa eval`、後述) | パスで指定した好きな名前 |
+
+</div>
+
+<div v-click="3">
+
+**deny は Rego の予約語ではなく conftest との約束**。`mydeny` にリネームすると、違反があっても緑
+
+```sh
+$ conftest test -p policy/ input.json
+0 tests, 0 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+</div>
+
+</div>
+
+<!--
+さっき conftest が deny を拾ったのは Rego の仕様ではなく conftest の約束。
+言語として決まっているのは左の予約語だけで、deny / violation / warn は conftest の都合。
+ここを混同すると「deny という書き方を覚える」で止まってしまう。
+後半に出てくる finding も conftest が見に来る名前ではなく、exceptions.rego が deny に変換している。
+opa eval 'data.main' で見ると deny も自作ルールも同列に並ぶ。
+エラー文は opa 1.19.1 の実出力。
 -->
