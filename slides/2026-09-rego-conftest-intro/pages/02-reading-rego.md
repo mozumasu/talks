@@ -361,9 +361,9 @@ is_big if input.size > max_size
 </div>
 
 <div v-click="7" class="mt-4">
-<FindyCallout label="「変数」は構成要素ではない">
-<code>max_size := 10</code> はボディの無い<strong>ルール</strong>。<br>
-<code>msg</code> は式の中の<strong>ローカル変数</strong>で、ルールの外からは見えない
+<FindyCallout label="変数に見えるもの、正体は 2 種類">
+<code>max_size := 10</code> は<strong>ルール</strong> (ボディなし)。外から <code>data.main.max_size</code> で引ける<br>
+<code>msg</code> は<strong>ローカル変数</strong>。ボディの中だけで有効
 </FindyCallout>
 </div>
 
