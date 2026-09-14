@@ -83,6 +83,94 @@ plan JSON は variables / prior_state を jq で落としてから artifact に�
 layout: two-cols
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
+ratio: 1/1.05
+valign: top
+class: code-sm code-tight
+footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
+---
+
+# plan JSON はどんな形か: 見るのは resource_changes だけ
+
+```sh
+# init 済みで provider の認証が通る環境で
+terraform plan -out=tfplan
+terraform show -json tfplan > plan.json
+```
+
+<FindyAnnotatedCode>
+
+```json [plan.json (抜粋)]
+{ "resource_changes": [{
+    "address": "module.network.aws_vpc.this",
+    "type": "aws_vpc",
+    "change": {
+      "actions": ["create"],
+      "after": { "cidr_block": "192.168.0.0/16" }
+    }
+  }, ...] }
+```
+
+<FindyCodeRegion v-click="1" :line="1" text="&quot;resource_changes&quot;" color="#3b82f6" />
+<FindyCodeRegion v-click="1" :line="3" text="&quot;type&quot;" color="#10b981" />
+<FindyCodeRegion v-click="1" :line="5" text="&quot;actions&quot;" color="#f0b866" />
+<FindyCodeRegion v-click="1" :line="6" text="&quot;after&quot;" color="#a78bfa" />
+
+</FindyAnnotatedCode>
+
+::right::
+
+<div v-click="1">
+
+<FindyAnnotatedCode>
+
+```rego
+deny contains msg if {
+	some rc in input.resource_changes
+	rc.type == "aws_vpc"
+	"create" in rc.change.actions
+	cidr := rc.change.after.cidr_block
+	not net.cidr_contains("10.0.0.0/12", cidr)
+	msg := sprintf("%s: CIDR %s は割当外", [rc.address, cidr])
+}
+```
+
+<FindyCodeRegion :line="2" text="input.resource_changes" color="#3b82f6" />
+<FindyCodeRegion :line="3" text="rc.type" color="#10b981" />
+<FindyCodeRegion :line="4" text="rc.change.actions" color="#f0b866" />
+<FindyCodeRegion :line="5" text="rc.change.after" color="#a78bfa" />
+
+</FindyAnnotatedCode>
+
+</div>
+
+<v-click at="2">
+
+```sh
+$ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
+[
+  "module.network.aws_vpc.this: CIDR 192.168.0.0/16 は割当外"
+]
+```
+
+</v-click>
+
+<div v-click="3" class="mt-2">
+<FindyCallout label="plan を打てる環境が無くても試せる">
+ハンズオン 08 に plan.json を同梱。この出力もそれで採った
+</FindyCallout>
+</div>
+
+<!--
+plan JSON は巨大だが、ポリシーで見るのはほぼ resource_changes。各要素の type で対象を絞り、
+actions で create / update を選び、after に適用後の値が入る。
+after に無いキーは after_unknown に入る (apply まで確定しない値)。これが次の「値が未確定」の話に繋がる。
+出力は conftest 0.69.0 で、ハンズオン 08 の plans/ng.json に対して実行したもの。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 4
+eyebrow: conftest で Terraform を検査する
 ratio: 1/1.1
 valign: center
 class: code-sm code-tight
