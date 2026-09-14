@@ -104,13 +104,13 @@ terraform {
 }
 ```
 
-<FindyCodeRegion :line="2" text="terraform" color="#3b82f6" />
-<FindyCodeRegion :line="3" text="cloud" color="#10b981" />
-<FindyCodeRegion :line="4" text="workspaces" color="#f0b866" />
+<FindyCodeRegion v-click="1" :line="2" text="terraform" color="#3b82f6" />
+<FindyCodeRegion v-click="1" :line="3" text="cloud" color="#10b981" />
+<FindyCodeRegion v-click="1" :line="4" text="workspaces" color="#f0b866" />
 
 </FindyAnnotatedCode>
 
-<v-click>
+<v-click at="2">
 
 <FindyAnnotatedCode>
 
@@ -147,17 +147,17 @@ deny contains msg if {
 }
 ```
 
-<FindyCodeRegion :line="3" text="&quot;terraform&quot;: [" color="#3b82f6" />
-<FindyCodeRegion :line="4" text="&quot;cloud&quot;: [" color="#10b981" />
-<FindyCodeRegion :line="5" text="&quot;workspaces&quot;: [" color="#f0b866" />
+<FindyCodeRegion v-click="1" :line="3" text="&quot;terraform&quot;: [" color="#3b82f6" />
+<FindyCodeRegion v-click="1" :line="4" text="&quot;cloud&quot;: [" color="#10b981" />
+<FindyCodeRegion v-click="1" :line="5" text="&quot;workspaces&quot;: [" color="#f0b866" />
 
 </FindyAnnotatedCode>
 
 <v-click at="1">
 
 <div class="mt-2">
-<FindyCallout label="ブロックは 1 個でも配列">
-HCL のブロック名が JSON のキーになり、値は必ず配列。だから Rego では <code>[_]</code> を 1 段ずつ挟んで辿る
+<FindyCallout label="ブロック名が JSON のキーになり、値は 1 個でも配列">
+同じ色の枠が対応する。Rego では <code>[_]</code> を 1 段ずつ挟んで辿る
 </FindyCallout>
 </div>
 
