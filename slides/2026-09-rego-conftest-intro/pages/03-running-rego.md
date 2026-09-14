@@ -669,7 +669,7 @@ class: code-sm code-tight
 footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/05_iteration" }
 ---
 
-# ループは書かない。some で列挙、every で全件
+# some で列挙、every で全件
 
 ```json
 // input.json
@@ -679,20 +679,31 @@ footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/m
     "batch": { "replicas": 1, "owner": "data" } } }
 ```
 
-<div class="text-sm">
+<div class="text-sm leading-relaxed">
 
-<v-clicks>
+<div v-click="1">
 
-- `in` の前の変数が **1 つなら値、2 つならキーと値** (`svc` は service。名前は自由)
-- `some` = 条件を満たす要素を**列挙**。for + if + append を 1 行で
-- `every` = **全件**満たすときだけ真。1 つでも外れると undefined
-- ループ変数を進める、break する、という発想はない
+**`some`** = 条件を満たす要素を**列挙**する。満たした件ごとに msg が 1 つ
 
-</v-clicks>
+</div>
+
+<div v-click="2" class="mt-2">
+
+**`every`** = **全件**満たすときだけ真。1 つでも外れると undefined
+
+</div>
+
+<div v-click="3" class="mt-3 op80">
+
+`in` の前の変数が 1 つなら**値**、2 つなら**キーと値** (`svc` は service。名前は自由)
+
+</div>
 
 </div>
 
 ::right::
+
+<v-click at="1">
 
 ```rego
 deny contains msg if {
@@ -701,8 +712,6 @@ deny contains msg if {
 	msg := sprintf("%s: replicas は 2 以上", [name])
 }
 ```
-
-<v-click at="1">
 
 ```json
 "deny": ["api: replicas は 2 以上", "batch: replicas は 2 以上"]
