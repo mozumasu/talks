@@ -679,20 +679,24 @@ footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/m
     "batch": { "replicas": 1, "owner": "data" } } }
 ```
 
+<div class="text-sm">
+
 <v-clicks>
 
-- `some` = 条件を満たす要素を**列挙**。for + if + append を 1 行で
+- `some name, svc in obj` = キーと値を 1 件ずつ取り出して**列挙** (名前は自由)。for + if + append を 1 行で
 - `every` = **全件**満たすときだけ真。1 つでも外れると undefined
 - ループ変数を進める、break する、という発想はない
 
 </v-clicks>
 
+</div>
+
 ::right::
 
 ```rego
 deny contains msg if {
-	some name, cfg in input.services   # 全要素を試す
-	cfg.replicas < 2                   # 満たした要素だけ残る
+	some name, svc in input.services   # キー, 値 を 1 件ずつ取り出す
+	svc.replicas < 2                   # 条件を満たした件だけ残る
 	msg := sprintf("%s: replicas は 2 以上", [name])
 }
 ```
@@ -709,7 +713,7 @@ deny contains msg if {
 
 ```rego
 all_owned if {
-	every cfg in input.services { cfg.owner != "" }
+	every svc in input.services { svc.owner != "" }
 }
 ```
 
