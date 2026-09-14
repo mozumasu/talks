@@ -190,8 +190,8 @@ eyebrow: Rego の読み方
 | 種類 | <span class="rule-head">ヘッド</span>の書き方 | 値 | 今日の例 |
 | --- | --- | --- | --- |
 | 集合ルール | `name contains x if { ... }` | 条件を満たした x の集合。同名を複数書くと合算 | `deny` |
-| 真偽ルール | `name if { ... }` | 成立なら true、不成立なら **undefined** | `is_big` |
-| 定数 | `name := 値` (ボディなし) | その値 | `max_size` |
+| 真偽ルール | <span v-mark.box.red="2">`name if { ... }`</span> | 成立なら true、不成立なら **undefined** | `is_big` |
+| 定数 | <span v-mark.box.red="2">`name := 値`</span> (ボディなし) | その値 | `max_size` |
 
 </div>
 
@@ -210,7 +210,7 @@ eyebrow: Rego の読み方
 
 </v-click>
 
-<FindyPromoOverlay v-click="2">
+<FindyPromoOverlay v-click="3">
   あれ、<code>name if { ... }</code> と <code>name := 値</code> は<br><code class="rule-shape"><span class="rule-head">ヘッド</span> if { <span class="rule-body">ボディ</span> }</code> の形をしていない…?
 </FindyPromoOverlay>
 
