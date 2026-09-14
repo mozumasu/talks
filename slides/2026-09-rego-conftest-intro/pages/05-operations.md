@@ -182,6 +182,82 @@ allowlist は plan JSON 系統 (policy/main) の deny には効かない。CIDR 
 layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+ratio: 1/1.15
+valign: top
+class: code-sm code-tight
+footerLink: { label: "ハンズオン 07_write_tests", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/07_write_tests" }
+---
+
+# テストの規律: コードパスごとに 1 件、最小 3 ケース
+
+<div class="text-sm leading-relaxed">
+
+<v-clicks>
+
+1. **準拠入力が pass** — 誤爆しない
+2. **違反入力が deny** — ポリシーが生きている (壊れても緑、への対策)
+3. **欠落 / 未確定入力が deny** — fail-closed の回帰防止
+
+</v-clicks>
+
+<div v-click="4" class="mt-3">
+
+境界値のバリエーションや対称ケースは同じコードパスの別入力。**網羅しない**
+
+</div>
+
+<div v-click="5" class="mt-2">
+
+件数は `count(deny) == N` の**完全一致**。`> 0` は別ルールの誤発火を見逃す
+
+</div>
+
+</div>
+
+::right::
+
+<div v-click="6">
+
+<div class="text-sm mb-1"><code>finding</code> 方式ならさらに 2 点を固定する</div>
+
+```rego
+# rule 識別子そのもの。タイポは「免除されないだけ」で気付けない
+test_rule_id if {
+	{v.rule | some v in finding} == {"workspace_env_match"}
+		with input as ng
+}
+
+# allowlist に載せたら deny が消える
+test_excepted if {
+	ex := [{"path": "environments/staging/a.tf",
+	        "rule": "workspace_env_match", "reason": "旧名を維持"}]
+	count(deny) == 0 with input as ng with data.exceptions as ex
+}
+```
+
+</div>
+
+<div v-click="7" class="mt-2">
+
+```sh
+$ conftest verify -p policy/
+3 tests, 3 passed, 0 warnings, 0 failures, 0 exceptions, 0 skipped
+```
+
+</div>
+
+<!--
+3 ケースは 3 章「テストが採点者」の ok / ng / {} と同じ構成。ここでは規律として名前を付ける。
+網羅しないのは保守コストに見合わないから。コードパスが増えたときだけテストを足す。
+finding 方式では rule 識別子の typo が「免除されないだけ」で気付けないので、識別子の値そのものを固定する。
+with data.exceptions as で allowlist を注入し、免除が効くことも 1 件で固定する。
+出力は conftest 0.69.0 で、このスライドの 2 テスト + reason 空で免除されないテストの 3 本を実行したもの。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 5
+eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
 footerLink: { label: "ハンズオン 11_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/11_metadata_docs" }
