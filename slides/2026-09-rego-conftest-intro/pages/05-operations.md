@@ -194,9 +194,9 @@ footerLink: { label: "ハンズオン 07_write_tests", href: "https://github.com
 
 <v-clicks>
 
-1. **準拠入力が pass** — 誤爆しない
-2. **違反入力が deny** — ポリシーが生きている (壊れても緑、への対策)
-3. **欠落 / 未確定入力が deny** — fail-closed の回帰防止
+1. **準拠入力が pass** — 正しいものを止めていない
+2. **違反入力が deny** — ポリシーが生きている。壊れても緑になる言語なので、これが唯一の検出器
+3. **欠落 / 未確定入力が deny** — キーが無い・値が未確定でも黙って通していない
 
 </v-clicks>
 
@@ -358,79 +358,6 @@ eyebrow: 運用のしくみ
 <!--
 ポリシーリポジトリが private だと呼び出し側から reusable workflow が解決できないので internal か public にする。
 conftest-check.yml は plan JSON を artifact で受け取るか、fixture ディレクトリから plan を作る。
--->
-
----
-layout: two-cols
-eyebrowNum: 5
-eyebrow: 運用のしくみ
-ratio: 1/1.15
-valign: top
-class: code-xs code-tight
-footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
----
-
-# 落とし穴: 値が未確定だと not の中の参照ごと消える
-
-<div class="text-sm mb-2">plan 時に CIDR が決まらない VPC (IPAM から採番)。<code>after</code> に無く <code>after_unknown</code> に入る</div>
-
-```json [plan.json (抜粋)]
-{ "address": "aws_vpc.ipam", "type": "aws_vpc",
-  "change": {
-    "actions": ["create"],
-    "after": { "enable_dns_support": true },
-    "after_unknown": { "cidr_block": true } } }
-```
-
-<div v-click="3" class="mt-3">
-<FindyCallout label="fail-closed: 検証できない値は deny に倒す">
-未確定・欠落・<code>"${var.x}"</code> の文字列は「違反ではない」ではなく「検証できない」。通すと本番で初めて分かる
-</FindyCallout>
-</div>
-
-::right::
-
-<div v-click="1">
-
-```rego
-# 事故る
-deny contains msg if {
-	some rc in input.resource_changes
-	rc.type == "aws_vpc"
-	not is_string(rc.change.after.cidr_block)  # 参照が無い → ここで不成立
-	msg := sprintf("%s: CIDR が確定していない", [rc.address])
-}
-```
-
-```sh
-$ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
-[]                        # 未確定なのに通る
-```
-
-</div>
-
-<div v-click="2" class="mt-2">
-
-```rego
-# 防げる: 無ければ null に落としてから判定する
-# → ["aws_vpc.ipam: CIDR が確定していない"]
-deny contains msg if {
-	some rc in input.resource_changes
-	rc.type == "aws_vpc"
-	cidr := object.get(rc.change, ["after", "cidr_block"], null)
-	not is_string(cidr)                        # null なので真
-	msg := sprintf("%s: CIDR が確定していない", [rc.address])
-}
-```
-
-</div>
-
-<!--
-3 章の「not は undefined でも真」は式の話。not の中に rc.change.after.cidr_block のような参照を書くと、
-OPA はその参照を not の外に巻き上げて先に評価するため、キーが無いとそこで不成立になり not まで届かない。
-object.get で「無ければ null」に落としてから判定すれば、必ず not に到達する。
-VPC CIDR ポリシーの初版で実際に踏んだバグ。欠落入力のテスト (最小 3 ケースの 3 つ目) で発覚した。
-出力は opa 1.19.1 で確認したもの。
 -->
 
 ---

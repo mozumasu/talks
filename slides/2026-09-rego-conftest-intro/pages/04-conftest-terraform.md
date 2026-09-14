@@ -99,7 +99,7 @@ terraform show -json tfplan > plan.json
 
 <FindyAnnotatedCode>
 
-```json [plan.json (抜粋)]
+```json [plans/ng.json (抜粋)]
 { "resource_changes": [{
     "address": "module.network.aws_vpc.this",
     "type": "aws_vpc",
@@ -146,7 +146,7 @@ deny contains msg if {
 <v-click at="2">
 
 ```sh
-$ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
+$ opa eval -d policy/ -i plans/ng.json 'data.main.deny' -f pretty
 [
   "module.network.aws_vpc.this: CIDR 192.168.0.0/16 は割当外"
 ]
@@ -156,7 +156,7 @@ $ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
 
 <div v-click="3" class="mt-2">
 <FindyCallout label="plan を打てる環境が無くても試せる">
-ハンズオン 08 に plan.json を同梱。この出力もそれで採った
+ハンズオン 08 の <code>plans/ng.json</code> (違反) と <code>ok.json</code> を使う
 </FindyCallout>
 </div>
 
@@ -164,7 +164,7 @@ $ opa eval -d policy/ -i plan.json 'data.main.deny' -f pretty
 plan JSON は巨大だが、ポリシーで見るのはほぼ resource_changes。各要素の type で対象を絞り、
 actions で create / update を選び、after に適用後の値が入る。
 after に無いキーは after_unknown に入る (apply まで確定しない値)。これが次の「値が未確定」の話に繋がる。
-出力は conftest 0.69.0 で、ハンズオン 08 の plans/ng.json に対して実行したもの。
+出力は opa 1.19.1 で、ハンズオン 08 の plans/ng.json に対して実行したもの。
 -->
 
 ---
