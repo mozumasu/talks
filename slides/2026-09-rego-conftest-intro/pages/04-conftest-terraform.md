@@ -341,6 +341,7 @@ eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
 ratio: 1/1.2
 valign: center
+class: code-sm code-tight
 footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
 ---
 
@@ -355,10 +356,10 @@ import rego.v1
 
 # environments/<env>/... の <env> を取る
 path_env(path) := parts[i + 1] if {
-	parts := split(path, "/")
-	some i
-	parts[i] == "environments"
-}
+	parts := split(path, "/")    # "/" で切って配列に
+	some i                      # 添字 i を全部試す
+	parts[i] == "environments"  # environments が i 番目
+}                               # 返り値は parts[i + 1]
 ```
 
 </div>
@@ -367,7 +368,8 @@ path_env(path) := parts[i + 1] if {
 
 <div class="mt-3 text-sm op80">
 
-`environments/staging/network/terraform.tf` → `staging`
+`environments/staging/network/terraform.tf` を渡すと<br>
+`parts` = `["environments", "staging", "network", ...]`, `i` = `0` → `parts[1]` = `staging`
 
 </div>
 
