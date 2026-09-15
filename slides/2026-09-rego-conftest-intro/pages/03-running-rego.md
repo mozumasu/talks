@@ -212,6 +212,12 @@ $ conftest test -p policy/ input.json
 
 </div>
 
+<div v-click="6" class="mt-3">
+<FindyCallout label="やってみよう (ハンズオン 01)">
+<strong>Q1</strong> input.json を直して通す　<strong>Q2</strong> naming の deny だけ出す
+</FindyCallout>
+</div>
+
 </div>
 
 <!--
@@ -596,6 +602,10 @@ footerLink: { label: "ハンズオン 02_undefined", href: "https://github.com/m
 
 </div>
 
+<FindyPromoOverlay v-click="4">
+  やってみよう (ハンズオン 02)<br><strong>Q1</strong> 両方の版が通る input にする<br><strong>Q2</strong> 事故る版を 1 行直す
+</FindyPromoOverlay>
+
 </div>
 
 ::right::
@@ -876,6 +886,10 @@ footerLink: { label: "ハンズオン 05_silent_failure", href: "https://github.
 </div>
 
 </v-clicks>
+
+<FindyPromoOverlay v-click="4">
+  やってみよう (ハンズオン 05)<br><strong>Q1</strong> <code>== 24</code> にすると落ちるテストはどれ?<br><strong>Q2</strong> テストの ng を割当内にすると?
+</FindyPromoOverlay>
 
 ::right::
 
