@@ -219,7 +219,7 @@ exceptions:
 
 <!--
 免除は「消す」のではなく「理由つきで残す」。後から読む人がなぜかを追える。
-allowlist は plan JSON 系統 (policy/main) の deny には効かない。CIDR 違反は免除ではなく直す。
+plan JSON 系統 (policy/main) も finding 形式 (path の代わりにリソースアドレス) で同じ level 解決を通す。ただしアドレス単位の免除は作らない。CIDR 違反は免除ではなく直す。
 -->
 
 ---
@@ -269,6 +269,85 @@ levels.yaml が rule 一覧を兼ねるので、rules: や exceptions[].rule に
 rule を消すときは levels.yaml に disabled で名前だけ残し、呼び出し側の掃除が済んでから消す。
 助言レベルの rule (同じリソース型の重複など) は恒久 warn にして deny に上げない。
 -->
+
+---
+layout: two-cols
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+ratio: 1/1.25
+valign: top
+class: code-xs code-tight
+---
+
+# level 解決の部品: `--data` のマージ、`import`、`else`、`warn`
+
+<div class="text-sm leading-relaxed">
+
+<v-clicks>
+
+- `--data` は**複数回**渡せる。トップレベルキーがそのまま `data.levels` / `data.rules` / `data.exceptions` に
+- 解決関数は別 package に置き `import data.lib.levels` で参照
+- 関数の `else` は**上から順に、最初に値が決まった段で止まる**
+- `deny contains` / `warn contains` に振り分ける。`warn` は警告扱いで **exit 0** (`--fail-on-warn` なし)
+- `--output github` で `::error` / `::warning` になる
+
+</v-clicks>
+
+<div v-click="6" class="mt-2">
+
+```sh
+$ conftest test -p policy -n hcl --output github \
+    --data levels.yaml \
+    --data .conftest-exceptions.yaml main.tf
+::warning file=main.tf,line=1::"my-vpc": not snake_case
+2 tests, 1 passed, 1 warning, 0 failures, 0 exceptions
+```
+
+</div>
+
+</div>
+
+::right::
+
+```rego
+# policy/lib/levels.rego
+package lib.levels
+level(rule) := l if {
+	l := data.rules[rule].level    # 呼び出し側の上書き
+} else := l if {
+	l := data.levels[rule]         # ポリシー側の既定
+} else := "deny"                   # どちらにも無い
+```
+
+<div v-click="4">
+
+```rego
+# policy/hcl/exceptions.rego
+import data.lib.levels
+
+deny contains v.msg if {
+	some v in finding
+	not excepted(v.path, v.rule)
+	levels.level(v.rule) == "deny"
+}
+
+warn contains v.msg if {
+	...                            # deny と同じ 2 条件
+	levels.level(v.rule) == "warn"
+}
+```
+
+</div>
+
+<!--
+--data に同じトップレベルキーを持つファイルを 2 つ渡すと挙動を読みにくいので、ファイルごとにキーを分ける (levels.yaml は levels だけ、呼び出し側は rules と exceptions)。
+「下げるには reason 必須」の検査はスライドでは略した。実装は rules の level が既定より低いときだけ reason の空を弾き、空なら既定の level で評価して deny の msg に理由を載せる。上げるのは自由。
+typo 検出: data.rules のキーと data.exceptions[].rule が data.levels に無ければ deny。input を見ない deny なので、どのファイルを検査しても同じ 1 件が出る。今までは exceptions の typo が「免除されないだけ」で黙って通っていた。
+テストは with data.levels as {...} with data.rules as {...} で注入する。ケースは 既定 / 下げに reason 無し / 上げ / disabled / 未登録 / typo の 6 つ。
+deny と warn を書けるのは exceptions.rego だけ、を CI の grep で強制する (deny-guard)。policy/ 全体が対象。
+出力は conftest 0.69.0 (OPA 1.19.0) で最小の fixture (aws_vpc 1 つ、rule 3 本、levels.yaml と rules: で 1 つを disabled) を実行したもの。
+-->
+
 
 ---
 layout: two-cols
