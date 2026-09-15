@@ -156,7 +156,7 @@ $ opa eval -d policy/ -i plans/ng.json 'data.main.deny' -f pretty
 
 <div v-click="3" class="mt-2">
 <FindyCallout label="やってみよう (ハンズオン 06 の plans/ng.json)">
-<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> CIDR 未確定の ipam はこの deny だと通る。どう捕まえる?
+<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> <code>aws_vpc.ipam</code> (IPAM 採番で CIDR 未確定) は通ってしまう。どう捕まえる?
 </FindyCallout>
 </div>
 
@@ -193,7 +193,7 @@ FAIL - plans/ng.json - main - module.network.aws_vpc.ipam: plan 時に CIDR が�
 2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions
 ```
 
-残るのは CIDR 未確定の ipam だけ
+残るのは `aws_vpc.ipam` だけ。IPAM (IP Address Manager) からの自動採番で、CIDR は apply まで決まらない
 
 </div>
 <div>
