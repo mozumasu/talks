@@ -156,7 +156,7 @@ $ opa eval -d policy/ -i plans/ng.json 'data.main.deny' -f pretty
 
 <div v-click="3" class="mt-2">
 <FindyCallout label="やってみよう (ハンズオン 06 の plans/ng.json)">
-<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> object.get を外すと ipam はどうなる?
+<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> 未確定の ipam が通るのを、2 本目の deny はどう防ぐ?
 </FindyCallout>
 </div>
 
@@ -198,20 +198,20 @@ FAIL - plans/ng.json - main - module.network.aws_vpc.ipam: plan 時に CIDR が�
 </div>
 <div>
 
-**Q2** object.get を外すと ipam は? → 黙って通る (fail-open)
+**Q2** 2 本目の deny が `object.get` で「無ければ null」に落としてから判定する
 
 ```rego [policy/vpc_cidr.rego]
-	not is_string(rc.change.after.cidr_block)   # was: object.get で null に # [!code highlight]
+	cidr := object.get(rc.change, ["after", "cidr_block"], null) # [!code highlight]
+	not is_string(cidr)                                           # [!code highlight]
+	msg := sprintf("%s: plan 時に CIDR が確定していない", [rc.address])
 ```
 
 ```sh
 $ conftest test -p policy/ plans/ng.json
-FAIL - plans/ng.json - main - module.network.aws_vpc.this: CIDR 192.168.0.0/16 は割当外
-
-2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions
+FAIL - plans/ng.json - main - module.network.aws_vpc.ipam: plan 時に CIDR が確定していない
 ```
 
-`after` に `cidr_block` が無いので、`not` に届く前に参照が不成立になりルールごと消える
+`object.get` を外して `not is_string(rc.change.after.cidr_block)` と書くと、`after` に `cidr_block` が無い時点で参照が不成立になりルールごと消える。ipam は黙って通る (fail-open)
 
 </div>
 </div>
