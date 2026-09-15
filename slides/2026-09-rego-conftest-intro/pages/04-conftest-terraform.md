@@ -399,11 +399,7 @@ footerLink: { label: "ハンズオン 07_conftest_hcl", href: "https://github.co
 
 <div class="code-compact">
 
-```rego
-package hcl
-
-import rego.v1
-
+```rego [policy/main.rego]
 # environments/<env>/... の <env> を取る
 path_env(path) := parts[i + 1] if {
 	parts := split(path, "/")    # "/" で切って配列に
@@ -427,7 +423,7 @@ path_env(path) := parts[i + 1] if {
 
 <div v-click="3" class="mt-3">
 <FindyCallout label="やってみよう (ハンズオン 07)">
-<strong>Q1</strong> production/web の名前を直して通す　<strong>Q2</strong> environments の外のパスを path_env に渡すと?
+<strong>Q1</strong> production/web の名前を直す　<strong>Q2</strong> environments 外のパスを渡すと?
 </FindyCallout>
 </div>
 
@@ -435,7 +431,7 @@ path_env(path) := parts[i + 1] if {
 
 <div class="code-compact">
 
-```rego
+```rego [policy/main.rego (続き)]
 finding contains v if {
 	some f in input
 	env := path_env(f.path)
