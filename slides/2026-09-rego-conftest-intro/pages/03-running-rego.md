@@ -685,10 +685,16 @@ footerLink: { label: "ハンズオン 03_iteration", href: "https://github.com/m
 
 `in` は **services の 3 件を 1 つずつ変数に入れて**条件を試す。変数が 1 つなら値、2 つならキーと値
 
+<div v-click="3" class="mt-1 text-sm">
+<FindyCallout label="やってみよう (input.json だけ書き換える)">
+<strong>Q1</strong> conftest test を通す　<strong>Q2</strong> all_owned を true に
+</FindyCallout>
+</div>
+
 </div>
 </div>
 
-<div class="grid grid-cols-2 gap-x-6 items-start mt-1">
+<div class="grid grid-cols-2 gap-x-6 items-start">
 <div v-click="1">
 
 <div class="text-sm mb-1"><strong>some</strong> = 条件を満たした件だけ残す (列挙)</div>
@@ -701,17 +707,13 @@ deny contains msg if {
 }
 ```
 
-<div class="table-compact">
+<div class="text-xs my-1"><code>svc.replicas < 2</code> → api 1 < 2 ✅ ・ web 3 < 2 ❌ (消える) ・ batch 1 < 2 ✅</div>
 
-| name | `svc.replicas < 2` | |
-| --- | --- | --- |
-| api | 1 < 2 | ✅ msg を出す |
-| web | 3 < 2 | ❌ この件は消える |
-| batch | 1 < 2 | ✅ msg を出す |
-
-</div>
-
-<div class="text-xs mt-1">→ <code>deny</code> は api と batch の 2 件</div>
+```sh
+$ conftest test -p policy/ input.json
+FAIL - input.json - main - api: replicas は 2 以上
+FAIL - input.json - main - batch: replicas は 2 以上
+```
 
 </div>
 <div v-click="2">
@@ -724,17 +726,12 @@ all_owned if {
 }
 ```
 
-<div class="table-compact">
+<div class="text-xs my-1"><code>svc.owner != ""</code> → api ✅ ・ web "" ❌ ・ batch ✅ → web で外れた</div>
 
-| svc | `svc.owner != ""` | |
-| --- | --- | --- |
-| api | "sre" | ✅ |
-| web | "" | ❌ 1 つでも外れると |
-| batch | "data" | ✅ |
-
-</div>
-
-<div class="text-xs mt-1">→ <code>all_owned</code> は <strong>undefined</strong> (出力に現れない)</div>
+```sh
+$ opa eval -d policy/ -i input.json 'data.main.all_owned' -f pretty
+undefined
+```
 
 </div>
 </div>
@@ -757,7 +754,7 @@ footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/moz
 
 # ヘルパー関数 (自作) と組み込み関数
 
-<div class="text-sm">
+<div class="text-sm table-compact">
 
 **組み込み関数** (用意されているもの)
 
@@ -776,6 +773,12 @@ footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/moz
 
 **ヘルパー関数** (自作) は `名前(引数) if { ... }`。deny の条件を切り出して名前を付けたもの
 
+</div>
+
+<div v-click="2" class="mt-2">
+<FindyCallout label="やってみよう">
+<strong>Q1</strong> ng.json を通す (input を直す)<br><strong>Q2</strong> /24 も通す (ポリシーを 1 行直す)
+</FindyCallout>
 </div>
 
 </v-click>
