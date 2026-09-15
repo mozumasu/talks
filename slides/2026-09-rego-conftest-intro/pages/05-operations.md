@@ -258,9 +258,9 @@ eyebrow: 運用のしくみ
 <svg v-click="4" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
 <div v-click="4" class="flow-node"><span class="flow-term">2. 直す or 免除</span>各リポジトリが自分のペースで<br><code>::warning</code> で PR 上に見える</div>
 <svg v-click="5" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
-<div v-click="5" class="flow-node"><span class="flow-term">3. 全部 0 failures</span>ポリシー側から全呼び出し側に<br>流して確認するスクリプト</div>
+<div v-click="5" class="flow-node"><span class="flow-term">3. warn が全部消えた</span>各リポジトリが直した・免除した<br>ことを一括で確認</div>
 <svg v-click="6" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
-<div v-click="6" class="flow-node flow-node--deny"><span class="flow-term">4. deny に上げる</span>levels.yaml を 1 行変えるだけ<br>以後は落とす</div>
+<div v-click="6" class="flow-node flow-node--deny"><span class="flow-term">4. deny に上げる</span>levels.yaml で warn → deny<br>以後の違反は CI が落ちる</div>
 </div>
 
 <!--
@@ -382,7 +382,7 @@ exceptions:                                # ファイル単位
 
 ## `rules:` で下げてよいとき
 
-- 既存の grandfather は `disabled`
+- 規約制定前からの違反は `disabled`
 - 直し終わるまでは `warn`
 
 </div>
@@ -766,7 +766,7 @@ eyebrow: 運用のしくみ
 - **Q. deny が出ないとき、どう調べる?**<br>
   A. `conftest parse` で input の形を確認し、`conftest test --trace` か `opa eval` で条件を 1 つずつ削る。大抵は `[_]` の配列忘れか `not` の中の参照 (落とし穴 a.)
 - **Q. 例外はどこまで許す?**<br>
-  A. 禁止ではなく理由の明示を強制する。`reason` 必須、ファイル単位が基本、rule 単位は `rules:` で level を下げる (既存の grandfather 専用)
+  A. 禁止ではなく理由の明示を強制する。`reason` 必須、ファイル単位が基本、rule 単位は `rules:` で level を下げる (規約制定前からの違反用)
 - **Q. ポリシーは誰が書く?**<br>
   A. 共通リポジトリの CODEOWNERS (SRE 等) が持ち、各リポジトリ側は allowlist だけ触る。`conftest verify` が採点者なので、レビューは仕様の妥当性に集中できる
 
