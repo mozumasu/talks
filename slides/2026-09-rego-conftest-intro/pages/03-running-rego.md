@@ -940,18 +940,18 @@ footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/moz
 <FindyAnnotatedCode>
 
 ```rego [policy/cidr.rego]
-allowed := {"10.0.0.0/12", "172.16.0.0/12"}
-
 cidr_allowed(cidr) if {
+	is_string(cidr)                  # null を弾く
 	some range in allowed
 	net.cidr_contains(range, cidr)
 	# "10.0.0.0/16" → split → ["10.0.0.0", "16"] → [1] → "16" → 16
 	to_number(split(cidr, "/")[1]) == 16
 }
+allowed := {"10.0.0.0/12", "172.16.0.0/12"}
 ```
 
-<FindyCodeRegion :line="3" text="cidr_allowed(cidr)" label="ヘルパー関数 (自作)" color="#f0b866" />
-<FindyCodeRegion :line="5" label="組み込み" label-position="right" color="#7cc4ff" />
+<FindyCodeRegion :line="1" text="cidr_allowed(cidr)" label="ヘルパー関数 (自作)" color="#f0b866" />
+<FindyCodeRegion :line="4" label="組み込み" label-position="right" color="#7cc4ff" />
 
 </FindyAnnotatedCode>
 
@@ -962,7 +962,7 @@ cidr_allowed(cidr) if {
 ```rego
 # policy/cidr.rego (続き)
 deny contains msg if {
-	cidr := object.get(input, ["cidr"], null)
+	cidr := object.get(input, ["cidr"], null)   # 無ければ null
 	not cidr_allowed(cidr)
 	msg := sprintf("CIDR %v は割当外です", [cidr])
 }
