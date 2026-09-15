@@ -685,10 +685,16 @@ footerLink: { label: "ハンズオン 03_iteration", href: "https://github.com/m
 
 `in` は **services の 3 件を 1 つずつ変数に入れて**条件を試す。変数が 1 つなら値、2 つならキーと値
 
+<div v-click="3" class="mt-1 text-sm">
+<FindyCallout label="やってみよう (input.json だけ書き換える)">
+<strong>Q1</strong> conftest test を通す　<strong>Q2</strong> all_owned を true に
+</FindyCallout>
+</div>
+
 </div>
 </div>
 
-<div class="grid grid-cols-2 gap-x-6 items-start mt-1">
+<div class="grid grid-cols-2 gap-x-6 items-start">
 <div v-click="1">
 
 <div class="text-sm mb-1"><strong>some</strong> = 条件を満たした件だけ残す (列挙)</div>
@@ -720,7 +726,7 @@ all_owned if {
 }
 ```
 
-<div class="text-xs my-1"><code>svc.owner != ""</code> → api "sre" ✅ ・ web "" ❌ ・ batch "data" ✅ → 1 件外れた時点で</div>
+<div class="text-xs my-1"><code>svc.owner != ""</code> → api ✅ ・ web "" ❌ ・ batch ✅ → web で外れた</div>
 
 ```sh
 $ opa eval -d policy/ -i input.json 'data.main.all_owned' -f pretty
@@ -748,7 +754,7 @@ footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/moz
 
 # ヘルパー関数 (自作) と組み込み関数
 
-<div class="text-sm">
+<div class="text-sm table-compact">
 
 **組み込み関数** (用意されているもの)
 
@@ -767,6 +773,12 @@ footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/moz
 
 **ヘルパー関数** (自作) は `名前(引数) if { ... }`。deny の条件を切り出して名前を付けたもの
 
+</div>
+
+<div v-click="2" class="mt-2">
+<FindyCallout label="やってみよう">
+<strong>Q1</strong> ng.json を通す (input を直す)<br><strong>Q2</strong> /24 も通す (ポリシーを 1 行直す)
+</FindyCallout>
 </div>
 
 </v-click>
