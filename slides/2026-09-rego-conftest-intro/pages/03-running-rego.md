@@ -1159,6 +1159,8 @@ FAIL - policy/cidr_test.rego -  - data.main.test_allowed_passes
 
 </div>
 
+<div class="text-xs mt-1">ポリシーを<strong>厳しくしすぎて正しい入力まで弾いた</strong>。それを検出するのが「準拠入力が pass」のテスト</div>
+
 </div>
 <div>
 
@@ -1185,12 +1187,8 @@ FAIL - policy/cidr_test.rego -  - data.main.test_out_of_range_denied
 
 </div>
 
+<div class="text-xs mt-1">違反のはずの入力が<strong>通るようになった</strong>。それを検出するのが「違反入力が deny」のテスト</div>
+
 </div>
-</div>
-
-<div class="mt-1 text-xs">
-
-ポリシーを壊しても (Q1)、テストの前提を壊しても (Q2)、期待した件数とずれてどれかが赤くなる。壊れても緑になる言語で、これが唯一の検出器
-
 </div>
 
