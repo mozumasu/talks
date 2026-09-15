@@ -241,7 +241,7 @@ footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.co
 **Q1** input.json を直して通す → `debug` を `false` に
 
 ```json [input.json]
-{ "environment": "production", "debug": false, "name": "my_app" }
+{ "environment": "production", "debug": false, "name": "my_app" } // [!code highlight]
 ```
 
 ```sh
@@ -729,7 +729,7 @@ footerLink: { label: "ハンズオン 02_undefined", href: "https://github.com/m
 **Q1** 両方の版が通る input にする → `tags.env` を足す
 
 ```json [input.json]
-{ "name": "app", "tags": { "env": "prod" } }
+{ "name": "app", "tags": { "env": "prod" } } // [!code highlight]
 ```
 
 ```sh
@@ -748,7 +748,7 @@ $ conftest test -p policy/ input.json
 
 ```rego [policy_bug/main.rego]
 deny contains "env が prod ではない" if {
-	not input.tags.env == "prod"   # was: input.tags.env != "prod"
+	not input.tags.env == "prod"   # was: input.tags.env != "prod" # [!code highlight]
 }
 ```
 
@@ -862,9 +862,9 @@ footerLink: { label: "ハンズオン 03_iteration", href: "https://github.com/m
 **Q1** conftest test を通す → api と batch の `replicas` を 2 以上に
 
 ```json [input.json]
-"api":   { "replicas": 2, "owner": "sre" },
+"api":   { "replicas": 2, "owner": "sre" }, // [!code highlight]
 "web":   { "replicas": 3, "owner": "" },
-"batch": { "replicas": 2, "owner": "data" }
+"batch": { "replicas": 2, "owner": "data" } // [!code highlight]
 ```
 
 ```sh
@@ -880,7 +880,7 @@ deny は「満たした件」だけ残るので、該当 0 件なら空。ポリ
 **Q2** all_owned を true に → web の `owner` に値を入れる
 
 ```json [input.json]
-"web":   { "replicas": 3, "owner": "web-team" },
+"web":   { "replicas": 3, "owner": "web-team" }, // [!code highlight]
 ```
 
 ```sh
@@ -995,7 +995,7 @@ footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/moz
 **Q1** ng.json を通す → 割当内の /16 に
 
 ```json [ng.json]
-{ "cidr": "172.16.5.0/16" }
+{ "cidr": "172.16.5.0/16" } // [!code highlight]
 ```
 
 ```sh
@@ -1011,7 +1011,7 @@ $ conftest test -p policy/ ng.json
 **Q2** /24 も通す → `== 16` を集合への `in` に
 
 ```rego [policy/cidr.rego]
-	to_number(split(cidr, "/")[1]) in {16, 24}   # was: == 16
+	to_number(split(cidr, "/")[1]) in {16, 24}   # was: == 16 # [!code highlight]
 ```
 
 ```sh
@@ -1139,7 +1139,7 @@ footerLink: { label: "ハンズオン 05_silent_failure", href: "https://github.
 **Q1** `== 24` にすると落ちるテストは? → `test_allowed_passes` だけ
 
 ```rego [policy/cidr.rego]
-	to_number(split(cidr, "/")[1]) == 24   # was: == 16
+	to_number(split(cidr, "/")[1]) == 24   # was: == 16 # [!code highlight]
 ```
 
 ```sh
@@ -1157,7 +1157,7 @@ FAIL - policy/cidr_test.rego -  - data.main.test_allowed_passes
 **Q2** テストの ng を割当内にすると? → `test_out_of_range_denied` が落ちる
 
 ```rego [policy/cidr_test.rego]
-ng := {"cidr": "10.9.0.0/16"}   # was: 192.168.0.0/16
+ng := {"cidr": "10.9.0.0/16"}   # was: 192.168.0.0/16 # [!code highlight]
 ```
 
 ```sh

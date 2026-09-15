@@ -193,7 +193,7 @@ footerLink: { label: "ハンズオン 08_exceptions_allowlist", href: "https://g
 ```yaml [.conftest-exceptions.yaml]
   - path: terraform/environments/production/web/terraform.tf
     rule: workspace_env_match
-    reason: ""
+    reason: "" # [!code highlight]
 ```
 
 ```sh
@@ -210,7 +210,7 @@ FAIL - Combined - hcl - terraform/environments/production/web/terraform.tf: work
 **Q2** rule 単位で全ファイルを免除する → `path: "*"`
 
 ```yaml [.conftest-exceptions.yaml]
-  - path: "*"
+  - path: "*" # [!code highlight]
     rule: workspace_separator
     reason: "命名規約制定前からの workspace。既存名を維持"
 ```
@@ -371,7 +371,7 @@ footerLink: { label: "ハンズオン 09_write_tests", href: "https://github.com
 **Q1** rule 識別子をタイポすると落ちるのは? → `test_rule_id` と `test_excepted`
 
 ```rego [policy/main.rego]
-		"rule": "workspace_env_mach",   # was: workspace_env_match
+		"rule": "workspace_env_mach",   # was: workspace_env_match # [!code highlight]
 ```
 
 ```sh
@@ -390,9 +390,9 @@ deny 自体は出るので、この 2 本が無ければ「allowlist に載せ�
 **Q2** separator のテストを 1 本足す
 
 ```rego [policy/main_test.rego]
-test_separator_denied if {
-	count(deny) == 1 with input as tf("environments/staging/a.tf", "myapp_staging")
-}
+test_separator_denied if { # [!code highlight]
+	count(deny) == 1 with input as tf("environments/staging/a.tf", "myapp_staging") # [!code highlight]
+} # [!code highlight]
 ```
 
 ```sh
@@ -489,7 +489,7 @@ footerLink: { label: "ハンズオン 10_metadata_docs", href: "https://github.c
 # METADATA
 # title: workspace_env_match
 # description: environments/<env>/ の env が workspace 名に含まれること
-finding contains v if {   # custom / source を消した
+finding contains v if {   # custom / source を消した # [!code highlight]
 ```
 
 ```sh
@@ -506,8 +506,8 @@ $ conftest doc -t table.tmpl policy/ -o out/ && cat out/policy.md
 **Q2** package スコープに書くと? → 2 ファイル目でコンパイルエラー
 
 ```rego [policy/main.rego と exceptions.rego の先頭]
-# METADATA
-# title: hcl
+# METADATA # [!code highlight]
+# title: hcl # [!code highlight]
 package hcl
 ```
 

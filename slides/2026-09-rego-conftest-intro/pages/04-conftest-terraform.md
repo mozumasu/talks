@@ -183,7 +183,7 @@ footerLink: { label: "ハンズオン 06_terraform_plan", href: "https://github.
 **Q1** ng.json を直して 1 件だけ FAIL に → `this` の CIDR を割当内に
 
 ```json [plans/ng.json]
-"after": { "cidr_block": "10.5.0.0/16" }   // was: 192.168.0.0/16
+"after": { "cidr_block": "10.5.0.0/16" }   // was: 192.168.0.0/16 // [!code highlight]
 ```
 
 ```sh
@@ -201,7 +201,7 @@ FAIL - plans/ng.json - main - module.network.aws_vpc.ipam: plan 時に CIDR が�
 **Q2** object.get を外すと ipam は? → 黙って通る (fail-open)
 
 ```rego [policy/vpc_cidr.rego]
-	not is_string(rc.change.after.cidr_block)   # was: object.get で null に
+	not is_string(rc.change.after.cidr_block)   # was: object.get で null に # [!code highlight]
 ```
 
 ```sh
@@ -485,7 +485,7 @@ footerLink: { label: "ハンズオン 07_conftest_hcl", href: "https://github.co
 **Q1** production/web の名前を直して通す
 
 ```hcl [terraform/environments/production/web/terraform.tf]
-      name = "app-production-web"   # was: app-staging-web
+      name = "app-production-web"   # was: app-staging-web # [!code highlight]
 ```
 
 ```sh
