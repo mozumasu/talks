@@ -1149,7 +1149,15 @@ FAIL - policy/cidr_test.rego -  - data.main.test_allowed_passes
 3 tests, 2 passed, 0 warnings, 1 failure, 0 exceptions, 0 skipped
 ```
 
-`10.1.0.0/16` が割当外扱いになり deny 1 件。ng と `{}` はもともと deny 1 件なので変わらない
+<div class="table-compact">
+
+| テスト | input | deny の件数 | 期待 | |
+| --- | --- | --- | --- | --- |
+| test_allowed_passes | ok `10.1.0.0/16` | 0 → **1** (/16 が割当外扱い) | 0 | ❌ |
+| test_out_of_range_denied | ng `192.168.0.0/16` | 1 → 1 | 1 | ✅ |
+| test_missing_denied | `{}` | 1 → 1 | 1 | ✅ |
+
+</div>
 
 </div>
 <div>
@@ -1167,8 +1175,22 @@ FAIL - policy/cidr_test.rego -  - data.main.test_out_of_range_denied
 3 tests, 2 passed, 0 warnings, 1 failure, 0 exceptions, 0 skipped
 ```
 
-違反のはずの入力が通り `count(deny) == 1` が成り立たない。テストは「この input で何件」を固定している
+<div class="table-compact">
+
+| テスト | input | deny の件数 | 期待 | |
+| --- | --- | --- | --- | --- |
+| test_allowed_passes | ok `10.1.0.0/16` | 0 | 0 | ✅ |
+| test_out_of_range_denied | ng `10.9.0.0/16` | 1 → **0** (割当内なので通る) | 1 | ❌ |
+| test_missing_denied | `{}` | 1 | 1 | ✅ |
 
 </div>
+
+</div>
+</div>
+
+<div class="mt-1 text-xs">
+
+ポリシーを壊しても (Q1)、テストの前提を壊しても (Q2)、期待した件数とずれてどれかが赤くなる。壊れても緑になる言語で、これが唯一の検出器
+
 </div>
 
