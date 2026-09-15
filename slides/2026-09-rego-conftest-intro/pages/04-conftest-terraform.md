@@ -45,7 +45,7 @@ CI では test を各 Terraform リポジトリの PR で、verify をポリシ�
 layout: content
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
-footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
+footerLink: { label: "ハンズオン 07_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/07_terraform_plan" }
 ---
 
 # 入力は 2 系統: plan JSON と HCL
@@ -86,7 +86,7 @@ eyebrow: conftest で Terraform を検査する
 ratio: 1/1.05
 valign: top
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 08_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_terraform_plan" }
+footerLink: { label: "ハンズオン 07_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/07_terraform_plan" }
 ---
 
 # plan JSON はどんな形か: 見るのは resource_changes だけ
@@ -174,7 +174,7 @@ eyebrow: conftest で Terraform を検査する
 ratio: 1/1.1
 valign: center
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
+footerLink: { label: "ハンズオン 08_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_conftest_hcl" }
 ---
 
 # .tf が input になるとどんな形か: conftest parse で見る
@@ -265,7 +265,7 @@ eyebrow: conftest で Terraform を検査する
 ratio: 1/1.1
 valign: top
 class: code-sm
-footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
+footerLink: { label: "ハンズオン 08_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_conftest_hcl" }
 ---
 
 # ファイルのパスも検査したい: --combine で input にパスが入る
@@ -342,7 +342,7 @@ eyebrow: conftest で Terraform を検査する
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 09_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_conftest_hcl" }
+footerLink: { label: "ハンズオン 08_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_conftest_hcl" }
 ---
 
 # HCL ポリシーの例: env が workspace 名に含まれること

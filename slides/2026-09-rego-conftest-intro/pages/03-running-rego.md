@@ -558,7 +558,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: top
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 03_undefined", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/03_undefined" }
+footerLink: { label: "ハンズオン 02_undefined", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/02_undefined" }
 ---
 
 # 「キーが無い」は黙って通る
@@ -664,7 +664,7 @@ layout: content
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
 class: code-xs code-tight
-footerLink: { label: "ハンズオン 05_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/05_iteration" }
+footerLink: { label: "ハンズオン 04_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/04_iteration" }
 ---
 
 # some で列挙、every で全件
@@ -752,7 +752,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 06_helpers", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/06_helpers" }
+footerLink: { label: "ハンズオン 05_helpers", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/05_helpers" }
 ---
 
 # ヘルパー関数 (自作) と組み込み関数
@@ -831,7 +831,7 @@ eyebrow: Regoを実行してみよう
 ratio: 1/1.2
 valign: center
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 04_silent_failure", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/04_silent_failure" }
+footerLink: { label: "ハンズオン 03_silent_failure", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/03_silent_failure" }
 ---
 
 # テストが採点者
