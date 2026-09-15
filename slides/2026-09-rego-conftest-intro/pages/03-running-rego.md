@@ -1133,6 +1133,8 @@ footerLink: { label: "ハンズオン 05_silent_failure", href: "https://github.
 
 # 答え: テストが採点者
 
+<div class="text-xs mb-2 op80">判定基準: <code>cidr_allowed</code> = <code>10.0.0.0/12</code> か <code>172.16.0.0/12</code> に含まれる <strong>かつ</strong> prefix が <strong>16</strong>。テストの期待: ok <code>10.1.0.0/16</code> → deny 0 件、ng <code>192.168.0.0/16</code> → 1 件、<code>{}</code> → 1 件</div>
+
 <div class="grid grid-cols-2 gap-x-6 items-start text-sm">
 <div>
 
@@ -1145,7 +1147,6 @@ footerLink: { label: "ハンズオン 05_silent_failure", href: "https://github.
 ```sh
 $ conftest verify -p policy/
 FAIL - policy/cidr_test.rego -  - data.main.test_allowed_passes
-
 3 tests, 2 passed, 0 warnings, 1 failure, 0 exceptions, 0 skipped
 ```
 
@@ -1159,12 +1160,12 @@ FAIL - policy/cidr_test.rego -  - data.main.test_allowed_passes
 
 </div>
 
-<div class="text-xs mt-1">ポリシーを<strong>厳しくしすぎて正しい入力まで弾いた</strong>。それを検出するのが「準拠入力が pass」のテスト</div>
+<div class="text-xs mt-1"><strong>厳しくしすぎて正しい入力まで弾いた</strong> → 「準拠入力が pass」のテストが検出</div>
 
 </div>
 <div>
 
-**Q2** テストの ng を割当内にすると? → `test_out_of_range_denied` が落ちる
+**Q2** ng を割当内にすると? → `test_out_of_range_denied` が落ちる
 
 ```rego [policy/cidr_test.rego]
 ng := {"cidr": "10.9.0.0/16"}   # was: 192.168.0.0/16 # [!code highlight]
@@ -1173,7 +1174,6 @@ ng := {"cidr": "10.9.0.0/16"}   # was: 192.168.0.0/16 # [!code highlight]
 ```sh
 $ conftest verify -p policy/
 FAIL - policy/cidr_test.rego -  - data.main.test_out_of_range_denied
-
 3 tests, 2 passed, 0 warnings, 1 failure, 0 exceptions, 0 skipped
 ```
 
@@ -1187,7 +1187,7 @@ FAIL - policy/cidr_test.rego -  - data.main.test_out_of_range_denied
 
 </div>
 
-<div class="text-xs mt-1">違反のはずの入力が<strong>通るようになった</strong>。それを検出するのが「違反入力が deny」のテスト</div>
+<div class="text-xs mt-1">違反のはずの入力が<strong>通るようになった</strong> → 「違反入力が deny」のテストが検出</div>
 
 </div>
 </div>
