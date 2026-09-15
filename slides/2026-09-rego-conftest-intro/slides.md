@@ -78,7 +78,7 @@ layout: content
 - conftest は `test` (Terraform を採点) と `verify` (Rego を採点) の 2 つ
 - 入力は **plan JSON** (解決済みの値) と **HCL** (構造・パス) の 2 系統
 - 例外は禁止ではなく **理由の明示を強制**。`path` × `rule` × `reason`
-- 導入は **洗い出し → 判断 → 1 PR → 緑**。warn 期間は設けない
+- 新 rule は **warn で入れて、全リポジトリが緑になったら deny に上げる**。rule 単位の免除は `rules:` で level を下げる
 
 </v-clicks>
 
