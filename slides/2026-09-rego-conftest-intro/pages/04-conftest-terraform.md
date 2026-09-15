@@ -155,8 +155,8 @@ $ opa eval -d policy/ -i plans/ng.json 'data.main.deny' -f pretty
 </v-click>
 
 <div v-click="3" class="mt-2">
-<FindyCallout label="plan を打てる環境が無くても試せる">
-ハンズオン 08 の <code>plans/ng.json</code> (違反) と <code>ok.json</code> を使う
+<FindyCallout label="やってみよう (ハンズオン 06 の plans/ng.json)">
+<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> object.get を外すと ipam はどうなる?
 </FindyCallout>
 </div>
 
@@ -374,6 +374,12 @@ path_env(path) := parts[i + 1] if {
 </div>
 
 </v-click>
+
+<div v-click="3" class="mt-3">
+<FindyCallout label="やってみよう (ハンズオン 07)">
+<strong>Q1</strong> production/web の名前を直して通す　<strong>Q2</strong> environments の外のパスを path_env に渡すと?
+</FindyCallout>
+</div>
 
 ::right::
 

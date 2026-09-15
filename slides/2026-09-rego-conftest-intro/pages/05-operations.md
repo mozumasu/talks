@@ -128,6 +128,8 @@ footerLink: { label: "ハンズオン 08_exceptions_allowlist", href: "https://g
 
 # 例外は「禁止」ではなく「理由の明示を強制」
 
+<div class="text-sm">
+
 <v-clicks>
 
 - ポリシーは `deny` を書かない
@@ -137,6 +139,14 @@ footerLink: { label: "ハンズオン 08_exceptions_allowlist", href: "https://g
 - `reason` は **必須**。空なら免除されない
 
 </v-clicks>
+
+</div>
+
+<div v-click="5" class="mt-4">
+<FindyCallout label="やってみよう (ハンズオン 08)">
+<strong>Q1</strong> reason を空にすると?　<strong>Q2</strong> rule 単位で全ファイルを免除する
+</FindyCallout>
+</div>
 
 ::right::
 
@@ -246,6 +256,12 @@ footerLink: { label: "ハンズオン 09_write_tests", href: "https://github.com
 
 </div>
 
+<div v-click="8" class="mt-3">
+<FindyCallout label="やってみよう (ハンズオン 09)">
+<strong>Q1</strong> rule 識別子をタイポすると落ちるのは?　<strong>Q2</strong> separator のテストを 1 本足す
+</FindyCallout>
+</div>
+
 </div>
 
 ::right::
@@ -299,6 +315,8 @@ footerLink: { label: "ハンズオン 10_metadata_docs", href: "https://github.c
 
 # METADATA 注釈でポリシー一覧を自動生成
 
+<div class="text-sm">
+
 <v-clicks>
 
 - rule の直前に `# METADATA` を書く
@@ -308,6 +326,14 @@ footerLink: { label: "ハンズオン 10_metadata_docs", href: "https://github.c
 - README に埋め込み、CI で差分検出
 
 </v-clicks>
+
+</div>
+
+<div v-click="6" class="mt-4">
+<FindyCallout label="やってみよう (ハンズオン 10)">
+<strong>Q1</strong> source を消して生成すると?　<strong>Q2</strong> package スコープに書くと?
+</FindyCallout>
+</div>
 
 ::right::
 
