@@ -86,7 +86,7 @@ layout: content
 
 <div class="mt-6 takeaway">
 
-まずは rego-playground の 01〜06 を手を動かして通す。そこまでで Rego は読める
+まずは rego-playground の 01〜05 を手を動かして通す。そこまでで Rego は読める
 
 </div>
 

@@ -13,7 +13,7 @@ layout: content
 eyebrowNum: 5
 eyebrow: 運用のしくみ
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
+footerLink: { label: "ハンズオン 09_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_exceptions_allowlist" }
 ---
 
 # 免除の判定をルールごとに書くと、書き忘れで静かに消える
@@ -63,7 +63,7 @@ layout: content
 eyebrowNum: 5
 eyebrow: 運用のしくみ
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
+footerLink: { label: "ハンズオン 09_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_exceptions_allowlist" }
 ---
 
 # 免除の判定は 1 箇所に集める: ルールは finding を出すだけ
@@ -123,7 +123,7 @@ eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
-footerLink: { label: "ハンズオン 10_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_exceptions_allowlist" }
+footerLink: { label: "ハンズオン 09_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_exceptions_allowlist" }
 ---
 
 # 例外は「禁止」ではなく「理由の明示を強制」
@@ -219,7 +219,7 @@ eyebrow: 運用のしくみ
 ratio: 1/1.15
 valign: top
 class: code-sm code-tight
-footerLink: { label: "ハンズオン 07_write_tests", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/07_write_tests" }
+footerLink: { label: "ハンズオン 06_write_tests", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/06_write_tests" }
 ---
 
 # テストの規律: コードパスごとに 1 件、最小 3 ケース
@@ -294,7 +294,7 @@ eyebrowNum: 5
 eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
-footerLink: { label: "ハンズオン 11_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/11_metadata_docs" }
+footerLink: { label: "ハンズオン 10_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_metadata_docs" }
 ---
 
 # METADATA 注釈でポリシー一覧を自動生成

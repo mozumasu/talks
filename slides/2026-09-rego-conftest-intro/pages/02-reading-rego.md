@@ -314,7 +314,6 @@ layout: content
 class: code-sm code-tight
 eyebrowNum: 2
 eyebrow: Rego の読み方
-footerLink: { label: "ハンズオン 02_hello_deny", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/02_hello_deny" }
 ---
 
 # Regoの構造おさらい
