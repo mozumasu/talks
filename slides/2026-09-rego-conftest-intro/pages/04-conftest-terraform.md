@@ -63,13 +63,13 @@ footerLink: { label: "ハンズオン 06_terraform_plan", href: "https://github.
 
 <div class="grid grid-cols-2 gap-6 mt-5 text-sm">
 <div v-click>
-<FindyCallout label="HCL が必要な理由">
-workspace 名は plan JSON に現れない
+<FindyCallout label="plan JSON が必要な理由">
+<code>instance_type = var.x</code> は HCL では値が分からない
 </FindyCallout>
 </div>
 <div v-click>
-<FindyCallout label="plan JSON が必要な理由">
-<code>instance_type = var.x</code> は HCL では値が分からない
+<FindyCallout label="HCL が必要な理由">
+workspace 名は plan JSON に現れない
 </FindyCallout>
 </div>
 </div>
