@@ -701,17 +701,13 @@ deny contains msg if {
 }
 ```
 
-<div class="table-compact">
+<div class="text-xs my-1"><code>svc.replicas < 2</code> → api 1 < 2 ✅ ・ web 3 < 2 ❌ (消える) ・ batch 1 < 2 ✅</div>
 
-| name | `svc.replicas < 2` | |
-| --- | --- | --- |
-| api | 1 < 2 | ✅ msg を出す |
-| web | 3 < 2 | ❌ この件は消える |
-| batch | 1 < 2 | ✅ msg を出す |
-
-</div>
-
-<div class="text-xs mt-1">→ <code>deny</code> は api と batch の 2 件</div>
+```sh
+$ conftest test -p policy/ input.json
+FAIL - input.json - main - api: replicas は 2 以上
+FAIL - input.json - main - batch: replicas は 2 以上
+```
 
 </div>
 <div v-click="2">
@@ -724,17 +720,12 @@ all_owned if {
 }
 ```
 
-<div class="table-compact">
+<div class="text-xs my-1"><code>svc.owner != ""</code> → api "sre" ✅ ・ web "" ❌ ・ batch "data" ✅ → 1 件外れた時点で</div>
 
-| svc | `svc.owner != ""` | |
-| --- | --- | --- |
-| api | "sre" | ✅ |
-| web | "" | ❌ 1 つでも外れると |
-| batch | "data" | ✅ |
-
-</div>
-
-<div class="text-xs mt-1">→ <code>all_owned</code> は <strong>undefined</strong> (出力に現れない)</div>
+```sh
+$ opa eval -d policy/ -i input.json 'data.main.all_owned' -f pretty
+undefined
+```
 
 </div>
 </div>
