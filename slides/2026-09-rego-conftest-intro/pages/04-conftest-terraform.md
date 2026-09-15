@@ -156,7 +156,7 @@ $ opa eval -d policy/ -i plans/ng.json 'data.main.deny' -f pretty
 
 <div v-click="3" class="mt-2">
 <FindyCallout label="やってみよう (ハンズオン 06 の plans/ng.json)">
-<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> 未確定の ipam が通るのを、2 本目の deny はどう防ぐ?
+<strong>Q1</strong> ng.json を直して 1 件だけ FAIL に　<strong>Q2</strong> CIDR 未確定の ipam はこの deny だと通る。どう捕まえる?
 </FindyCallout>
 </div>
 
@@ -198,7 +198,7 @@ FAIL - plans/ng.json - main - module.network.aws_vpc.ipam: plan 時に CIDR が�
 </div>
 <div>
 
-**Q2** 2 本目の deny が `object.get` で「無ければ null」に落としてから判定する
+**Q2** deny をもう 1 本足す → `object.get` で「無ければ null」に落としてから判定する
 
 ```rego [policy/vpc_cidr.rego]
 	cidr := object.get(rc.change, ["after", "cidr_block"], null) # [!code highlight]
