@@ -223,6 +223,54 @@ allowlist は plan JSON 系統 (policy/main) の deny には効かない。CIDR 
 -->
 
 ---
+layout: content
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+---
+
+# 新 rule は warn で入れて、全リポジトリが緑になったら deny に上げる
+
+<div class="text-xs op70 mt-1">rule ごとに重大度 (level) を持つ。解決順は左が優先</div>
+
+<div class="flow-chain">
+<div v-click="1" class="flow-node flow-node--file"><span class="flow-term">rules:</span>呼び出し側の上書き<br>下げるには <code>reason</code> 必須<br>上げるのは自由</div>
+<div v-click="1" class="flow-chain-gt">&gt;</div>
+<div v-click="1" class="flow-node flow-node--file"><span class="flow-term">levels.yaml</span>ポリシー側の既定<br>rule 一覧を兼ねる<br>新 rule は <code>warn</code> で登録</div>
+<div v-click="1" class="flow-chain-gt">&gt;</div>
+<div v-click="1" class="flow-node flow-node--deny"><span class="flow-term">deny</span>どちらにも無い rule<br>(fail-closed)<br>typo もここで落ちる</div>
+<svg v-click="2" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="2" class="flow-levels">
+<div class="flow-node flow-node--deny"><b>deny</b>: <code>::error</code> で CI が落ちる</div>
+<div class="flow-node flow-node--warn"><b>warn</b>: <code>::warning</code> で CI は通る</div>
+<div class="flow-node flow-node--off"><b>disabled</b>: 出さない</div>
+</div>
+</div>
+
+<div class="text-xs op70 mt-8">段階導入: 先回りの免除 PR を各リポジトリに出さなくてよい</div>
+
+<div class="flow-steps">
+<div v-click="3" class="flow-node"><span class="flow-term">1. warn で追加</span>ポリシー側の PR 1 つ<br>呼び出し側の CI は落ちない</div>
+<svg v-click="4" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="4" class="flow-node"><span class="flow-term">2. 直す or 免除</span>各リポジトリが自分のペースで<br><code>::warning</code> で PR 上に見える</div>
+<svg v-click="5" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="5" class="flow-node"><span class="flow-term">3. 全部 0 failures</span>ポリシー側から全呼び出し側に<br>流して確認するスクリプト</div>
+<svg v-click="6" class="flow-arrow" viewBox="0 0 80 20"><line x1="4" y1="10" x2="62" y2="10"/><path d="M60 2 L76 10 L60 18 Z"/></svg>
+<div v-click="6" class="flow-node flow-node--deny"><span class="flow-term">4. deny に上げる</span>levels.yaml を 1 行変えるだけ<br>以後は落とす</div>
+</div>
+
+<!--
+新 rule を共通ポリシーに足すと、呼び出し側全部の CI が同時に落ちる。今までは先に免除 PR を全リポジトリに出してからでないとマージできなかった。
+rule ごとの level を持たせて、新 rule は warn で入れる。warn は GitHub アノテーション (--output github) にだけ出し、Job Summary や PR コメントは作らない。--fail-on-warn も付けない。
+level 解決は共通の lib に 1 箇所置き、各系統の exceptions.rego が finding を deny / warn に振り分ける。ポリシー本体は level を知らない。
+呼び出し側の rules: は .conftest-exceptions.yaml のトップレベルキー (新ファイルは作らない)。既定より下げるときだけ reason 必須。空なら既定で評価して deny で知らせる。上げるのは自由。
+値は deny / warn / disabled。off は YAML で真偽値になるので使わない。
+rule 単位の全免除は rules: <rule>: {level: disabled, reason} に一本化し、path: "*" は廃止する。
+levels.yaml が rule 一覧を兼ねるので、rules: や exceptions[].rule に無い名前があれば deny で落ちる。今までは typo が黙って無視されていた。
+rule を消すときは levels.yaml に disabled で名前だけ残し、呼び出し側の掃除が済んでから消す。
+助言レベルの rule (同じリソース型の重複など) は恒久 warn にして deny に上げない。
+-->
+
+---
 layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
