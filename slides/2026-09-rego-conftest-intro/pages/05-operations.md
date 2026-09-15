@@ -181,53 +181,6 @@ eyebrowNum: 5
 eyebrow: 運用のしくみ
 ---
 
-# `path: "*"` は rule 単位の全免除
-
-<div class="code-compact">
-
-```yaml
-# .conftest-exceptions.yaml (各リポジトリのルート)
-exceptions:
-  - path: environments/staging/domain/terraform.tf   # ファイル単位
-    rule: workspace_path_match
-    reason: "旧プロダクト名の workspace を維持している"
-  - path: "*"                                        # rule 単位で全免除
-    rule: workspace_separator
-    reason: "規約制定以前からのリポジトリ (既存命名 _ を維持)"
-```
-
-</div>
-
-<div class="grid grid-cols-2 gap-6 mt-3">
-<div v-click>
-
-## `"*"` を使ってよいとき
-
-- 既存リポジトリの grandfather
-- リネームの影響範囲が広すぎる rule
-
-</div>
-<div v-click>
-
-## 避けたいとき
-
-- ファイル単位で書けるなら **ファイル単位で**
-- `"*"` は新規ファイルにも効いてしまう
-
-</div>
-</div>
-
-<!--
-免除は「消す」のではなく「理由つきで残す」。後から読む人がなぜかを追える。
-plan JSON 系統 (policy/main) も finding 形式 (path の代わりにリソースアドレス) で同じ level 解決を通す。ただしアドレス単位の免除は作らない。CIDR 違反は免除ではなく直す。
--->
-
----
-layout: content
-eyebrowNum: 5
-eyebrow: 運用のしくみ
----
-
 # 新 rule は warn で入れて、全リポジトリが緑になったら deny に上げる
 
 <div class="text-xs op70 mt-1">rule ごとに重大度 (level) を持つ。解決順は左が優先</div>
@@ -264,7 +217,7 @@ rule ごとの level を持たせて、新 rule は warn で入れる。warn は
 level 解決は共通の lib に 1 箇所置き、各系統の exceptions.rego が finding を deny / warn に振り分ける。ポリシー本体は level を知らない。
 呼び出し側の rules: は .conftest-exceptions.yaml のトップレベルキー (新ファイルは作らない)。既定より下げるときだけ reason 必須。空なら既定で評価して deny で知らせる。上げるのは自由。
 値は deny / warn / disabled。off は YAML で真偽値になるので使わない。
-rule 単位の全免除は rules: <rule>: {level: disabled, reason} に一本化し、path: "*" は廃止する。
+rule 単位の全免除は rules: <rule>: {level: disabled, reason} に一本化する (次のスライド)。
 levels.yaml が rule 一覧を兼ねるので、rules: や exceptions[].rule に無い名前があれば deny で落ちる。今までは typo が黙って無視されていた。
 rule を消すときは levels.yaml に disabled で名前だけ残し、呼び出し側の掃除が済んでから消す。
 助言レベルの rule (同じリソース型の重複など) は恒久 warn にして deny に上げない。
@@ -346,6 +299,56 @@ typo 検出: data.rules のキーと data.exceptions[].rule が data.levels に�
 テストは with data.levels as {...} with data.rules as {...} で注入する。ケースは 既定 / 下げに reason 無し / 上げ / disabled / 未登録 / typo の 6 つ。
 deny と warn を書けるのは exceptions.rego だけ、を CI の grep で強制する (deny-guard)。policy/ 全体が対象。
 出力は conftest 0.69.0 (OPA 1.19.0) で最小の fixture (aws_vpc 1 つ、rule 3 本、levels.yaml と rules: で 1 つを disabled) を実行したもの。
+-->
+
+---
+layout: content
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+---
+
+# rule 単位の免除は `rules:` で level を下げる
+
+<div class="code-compact">
+
+```yaml
+# .conftest-exceptions.yaml (各リポジトリのルート)
+rules:                                     # rule 単位。既定より下げるには reason 必須
+  workspace_separator:
+    level: disabled
+    reason: "規約制定以前からのリポジトリ (既存命名 _ を維持)"
+exceptions:                                # ファイル単位
+  - path: environments/staging/domain/terraform.tf
+    rule: workspace_path_match
+    reason: "旧プロダクト名の workspace を維持している"
+```
+
+</div>
+
+<div class="grid grid-cols-2 gap-6 mt-3">
+<div v-click>
+
+## `rules:` で下げてよいとき
+
+- 既存の grandfather は `disabled`
+- 直し終わるまでは `warn`
+
+</div>
+<div v-click>
+
+## 避けたいとき
+
+- ファイル単位で書けるなら **ファイル単位で**
+- `disabled` は新規ファイルにも効く
+
+</div>
+</div>
+
+<!--
+免除は「消す」のではなく「理由つきで残す」。後から読む人がなぜかを追える。
+path を "*" にしてファイル単位の免除を全免除に流用する書き方は作らない。rule 単位は rules: に一本化する。
+上げるのは自由 (reason 不要)。rule 名が levels.yaml に無ければ typo として deny で落ちる。
+plan JSON 系統 (policy/main) も finding 形式 (path の代わりにリソースアドレス) で同じ level 解決を通す。ただしアドレス単位の免除は作らない。CIDR 違反は免除ではなく直す。
 -->
 
 
@@ -607,7 +610,7 @@ eyebrow: 運用のしくみ
 - **Q. deny が出ないとき、どう調べる?**<br>
   A. `conftest parse` で input の形を確認し、`conftest test --trace` か `opa eval` で条件を 1 つずつ削る。大抵は `[_]` の配列忘れか `not` の中の参照 (落とし穴 a.)
 - **Q. 例外はどこまで許す?**<br>
-  A. 禁止ではなく理由の明示を強制する。`reason` 必須、ファイル単位が基本、`path: "*"` は既存の grandfather 専用
+  A. 禁止ではなく理由の明示を強制する。`reason` 必須、ファイル単位が基本、rule 単位は `rules:` で level を下げる (既存の grandfather 専用)
 - **Q. ポリシーは誰が書く?**<br>
   A. 共通リポジトリの CODEOWNERS (SRE 等) が持ち、各リポジトリ側は allowlist だけ触る。`conftest verify` が採点者なので、レビューは仕様の妥当性に集中できる
 
