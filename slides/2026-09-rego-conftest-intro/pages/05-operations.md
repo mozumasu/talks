@@ -198,29 +198,30 @@ footerLink: { label: "ハンズオン 08_exceptions_allowlist", href: "https://g
 
 ```sh
 $ conftest test -p policy/ --namespace hcl --parser hcl2 --combine \
-    --data .conftest-exceptions.yaml $(find terraform -name '*.tf')
+    --data policy/levels.yaml --data .conftest-exceptions.yaml $(find terraform -name '*.tf')
 FAIL - Combined - hcl - terraform/environments/production/web/terraform.tf: workspace 名 "app-staging-web" に "production" が無い
 
-1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions
 ```
 
 </div>
 <div>
 
-**Q2** rule 単位で全ファイルを免除する → `path: "*"`
+**Q2** rule 単位で全ファイルを免除する → `rules:` で `disabled`
 
 ```yaml [.conftest-exceptions.yaml]
-  - path: "*" # [!code highlight]
-    rule: workspace_separator
+rules: # [!code highlight]
+  workspace_separator:
+    level: disabled # [!code highlight]
     reason: "命名規約制定前からの workspace。既存名を維持"
 ```
 
 ```sh
-$ conftest test ... --data .conftest-exceptions.yaml $(find terraform -name '*.tf')
-1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+$ conftest test ... --data policy/levels.yaml --data .conftest-exceptions.yaml $(find terraform -name '*.tf')
+2 tests, 2 passed, 0 warnings, 0 failures, 0 exceptions
 ```
 
-`exceptions.rego` の 2 本目の `excepted` が `path == "*"` を見ている。新規ファイルにも効くので使いどころは限る
+`lib/levels.rego` が `data.rules` を先に見て `disabled` を返す。既定より下げるので `reason` 必須。新規ファイルにも効くので使いどころは限る
 
 </div>
 </div>
