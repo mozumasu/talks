@@ -168,6 +168,56 @@ after に無いキーは after_unknown に入る (apply まで確定しない値
 -->
 
 ---
+layout: content
+eyebrowNum: 4
+eyebrow: conftest で Terraform を検査する
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 06_terraform_plan", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/06_terraform_plan" }
+---
+
+# 答え: plan JSON はどんな形か
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** ng.json を直して 1 件だけ FAIL に → `this` の CIDR を割当内に
+
+```json [plans/ng.json]
+"after": { "cidr_block": "10.5.0.0/16" }   // was: 192.168.0.0/16
+```
+
+```sh
+$ conftest test -p policy/ plans/ng.json
+FAIL - plans/ng.json - main - module.network.aws_vpc.ipam: plan 時に CIDR が確定していない
+
+2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+残るのは CIDR 未確定の ipam だけ
+
+</div>
+<div>
+
+**Q2** object.get を外すと ipam は? → 黙って通る (fail-open)
+
+```rego [policy/vpc_cidr.rego]
+	not is_string(rc.change.after.cidr_block)   # was: object.get で null に
+```
+
+```sh
+$ conftest test -p policy/ plans/ng.json
+FAIL - plans/ng.json - main - module.network.aws_vpc.this: CIDR 192.168.0.0/16 は割当外
+
+2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+`after` に `cidr_block` が無いので、`not` に届く前に参照が不成立になりルールごと消える
+
+</div>
+</div>
+
+
+---
 layout: two-cols
 eyebrowNum: 4
 eyebrow: conftest で Terraform を検査する
@@ -418,3 +468,46 @@ finding contains v if {
 名前を - と _ の両方で分割して「セグメントとして含む」かを見る。部分文字列一致だと staging と staging-internal を取り違える。
 実運用のポリシーでは environments が複数回出るパスや org セグメントの扱いも考慮する。
 -->
+
+---
+layout: content
+eyebrowNum: 4
+eyebrow: conftest で Terraform を検査する
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 07_conftest_hcl", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/07_conftest_hcl" }
+---
+
+# 答え: HCL ポリシーの例
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** production/web の名前を直して通す
+
+```hcl [terraform/environments/production/web/terraform.tf]
+      name = "app-production-web"   # was: app-staging-web
+```
+
+```sh
+$ conftest test -p policy/ --namespace hcl --parser hcl2 --combine $(find terraform -name '*.tf')
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+`regex.split` で `-` と `_` の両方で切った断片に `production` が入ればよい
+
+</div>
+<div>
+
+**Q2** environments の外のパスを path_env に渡すと?
+
+```sh
+$ opa eval -d policy/ 'data.hcl.path_env("terraform/modules/vpc/main.tf")' -f pretty
+undefined
+```
+
+`parts[i] == "environments"` を満たす `i` が無いので関数が成り立たない。
+deny 側では `env := path_env(f.path)` が不成立になり、そのファイルは黙って対象外になる
+
+</div>
+</div>
+

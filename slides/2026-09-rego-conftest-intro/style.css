@@ -296,3 +296,9 @@
 .flow-fanin .flow-node { padding: 0.5rem 0.5rem; }
 .flow-fanin .flow-term { font-size: 0.9rem; }
 .flow-fanin .flow-node--deny { padding: 0.5rem 1rem; font-size: 0.85rem; }
+
+/* 答えスライド: 実行結果の長い行 (FAIL 行など) を折り返して枠に収める */
+.code-wrap .slidev-code {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
