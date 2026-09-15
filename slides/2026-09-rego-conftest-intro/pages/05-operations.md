@@ -179,6 +179,57 @@ rule 名の typo はエラーにならず「免除されないだけ」なので
 layout: content
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 08_exceptions_allowlist", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/08_exceptions_allowlist" }
+---
+
+# 答え: 例外は「禁止」ではなく「理由の明示を強制」
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** reason を空にすると? → その 1 件だけ FAIL に戻る
+
+```yaml [.conftest-exceptions.yaml]
+  - path: terraform/environments/production/web/terraform.tf
+    rule: workspace_env_match
+    reason: "" # [!code highlight]
+```
+
+```sh
+$ conftest test -p policy/ --namespace hcl --parser hcl2 --combine \
+    --data .conftest-exceptions.yaml $(find terraform -name '*.tf')
+FAIL - Combined - hcl - terraform/environments/production/web/terraform.tf: workspace 名 "app-staging-web" に "production" が無い
+
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+</div>
+<div>
+
+**Q2** rule 単位で全ファイルを免除する → `path: "*"`
+
+```yaml [.conftest-exceptions.yaml]
+  - path: "*" # [!code highlight]
+    rule: workspace_separator
+    reason: "命名規約制定前からの workspace。既存名を維持"
+```
+
+```sh
+$ conftest test ... --data .conftest-exceptions.yaml $(find terraform -name '*.tf')
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+`exceptions.rego` の 2 本目の `excepted` が `path == "*"` を見ている。新規ファイルにも効くので使いどころは限る
+
+</div>
+</div>
+
+
+---
+layout: content
+eyebrowNum: 5
+eyebrow: 運用のしくみ
 ---
 
 # 新 rule は warn で入れて、全リポジトリが緑になったら deny に上げる
@@ -435,6 +486,57 @@ with data.exceptions as で allowlist を注入し、免除が効くことも 1 
 -->
 
 ---
+layout: content
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 09_write_tests", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/09_write_tests" }
+---
+
+# 答え: テストの規律
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** rule 識別子をタイポすると落ちるのは? → `test_rule_id` と `test_excepted`
+
+```rego [policy/main.rego]
+		"rule": "workspace_env_mach",   # was: workspace_env_match # [!code highlight]
+```
+
+```sh
+$ conftest verify -p policy/
+FAIL - policy/main_test.rego -  - data.hcl.test_rule_id
+FAIL - policy/main_test.rego -  - data.hcl.test_excepted
+
+6 tests, 4 passed, 0 warnings, 2 failures, 0 exceptions, 0 skipped
+```
+
+deny 自体は出るので、この 2 本が無ければ「allowlist に載せたのに免除されない」でしか露見しない
+
+</div>
+<div>
+
+**Q2** separator のテストを 1 本足す
+
+```rego [policy/main_test.rego]
+test_separator_denied if { # [!code highlight]
+	count(deny) == 1 with input as tf("environments/staging/a.tf", "myapp_staging") # [!code highlight]
+} # [!code highlight]
+```
+
+```sh
+$ conftest verify -p policy/
+7 tests, 7 passed, 0 warnings, 0 failures, 0 exceptions, 0 skipped
+```
+
+`myapp_staging` は env を含むので 1 本目の finding は出ず、`_` 区切りの 1 件だけ deny になる
+
+</div>
+</div>
+
+
+---
 layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
@@ -497,6 +599,59 @@ package スコープの # METADATA は package に 1 つしか書けない (2 �
 ポリシーを追加したら METADATA も書く。書き忘れは README の差分検出で CI が落ちるので気づける。
 allowlist の rule 名は README の表からコピーする運用にすると typo が減る。
 -->
+
+---
+layout: content
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 10_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_metadata_docs" }
+---
+
+# 答え: METADATA 注釈でポリシー一覧を自動生成
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** source を消して生成すると? → そのセルが `<no value>`
+
+```rego [policy/main.rego]
+# METADATA
+# title: workspace_env_match
+# description: environments/<env>/ の env が workspace 名に含まれること
+finding contains v if {   # custom / source を消した # [!code highlight]
+```
+
+```sh
+$ conftest doc -t table.tmpl policy/ -o out/ && cat out/policy.md
+| `workspace_env_match` | environments/<env>/ の env が workspace 名に含まれること | <no value> |
+| `workspace_separator` | workspace 名の区切りは - を使い、_ を使わないこと | 社内の workspace 命名規約 |
+```
+
+実務では CI で `<no value>` を grep して落とす
+
+</div>
+<div>
+
+**Q2** package スコープに書くと? → 2 ファイル目でコンパイルエラー
+
+```rego [policy/main.rego と exceptions.rego の先頭]
+# METADATA # [!code highlight]
+# title: hcl # [!code highlight]
+package hcl
+```
+
+```sh
+$ conftest doc -t table.tmpl policy/ -o out/
+Error: generating document: parse rego annotations: compile:
+  rego_type_error: package annotation redeclared: policy/exceptions.rego:1
+```
+
+package スコープの注釈は package に 1 つだけ。複数ファイルで `package hcl` を共有しているので rule スコープに書く
+
+</div>
+</div>
+
 
 ---
 layout: content

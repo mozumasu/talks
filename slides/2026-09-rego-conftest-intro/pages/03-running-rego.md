@@ -226,6 +226,50 @@ package main が conftest のデフォルト namespace。他の package を見�
 -->
 
 ---
+layout: content
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 01_run_conftest", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/01_run_conftest" }
+---
+
+# 答え: conftest test で実行する
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** input.json を直して通す → `debug` を `false` に
+
+```json [input.json]
+{ "environment": "production", "debug": false, "name": "my_app" } // [!code highlight]
+```
+
+```sh
+$ conftest test -p policy/ input.json
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+`input.debug == true` が成り立たず deny が空になる
+
+</div>
+<div>
+
+**Q2** naming の deny だけ出す → `--namespace naming`
+
+```sh
+$ conftest test -p policy/ --namespace naming input.json
+FAIL - input.json - naming - 名前に _ は使えない
+
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+`--namespace` は評価する package を選ぶ。指定しなければ `main` だけ
+
+</div>
+</div>
+
+
+---
 layout: two-cols
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
@@ -673,6 +717,56 @@ conftest の deny 形式では出番が少ないのでスライドからは外�
 layout: content
 eyebrowNum: 3
 eyebrow: Regoを実行してみよう
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 02_undefined", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/02_undefined" }
+---
+
+# 答え: 「キーが無い」は黙って通る
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** 両方の版が通る input にする → `tags.env` を足す
+
+```json [input.json]
+{ "name": "app", "tags": { "env": "prod" } } // [!code highlight]
+```
+
+```sh
+$ conftest test -p policy_bug/ input.json
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+$ conftest test -p policy/ input.json
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+値があれば `!=` も `not ==` も同じ判定。差が出るのはキーが無いときだけ
+
+</div>
+<div>
+
+**Q2** 事故る版を 1 行直す → `!=` を `not ==` に
+
+```rego [policy_bug/main.rego]
+deny contains "env が prod ではない" if {
+	not input.tags.env == "prod"   # was: input.tags.env != "prod" # [!code highlight]
+}
+```
+
+```sh
+$ conftest test -p policy_bug/ input.json    # tags 無しの input で
+FAIL - input.json - main - env が prod ではない
+
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+</div>
+</div>
+
+
+---
+layout: content
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
 class: code-xs code-tight
 footerLink: { label: "ハンズオン 03_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/03_iteration" }
 ---
@@ -751,6 +845,54 @@ some は for ループの代わり。3 件が順に name, svc に入り、条件
 every は「1 つでも満たさなければ undefined」。web の owner が空なので all_owned は消える。
 出力は opa 1.19.1 で確認したもの。
 -->
+
+---
+layout: content
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 03_iteration", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/03_iteration" }
+---
+
+# 答え: some で列挙、every で全件
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** conftest test を通す → api と batch の `replicas` を 2 以上に
+
+```json [input.json]
+"api":   { "replicas": 2, "owner": "sre" }, // [!code highlight]
+"web":   { "replicas": 3, "owner": "" },
+"batch": { "replicas": 2, "owner": "data" } // [!code highlight]
+```
+
+```sh
+$ conftest test -p policy/ input.json
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+deny は「満たした件」だけ残るので、該当 0 件なら空。ポリシーは触らない
+
+</div>
+<div>
+
+**Q2** all_owned を true に → web の `owner` に値を入れる
+
+```json [input.json]
+"web":   { "replicas": 3, "owner": "web-team" }, // [!code highlight]
+```
+
+```sh
+$ opa eval -d policy/ -i input.json 'data.main.all_owned' -f pretty
+true
+```
+
+every は全件が条件を満たしたときだけ真。api の owner も空にしても undefined のまま (何件外れたかは見ていない)
+
+</div>
+</div>
+
 
 ---
 layout: two-cols
@@ -836,6 +978,53 @@ deny contains msg if {
 object.get はキーが無いときに第 3 引数を返す。「無い」を null に変換してから判定に進む。
 これが無いと後で出てくる negation の罠に落ちる。
 -->
+
+---
+layout: content
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 04_helpers", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/04_helpers" }
+---
+
+# 答え: ヘルパー関数 (自作) と組み込み関数
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** ng.json を通す → 割当内の /16 に
+
+```json [ng.json]
+{ "cidr": "172.16.5.0/16" } // [!code highlight]
+```
+
+```sh
+$ conftest test -p policy/ ng.json
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+```
+
+`10.0.0.0/12` か `172.16.0.0/12` に `net.cidr_contains` で入り、prefix が 16 なら `cidr_allowed` が真
+
+</div>
+<div>
+
+**Q2** /24 も通す → `== 16` を集合への `in` に
+
+```rego [policy/cidr.rego]
+	to_number(split(cidr, "/")[1]) in {16, 24}   # was: == 16 # [!code highlight]
+```
+
+```sh
+$ echo '{ "cidr": "10.1.0.0/24" }' > q2.json
+$ conftest test -p policy/ q2.json
+1 test, 1 passed, 0 warnings, 0 failures, 0 exceptions
+$ conftest test -p policy/ ng.json            # 192.168.0.0/16 は deny のまま
+1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
+```
+
+</div>
+</div>
+
 
 ---
 layout: two-cols
@@ -933,3 +1122,53 @@ CI の conftest test は「違反ゼロ」と同じ顔で緑になるので、�
 テストの無い Rego は「壊れても緑」で運用されることになる。
 結果は opa 1.19.1 / conftest 0.69.0 で確認したもの。
 -->
+
+---
+layout: content
+eyebrowNum: 3
+eyebrow: Regoを実行してみよう
+class: code-xs code-tight code-wrap
+footerLink: { label: "ハンズオン 05_silent_failure", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/05_silent_failure" }
+---
+
+# 答え: テストが採点者
+
+<div class="grid grid-cols-2 gap-x-6 items-start text-sm">
+<div>
+
+**Q1** `== 24` にすると落ちるテストは? → `test_allowed_passes` だけ
+
+```rego [policy/cidr.rego]
+	to_number(split(cidr, "/")[1]) == 24   # was: == 16 # [!code highlight]
+```
+
+```sh
+$ conftest verify -p policy/
+FAIL - policy/cidr_test.rego -  - data.main.test_allowed_passes
+
+3 tests, 2 passed, 0 warnings, 1 failure, 0 exceptions, 0 skipped
+```
+
+`10.1.0.0/16` が割当外扱いになり deny 1 件。ng と `{}` はもともと deny 1 件なので変わらない
+
+</div>
+<div>
+
+**Q2** テストの ng を割当内にすると? → `test_out_of_range_denied` が落ちる
+
+```rego [policy/cidr_test.rego]
+ng := {"cidr": "10.9.0.0/16"}   # was: 192.168.0.0/16 # [!code highlight]
+```
+
+```sh
+$ conftest verify -p policy/
+FAIL - policy/cidr_test.rego -  - data.main.test_out_of_range_denied
+
+3 tests, 2 passed, 0 warnings, 1 failure, 0 exceptions, 0 skipped
+```
+
+違反のはずの入力が通り `count(deny) == 1` が成り立たない。テストは「この input で何件」を固定している
+
+</div>
+</div>
+
