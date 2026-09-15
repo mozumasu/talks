@@ -302,3 +302,62 @@
   white-space: pre-wrap;
   word-break: break-all;
 }
+
+/* rule ごとの重大度。上段 = level の解決順 (左が優先) → 3 つの出力、下段 = warn → deny の段階導入 */
+.flow-chain,
+.flow-steps {
+  display: grid;
+  align-items: center;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+.flow-chain {
+  grid-template-columns: 1fr 2rem 1fr 2rem 1fr 3rem 1.25fr;
+  margin-top: 0.4rem;
+}
+.flow-steps {
+  grid-template-columns: 1fr 3rem 1fr 3rem 1fr 3rem 1fr;
+  margin-top: 0.4rem;
+}
+.flow-chain .flow-node,
+.flow-steps .flow-node {
+  padding: 0.7rem 0.6rem;
+  height: 100%;
+}
+.flow-chain .flow-term,
+.flow-steps .flow-term {
+  font-size: 1rem;
+}
+.flow-chain .flow-node--deny,
+.flow-steps .flow-node--deny,
+.flow-levels .flow-node--deny {
+  font-size: inherit;
+}
+.flow-chain-gt {
+  text-align: center;
+  font-family: var(--findy-font-en);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--findy-brand);
+}
+.flow-levels {
+  display: grid;
+  gap: 0.3rem;
+}
+.flow-levels .flow-node {
+  padding: 0.4rem 0.7rem;
+  text-align: left;
+}
+.flow-node--warn {
+  background: #fff7e6;
+  border: 1px solid #f5d28a;
+  color: #b45309;
+}
+.flow-node--off {
+  background: #eef1f5;
+  color: #6b7280;
+}
+.flow-chain-gt.slidev-vclick-hidden {
+  transform: none;
+}
+
