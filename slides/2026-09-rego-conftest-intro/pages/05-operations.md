@@ -541,6 +541,188 @@ $ conftest verify -p policy/
 layout: two-cols
 eyebrowNum: 5
 eyebrow: 運用のしくみ
+ratio: 1/1.25
+valign: top
+class: code-sm code-tight
+footerLink: { label: "Regal", href: "https://www.openpolicyagent.org/projects/regal" }
+---
+
+# 書き方の揺れは Regal で揃える: Style Guide がそのままルール
+
+<div class="text-sm leading-relaxed">
+
+<v-clicks>
+
+- OPA 公式の Rego linter。公式の [Style Guide](https://www.openpolicyagent.org/docs/style-guide) の項目がルールになっている。`opa fmt` は整形だけ、Regal は **書き方と定番バグ** を見る
+- 7 カテゴリ [108 ルール](https://www.openpolicyagent.org/projects/regal/rules)。style (`:=` / snake_case / `some .. in`) だけでなく **bugs** (組み込み関数名の影、定数条件) と testing も
+- 違反ごとにルールの **ドキュメント URL** が付く。直し方はそこを読む
+- `regal fix` が `opa fmt` を含む 9 ルールを自動修正。まず `--dry-run` で見る
+
+</v-clicks>
+
+</div>
+
+::right::
+
+```sh
+$ brew install regal    # mise use -g regal@latest でも可
+$ regal lint --format compact policy/
+┌───────────────────────┬───────────────────────────────────────────┐
+│       LOCATION        │                DESCRIPTION                │
+├───────────────────────┼───────────────────────────────────────────┤
+│ policy/cidr.rego:1:9  │ Directory structure should mirror package │
+│ policy/cidr.rego:13:2 │ Non-loop expression in loop               │
+│ policy/cidr.rego:1:1  │ File should be formatted with `opa fmt`   │
+└───────────────────────┴───────────────────────────────────────────┘
+ 1 file linted , 3 violations found.
+```
+
+<v-click>
+
+```sh
+$ regal fix --dry-run --verbose policy/
+2 fixes to apply:
+In project root: .../exercises/04_helpers/policy
+cidr.rego -> main/cidr.rego:
+- directory-package-mismatch
+- opa-fmt
+```
+
+</v-click>
+
+<!--
+出力は regal 0.42.0 で rego-playground の exercises/04_helpers を lint したもの (既定の pretty 形式は違反ごとに 6 行 + Documentation URL が付く)。
+Style Guide (openpolicyagent.org/docs/style-guide) の各項目に対応する Regal ルールがガイド内からリンクされている:
+opa fmt → opa-fmt、:= → use-assignment-operator、some .. in → prefer-some-in-iteration、snake_case → prefer-snake-case、in → use-in-operator。
+ルール総数 108 は openpolicyagent.org/projects/regal/rules の索引ページの記述。
+regal fix は directory-package-mismatch を直すときにファイルを package 名のディレクトリへ移動する (cidr.rego -> main/cidr.rego)。
+conftest は -p policy/ を再帰的に読むので動作は変わらないが、驚くので dry-run で先に見る。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+ratio: 1/1.3
+valign: top
+class: code-sm code-tight
+footerLink: { label: "Regal の設定ファイル", href: "https://www.openpolicyagent.org/projects/regal/configuration" }
+---
+
+# conftest 由来の 4 ルールは設定で消す。残りは本物
+
+<div class="text-sm leading-relaxed">
+
+<v-clicks>
+
+- `directory-package-mismatch` … ディレクトリ名 = package 名。全体構成の `policy/hcl/` `policy/main/` なら通る
+- `unresolved-reference` … Regal はデータファイルを読まない。`--data` で入る `data.exceptions` / `data.levels` は `except-paths` に列挙
+- `no-defined-entrypoint` … entrypoint 注釈の要求。conftest は deny / warn を名前で探すので不要
+- `test-outside-test-package` … `_test` package に分けろ。`conftest verify` は同 package でも動くので好みで
+
+</v-clicks>
+
+</div>
+
+::right::
+
+```yaml [.regal/config.yaml]
+rules:
+  imports:
+    unresolved-reference:
+      except-paths: [data.exceptions, data.levels, data.rules]
+  idiomatic:
+    no-defined-entrypoint: {level: ignore}
+  testing:
+    test-outside-test-package: {level: ignore}
+  style:
+    external-reference: {level: warning} # --data を引く関数
+```
+
+<v-click>
+
+```sh
+$ regal lint policy/    # 設定前
+3 files linted. 13 violations found in 4 files.
+$ regal lint policy/    # 設定後。残る 4 errors は本物
+3 files linted. 7 violations (4 errors, 3 warnings) found in 2 files.
+$ regal lint policy/    # some .. in に直した後
+3 files linted. 3 violations (0 errors, 3 warnings) found in 1 file.
+```
+
+</v-click>
+
+<!--
+出力は regal 0.42.0。ハンズオン 08 の 3 ファイルを全体構成のレイアウト (policy/hcl/*.rego, policy/lib/levels/levels.rego) に置いて lint したもの。
+directory-package-mismatch はファイルパスの末尾と package path のサフィックス一致で判定する (project.roots は lint 判定に使われない)。
+ハンズオンの flat 構成 (policy/main.rego に package hcl) では鳴るので、そこでは level: ignore にするか regal fix で移動する。
+except-paths は data.rules と書けば data.rules[rule].level にもマッチする (実測)。
+残った 4 errors は mixed-iteration と prefer-some-in-iteration。some tf in f.contents.terraform / some c in tf.cloud に書き直すと消える。
+warning は違反として数えられるが exit code は 0 (既定の --fail-level error)。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 5
+eyebrow: 運用のしくみ
+ratio: 1/1.2
+valign: top
+class: code-sm code-tight code-wrap
+footerLink: { label: "Regal を CI で回す", href: "https://www.openpolicyagent.org/projects/regal/cicd" }
+---
+
+# 手元は LSP、CI は GitHub Actions。設定ファイルは共通
+
+<div class="text-sm leading-relaxed">
+
+<v-clicks>
+
+- `regal language-server` が LSP。VS Code は OPA 拡張 (`tsandall.opa`) に内蔵、Neovim は nvim-lspconfig の `regal` ([エディタ対応一覧](https://www.openpolicyagent.org/projects/regal/editor-support))
+- 保存時に診断・`opa fmt`・quick fix が出る。CI で初めて怒られる回数が減る
+- CI は `--format github`。違反が PR の該当行に annotation で付く。error が 1 つでもあれば exit 3
+- `opa fmt` の未適用は `opa-fmt` ルールが拾うので、fmt 用のジョブは別に要らない
+
+</v-clicks>
+
+</div>
+
+::right::
+
+```yaml [.github/workflows/regal.yml]
+on: pull_request
+jobs:
+  lint-rego:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: open-policy-agent/setup-regal@v2
+        with:
+          version: v0.42.0
+      - run: regal lint --format github policy/
+```
+
+<v-click>
+
+```sh
+$ regal lint --format github policy/
+::error file=policy/cidr.rego,line=1,col=1::File should be formatted with `opa fmt`. To learn more, see: https://www.openpolicyagent.org/projects/regal/rules/style/opa-fmt
+```
+
+</v-click>
+
+<!--
+workflow は Regal 公式 docs (openpolicyagent.org/projects/regal/cicd) の例をそのまま。setup-regal は v2.0.0 (2026-04) が最新メジャー。
+Regal は単一の Go バイナリなので社内標準の ubuntu-slim でも動くはずだが、未検証なので公式例のまま ubuntu-latest にしている。
+::error の行は regal 0.42.0 の --format github の実出力 (GITHUB_ACTIONS 環境変数なしでも出る)。
+pre-commit を使うなら open-policy-agent/regal の regal-lint hook がある。
+エディタ対応は openpolicyagent.org/projects/regal/editor-support。VS Code 拡張は 0.13.3 以降で Regal 統合、設定ファイルも自動で拾う。
+LSP のフォーマッタは既定が opa fmt で、regal fix に切り替えることもできる。
+-->
+
+---
+layout: two-cols
+eyebrowNum: 5
+eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: center
 footerLink: { label: "ハンズオン 10_metadata_docs", href: "https://github.com/mozumasu/rego-playground/tree/main/exercises/10_metadata_docs" }
@@ -687,6 +869,7 @@ eyebrow: 運用のしくみ
 - `policy/hcl/` … HCL 系統 (workspace 名・パス)
 - `policy/main/` … plan JSON 系統 (VPC CIDR)
 - `policy/README.md` … METADATA から生成
+- `.regal/config.yaml` … Regal の設定
 
 </div>
 </div>
@@ -793,6 +976,9 @@ eyebrow: 運用のしくみ
   </FindyKeyValue>
   <FindyKeyValue label="Rego Style Guide">
     <a href="https://www.openpolicyagent.org/docs/style-guide">openpolicyagent.org/docs/style-guide</a>。命名・<code>some</code> / <code>in</code> の使い方などの公式規約
+  </FindyKeyValue>
+  <FindyKeyValue label="Regal">
+    <a href="https://www.openpolicyagent.org/projects/regal">openpolicyagent.org/projects/regal</a>。Rego の linter / language server。ルール一覧は <code>/rules</code>
   </FindyKeyValue>
   <FindyKeyValue label="ハンズオン">
     <a href="https://github.com/mozumasu/rego-playground">github.com/mozumasu/rego-playground</a>
