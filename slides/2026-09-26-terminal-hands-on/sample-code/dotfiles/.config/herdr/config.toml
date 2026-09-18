@@ -1,0 +1,41 @@
+[keys]
+prefix = "ctrl+q"
+
+# ペイン操作
+split_vertical = "prefix+v"
+split_horizontal = "prefix+minus"
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+zoom = "prefix+z"
+close_pane = "prefix+x"
+resize_mode = "prefix+r"
+
+# タブ
+new_tab = "prefix+c"
+next_tab = "prefix+n"
+previous_tab = "prefix+p"
+switch_tab = "prefix+1..9"
+close_tab = "prefix+shift+x"
+
+# cmd キーで直接操作する場合 (macOS)。WezTerm 側に
+# enable_kitty_keyboard = true と cmd+t の DisableDefaultAssignment が必要
+# (スライド「cmd キーを herdr で使う」参照)
+# new_tab = "cmd+t"
+# switch_tab = "cmd+1..9"
+
+# ワークスペース
+workspace_picker = "prefix+w"
+new_workspace = "prefix+shift+n"
+
+# ヘルプ・設定
+help = "prefix+?"
+settings = "prefix+s"
+reload_config = "prefix+shift+r"
+
+# カスタムコマンド: prefix+alt+g で lazygit をペインで開く
+[[keys.command]]
+key = "prefix+alt+g"
+type = "pane"
+command = "lazygit"

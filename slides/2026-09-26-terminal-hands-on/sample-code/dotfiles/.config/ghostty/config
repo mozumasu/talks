@@ -1,0 +1,15 @@
+# OS のライト/ダークに追従して切り替え
+theme = light:iTerm2 Solarized Light,dark:Solarized Dark Patched
+
+font-family = HackGen Console NF
+font-size = 13
+
+# 背景の透過とぼかし
+background-opacity = 0.7
+background-blur = 13
+
+# 非フォーカスの分割ペインを薄暗くする
+unfocused-split-opacity = 0.7
+
+# macOS: タブをタイトルバーに統合
+macos-titlebar-style = tabs
