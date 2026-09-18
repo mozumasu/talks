@@ -544,6 +544,7 @@ eyebrow: 運用のしくみ
 ratio: 1/1.25
 valign: top
 class: code-sm code-tight
+footerLink: { label: "Regal", href: "https://www.openpolicyagent.org/projects/regal" }
 ---
 
 # 書き方の揺れは Regal で揃える: Style Guide がそのままルール
@@ -552,8 +553,8 @@ class: code-sm code-tight
 
 <v-clicks>
 
-- OPA 公式の Rego linter。`opa fmt` は整形だけ、Regal は **書き方と定番バグ** を見る
-- 7 カテゴリ 108 ルール。style (`:=` / snake_case / `some .. in`) だけでなく **bugs** (組み込み関数名の影、定数条件) と testing も
+- OPA 公式の Rego linter。公式の [Style Guide](https://www.openpolicyagent.org/docs/style-guide) の項目がルールになっている。`opa fmt` は整形だけ、Regal は **書き方と定番バグ** を見る
+- 7 カテゴリ [108 ルール](https://www.openpolicyagent.org/projects/regal/rules)。style (`:=` / snake_case / `some .. in`) だけでなく **bugs** (組み込み関数名の影、定数条件) と testing も
 - 違反ごとにルールの **ドキュメント URL** が付く。直し方はそこを読む
 - `regal fix` が `opa fmt` を含む 9 ルールを自動修正。まず `--dry-run` で見る
 
@@ -605,6 +606,7 @@ eyebrow: 運用のしくみ
 ratio: 1/1.3
 valign: top
 class: code-sm code-tight
+footerLink: { label: "Regal の設定ファイル", href: "https://www.openpolicyagent.org/projects/regal/configuration" }
 ---
 
 # conftest 由来の 4 ルールは設定で消す。残りは本物
@@ -666,6 +668,7 @@ eyebrow: 運用のしくみ
 ratio: 1/1.2
 valign: top
 class: code-sm code-tight code-wrap
+footerLink: { label: "Regal を CI で回す", href: "https://www.openpolicyagent.org/projects/regal/cicd" }
 ---
 
 # 手元は LSP、CI は GitHub Actions。設定ファイルは共通
@@ -674,7 +677,7 @@ class: code-sm code-tight code-wrap
 
 <v-clicks>
 
-- `regal language-server` が LSP。VS Code は OPA 拡張 (`tsandall.opa`) に内蔵、Neovim は nvim-lspconfig の `regal`
+- `regal language-server` が LSP。VS Code は OPA 拡張 (`tsandall.opa`) に内蔵、Neovim は nvim-lspconfig の `regal` ([エディタ対応一覧](https://www.openpolicyagent.org/projects/regal/editor-support))
 - 保存時に診断・`opa fmt`・quick fix が出る。CI で初めて怒られる回数が減る
 - CI は `--format github`。違反が PR の該当行に annotation で付く。error が 1 つでもあれば exit 3
 - `opa fmt` の未適用は `opa-fmt` ルールが拾うので、fmt 用のジョブは別に要らない
