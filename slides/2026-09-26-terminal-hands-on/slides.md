@@ -86,8 +86,6 @@ src: ./pages/wezterm.md
 ---
 
 ---
-
----
 src: ./pages/wezterm-keybinds.md
 ---
 

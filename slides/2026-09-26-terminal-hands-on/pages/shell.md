@@ -143,7 +143,9 @@ eyebrow: シェルの設定
 
 ::left::
 
-仮想 TTY でシェルを起動し、キー入力を送って反応時間を測る
+AI エージェントはコマンドのたびに対話シェルを起動する。<FindyAccentMark>起動が遅いと、その回数ぶん待たされる</FindyAccentMark>
+
+<p class="text-sm op-60">zsh-bench は仮想 TTY でシェルを起動し、キー入力を送って反応時間を測る</p>
 
 <div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
@@ -154,12 +156,6 @@ git clone https://github.com/romkatv/zsh-bench \
 ```
 
 </div>
-
-<FindyCallout variant="warn">
-  <code>time zsh -i -c exit</code> は当てにならない。遅延読み込み (zinit turbo など) は exit までの時間だけ縮め、体感は縮めない
-</FindyCallout>
-
-<p class="text-sm op-60"><code>hyperfine 'zsh -i -c exit'</code> は設定読み込みの差分比較にだけ使う</p>
 
 ::right::
 
@@ -199,9 +195,9 @@ eyebrow: シェルの設定
 
 ::left::
 
-AI エージェントはコマンドのたびに対話シェルを起動する。<FindyAccentMark>起動が遅いと、その回数ぶん待たされる</FindyAccentMark>
+プロンプトは<FindyAccentMark>軽量で、git の状態が見えるもの</FindyAccentMark>を選ぶ。zsh 組み込みだけで足りる
 
-Starship から zsh 組み込みのプロンプトに乗り換えて軽くした
+よりリッチな見た目にしたければ <a href="https://starship.rs/">Starship</a>
 
 <p class="text-sm op-60"><code>%~</code> がディレクトリ、<code>vcs_info</code> が git ブランチ (zsh 同梱)、<code>%(?.a.b)</code> が終了コードでの分岐。ブラウザで組み立てるなら <a href="https://bootsignal.com/en/tools/shell-prompt">bootsignal Shell Prompt Generator</a></p>
 
