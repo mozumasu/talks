@@ -261,15 +261,17 @@ bind
 
 ::
 
-manをカラー表示する
+エディタと man の表示を設定する
 
 ::code-group
 
 ```sh [vim]
+export EDITOR=vim
 export MANPAGER='vim -M +MANPAGER -'
 ```
 
 ```sh [nvim]
+export EDITOR=nvim
 export MANPAGER='nvim +Man!'
 ```
 

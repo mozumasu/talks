@@ -4,6 +4,9 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+# エディタ (Esc→e の edit-command-line などが使う)
+export EDITOR=nvim
+
 # man をカラー表示 (nvim)
 export MANPAGER='nvim +Man!'
 # man をカラー表示 (vim の場合)
