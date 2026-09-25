@@ -1,15 +1,15 @@
-# サンプル dotfiles
+# サンプル設定ファイル
 
 ハンズオンで紹介する設定ファイルのサンプルです。
-実体を `~/dotfiles` に置き、`~/.config` などへシンボリックリンクを貼って使います
-(スライド「実体は dotfiles、参照はシンボリックリンク」参照)。
+`.config/` 以下をそのまま `~/.config/` にコピーして使います。
 
 ```sh
-# 例: WezTerm の設定をリンクする
+# 例: WezTerm の設定を置く
 mkdir -p ~/.config/wezterm
-ln -s ~/dotfiles/.config/wezterm/wezterm.lua \
-  ~/.config/wezterm/wezterm.lua
+cp .config/wezterm/wezterm.lua ~/.config/wezterm/
 ```
+
+設定を Git で管理したくなったら、`~/dotfiles` に実体を移して `~/.config` へシンボリックリンクを貼る形にすると、別のマシンでも同じ設定を再現できます。
 
 ## ファイル構成
 

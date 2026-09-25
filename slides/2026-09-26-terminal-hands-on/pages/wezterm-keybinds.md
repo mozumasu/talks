@@ -21,7 +21,7 @@ eyebrow: wezterm
 <div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
 ```sh
-cd ~/dotfiles/.config/wezterm
+cd ~/.config/wezterm
 wezterm show-keys --lua > keybinds.lua
 ```
 
