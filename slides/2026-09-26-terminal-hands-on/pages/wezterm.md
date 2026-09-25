@@ -68,62 +68,7 @@ winget install wez.wezterm
 
 </FindyRef>
 
-<FindyCallout>
-  Linux は Flatpak (<code>flatpak install flathub org.wezfurlong.wezterm</code>) や
-  AppImage、Arch の <code>pacman -S wezterm</code> などディストリごとの手段もある
-</FindyCallout>
-
----
-layout: content
-eyebrow: wezterm
----
-
-# Windows は WSL 上で進める
-
-<FindyCallout>
-  このハンズオンのシェル / CLI 操作は <FindyAccentMark>WSL (Ubuntu)</FindyAccentMark> 上で行う。
-  Windows の人は WezTerm を WSL につないでおく
-</FindyCallout>
-
-<div class="code-scroll" style="--findy-code-scroll-h: 13.5rem">
-
-::code-group
-
-```powershell [1. WSL を入れる (管理者 PowerShell)]
-wsl --install
-
-# Ubuntu 24.04 をインストール
-wsl --install -d Ubuntu-24.04
-
-# インストール済みディストリビューションの確認
-wsl --list --verbose
-
-# WSL2をデフォルトに設定
-wsl --set-default-version 2
-
-# 特定のディストリビューションをWSL2に変換
-wsl --set-version Ubuntu 2
-
-# 再起動 (必要があれば)
-Restart-Computer
-# 初回起動時に Linux のユーザー名とパスワードを設定する
-```
-
-```lua [2. WezTerm の起動先を WSL にする]
--- ~/.config/wezterm/wezterm.lua
--- ドメイン名は "WSL:" + ディストリビューション名 (wsl -l -v で確認)
-config.default_domain = "WSL:Ubuntu"
-```
-
-::
-
-</div>
-
-<FindyRef>
-
-[WSL のインストール](https://learn.microsoft.com/ja-jp/windows/wsl/install) / [default_domain](https://wezterm.org/config/lua/config/default_domain.html) / [WslDomain](https://wezterm.org/config/lua/WslDomain.html)
-
-</FindyRef>
+<p class="text-sm">Windows の人はシェル操作を WSL 上で進める。WSL の導入と WezTerm の接続手順は <Link to="appendix-windows">Appendix</Link> に</p>
 
 ---
 layout: two-cols
@@ -135,17 +80,12 @@ eyebrow: wezterm
 
 ::left::
 
-1. 設定ファイルを作成してdotfilesで管理する
+1. 設定ファイルを用意する
 
 ```bash
-# dotfiles 配下に WezTerm の設定ファイルを置く
-mkdir -p ~/dotfiles/.config/wezterm
-touch ~/dotfiles/.config/wezterm/wezterm.lua
-
-# シンボリックリンクを貼る
+# 配下に WezTerm の設定ファイルを置く
 mkdir -p ~/.config/wezterm
-ln -s ~/dotfiles/.config/wezterm/wezterm.lua \
-  ~/.config/wezterm/wezterm.lua
+touch ~/.config/wezterm/wezterm.lua
 ```
 
 <FindyRef>

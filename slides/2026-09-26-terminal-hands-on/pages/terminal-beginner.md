@@ -23,12 +23,7 @@ color: blue
 transition: view-transition
 ---
 
-<div class="inline-block view-transition-f">
-
-設定前に知っておくとお得  
-...かもしれないもの
-
-</div>
+# 設定前に知っておくとお得<br>...かもしれないもの {.inline-block.view-transition-f}
 
 ---
 layout: content
@@ -147,6 +142,44 @@ set -gx XDG_STATE_HOME "$HOME/.local/state"
 <FindyCallout variant="warn">
   macOS では未設定だと <code>~/Library/Application Support</code> に設定を置くツールがある (例: lazygit)
 </FindyCallout>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: dotfiles
+eyebrowNum: 1
+---
+
+# シンボリックリンクとは
+
+::left::
+
+ファイルの<FindyAccentMark>住所を書いた案内板</FindyAccentMark>。開くと案内先の実体が開く
+
+<FindyKeyValueList size="0.95rem">
+  <FindyKeyValue label="コピー">中身が 2 つに増える。片方を直してももう片方は古いまま</FindyKeyValue>
+  <FindyKeyValue label="リンク">中身は 1 つ。どちらから開いても同じ実体を編集する</FindyKeyValue>
+</FindyKeyValueList>
+
+<FindyCallout>
+  Windows のショートカット、macOS のエイリアスに近い。違いはアプリ側が「本物のファイル」として透過的に読めること
+</FindyCallout>
+
+::right::
+
+<FindyFlow
+  steps="アプリが ~/.config/wezterm/wezterm.lua を開く,案内板 (リンク) が実体の場所を教える,実体 ~/dotfiles/… が開く"
+/>
+
+<div class="code-compact mt-3" style="--findy-code-compact-size: 0.75rem">
+
+```sh
+ls -l ~/.config/wezterm
+# lrwxr-xr-x wezterm.lua -> ~/dotfiles/.config/wezterm/…
+# 先頭の l がリンクの印。-> の先が実体
+```
+
+</div>
 
 ---
 layout: two-cols

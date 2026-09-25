@@ -24,7 +24,7 @@ role: Findy Inc. / SRE
 ---
 
 ## 学生向けハンズオン
-# イケてるターミナルをつくろう！
+# イケてるターミナル環境に入門しよう！ {style="font-size:3.25rem"}
 
 ---
 layout: content
@@ -55,7 +55,7 @@ role: Findy Inc. / SRE
 ## 自己紹介
 
 - 開発環境: MacOS / WezTerm / Neovim / macSKK
-- 一言: Flappy syumaiの最高得点は7点でした
+- 一言: 麻辣湯に週3で行きます
 
 <div class="mt-4 flex flex-wrap gap-2">
   <FindyBadge variant="soft">X: @mozumasu</FindyBadge>
@@ -73,15 +73,18 @@ columns: 1
 ---
 
 ---
+src: ./pages/shell.md
+---
+
+---
 src: ./pages/terminal-beginner.md
+hide: true
 ---
 
 ---
 src: ./pages/wezterm.md
 ---
 
----
-src: ./pages/shell.md
 ---
 
 ---
@@ -122,3 +125,7 @@ layout: end
 ---
 
 # ありがとうございました
+
+---
+src: ./pages/appendix-windows.md
+---

@@ -42,6 +42,6 @@ dotfiles/
 | `tab.lua` | 丸タブ (`format-tab-title`)。使う場合は `wezterm.lua` の inline ハンドラを消して `require("tab").apply_to_config(config)` |
 | `herdr/config.toml` | prefix キー (`ctrl+q`)、ペイン操作、タブ・ワークスペース操作、lazygit カスタムコマンド、cmd キー案 (コメント) |
 | `ghostty/config` | テーマの OS ライト/ダーク追従、背景透過+ぼかし、タブ統合 (コラム「Ghostty という選択肢」) |
-| `zsh/.zshrc` | XDG Base Directory、MANPAGER、`stty -ixon`、`edit-command-line`、前方一致の履歴検索 |
+| `zsh/.zshrc` | XDG Base Directory、MANPAGER、`stty -ixon`、`edit-command-line`、`copy-earlier-word`、前方一致の履歴検索、vcs_info を使った軽量プロンプト |
 | `fish/config.fish` | XDG Base Directory |
 | `.inputrc` | bash 用の前方一致の履歴検索 |

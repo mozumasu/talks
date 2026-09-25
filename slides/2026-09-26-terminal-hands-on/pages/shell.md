@@ -24,7 +24,7 @@ eyebrow: シェルの設定
   <FindyKeyValue label="nushell"><a href="https://github.com/nushell/nushell">出力を表として扱える新顔</a></FindyKeyValue>
 </FindyKeyValueList>
 
-<p class="mt-4">今回は <FindyAccentMark>zsh</FindyAccentMark> を例に紹介する（macOS のデフォルトシェル）</p>
+<p class="mt-4">今回は <FindyAccentMark>zsh</FindyAccentMark> を紹介</p>
 
 ::right::
 
@@ -35,15 +35,28 @@ eyebrow: シェルの設定
 />
 
 ---
-layout: content
+layout: two-cols
+ratio: 1/1.2
 eyebrow: シェルの設定
 ---
 
-# 今のシェルの確認
+# zshに設定する
+
+::left::
+
+現在のシェルを確認
 
 ```sh
 echo $0
 ```
+
+zshが無い場合はインストール
+
+```sh
+sudo apt install -y zsh
+```
+
+::right::
 
 シェルの切り替え
 
@@ -56,6 +69,160 @@ exec zsh
 # デフォルトでzshを使うようにする
 chsh -s /bin/zsh
 ```
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: シェルの設定
+---
+
+# zsh の設定ファイル
+
+::left::
+
+<FindyKeyValueList size="1rem">
+  <FindyKeyValue label=".zshenv">毎回読まれる。環境変数だけ書く
+    迷ったら <FindyAccentMark>.zshrc</FindyAccentMark> に書く
+</FindyKeyValue>
+  <FindyKeyValue label=".zshrc">対話シェルごとに読まれる  
+    キーバインド・alias・補完はここ</FindyKeyValue>
+</FindyKeyValueList>
+
+
+<FindyCallout variant="warn">
+  <code>~/.zshenv</code> だけはホーム直下に置く。<code>ZDOTDIR</code> が決まる前に読まれるので、動かすと何も読まれなくなる
+</FindyCallout>
+
+<FindyRef>
+
+[zsh manual: Startup/Shutdown Files](https://zsh.sourceforge.io/Doc/Release/Files.html)
+
+</FindyRef>
+
+::right::
+
+<code>ZDOTDIR</code>でzshの設定ファイルの場所を指定する
+
+::code-group
+
+```sh [~/.zshenv]
+export ZDOTDIR="$HOME/.config/zsh"
+export XDG_CONFIG_HOME="$HOME/.config"
+```
+
+```sh [~/.config/zsh/.zshrc]
+alias ll='ls -l'
+```
+
+::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
+
+```sh
+# 動作確認
+exec zsh                     # 読み直す
+echo $ZDOTDIR                # → /Users/you/.config/zsh
+zsh -o sourcetrace -ic exit  # 読んだファイルを順に表示
+```
+
+</div>
+
+<!--
+- 他にも .zprofile (ログイン時 1 回) / .zlogin / .zlogout があるが、この 2 つで足りる。読み込み順は .zshenv → .zprofile → .zshrc → .zlogin
+- 対話シェル = プロンプトが出て人が打つシェル。zsh -c '...' のような非対話の起動では .zshrc は読まれず .zshenv だけ読まれる。だから .zshenv に重い処理や出力を書くとスクリプトが遅くなる / 壊れる
+- ZDOTDIR が未設定なら $HOME が使われる (manual: "If ZDOTDIR is unset, HOME is used instead")
+-->
+
+---
+layout: two-cols
+ratio: 1/1.1
+eyebrow: シェルの設定
+---
+
+# 起動速度は zsh-bench で測る
+
+::left::
+
+仮想 TTY でシェルを起動し、キー入力を送って反応時間を測る
+
+<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
+
+```sh
+git clone https://github.com/romkatv/zsh-bench \
+  ~/zsh-bench
+~/zsh-bench/zsh-bench
+```
+
+</div>
+
+<FindyCallout variant="warn">
+  <code>time zsh -i -c exit</code> は当てにならない。遅延読み込み (zinit turbo など) は exit までの時間だけ縮め、体感は縮めない
+</FindyCallout>
+
+<p class="text-sm op-60"><code>hyperfine 'zsh -i -c exit'</code> は設定読み込みの差分比較にだけ使う</p>
+
+::right::
+
+<FindyKeyValueList size="0.85rem">
+  <FindyKeyValue label="first_prompt_lag_ms">起動 → プロンプト表示。目安 50ms</FindyKeyValue>
+  <FindyKeyValue label="first_command_lag_ms">起動 → 最初のコマンド実行。150ms</FindyKeyValue>
+  <FindyKeyValue label="command_lag_ms">Enter → 次のプロンプト。10ms</FindyKeyValue>
+  <FindyKeyValue label="input_lag_ms">キー押下 → 文字表示。20ms</FindyKeyValue>
+  <FindyKeyValue label="exit_time_ms"><code>zsh -lic exit</code> の時間。指標として無意味</FindyKeyValue>
+</FindyKeyValueList>
+
+<FindyRef>
+
+[romkatv/zsh-bench](https://github.com/romkatv/zsh-bench) / [How not to benchmark](https://github.com/romkatv/zsh-bench#how-not-to-benchmark)
+
+</FindyRef>
+
+<!--
+- 目安の ms は README で著者が示している「人が気づき始める」しきい値
+- 昔は exit までの時間と体感がほぼ一致していたが、遅延読み込みの普及で乖離した (README "How not to benchmark")
+-->
+
+
+---
+layout: two-cols
+ratio: 1/1.2
+eyebrow: シェルの設定
+---
+
+# プロンプトは軽くしておく
+
+::left::
+
+AI エージェントはコマンドのたびに対話シェルを起動する。<FindyAccentMark>起動が遅いと、その回数ぶん待たされる</FindyAccentMark>
+
+Starship から zsh 組み込みのプロンプトに乗り換えて軽くした
+
+<p class="text-sm op-60"><code>%~</code> がディレクトリ、<code>vcs_info</code> が git ブランチ (zsh 同梱)、<code>%(?.a.b)</code> が終了コードでの分岐。ブラウザで組み立てるなら <a href="https://bootsignal.com/en/tools/shell-prompt">bootsignal Shell Prompt Generator</a></p>
+
+::right::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.72rem">
+
+```sh [~/.config/zsh/.zshrc]
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' %F{yellow}(%b)%f'
+setopt PROMPT_SUBST
+PROMPT='%F{blue}%~%f${vcs_info_msg_0_} '
+PROMPT+='%(?.%F{green}.%F{red})❯%f '
+```
+
+```text [表示]
+~/src/talks (main) ❯     # 成功後は緑、失敗後は赤
+```
+
+</div>
+
+<FindyRef>
+
+[zsh: Prompt Expansion](https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html) / [vcs_info](https://zsh.sourceforge.io/Doc/Release/User-Contributions.html#Version-Control-Information)
+
+</FindyRef>
 
 ---
 layout: two-cols
@@ -122,24 +289,12 @@ man bind
 ::
 
 ---
-layout: content
-eyebrow: シェルの設定
----
-
-# zshが入っていない場合はインストール
-
-```sh
-which zsh
-sudo apt install -y zsh
-```
-
-
----
 layout: section
 color: gray
 ---
-よく使う  
-シェルのキーバインド
+
+# よく使うシェルのキーバインド
+
 ---
 layout: two-cols
 eyebrow: シェルの設定
@@ -212,13 +367,24 @@ eyebrow: シェルの設定
 </FindyCallout>
 
 ---
-layout: content
+layout: two-cols
+ratio: 1/1.3
 eyebrow: シェルの設定
 ---
 
 # おすすめキーバインド <FindyBadge variant="outline" color="high">上級</FindyBadge>
 
+::left::
+
 デフォルトでは設定されていないやつ。設定ファイルに追加して使う
+
+<FindyKeyValueList size="0.95rem">
+  <FindyKeyValue label="Ctrl-x Ctrl-r">redo。undo しすぎた時に戻る</FindyKeyValue>
+  <FindyKeyValue label="Esc→e">現在行を <code>$EDITOR</code> で編集</FindyKeyValue>
+  <FindyKeyValue label="Ctrl-p / Ctrl-n">前方一致の履歴検索。<code>docker</code> と打って Ctrl-p</FindyKeyValue>
+</FindyKeyValueList>
+
+::right::
 
 ::code-group
 
@@ -237,7 +403,7 @@ bindkey '^p' history-beginning-search-backward-end
 bindkey '^n' history-beginning-search-forward-end
 ```
 
-```sh [bash (~/.inputrc)]
+```sh [bash (.inputrc)]
 # Ctrl-x Ctrl-r で redo
 # ※ bash の readline には redo がない (undo のみ)
 # Ctrl-x Ctrl-e で現在行を $EDITOR で編集 (bash はデフォルトで有効)
@@ -247,7 +413,7 @@ bindkey '^n' history-beginning-search-forward-end
 "\C-n": history-search-forward
 ```
 
-```sh [fish (~/.config/fish/config.fish)]
+```sh [fish (config.fish)]
 # ※ fish には redo に相当する機能がない
 # Alt-e または Alt-v で現在行を $EDITOR で編集 (fish はデフォルトで有効)
 # ※ 設定不要: Alt-e で edit_command_buffer が使える
@@ -257,9 +423,71 @@ bindkey '^n' history-beginning-search-forward-end
 
 ::
 
+<style>
+/* zle -N の行が長く右カラムに収まらないため、このスライドだけ縮める */
+.slidev-code { --slidev-code-font-size: 0.72rem; }
+</style>
+
 ---
 layout: two-cols
-ratio: 2/1
+ratio: 1/1.2
+eyebrow: シェルの設定
+---
+
+# 前のコマンドから好きな単語を拾う
+
+::left::
+
+<FindyAccentMark>Esc→.</FindyAccentMark> は最後の単語のみ  
+
+<FindyAccentMark>Esc→,</FindyAccentMark> `copy-earlier-word` を続けて押すと、同じ行の 1 つ手前の単語に差し替わる
+
+<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+
+```sh
+$ ls /etc /tmp
+$ echo ▮
+# Esc→.  → echo /tmp
+# Esc→,  → echo /etc
+# Esc→,  → echo ls
+```
+
+</div>
+
+<p class="text-sm op-60 mt-2">実際は「さっき <code>cp</code> したコピー元をもう一度開く」のような場面で使う</p>
+
+::right::
+
+::code-group
+
+```sh [zsh (~/.zshrc)]
+# Esc→, で Esc→. の 1 つ手前の単語に差し替える
+autoload -Uz copy-earlier-word
+zle -N copy-earlier-word
+bindkey '^[,' copy-earlier-word
+```
+
+```sh [bash]
+# 設定不要。Esc→. に数引数を付けると n 番目の単語になる
+# Esc→1 Esc→.  → 1 番目 (コマンド名は 0 番目)
+# Esc→- Esc→2 Esc→.  → 後ろから 2 番目
+```
+
+```sh [fish]
+# 設定不要。Alt-↑ / Alt-↓ で入力中の単語を含む履歴の単語を検索する
+```
+
+::
+
+<FindyRef>
+
+[zshcontrib(1) copy-earlier-word](https://zsh.sourceforge.io/Doc/Release/User-Contributions.html#ZLE-Functions) / [bash: yank-last-arg](https://www.gnu.org/software/bash/manual/html_node/Commands-For-History.html)
+
+</FindyRef>
+
+---
+layout: two-cols
+ratio: 1.4/1
 eyebrow: シェルの設定
 ---
 
@@ -267,71 +495,23 @@ eyebrow: シェルの設定
 
 ::left::
 
-zsh / bash のデフォルトキーバインドは **Emacs モード**
+## デフォルトは Emacs モード
 
-例: `Ctrl+A` で行頭、`Ctrl+E` で行末
 
-vi モード (`bindkey -v`) もあるが、あえて使わない理由:
+<p class="text-sm">例: <code>Ctrl+A</code> で行頭、<code>Ctrl+E</code> で行末</p>
 
-<FindyKeyValueList size="0.95rem">
-  <FindyKeyValue label="モード切替">Normal / Insert の切替が地味にストレス</FindyKeyValue>
-  <FindyKeyValue label="表示">今どちらのモードか視覚フィードバックが弱い</FindyKeyValue>
-  <FindyKeyValue label="互換性">ssh 先・Docker 内など設定が効かない場面で混乱する</FindyKeyValue>
-</FindyKeyValueList>
+
+## vi モード `bindkey -v` を使わない理由
+
+
+- Normal / Insert の切替が地味にストレス
+- 今どちらのモードか視覚フィードバックが弱い
+- ssh 先・Docker 内など設定が効かない場面で混乱する
+
 
 ::right::
 
 <FindyCallout>
-  複雑な編集だけ <code>$EDITOR</code> で開ける <code>edit-command-line</code> が便利。
-  普段は Emacs バインド、ガッツリ編集したいときだけ Vim
+  ガッツリ編集したいときだけ <code>edit-command-line</code> (Esc→e) で <code>$EDITOR</code> を開けばよい
 </FindyCallout>
-
----
-layout: content
-eyebrow: シェルの設定 | Windows
----
-
-# Windows で Ctrl キーを快適に使う
-
-Windows キーボードの `Ctrl` は小指の端にあって押しづらい。<FindyAccentMark>CapsLock を Ctrl にリマップ</FindyAccentMark>するとかなり楽になる
-
-<FindyKeyValueList size="0.95rem">
-  <FindyKeyValue label="PowerToys">Microsoft 公式。Keyboard Manager で GUI 設定</FindyKeyValue>
-  <FindyKeyValue label="Ctrl2Cap">Sysinternals 製。インストールして再起動するだけ</FindyKeyValue>
-  <FindyKeyValue label="レジストリ">Scancode Map を直接書き換え。ツール不要だが手順がやや複雑</FindyKeyValue>
-</FindyKeyValueList>
-
-<FindyCallout variant="info">
-  Mac は「システム設定 → キーボード → 修飾キー」で CapsLock → Control に変更できる
-</FindyCallout>
-
-<FindyRef label="参照">
-
-[PowerToys Keyboard Manager](https://learn.microsoft.com/ja-jp/windows/powertoys/keyboard-manager) / [Ctrl2Cap](https://learn.microsoft.com/ja-jp/sysinternals/downloads/ctrl2cap)
-
-</FindyRef>
-
----
-layout: content
-eyebrow: シェルの設定 | Windows
----
-
-# ターミナルのコピー & ペースト
-
-Mac は `Cmd` (GUI) と `Ctrl` (ターミナル) で物理的にキーが分かれている
-
-Windows は両方 `Ctrl` なので、ターミナルでは <FindyAccentMark>Shift を足して区別</FindyAccentMark>する
-
-<FindyKeyValueList size="1rem">
-  <FindyKeyValue label="Ctrl+Shift+C">コピー（ターミナル内）</FindyKeyValue>
-  <FindyKeyValue label="Ctrl+Shift+V">ペースト（ターミナル内）</FindyKeyValue>
-  <FindyKeyValue label="Ctrl+C">プロセス中断 (SIGINT)</FindyKeyValue>
-  <FindyKeyValue label="Ctrl+V">リテラル入力モード</FindyKeyValue>
-</FindyKeyValueList>
-
-<FindyRef label="参照">
-
-[WezTerm Default Key Assignments](https://wezterm.org/config/default-keys.html)
-
-</FindyRef>
 

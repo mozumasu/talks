@@ -20,6 +20,19 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^[e' edit-command-line
 
+# Esc→, で Esc→. (insert-last-word) の 1 つ手前の単語に差し替える
+autoload -Uz copy-earlier-word
+zle -N copy-earlier-word
+bindkey '^[,' copy-earlier-word
+
+# プロンプト: ディレクトリ + git ブランチ + 終了コードで色が変わる ❯ (外部ツール不要)
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats ' %F{yellow}(%b)%f'
+setopt PROMPT_SUBST
+PROMPT='%F{blue}%~%f${vcs_info_msg_0_} '
+PROMPT+='%(?.%F{green}.%F{red})❯%f '
+
 # Ctrl-p / Ctrl-n を入力中の文字列で前方一致する履歴検索にする
 autoload -Uz history-search-end
 zle -N history-beginning-search-backward-end history-search-end
