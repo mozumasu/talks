@@ -20,7 +20,7 @@ switch_tab = "prefix+1..9"
 close_tab = "prefix+shift+x"
 
 # cmd キーで直接操作する場合 (macOS)。WezTerm 側に
-# enable_kitty_keyboard = true と cmd+t の DisableDefaultAssignment が必要
+# enable_kitty_keyboard = true が必要で、keybinds.lua に cmd+t (SpawnTab) を残さない
 # (スライド「cmd キーを herdr で使う」参照)
 # new_tab = "cmd+t"
 # switch_tab = "cmd+1..9"
