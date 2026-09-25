@@ -136,6 +136,7 @@ zsh -o sourcetrace -ic exit  # 読んだファイルを順に表示
 ---
 layout: two-cols
 ratio: 1/1.1
+valign: center
 eyebrow: シェルの設定
 ---
 
@@ -143,13 +144,12 @@ eyebrow: シェルの設定
 
 ::left::
 
-AI エージェントはコマンドのたびに対話シェルを起動する。<FindyAccentMark>起動が遅いと、その回数ぶん待たされる</FindyAccentMark>
+シェルの起動が遅いと、ペインを作るたびに待たされる
+<FindyAccentMark>zsh-bench で定期的に測って、遅くなっていないか確認する</FindyAccentMark>
 
-<p class="text-sm op-60">zsh-bench は仮想 TTY でシェルを起動し、キー入力を送って反応時間を測る</p>
+<div class="" style="--findy-code-compact-size: 0.75rem">
 
-<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
-
-```sh
+```sh [インストールして実行]
 git clone https://github.com/romkatv/zsh-bench \
   ~/zsh-bench
 ~/zsh-bench/zsh-bench
@@ -159,11 +159,10 @@ git clone https://github.com/romkatv/zsh-bench \
 
 ::right::
 
-実行結果。カッコ内は著者の目安
-
 <div class="code-compact" style="--findy-code-compact-size: 0.72rem">
 
 ```sh [出力例]
+# カッコ内は遅いと感じ始める目安
 first_prompt_lag_ms=51.771   # 起動 → プロンプト表示 (50ms)
 first_command_lag_ms=51.882  # 起動 → 最初のコマンド実行 (150ms)
 command_lag_ms=0.066         # Enter → 次のプロンプト (10ms)
@@ -191,15 +190,24 @@ ratio: 1/1.2
 eyebrow: シェルの設定
 ---
 
-# プロンプトは軽くしておく
+# プロンプトのカスタマイズ
 
 ::left::
 
-プロンプトは<FindyAccentMark>軽量で、git の状態が見えるもの</FindyAccentMark>を選ぶ。zsh 組み込みだけで足りる
+プロンプトに欲しいもの
+- 軽量でgit の状態が見える
 
-よりリッチな見た目にしたければ <a href="https://starship.rs/">Starship</a>
+  → zshの組み込み <code>vcs_info</code>
 
-<p class="text-sm op-60"><code>%~</code> がディレクトリ、<code>vcs_info</code> が git ブランチ (zsh 同梱)、<code>%(?.a.b)</code> が終了コードでの分岐。ブラウザで組み立てるなら <a href="https://bootsignal.com/en/tools/shell-prompt">bootsignal Shell Prompt Generator</a></p>
+
+- 見た目のリッチさ  
+
+  →<a href="https://starship.rs/">`Starship`</a>
+
+<p class="text-sm"><code>%~</code> がディレクトリ、<code>vcs_info</code> が git ブランチ、<code>%(?.a.b)</code> が終了コードでの分岐
+
+  ブラウザで組み立てることも可能 
+  <a href="https://bootsignal.com/en/tools/shell-prompt">bootsignal Shell Prompt Generator</a></p>
 
 ::right::
 
@@ -490,6 +498,7 @@ bindkey '^[,' copy-earlier-word
 ---
 layout: two-cols
 ratio: 1.4/1
+valign: center
 eyebrow: シェルの設定
 ---
 
@@ -499,16 +508,17 @@ eyebrow: シェルの設定
 
 ## デフォルトは Emacs モード
 
-
-<p class="text-sm">例: <code>Ctrl+A</code> で行頭、<code>Ctrl+E</code> で行末</p>
-
+<p class="text-sm op-60">例: <code>Ctrl+A</code> で行頭、<code>Ctrl+E</code> で行末</p>
 
 ## vi モード `bindkey -v` を使わない理由
 
+<div class="text-sm op-70">
 
 - Normal / Insert の切替が地味にストレス
 - 今どちらのモードか視覚フィードバックが弱い
 - ssh 先・Docker 内など設定が効かない場面で混乱する
+
+</div>
 
 
 ::right::
