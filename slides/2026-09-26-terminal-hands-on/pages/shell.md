@@ -147,7 +147,7 @@ eyebrow: シェルの設定
 シェルの起動が遅いと、ペインを作るたびに待たされる
 <FindyAccentMark>zsh-bench で定期的に測って、遅くなっていないか確認する</FindyAccentMark>
 
-<div class="" style="--findy-code-compact-size: 0.75rem">
+<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
 ```sh [インストールして実行]
 git clone https://github.com/romkatv/zsh-bench \
