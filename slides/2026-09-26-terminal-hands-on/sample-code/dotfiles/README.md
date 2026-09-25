@@ -4,9 +4,9 @@
 `.config/` 以下をそのまま `~/.config/` にコピーして使います。
 
 ```sh
-# 例: WezTerm の設定を置く
-mkdir -p ~/.config/wezterm
-cp .config/wezterm/wezterm.lua ~/.config/wezterm/
+# 例: WezTerm の設定を置く (wezterm.lua が keybinds.lua などを require するので、ディレクトリごと)
+mkdir -p ~/.config
+cp -r .config/wezterm ~/.config/
 ```
 
 設定を Git で管理したくなったら、`~/dotfiles` に実体を移して `~/.config` へシンボリックリンクを貼る形にすると、別のマシンでも同じ設定を再現できます。
@@ -19,6 +19,7 @@ dotfiles/
 │   ├── wezterm/
 │   │   ├── wezterm.lua            # macOS / Linux 向け
 │   │   ├── wezterm-windows.lua    # Windows (WSL + Acrylic) 向け
+│   │   ├── keybinds.lua           # デフォルトを切って使うキーバインド一覧
 │   │   ├── workspace.lua          # workspace のトグル切替 (Leader+s)
 │   │   └── tab.lua                # 丸タブ (format-tab-title)
 │   ├── herdr/
@@ -37,7 +38,8 @@ dotfiles/
 | ファイル | 主な設定 |
 |---|---|
 | `wezterm.lua` | フォント、背景透過+ぼかし、タブバー、Leader キー (`Ctrl+;`)、ペイン分割・移動、Workspace (作成/選択/トグル)、QuickSelect、コマンドパレット、Claude Code 改行、kitty keyboard protocol |
-| `wezterm-windows.lua` | 上記の Windows 版 (WSL ドメイン設定、Acrylic 効果。QuickSelect/cmd 系は除く) |
+| `wezterm-windows.lua` | 上記の Windows 版 (WSL ドメイン設定、Acrylic 効果。QuickSelect/cmd 系は除く。デフォルトキーバインドは残す) |
+| `keybinds.lua` | `wezterm show-keys --lua` の出力から重複と `Ctrl+-` / `Ctrl+=` のフォントサイズ変更、herdr に渡す `cmd+t` を除いたもの。`disable_default_key_bindings = true` とセットで `wezterm.lua` が読む |
 | `workspace.lua` | 切替前の workspace 名を覚えて同じキーで行き来するトグル (`Leader+s` で scratch) |
 | `tab.lua` | 丸タブ (`format-tab-title`)。使う場合は `wezterm.lua` の inline ハンドラを消して `require("tab").apply_to_config(config)` |
 | `herdr/config.toml` | prefix キー (`ctrl+q`)、ペイン操作、タブ・ワークスペース操作、lazygit カスタムコマンド、cmd キー案 (コメント) |

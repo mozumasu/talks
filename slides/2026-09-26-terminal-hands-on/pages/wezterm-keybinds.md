@@ -41,7 +41,7 @@ return config
 </div>
 
 <FindyCallout>
-  全部自分で握るなら <code>disable_default_key_bindings = true</code>
+  デフォルトは <code>disable_default_key_bindings = true</code> で切る。新規タブやコピーも書き出したファイルにあるので困らない
 </FindyCallout>
 
 <style>
@@ -482,7 +482,11 @@ local key_tables = {
 
 function module.apply_to_config(config)
   config.disable_default_key_bindings = true
-  config.keys = keys
+  -- wezterm.lua で先に定義したキーを消さないよう追記する
+  config.keys = config.keys or {}
+  for _, key in ipairs(keys) do
+    table.insert(config.keys, key)
+  end
   config.key_tables = key_tables
 end
 

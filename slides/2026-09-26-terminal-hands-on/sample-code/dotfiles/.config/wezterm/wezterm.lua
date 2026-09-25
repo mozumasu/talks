@@ -86,11 +86,11 @@ config.keys = {
   -- Claude Code 用: Shift+Enter で改行を送る
   { key = "Enter", mods = "SHIFT",
     action = act.SendString("\n") },
-
-  -- herdr の cmd+t (new_tab) を WezTerm に食わせない
-  { key = "t", mods = "SUPER",
-    action = act.DisableDefaultAssignment },
 }
+
+-- デフォルトのキーバインドは切り、keybinds.lua に書き出した分だけを使う
+-- (wezterm show-keys --lua > keybinds.lua で生成し、要らない行を消す)
+require("keybinds").apply_to_config(config)
 
 -- workspace のトグル切替 (Leader+s で scratch と行き来)
 require("workspace").apply_to_config(config)
@@ -111,11 +111,5 @@ config.quick_select_patterns = {
 ------------------------------------------------------------------------
 -- kitty keyboard protocol を許可し、cmd (SUPER) 修飾を TUI に届ける
 config.enable_kitty_keyboard = true
-
-------------------------------------------------------------------------
--- keybinds.lua から読み込む場合 (wezterm show-keys --lua > keybinds.lua)
-------------------------------------------------------------------------
--- config.keys = require("keybinds").keys
--- config.key_tables = require("keybinds").key_tables
 
 return config

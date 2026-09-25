@@ -151,6 +151,8 @@ eyebrow: サンプルコード
 
 <<< @/sample-code/dotfiles/.config/wezterm/wezterm.lua lua[wezterm.lua]
 
+<<< @/sample-code/dotfiles/.config/wezterm/keybinds.lua lua[keybinds.lua]
+
 <<< @/sample-code/dotfiles/.config/wezterm/tab.lua lua[tab.lua]
 
 <<< @/sample-code/dotfiles/.config/wezterm/workspace.lua lua[workspace.lua]
