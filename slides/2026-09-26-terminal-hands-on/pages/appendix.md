@@ -188,3 +188,42 @@ macos-titlebar-style = tabs
 ```
 
 </div>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: Appendix | zsh
+toc: zsh の読み込み順
+tocLevel: 2
+---
+
+# `~/.zshenv` の変更が新しいタブでだけ反映される理由
+
+::left::
+
+新しいタブ: `ZDOTDIR` 無しで起動
+
+<FindyFlow
+  steps="~/.zshenv を読む → ZDOTDIR が決まる,~/.config/zsh/.zshrc を読む"
+/>
+
+<p class="text-sm op-60 mt-4">zsh が読むのは <code>$ZDOTDIR/.zshenv</code>。未設定なら <code>$HOME</code></p>
+
+::right::
+
+`exec zsh`: `ZDOTDIR` が入ったまま起動
+
+<FindyFlow
+  steps="~/.config/zsh/.zshenv を探す (無い),~/.config/zsh/.zshrc を読む"
+/>
+
+<p class="text-sm op-60 mt-4"><code>~/.zshenv</code> は読み直されない。足した変更は新しいタブまで見えない</p>
+
+<FindyCallout>
+  両方で同じファイルを読ませるなら <code>~/.zshenv</code> は <code>export ZDOTDIR=…</code> と <code>source "$ZDOTDIR/.zshenv"</code> の 2 行だけに
+</FindyCallout>
+
+<!--
+- 再現: 仮の HOME で ~/.zshenv に ZDOTDIR を書き、起動後に ~/.zshenv へ MANPAGER を足して exec zsh → 反映されない。新しいシェルを ZDOTDIR 無しで起動 → 反映される
+- 出典: zsh manual "Startup/Shutdown Files": "If ZDOTDIR is unset, HOME is used instead."
+-->
