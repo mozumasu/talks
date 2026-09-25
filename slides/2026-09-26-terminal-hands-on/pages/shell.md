@@ -398,7 +398,7 @@ eyebrow: シェルの設定
 
 ::code-group
 
-```sh [zsh (~/.zshrc)]
+```sh [zsh (~/.config/zsh/.zshrc)]
 # Ctrl-x Ctrl-r で redo (undo しすぎた時に戻る)
 bindkey '^X^R' redo
 # Esc→e で現在行を $EDITOR で編集
@@ -470,7 +470,7 @@ $ echo ▮
 
 ::code-group
 
-```sh [zsh (~/.zshrc)]
+```sh [zsh (~/.config/zsh/.zshrc)]
 # Esc→, で Esc→. の 1 つ手前の単語に差し替える
 autoload -Uz copy-earlier-word
 zle -N copy-earlier-word
