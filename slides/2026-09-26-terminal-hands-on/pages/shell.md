@@ -275,6 +275,8 @@ export MANPAGER='nvim +Man!'
 
 ::
 
+<p class="text-sm op-60"><code>~/.zshenv</code> に書いて <code>exec zsh</code> で反映されないときは <Link to="appendix-zdotdir">Appendix: zsh の読み込み順</Link></p>
+
 ::right::
 
 詳しく知りたいときは

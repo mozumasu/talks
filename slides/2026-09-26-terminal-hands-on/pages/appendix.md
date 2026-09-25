@@ -195,6 +195,7 @@ ratio: 1/1
 eyebrow: Appendix | zsh
 toc: zsh の読み込み順
 tocLevel: 2
+routeAlias: appendix-zdotdir
 ---
 
 # `~/.zshenv` の変更が新しいタブでだけ反映される理由
