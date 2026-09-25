@@ -550,7 +550,6 @@ eyebrow: wezterm
   <FindyKeyValue label="Ctrl+Tab">次のタブ</FindyKeyValue>
   <FindyKeyValue label="Ctrl+Shift+P">コマンドパレット</FindyKeyValue>
   <FindyKeyValue label="Ctrl+Shift+F">検索</FindyKeyValue>
-  <FindyKeyValue label="Ctrl +/-">フォントサイズ変更</FindyKeyValue>
 </FindyKeyValueList>
 
 ::right::
