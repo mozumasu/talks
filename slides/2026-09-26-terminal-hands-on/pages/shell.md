@@ -119,7 +119,7 @@ alias ll='ls -l'
 <div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
 ```sh
-# 動作確認
+# 動作確認 (反映されなければ新しいタブを開く)
 exec zsh                     # 読み直す
 echo $ZDOTDIR                # → /Users/you/.config/zsh
 zsh -o sourcetrace -ic exit  # 読んだファイルを順に表示
