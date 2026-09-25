@@ -261,19 +261,23 @@ bind
 
 ::
 
-manをカラー表示する
+エディタと man の表示を設定する
 
 ::code-group
 
 ```sh [vim]
+export EDITOR=vim
 export MANPAGER='vim -M +MANPAGER -'
 ```
 
 ```sh [nvim]
+export EDITOR=nvim
 export MANPAGER='nvim +Man!'
 ```
 
 ::
+
+<p class="text-sm op-60"><code>~/.zshenv</code> に書いて <code>exec zsh</code> で反映されないときは <Link to="appendix-zdotdir">Appendix: zsh の読み込み順</Link></p>
 
 ::right::
 
