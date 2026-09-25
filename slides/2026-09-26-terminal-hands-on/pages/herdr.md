@@ -1,7 +1,8 @@
 ---
 layout: section
-color: blue
-toc: ターミナルマルチプレクサ
+color: gray
+toc: マルチプレクサ
+tocLevel: 2
 ---
 
 # ターミナルマルチプレクサ

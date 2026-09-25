@@ -90,10 +90,6 @@ src: ./pages/wezterm-keybinds.md
 ---
 
 ---
-src: ./pages/herdr.md
----
-
----
 layout: content
 toc: まとめ
 ---
@@ -105,7 +101,6 @@ toc: まとめ
 1. **ターミナル** — WezTerm は Lua で見た目もキーバインドも自分好みにできる
 2. **シェル** — Emacs バインドを覚えると速い。CapsLock を Ctrl にすると更に快適
 3. **キーバインド** — 内側（シェル）から外側（ターミナル）の順に設定すると衝突しない
-4. **マルチプレクサ** — herdr でターミナルを分割管理。AI エージェントとも協業できる
 
 </div>
 
@@ -121,6 +116,10 @@ layout: end
 
 ---
 src: ./pages/appendix.md
+---
+
+---
+src: ./pages/herdr.md
 ---
 
 ---

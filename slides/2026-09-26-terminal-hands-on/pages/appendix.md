@@ -6,7 +6,7 @@ toc: Appendix
 
 # Appendix
 
-Windows / Ghostty / ワークフロー
+Windows / Ghostty / マルチプレクサ / ワークフロー
 
 ---
 layout: content
