@@ -100,14 +100,14 @@ powershell -ExecutionPolicy Bypass -c "irm https://herdr.dev/install.ps1 | iex"
 
 ::right::
 
-設定ファイルは dotfiles 側に生成して管理する
+設定ファイルは `~/.config/herdr/` にデフォルト設定を書き出して作る
 
 <div class="code-compact" style="--findy-code-compact-size: 0.95rem">
 
 ```sh
-mkdir -p ~/dotfiles/.config/herdr
+mkdir -p ~/.config/herdr
 herdr --default-config \
-  > ~/dotfiles/.config/herdr/config.toml
+  > ~/.config/herdr/config.toml
 ```
 
 </div>
@@ -116,25 +116,6 @@ herdr --default-config \
   初回起動時のセットアップ画面を閉じてしまったら <code>onboarding = true</code> にして
   <code>herdr server stop</code> → <code>herdr</code> で再表示できる。
   通知などはあとから設定画面 (<code>prefix+s</code>) で変更可能
-</FindyCallout>
-
----
-layout: content
-eyebrow: herdr
----
-
-# シンボリックリンクを貼るのを忘れずに
-
-dotfiles 側に生成しただけでは herdr からは見えない。実体は dotfiles、参照は `~/.config` に置く
-
-```sh
-mkdir -p ~/.config/herdr
-ln -s ~/dotfiles/.config/herdr/config.toml \
-  ~/.config/herdr/config.toml
-```
-
-<FindyCallout>
-  WezTerm のときと同じ手順。dotfiles で管理する設定はすべてこの形にする
 </FindyCallout>
 
 ---
@@ -936,7 +917,7 @@ navigate_pane_right = "l"
 [[keys.command]]
 key = "prefix+y"
 type = "shell"
-command = "$HOME/dotfiles/.config/herdr/bin/herdr-copy-last-output"
+command = "$HOME/.config/herdr/bin/herdr-copy-last-output"
 
 [[keys.command]]
 key = "prefix+shift+l"

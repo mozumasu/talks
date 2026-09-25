@@ -83,7 +83,7 @@ eyebrow: wezterm
 1. 設定ファイルを用意する
 
 ```bash
-# 配下に WezTerm の設定ファイルを置く
+# ~/.config 配下に WezTerm の設定ファイルを置く
 mkdir -p ~/.config/wezterm
 touch ~/.config/wezterm/wezterm.lua
 ```
@@ -330,7 +330,7 @@ eyebrow: wezterm
 
 # タブバーを丸くしてみよう
 
-1. `~/dotfiles/.config/wezterm/tab.lua` を作る
+1. `~/.config/wezterm/tab.lua` を作る
 2. [サンプルコード](https://github.com/mozumasu/talks/blob/main/slides/2026-09-26-terminal-hands-on/sample-code/dotfiles/.config/wezterm/tab.lua) を貼り付ける
 3. `wezterm.lua` に `require("tab").apply_to_config(config)` を足す
 
