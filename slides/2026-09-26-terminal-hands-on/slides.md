@@ -129,7 +129,6 @@ src: ./pages/workflow.md
 
 ---
 layout: content
-class: code-fill
 eyebrow: Appendix | サンプルコード
 toc: サンプルコード
 tocLevel: 2
@@ -137,6 +136,8 @@ routeAlias: appendix-code
 ---
 
 # サンプルコード: WezTerm
+
+<div class="code-scroll" style="--findy-code-scroll-h: 20rem">
 
 ::code-group
 
@@ -150,13 +151,16 @@ routeAlias: appendix-code
 
 ::
 
+</div>
+
 ---
 layout: content
-class: code-fill
 eyebrow: Appendix | サンプルコード
 ---
 
 # サンプルコード: シェル
+
+<div class="code-scroll" style="--findy-code-scroll-h: 20rem">
 
 ::code-group
 
@@ -168,13 +172,16 @@ eyebrow: Appendix | サンプルコード
 
 ::
 
+</div>
+
 ---
 layout: content
-class: code-fill
 eyebrow: Appendix | サンプルコード
 ---
 
 # サンプルコード: herdr / Ghostty
+
+<div class="code-scroll" style="--findy-code-scroll-h: 20rem">
 
 ::code-group
 
@@ -183,3 +190,5 @@ eyebrow: Appendix | サンプルコード
 <<< @/sample-code/dotfiles/.config/ghostty/config ini[ghostty/config]
 
 ::
+
+</div>
