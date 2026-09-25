@@ -336,7 +336,7 @@ eyebrow: wezterm
 
 <FindyKeyValueList size="0.95rem" class="mt-4">
   <FindyKeyValue label="COLORS">配色。書き換えるだけで色を変えられる</FindyKeyValue>
-  <FindyKeyValue label="タブバーの設定">位置・最大幅・「+」ボタンの非表示など</FindyKeyValue>
+  <FindyKeyValue label="タブバーの設定">位置・最大幅・「+」ボタンの非表示・タブバー背景の透過など</FindyKeyValue>
   <FindyKeyValue label="format-tab-title">タブの描画そのもの（仕組みは次のページ）</FindyKeyValue>
 </FindyKeyValueList>
 

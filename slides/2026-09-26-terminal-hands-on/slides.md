@@ -70,6 +70,7 @@ role: Findy Inc. / SRE
 ---
 layout: toc
 columns: 1
+scale: 0.88
 ---
 
 ---
@@ -125,3 +126,77 @@ src: ./pages/herdr.md
 ---
 src: ./pages/workflow.md
 ---
+
+---
+layout: section
+color: gray
+toc: サンプルコード
+routeAlias: sample-code
+---
+
+# サンプルコード
+
+WezTerm / シェル / herdr / Ghostty の設定ファイル
+
+---
+layout: content
+eyebrow: サンプルコード
+---
+
+# サンプルコード: WezTerm
+
+<div class="code-scroll" style="--findy-code-scroll-h: 20rem">
+
+::code-group
+
+<<< @/sample-code/dotfiles/.config/wezterm/wezterm.lua lua[wezterm.lua]
+
+<<< @/sample-code/dotfiles/.config/wezterm/tab.lua lua[tab.lua]
+
+<<< @/sample-code/dotfiles/.config/wezterm/workspace.lua lua[workspace.lua]
+
+<<< @/sample-code/dotfiles/.config/wezterm/wezterm-windows.lua lua[wezterm-windows.lua]
+
+::
+
+</div>
+
+---
+layout: content
+eyebrow: サンプルコード
+---
+
+# サンプルコード: シェル
+
+<div class="code-scroll" style="--findy-code-scroll-h: 20rem">
+
+::code-group
+
+<<< @/sample-code/dotfiles/.config/zsh/.zshrc sh[zsh/.zshrc]
+
+<<< @/sample-code/dotfiles/.inputrc sh[.inputrc]
+
+<<< @/sample-code/dotfiles/.config/fish/config.fish fish[fish/config.fish]
+
+::
+
+</div>
+
+---
+layout: content
+eyebrow: サンプルコード
+---
+
+# サンプルコード: herdr / Ghostty
+
+<div class="code-scroll" style="--findy-code-scroll-h: 20rem">
+
+::code-group
+
+<<< @/sample-code/dotfiles/.config/herdr/config.toml toml[herdr/config.toml]
+
+<<< @/sample-code/dotfiles/.config/ghostty/config ini[ghostty/config]
+
+::
+
+</div>
