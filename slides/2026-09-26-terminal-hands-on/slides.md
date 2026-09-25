@@ -125,3 +125,60 @@ src: ./pages/herdr.md
 ---
 src: ./pages/workflow.md
 ---
+
+---
+layout: content
+class: code-fill
+eyebrow: Appendix | サンプルコード
+toc: サンプルコード
+tocLevel: 2
+routeAlias: appendix-code
+---
+
+# サンプルコード: WezTerm
+
+::code-group
+
+<<< @/sample-code/dotfiles/.config/wezterm/wezterm.lua lua[wezterm.lua]
+
+<<< @/sample-code/dotfiles/.config/wezterm/tab.lua lua[tab.lua]
+
+<<< @/sample-code/dotfiles/.config/wezterm/workspace.lua lua[workspace.lua]
+
+<<< @/sample-code/dotfiles/.config/wezterm/wezterm-windows.lua lua[wezterm-windows.lua]
+
+::
+
+---
+layout: content
+class: code-fill
+eyebrow: Appendix | サンプルコード
+---
+
+# サンプルコード: シェル
+
+::code-group
+
+<<< @/sample-code/dotfiles/.config/zsh/.zshrc sh[zsh/.zshrc]
+
+<<< @/sample-code/dotfiles/.inputrc sh[.inputrc]
+
+<<< @/sample-code/dotfiles/.config/fish/config.fish fish[fish/config.fish]
+
+::
+
+---
+layout: content
+class: code-fill
+eyebrow: Appendix | サンプルコード
+---
+
+# サンプルコード: herdr / Ghostty
+
+::code-group
+
+<<< @/sample-code/dotfiles/.config/herdr/config.toml toml[herdr/config.toml]
+
+<<< @/sample-code/dotfiles/.config/ghostty/config ini[ghostty/config]
+
+::
