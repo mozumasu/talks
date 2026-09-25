@@ -90,6 +90,10 @@ src: ./pages/wezterm-keybinds.md
 ---
 
 ---
+src: ./pages/wezterm-tabbar.md
+---
+
+---
 layout: content
 toc: まとめ
 ---
