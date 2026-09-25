@@ -163,13 +163,19 @@ git clone https://github.com/romkatv/zsh-bench \
 
 ::right::
 
-<FindyKeyValueList size="0.85rem">
-  <FindyKeyValue label="first_prompt_lag_ms">起動 → プロンプト表示。目安 50ms</FindyKeyValue>
-  <FindyKeyValue label="first_command_lag_ms">起動 → 最初のコマンド実行。150ms</FindyKeyValue>
-  <FindyKeyValue label="command_lag_ms">Enter → 次のプロンプト。10ms</FindyKeyValue>
-  <FindyKeyValue label="input_lag_ms">キー押下 → 文字表示。20ms</FindyKeyValue>
-  <FindyKeyValue label="exit_time_ms"><code>zsh -lic exit</code> の時間。指標として無意味</FindyKeyValue>
-</FindyKeyValueList>
+実行結果。カッコ内は著者の目安
+
+<div class="code-compact" style="--findy-code-compact-size: 0.72rem">
+
+```sh [出力例]
+first_prompt_lag_ms=51.771   # 起動 → プロンプト表示 (50ms)
+first_command_lag_ms=51.882  # 起動 → 最初のコマンド実行 (150ms)
+command_lag_ms=0.066         # Enter → 次のプロンプト (10ms)
+input_lag_ms=0.182           # キー押下 → 文字表示 (20ms)
+exit_time_ms=51.601          # zsh -lic exit の時間。無意味
+```
+
+</div>
 
 <FindyRef>
 

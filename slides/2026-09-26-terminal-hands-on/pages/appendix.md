@@ -1,16 +1,19 @@
 ---
 layout: section
 color: gray
-routeAlias: appendix-windows
+toc: Appendix
 ---
 
-# Appendix: Windows
+# Appendix
 
-WSL の導入 / Ctrl キー / コピー & ペースト
+Windows / Ghostty / ワークフロー
 
 ---
 layout: content
 eyebrow: Appendix | Windows
+toc: Windows
+tocLevel: 2
+routeAlias: appendix-windows
 ---
 
 # Windows は WSL 上で進める
@@ -108,3 +111,80 @@ Windows は両方 `Ctrl` なので、ターミナルでは <FindyAccentMark>Shif
 [WezTerm Default Key Assignments](https://wezterm.org/config/default-keys.html)
 
 </FindyRef>
+---
+eyebrow: Appendix | Ghostty
+toc: Ghostty
+tocLevel: 2
+layout: web-half
+url: https://ghostty.org/
+image: /screenshots/ghostty.png
+caption: Ghostty (背景透過 + ぼかし + タブ統合)
+---
+
+# Ghostty という選択肢
+
+Zig 製コアのターミナルエミュレータ (macOS / Linux)
+
+<div class="lead">
+
+- 設定は `key = value` を並べるだけ。Lua を書かなくていい
+- GPU レンダリング (macOS: Metal / Linux: OpenGL)
+- 組み込みテーマが豊富。`ghostty +list-themes` で一覧できる
+- テーマを OS のライト / ダークモードに追従させられる
+- macOS では Swift 製のネイティブ UI
+
+</div>
+
+<FindyRef>
+
+[Ghostty Docs](https://ghostty.org/docs)
+
+</FindyRef>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: Appendix | Ghostty
+---
+
+# Ghostty の設定例
+
+::left::
+
+シンプルな設定でも見た目はしっかりイケてる
+
+<FindyKeyValueList size="0.95rem">
+  <FindyKeyValue label="インストール"><code>brew install --cask ghostty</code></FindyKeyValue>
+  <FindyKeyValue label="設定ファイル"><code>~/.config/ghostty/config</code></FindyKeyValue>
+  <FindyKeyValue label="再読み込み">macOS <code>cmd+shift+,</code> / Linux <code>ctrl+shift+,</code></FindyKeyValue>
+</FindyKeyValueList>
+
+<FindyRef>
+
+[設定リファレンス](https://ghostty.org/docs/config/reference) / [テーマ](https://ghostty.org/docs/features/theme) / [mozumasu の設定ログ](https://zenn.dev/mozumasu/scraps/192ee90fde246f)
+
+</FindyRef>
+
+<FindyCallout>
+  凝った設定を組みたくなったら WezTerm へどうぞ
+</FindyCallout>
+
+::right::
+
+<div class="code-compact">
+
+```ini [~/.config/ghostty/config]
+# OS のライト/ダークに追従して切り替え
+theme = light:iTerm2 Solarized Light,dark:Solarized Dark Patched
+font-family = HackGen Console NF
+font-size = 13
+# 背景の透過とぼかし
+background-opacity = 0.7
+background-blur = 13
+# 非フォーカスの分割ペインを薄暗くする
+unfocused-split-opacity = 0.7
+# macOS: タブをタイトルバーに統合
+macos-titlebar-style = tabs
+```
+
+</div>

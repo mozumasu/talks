@@ -96,10 +96,6 @@ src: ./pages/herdr.md
 ---
 
 ---
-src: ./pages/workflow.md
----
-
----
 layout: content
 toc: まとめ
 ---
@@ -127,5 +123,9 @@ layout: end
 # ありがとうございました
 
 ---
-src: ./pages/appendix-windows.md
+src: ./pages/appendix.md
+---
+
+---
+src: ./pages/workflow.md
 ---

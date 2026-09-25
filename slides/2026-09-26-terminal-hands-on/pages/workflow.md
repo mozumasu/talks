@@ -1,7 +1,8 @@
 ---
 layout: section
-color: blue
-toc: 組み合わせてワークフローに
+color: gray
+toc: ワークフロー
+tocLevel: 2
 ---
 
 # 組み合わせて<br>ワークフローに
