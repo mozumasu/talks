@@ -288,7 +288,7 @@ WezTerm が読むのは `wezterm.lua` だけ。役割ごとのファイルはそ
 <pre style="margin: 0; padding: 0; background: none; font-size: 0.85rem; line-height: 1.8">
 ~/.config/wezterm/
 ├── wezterm.lua    # エントリ (これだけが読まれる)
-├── keymaps.lua    # キーバインド
+├── keybinds.lua   # キーバインド
 ├── appearance.lua # 見た目
 └── tab.lua        # タブバー
 </pre>
@@ -307,12 +307,12 @@ WezTerm が読むのは `wezterm.lua` だけ。役割ごとのファイルはそ
 <div class="code-compact">
 
 ```lua [~/.config/wezterm/wezterm.lua]
-require("keymaps").apply_to_config(config)
+require("keybinds").apply_to_config(config)
 require("tab").apply_to_config(config)
 return config
 ```
 
-```lua [~/.config/wezterm/keymaps.lua]
+```lua [~/.config/wezterm/keybinds.lua]
 local module = {}
 function module.apply_to_config(config)
   config.keys = { --[[ ここに集約 ]] }
