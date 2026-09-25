@@ -128,11 +128,19 @@ src: ./pages/workflow.md
 ---
 
 ---
-layout: content
-eyebrow: Appendix | サンプルコード
+layout: section
+color: gray
 toc: サンプルコード
-tocLevel: 2
-routeAlias: appendix-code
+routeAlias: sample-code
+---
+
+# サンプルコード
+
+WezTerm / シェル / herdr / Ghostty の設定ファイル
+
+---
+layout: content
+eyebrow: サンプルコード
 ---
 
 # サンプルコード: WezTerm
@@ -155,7 +163,7 @@ routeAlias: appendix-code
 
 ---
 layout: content
-eyebrow: Appendix | サンプルコード
+eyebrow: サンプルコード
 ---
 
 # サンプルコード: シェル
@@ -176,7 +184,7 @@ eyebrow: Appendix | サンプルコード
 
 ---
 layout: content
-eyebrow: Appendix | サンプルコード
+eyebrow: サンプルコード
 ---
 
 # サンプルコード: herdr / Ghostty
