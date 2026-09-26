@@ -315,10 +315,7 @@ return {
 local wezterm = require("wezterm")
 local act = wezterm.action
 
-local module = {}
-
--- wezterm show-keys --lua の出力を整理したもの。要らないキーは消し、自分のキーは末尾に足す
-local keybinds = {
+return {
   keys = {
     -- 終了
     { key = "q", mods = "SUPER", action = act.QuitApplication },
@@ -393,25 +390,6 @@ local keybinds = {
     -- コピー・ペースト
     { key = "Copy", mods = "NONE", action = act.CopyTo("Clipboard") },
     { key = "Paste", mods = "NONE", action = act.PasteFrom("Clipboard") },
-
-    -- 自分で足したキー
-    -- ペイン分割
-    { key = "|", mods = "LEADER|SHIFT", action = act.SplitHorizontal({}) },
-    { key = "-", mods = "LEADER", action = act.SplitVertical({}) },
-    -- ペイン移動 (Vim 方向キー)
-    { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
-    { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
-    { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
-    { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
-    -- ペインズーム
-    { key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
-    -- ワークスペース: 新規作成 (名前は自動) / 一覧からあいまい検索で選択
-    { key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
-    { key = "w", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) },
-    -- QuickSelect (IME 切替と被るので Cmd+Space に変更)
-    { key = " ", mods = "SUPER", action = act.QuickSelect },
-    -- Claude Code 用: Shift+Enter で改行を送る
-    { key = "Enter", mods = "SHIFT", action = act.SendString("\n") },
   },
 
   key_tables = {
@@ -482,14 +460,6 @@ local keybinds = {
     },
   },
 }
-
-function module.apply_to_config(config)
-  config.disable_default_key_bindings = true
-  config.keys = keybinds.keys
-  config.key_tables = keybinds.key_tables
-end
-
-return module
 ```
 
 ::
@@ -555,8 +525,6 @@ eyebrow: wezterm
 # デフォルトのキーバインドは切る
 
 ::left::
-
-`config.keys` に書いたキーはデフォルトに<FindyAccentMark>追加される</FindyAccentMark>だけ。書いていないキーも全部生きている
 
 把握していないキーがシェルやエディタのキーと被ると「なぜか効かない」トラブルになる
 
