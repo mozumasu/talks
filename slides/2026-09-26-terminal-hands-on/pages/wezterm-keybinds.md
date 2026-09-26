@@ -503,16 +503,20 @@ ratio: 1/1
 eyebrow: wezterm
 ---
 
-# Leader キーはどこに置く?
+# Leader キーを設定する
 
 ::left::
 
-**Leader キー** = ショートカットの起点になるキー
-(Vim の `<Leader>`、tmux の prefix と同じ発想)
+## **Leader キー**
 
-<strong>
-デフォルトで設定されていないので明示する必要がある
-</strong>
+- ショートカットの起点になるキー  
+- Vim の `<Leader>`、tmux の `prefix` と同じ発想
+
+
+
+<FindyAccentMark>
+デフォルトで設定されていないので明示する
+</FindyAccentMark>
 
 
 ::right::
@@ -536,6 +540,45 @@ return config
   <code>Ctrl+;</code> は従来の端末エンコーディングに無いキー。
   シェルや fzf に届かないので WezTerm が先取りしても衝突しない
 </FindyCallout>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: wezterm
+---
+
+# Leader キーを使ってみよう
+
+::left::
+
+ペイン分割を Leader キー経由に変えてみる
+
+<FindyKeyValueList size="0.95rem" gap="0.25rem">
+  <FindyKeyValue label="Leader, |">左右に分割 (縦線の <code>|</code>)</FindyKeyValue>
+  <FindyKeyValue label="Leader, -">上下に分割 (横線の <code>-</code>)</FindyKeyValue>
+</FindyKeyValueList>
+
+<p class="text-sm op-60">デフォルトは <code>Ctrl+Alt+"</code> と <code>Ctrl+Alt+%</code>。押しにくいので Leader に寄せる</p>
+
+<FindyCallout>
+  <code>Ctrl+;</code> を押して指を離してから <code>|</code>。timeout_milliseconds (2 秒) 以内に次のキーを押す
+</FindyCallout>
+
+::right::
+
+```lua [~/.config/wezterm/wezterm.lua]
+local act = wezterm.action
+
+config.keys = {
+  -- Leader のあとに | で左右、- で上下に分割
+  { key = "|", mods = "LEADER|SHIFT", -- [!code ++]
+    action = act.SplitHorizontal{} }, -- [!code ++]
+  { key = "-", mods = "LEADER", -- [!code ++]
+    action = act.SplitVertical{} }, -- [!code ++]
+}
+```
+
+<p class="text-sm op-60"><code>|</code> は Shift を押しながら打つ記号なので mods に <code>SHIFT</code> も足す</p>
 
 ---
 layout: two-cols
@@ -618,7 +661,7 @@ eyebrow: wezterm
 
 ::left::
 
-Leader キーに続けて 1 キーでペインを操作できるようにする
+分割と同じ要領で、ペイン移動とズームも Leader に寄せる
 
 <FindyCallout>
   <code>act</code> は <code>wezterm.action</code> の短縮。
@@ -627,12 +670,10 @@ Leader キーに続けて 1 キーでペインを操作できるようにする
 
 ::right::
 
+<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+
 ```lua [~/.config/wezterm/wezterm.lua]
 config.keys = {
-  { key = "|", mods = "LEADER|SHIFT",
-    action = act.SplitHorizontal{} },
-  { key = "-", mods = "LEADER",
-    action = act.SplitVertical{} },
   -- h/j/k/l でペイン移動
   { key = "h", mods = "LEADER",
     action = act.ActivatePaneDirection("Left") },
@@ -641,6 +682,8 @@ config.keys = {
     action = act.TogglePaneZoomState },
 }
 ```
+
+</div>
 
 ---
 layout: content
