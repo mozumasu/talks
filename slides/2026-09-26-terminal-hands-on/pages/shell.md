@@ -266,12 +266,10 @@ bind
 ::code-group
 
 ```sh [vim]
-export EDITOR=vim
 export MANPAGER='vim -M +MANPAGER -'
 ```
 
 ```sh [nvim]
-export EDITOR=nvim
 export MANPAGER='nvim +Man!'
 ```
 

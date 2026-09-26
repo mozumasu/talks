@@ -18,20 +18,11 @@ config.font = wezterm.font("HackGen Console NF")
 config.window_background_opacity = 0.85
 config.macos_window_background_blur = 20
 
--- タイトルバーを非表示 / タブが 1 つならタブバーも非表示
+-- タイトルバーを非表示
 config.window_decorations = "RESIZE"
-config.hide_tab_bar_if_only_one_tab = true
 
--- アクティブなタブだけ黄色にする
--- 丸タブにする場合はこのハンドラを消して tab.lua を読み込む:
--- require("tab").apply_to_config(config)
-wezterm.on("format-tab-title", function(tab)
-  local bg = tab.is_active and "#ae8b2d" or "#5c6d74"
-  return {
-    { Background = { Color = bg } },
-    { Text = " " .. tab.active_pane.title .. " " },
-  }
-end)
+-- 丸タブ (タブバーの位置や配色は tab.lua にまとめている)
+require("tab").apply_to_config(config)
 
 ------------------------------------------------------------------------
 -- キーバインド
