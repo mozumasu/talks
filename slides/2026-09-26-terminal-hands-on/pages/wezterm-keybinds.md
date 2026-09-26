@@ -41,7 +41,7 @@ return config
 </div>
 
 <FindyCallout>
-  デフォルトは <code>disable_default_key_bindings = true</code> で切る。新規タブやコピーも書き出したファイルにあるので困らない
+  書き出した中身はデフォルトと同じ。要らないキーはこのファイルから消していく
 </FindyCallout>
 
 <style>
@@ -496,6 +496,46 @@ return module
 ::
 
 </div>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: wezterm
+---
+
+# デフォルトのキーバインドは切る
+
+::left::
+
+`config.keys` に書いたキーはデフォルトに<FindyAccentMark>追加される</FindyAccentMark>だけ。書いていないキーも全部生きている
+
+把握していないキーがシェルやエディタのキーと被ると「なぜか効かない」トラブルになる
+
+<FindyKeyValueList size="0.95rem">
+  <FindyKeyValue label="例">zsh の undo (<code>Ctrl+-</code>) が、WezTerm のフォント縮小 (<code>Ctrl+-</code>) に先に取られて効かない</FindyKeyValue>
+</FindyKeyValueList>
+
+::right::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+
+```lua [~/.config/wezterm/keybinds.lua]
+-- 全部切って、このファイルに書いたものだけを使う
+function module.apply_to_config(config)
+  config.disable_default_key_bindings = true -- [!code ++]
+  config.keys = config.keys or {}
+  for _, key in ipairs(keys) do
+    table.insert(config.keys, key)
+  end
+  config.key_tables = key_tables
+end
+```
+
+</div>
+
+<FindyCallout>
+  新規タブやコピーも keybinds.lua に入っているので、切っても困らない
+</FindyCallout>
 
 ---
 layout: two-cols
