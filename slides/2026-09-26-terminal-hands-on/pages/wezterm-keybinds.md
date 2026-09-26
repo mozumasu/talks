@@ -577,15 +577,17 @@ eyebrow: wezterm
 
 <div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
-```lua [~/.config/wezterm/wezterm.lua]
-local wezterm = require("wezterm")
-local config = wezterm.config_builder()
-config.leader = { -- [!code ++]
-  key = ";", -- [!code ++]
-  mods = "CTRL", -- [!code ++]
-  timeout_milliseconds = 2000, -- [!code ++]
-} -- [!code ++]
-return config
+```lua [~/.config/wezterm/keybinds.lua]
+function module.apply_to_config(config)
+  config.leader = { -- [!code ++]
+    key = ";", -- [!code ++]
+    mods = "CTRL", -- [!code ++]
+    timeout_milliseconds = 2000, -- [!code ++]
+  } -- [!code ++]
+  config.disable_default_key_bindings = true
+  config.keys = keybinds.keys
+  config.key_tables = keybinds.key_tables
+end
 ```
 
 </div>

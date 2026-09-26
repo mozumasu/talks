@@ -37,9 +37,9 @@ dotfiles/
 
 | ファイル | 主な設定 |
 |---|---|
-| `wezterm.lua` | フォント、背景透過+ぼかし、タブバー、Leader キー (`Ctrl+;`)、分割ファイルの読み込み、QuickSelect のパターン、kitty keyboard protocol |
+| `wezterm.lua` | フォント、背景透過+ぼかし、タブバー、分割ファイルの読み込み、QuickSelect のパターン、kitty keyboard protocol |
 | `wezterm-windows.lua` | 上記の Windows 版 (WSL ドメイン設定、Acrylic 効果。QuickSelect/cmd 系は除く。デフォルトキーバインドは残す) |
-| `keybinds.lua` | `wezterm show-keys --lua` の出力から重複と `Ctrl+-` / `Ctrl+=` のフォントサイズ変更、herdr に渡す `cmd+t` を除き、Leader 系 (ペイン分割・移動・ズーム・Workspace)、QuickSelect (`Cmd+Space`)、Claude Code 改行を足したもの。`disable_default_key_bindings = true` でこのファイルのキーだけを使う |
+| `keybinds.lua` | `wezterm show-keys --lua` の出力から重複と `Ctrl+-` / `Ctrl+=` のフォントサイズ変更、herdr に渡す `cmd+t` を除き、Leader 系 (ペイン分割・移動・ズーム・Workspace)、QuickSelect (`Cmd+Space`)、Claude Code 改行を足したもの。Leader キー (`Ctrl+;`) の定義もここ。`disable_default_key_bindings = true` でこのファイルのキーだけを使う |
 | `workspace.lua` | 切替前の workspace 名を覚えて同じキーで行き来するトグル (`Leader+s` で scratch) |
 | `tab.lua` | 丸タブ (`format-tab-title`)。使う場合は `wezterm.lua` の inline ハンドラを消して `require("tab").apply_to_config(config)` |
 | `herdr/config.toml` | prefix キー (`ctrl+q`)、ペイン操作、タブ・ワークスペース操作、lazygit カスタムコマンド、cmd キー案 (コメント) |

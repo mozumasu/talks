@@ -170,6 +170,8 @@ local keybinds = {
 }
 
 function module.apply_to_config(config)
+  -- Leader キー (Ctrl+; のあとに続けて押したキーで操作する)
+  config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 }
   config.disable_default_key_bindings = true
   config.keys = keybinds.keys
   config.key_tables = keybinds.key_tables
