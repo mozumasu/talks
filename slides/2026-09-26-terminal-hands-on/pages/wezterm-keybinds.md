@@ -669,6 +669,39 @@ ratio: 1/1
 eyebrow: wezterm
 ---
 
+# ペイン移動も Leader キーで
+
+::left::
+
+分割と同じ要領で、ペイン移動とズームも Leader に寄せる
+
+<FindyCallout>
+  <code>act</code> は <code>wezterm.action</code> の短縮。
+  書き出したファイルの冒頭で定義済み
+</FindyCallout>
+
+::right::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+
+```lua [~/.config/wezterm/keybinds.lua]
+-- keys = { ... } の中に足す
+-- h/j/k/l でペイン移動
+{ key = "h", mods = "LEADER", -- [!code ++]
+  action = act.ActivatePaneDirection("Left") }, -- [!code ++]
+-- j, k, l も同様に Down, Up, Right
+{ key = "z", mods = "LEADER", -- [!code ++]
+  action = act.TogglePaneZoomState }, -- [!code ++]
+```
+
+</div>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: wezterm
+---
+
 # よく使う WezTerm キーバインド
 
 ::left::
@@ -727,39 +760,6 @@ WezTerm のコマンドパレットは <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd
 [ActivateCommandPalette](https://wezterm.org/config/lua/keyassignment/ActivateCommandPalette.html)
 
 </FindyRef>
-
----
-layout: two-cols
-ratio: 1/1
-eyebrow: wezterm
----
-
-# WezTerm キーバインドの設定例
-
-::left::
-
-分割と同じ要領で、ペイン移動とズームも Leader に寄せる
-
-<FindyCallout>
-  <code>act</code> は <code>wezterm.action</code> の短縮。
-  書き出したファイルの冒頭で定義済み
-</FindyCallout>
-
-::right::
-
-<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
-
-```lua [~/.config/wezterm/keybinds.lua]
--- keys = { ... } の中に足す
--- h/j/k/l でペイン移動
-{ key = "h", mods = "LEADER", -- [!code ++]
-  action = act.ActivatePaneDirection("Left") }, -- [!code ++]
--- j, k, l も同様に Down, Up, Right
-{ key = "z", mods = "LEADER", -- [!code ++]
-  action = act.TogglePaneZoomState }, -- [!code ++]
-```
-
-</div>
 
 ---
 layout: content
