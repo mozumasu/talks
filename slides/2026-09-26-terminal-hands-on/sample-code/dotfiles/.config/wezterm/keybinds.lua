@@ -96,8 +96,8 @@ local keybinds = {
     -- ワークスペース: 新規作成 (名前は自動) / 一覧からあいまい検索で選択
     { key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
     { key = "w", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) },
-    -- QuickSelect (IME 切替と被るので Cmd+Space に変更)
-    { key = " ", mods = "SUPER", action = act.QuickSelect },
+    -- QuickSelect (Ctrl+Shift+Space は IME 切替と被るので Cmd+Enter に変更)
+    { key = "Enter", mods = "SUPER", action = act.QuickSelect },
     -- Claude Code 用: Shift+Enter で改行を送る
     { key = "Enter", mods = "SHIFT", action = act.SendString("\n") },
   },

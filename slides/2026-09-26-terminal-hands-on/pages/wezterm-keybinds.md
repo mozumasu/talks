@@ -763,7 +763,7 @@ eyebrow: wezterm
 画面の URL・パス・ハッシュにラベルが振られ、マウスなしでコピーできる
 
 <FindyKeyValueList size="0.95rem">
-  <FindyKeyValue label="発動"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd></FindyKeyValue>
+  <FindyKeyValue label="発動"><kbd>Cmd</kbd>+<kbd>Enter</kbd> (右の設定で変更)</FindyKeyValue>
   <FindyKeyValue label="コピー">候補のラベルのキーを打つ</FindyKeyValue>
   <FindyKeyValue label="貼り付け">ラベルを大文字で打つ</FindyKeyValue>
 </FindyKeyValueList>
@@ -785,8 +785,8 @@ eyebrow: wezterm
 <div class="code-compact" style="--findy-code-compact-size: 0.72rem">
 
 ```lua [~/.config/wezterm/keybinds.lua]
--- IME 切替と被るので Cmd+Space に変更
-{ key = " ", mods = "SUPER", -- [!code ++]
+-- Ctrl+Shift+Space は IME 切替と被るので Cmd+Enter に
+{ key = "Enter", mods = "SUPER", -- [!code ++]
   action = act.QuickSelect }, -- [!code ++]
 ```
 
