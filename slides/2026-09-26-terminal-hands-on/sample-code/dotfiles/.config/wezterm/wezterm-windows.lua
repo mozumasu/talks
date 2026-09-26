@@ -23,16 +23,11 @@ config.font = wezterm.font("HackGen Console NF")
 config.window_background_opacity = 0.85
 config.win32_system_backdrop = "Acrylic"
 
+-- タイトルバーを非表示
 config.window_decorations = "RESIZE"
-config.hide_tab_bar_if_only_one_tab = true
 
-wezterm.on("format-tab-title", function(tab)
-  local bg = tab.is_active and "#ae8b2d" or "#5c6d74"
-  return {
-    { Background = { Color = bg } },
-    { Text = " " .. tab.active_pane.title .. " " },
-  }
-end)
+-- 丸タブ (タブバーの位置や配色は tab.lua にまとめている)
+require("tab").apply_to_config(config)
 
 ------------------------------------------------------------------------
 -- Leader キー
