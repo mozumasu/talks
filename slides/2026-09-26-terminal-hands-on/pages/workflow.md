@@ -98,7 +98,7 @@ myapp-feat    https://myapp-feat.localhost 3031
 layout: content
 ---
 
-# ツール単体ではなく「組み合わせ」で効く
+# ツールの組み合わせ
 
 スライド修正を Claude に頼んだとき、裏では紹介したツールがつながって動いている
 

@@ -27,22 +27,11 @@ wezterm show-keys --lua > keybinds.lua
 
 </div>
 
-<p class="text-sm">2. 書き出したファイルを wezterm.lua で読み込む</p>
-
-<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
-
-```lua [~/.config/wezterm/wezterm.lua]
-local wezterm = require("wezterm")
-local config = wezterm.config_builder()
-require("keybinds").apply_to_config(config) -- [!code ++]
-return config
-```
-
-</div>
-
 <FindyCallout>
-  書き出した中身はデフォルトと同じ。要らないキーはこのファイルから消していく
+  中身はデフォルトと同じ。要らない行はこのファイルから消し、自分のキーもここに足していく
 </FindyCallout>
+
+<p class="text-sm">2. 分割ファイルの形に整えて wezterm.lua から読み込む (次のページ)</p>
 
 <style>
 .slidev-code-wrapper {
@@ -326,171 +315,151 @@ return {
 local wezterm = require("wezterm")
 local act = wezterm.action
 
-local module = {}
+return {
+  keys = {
+    -- 終了
+    { key = "q", mods = "SUPER", action = act.QuitApplication },
+    -- ウィンドウ操作
+    { key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
+    { key = "n", mods = "SUPER", action = act.SpawnWindow },
+    -- タブ操作
+    { key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
+    { key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
+    { key = "1", mods = "SUPER", action = act.ActivateTab(0) },
+    { key = "2", mods = "SUPER", action = act.ActivateTab(1) },
+    { key = "3", mods = "SUPER", action = act.ActivateTab(2) },
+    { key = "4", mods = "SUPER", action = act.ActivateTab(3) },
+    { key = "5", mods = "SUPER", action = act.ActivateTab(4) },
+    { key = "6", mods = "SUPER", action = act.ActivateTab(5) },
+    { key = "7", mods = "SUPER", action = act.ActivateTab(6) },
+    { key = "8", mods = "SUPER", action = act.ActivateTab(7) },
+    { key = "9", mods = "SUPER", action = act.ActivateTab(-1) },
+    { key = "w", mods = "SUPER", action = act.CloseCurrentTab({ confirm = true }) },
+    -- Pane操作
+    { key = '"', mods = "ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = "%", mods = "ALT|CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+    { key = "LeftArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Left") },
+    { key = "LeftArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Left", 1 }) },
+    { key = "RightArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Right") },
+    { key = "RightArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Right", 1 }) },
+    { key = "UpArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Up") },
+    { key = "UpArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Up", 1 }) },
+    { key = "DownArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Down") },
+    { key = "DownArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Down", 1 }) },
 
-local keys = {
-  -- 終了
-  { key = "q", mods = "SUPER", action = act.QuitApplication },
-  -- ウィンドウ操作
-  { key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
-  { key = "n", mods = "SUPER", action = act.SpawnWindow },
-  -- タブ操作
-  { key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
-  { key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
-  { key = "1", mods = "SUPER", action = act.ActivateTab(0) },
-  { key = "2", mods = "SUPER", action = act.ActivateTab(1) },
-  { key = "3", mods = "SUPER", action = act.ActivateTab(2) },
-  { key = "4", mods = "SUPER", action = act.ActivateTab(3) },
-  { key = "5", mods = "SUPER", action = act.ActivateTab(4) },
-  { key = "6", mods = "SUPER", action = act.ActivateTab(5) },
-  { key = "7", mods = "SUPER", action = act.ActivateTab(6) },
-  { key = "8", mods = "SUPER", action = act.ActivateTab(7) },
-  { key = "9", mods = "SUPER", action = act.ActivateTab(-1) },
-  { key = "t", mods = "SUPER", action = act.SpawnTab("CurrentPaneDomain") },
-  { key = "w", mods = "SUPER", action = act.CloseCurrentTab({ confirm = true }) },
-  -- Pane操作
-  { key = '"', mods = "ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-  { key = "%", mods = "ALT|CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-  { key = "LeftArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Left") },
-  { key = "LeftArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Left", 1 }) },
-  { key = "RightArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Right") },
-  { key = "RightArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Right", 1 }) },
-  { key = "UpArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Up") },
-  { key = "UpArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Up", 1 }) },
-  { key = "DownArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Down") },
-  { key = "DownArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Down", 1 }) },
+    -- フォントサイズ変更
+    { key = "+", mods = "SUPER", action = act.IncreaseFontSize },
+    { key = "-", mods = "SUPER", action = act.DecreaseFontSize },
+    { key = "0", mods = "SUPER", action = act.ResetFontSize },
 
-  -- フォントサイズ変更
-  { key = "+", mods = "SUPER", action = act.IncreaseFontSize },
-  { key = "-", mods = "SUPER", action = act.DecreaseFontSize },
-  { key = "0", mods = "SUPER", action = act.ResetFontSize },
+    { key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
+    { key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
+    { key = "C", mods = "CTRL", action = act.CopyTo("Clipboard") },
 
-  { key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
-  { key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
-  { key = "C", mods = "CTRL", action = act.CopyTo("Clipboard") },
+    -- Debug
+    { key = "L", mods = "CTRL", action = act.ShowDebugOverlay },
+    { key = "R", mods = "CTRL", action = act.ReloadConfiguration },
+    { key = "r", mods = "SUPER", action = act.ReloadConfiguration },
 
-  -- Debug
-  { key = "L", mods = "CTRL", action = act.ShowDebugOverlay },
-  { key = "R", mods = "CTRL", action = act.ReloadConfiguration },
-  { key = "r", mods = "SUPER", action = act.ReloadConfiguration },
-
-  -- コマンドパレット
-  { key = "P", mods = "CTRL", action = act.ActivateCommandPalette },
-  -- 文字選択パレット
-  {
-    key = "U",
-    mods = "CTRL",
-    action = act.CharSelect({ copy_on_select = true, copy_to = "ClipboardAndPrimarySelection" }),
-  },
-
-  -- モード切替
-  -- コピーモード
-  { key = "X", mods = "CTRL", action = act.ActivateCopyMode },
-  -- サーチモード
-  { key = "f", mods = "SUPER", action = act.Search("CurrentSelectionOrEmptyString") },
-  -- アクティブペインのズーム切替
-  { key = "Z", mods = "CTRL", action = act.TogglePaneZoomState },
-
-  -- 誤爆するので非有効にしがち
-  { key = "k", mods = "SUPER", action = act.ClearScrollback("ScrollbackOnly") },
-  { key = "m", mods = "SUPER", action = act.Hide },
-  { key = "H", mods = "CTRL", action = act.HideApplication },
-
-  -- control + space がMaccOSのIME切り替えに使われるので、別のキーに割り当て
-  -- { key = "phys:Space", mods = "SHIFT|CTRL", action = act.QuickSelect },
-  { key = " ", mods = "SUPER", action = act.QuickSelect },
-
-  -- スクロール
-  { key = "PageUp", mods = "SHIFT", action = act.ScrollByPage(-1) },
-  { key = "PageDown", mods = "SHIFT", action = act.ScrollByPage(1) },
-
-  -- コピー・ペースト
-  { key = "Copy", mods = "NONE", action = act.CopyTo("Clipboard") },
-  { key = "Paste", mods = "NONE", action = act.PasteFrom("Clipboard") },
-
-  -- Claude Codeで改行できるようにする
-  { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\n") },
-}
-
-local key_tables = {
-  copy_mode = {
-    -- モードの終了
-    { key = "c", mods = "CTRL", action = act.Multiple({ "ScrollToBottom", { CopyMode = "Close" } }) },
-    { key = "q", mods = "NONE", action = act.Multiple({ "ScrollToBottom", { CopyMode = "Close" } }) },
-    { key = "Escape", mods = "NONE", action = act.Multiple({ "ScrollToBottom", { CopyMode = "Close" } }) },
-
-    -- Vim風のキーバインド
-    { key = "h", mods = "NONE", action = act.CopyMode("MoveLeft") },
-    { key = "j", mods = "NONE", action = act.CopyMode("MoveDown") },
-    { key = "k", mods = "NONE", action = act.CopyMode("MoveUp") },
-    { key = "l", mods = "NONE", action = act.CopyMode("MoveRight") },
-    { key = "0", mods = "NONE", action = act.CopyMode("MoveToStartOfLine") },
-    { key = "^", mods = "NONE", action = act.CopyMode("MoveToStartOfLineContent") },
-    { key = "$", mods = "NONE", action = act.CopyMode("MoveToEndOfLineContent") },
-    { key = ",", mods = "NONE", action = act.CopyMode("JumpReverse") },
-    { key = ";", mods = "NONE", action = act.CopyMode("JumpAgain") },
-    { key = "g", mods = "NONE", action = act.CopyMode("MoveToScrollbackTop") },
-    { key = "G", mods = "NONE", action = act.CopyMode("MoveToScrollbackBottom") },
-    { key = "w", mods = "NONE", action = act.CopyMode("MoveForwardWord") },
-    { key = "e", mods = "NONE", action = act.CopyMode("MoveForwardWordEnd") },
-    { key = "b", mods = "NONE", action = act.CopyMode("MoveBackwardWord") },
-    { key = "t", mods = "NONE", action = act.CopyMode({ JumpForward = { prev_char = true } }) },
-    { key = "f", mods = "NONE", action = act.CopyMode({ JumpForward = { prev_char = false } }) },
-    { key = "T", mods = "NONE", action = act.CopyMode({ JumpBackward = { prev_char = true } }) },
-    { key = "F", mods = "NONE", action = act.CopyMode({ JumpBackward = { prev_char = false } }) },
-    { key = "H", mods = "NONE", action = act.CopyMode("MoveToViewportTop") },
-    { key = "L", mods = "NONE", action = act.CopyMode("MoveToViewportBottom") },
-    { key = "O", mods = "NONE", action = act.CopyMode("MoveToSelectionOtherEndHoriz") },
-    { key = "M", mods = "NONE", action = act.CopyMode("MoveToViewportMiddle") },
-    { key = "o", mods = "NONE", action = act.CopyMode("MoveToSelectionOtherEnd") },
-    { key = "m", mods = "ALT", action = act.CopyMode("MoveToStartOfLineContent") },
-    { key = "b", mods = "CTRL", action = act.CopyMode("PageUp") },
-    { key = "f", mods = "CTRL", action = act.CopyMode("PageDown") },
-    { key = "u", mods = "CTRL", action = act.CopyMode({ MoveByPage = -0.5 }) },
-    { key = "d", mods = "CTRL", action = act.CopyMode({ MoveByPage = 0.5 }) },
-    { key = "v", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "Cell" }) },
-    { key = "v", mods = "CTRL", action = act.CopyMode({ SetSelectionMode = "Block" }) },
-    { key = "V", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "Line" }) },
+    -- コマンドパレット
+    { key = "P", mods = "CTRL", action = act.ActivateCommandPalette },
+    -- 文字選択パレット
     {
-      key = "y",
-      mods = "NONE",
-      action = act.Multiple({
-        { CopyTo = "ClipboardAndPrimarySelection" },
-        { Multiple = { "ScrollToBottom", { CopyMode = "Close" } } },
-      }),
+      key = "U",
+      mods = "CTRL",
+      action = act.CharSelect({ copy_on_select = true, copy_to = "ClipboardAndPrimarySelection" }),
     },
-    { key = "PageUp", mods = "NONE", action = act.CopyMode("PageUp") },
-    { key = "PageDown", mods = "NONE", action = act.CopyMode("PageDown") },
-    { key = "End", mods = "NONE", action = act.CopyMode("MoveToEndOfLineContent") },
-    { key = "Home", mods = "NONE", action = act.CopyMode("MoveToStartOfLine") },
-    { key = "LeftArrow", mods = "NONE", action = act.CopyMode("MoveLeft") },
-    { key = "LeftArrow", mods = "ALT", action = act.CopyMode("MoveBackwardWord") },
-    { key = "RightArrow", mods = "NONE", action = act.CopyMode("MoveRight") },
-    { key = "RightArrow", mods = "ALT", action = act.CopyMode("MoveForwardWord") },
-    { key = "UpArrow", mods = "NONE", action = act.CopyMode("MoveUp") },
-    { key = "DownArrow", mods = "NONE", action = act.CopyMode("MoveDown") },
+
+    -- モード切替
+    -- コピーモード
+    { key = "X", mods = "CTRL", action = act.ActivateCopyMode },
+    -- サーチモード
+    { key = "f", mods = "SUPER", action = act.Search("CurrentSelectionOrEmptyString") },
+    -- アクティブペインのズーム切替
+    { key = "Z", mods = "CTRL", action = act.TogglePaneZoomState },
+
+    -- 誤爆するので非有効にしがち
+    { key = "k", mods = "SUPER", action = act.ClearScrollback("ScrollbackOnly") },
+    { key = "m", mods = "SUPER", action = act.Hide },
+    { key = "H", mods = "CTRL", action = act.HideApplication },
+
+    -- スクロール
+    { key = "PageUp", mods = "SHIFT", action = act.ScrollByPage(-1) },
+    { key = "PageDown", mods = "SHIFT", action = act.ScrollByPage(1) },
+
+    -- コピー・ペースト
+    { key = "Copy", mods = "NONE", action = act.CopyTo("Clipboard") },
+    { key = "Paste", mods = "NONE", action = act.PasteFrom("Clipboard") },
   },
 
-  search_mode = {
-    { key = "Escape", mods = "NONE", action = act.CopyMode("Close") },
-    { key = "n", mods = "CTRL", action = act.CopyMode("NextMatch") },
-    { key = "p", mods = "CTRL", action = act.CopyMode("PriorMatch") },
-    { key = "r", mods = "CTRL", action = act.CopyMode("CycleMatchType") },
-    { key = "u", mods = "CTRL", action = act.CopyMode("ClearPattern") },
+  key_tables = {
+    copy_mode = {
+      -- モードの終了
+      { key = "c", mods = "CTRL", action = act.Multiple({ "ScrollToBottom", { CopyMode = "Close" } }) },
+      { key = "q", mods = "NONE", action = act.Multiple({ "ScrollToBottom", { CopyMode = "Close" } }) },
+      { key = "Escape", mods = "NONE", action = act.Multiple({ "ScrollToBottom", { CopyMode = "Close" } }) },
+
+      -- Vim風のキーバインド
+      { key = "h", mods = "NONE", action = act.CopyMode("MoveLeft") },
+      { key = "j", mods = "NONE", action = act.CopyMode("MoveDown") },
+      { key = "k", mods = "NONE", action = act.CopyMode("MoveUp") },
+      { key = "l", mods = "NONE", action = act.CopyMode("MoveRight") },
+      { key = "0", mods = "NONE", action = act.CopyMode("MoveToStartOfLine") },
+      { key = "^", mods = "NONE", action = act.CopyMode("MoveToStartOfLineContent") },
+      { key = "$", mods = "NONE", action = act.CopyMode("MoveToEndOfLineContent") },
+      { key = ",", mods = "NONE", action = act.CopyMode("JumpReverse") },
+      { key = ";", mods = "NONE", action = act.CopyMode("JumpAgain") },
+      { key = "g", mods = "NONE", action = act.CopyMode("MoveToScrollbackTop") },
+      { key = "G", mods = "NONE", action = act.CopyMode("MoveToScrollbackBottom") },
+      { key = "w", mods = "NONE", action = act.CopyMode("MoveForwardWord") },
+      { key = "e", mods = "NONE", action = act.CopyMode("MoveForwardWordEnd") },
+      { key = "b", mods = "NONE", action = act.CopyMode("MoveBackwardWord") },
+      { key = "t", mods = "NONE", action = act.CopyMode({ JumpForward = { prev_char = true } }) },
+      { key = "f", mods = "NONE", action = act.CopyMode({ JumpForward = { prev_char = false } }) },
+      { key = "T", mods = "NONE", action = act.CopyMode({ JumpBackward = { prev_char = true } }) },
+      { key = "F", mods = "NONE", action = act.CopyMode({ JumpBackward = { prev_char = false } }) },
+      { key = "H", mods = "NONE", action = act.CopyMode("MoveToViewportTop") },
+      { key = "L", mods = "NONE", action = act.CopyMode("MoveToViewportBottom") },
+      { key = "O", mods = "NONE", action = act.CopyMode("MoveToSelectionOtherEndHoriz") },
+      { key = "M", mods = "NONE", action = act.CopyMode("MoveToViewportMiddle") },
+      { key = "o", mods = "NONE", action = act.CopyMode("MoveToSelectionOtherEnd") },
+      { key = "m", mods = "ALT", action = act.CopyMode("MoveToStartOfLineContent") },
+      { key = "b", mods = "CTRL", action = act.CopyMode("PageUp") },
+      { key = "f", mods = "CTRL", action = act.CopyMode("PageDown") },
+      { key = "u", mods = "CTRL", action = act.CopyMode({ MoveByPage = -0.5 }) },
+      { key = "d", mods = "CTRL", action = act.CopyMode({ MoveByPage = 0.5 }) },
+      { key = "v", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "Cell" }) },
+      { key = "v", mods = "CTRL", action = act.CopyMode({ SetSelectionMode = "Block" }) },
+      { key = "V", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "Line" }) },
+      {
+        key = "y",
+        mods = "NONE",
+        action = act.Multiple({
+          { CopyTo = "ClipboardAndPrimarySelection" },
+          { Multiple = { "ScrollToBottom", { CopyMode = "Close" } } },
+        }),
+      },
+      { key = "PageUp", mods = "NONE", action = act.CopyMode("PageUp") },
+      { key = "PageDown", mods = "NONE", action = act.CopyMode("PageDown") },
+      { key = "End", mods = "NONE", action = act.CopyMode("MoveToEndOfLineContent") },
+      { key = "Home", mods = "NONE", action = act.CopyMode("MoveToStartOfLine") },
+      { key = "LeftArrow", mods = "NONE", action = act.CopyMode("MoveLeft") },
+      { key = "LeftArrow", mods = "ALT", action = act.CopyMode("MoveBackwardWord") },
+      { key = "RightArrow", mods = "NONE", action = act.CopyMode("MoveRight") },
+      { key = "RightArrow", mods = "ALT", action = act.CopyMode("MoveForwardWord") },
+      { key = "UpArrow", mods = "NONE", action = act.CopyMode("MoveUp") },
+      { key = "DownArrow", mods = "NONE", action = act.CopyMode("MoveDown") },
+    },
+
+    search_mode = {
+      { key = "Escape", mods = "NONE", action = act.CopyMode("Close") },
+      { key = "n", mods = "CTRL", action = act.CopyMode("NextMatch") },
+      { key = "p", mods = "CTRL", action = act.CopyMode("PriorMatch") },
+      { key = "r", mods = "CTRL", action = act.CopyMode("CycleMatchType") },
+      { key = "u", mods = "CTRL", action = act.CopyMode("ClearPattern") },
+    },
   },
 }
-
-function module.apply_to_config(config)
-  config.disable_default_key_bindings = true
-  -- wezterm.lua で先に定義したキーを消さないよう追記する
-  config.keys = config.keys or {}
-  for _, key in ipairs(keys) do
-    table.insert(config.keys, key)
-  end
-  config.key_tables = key_tables
-end
-
-return module
 ```
 
 ::
@@ -503,11 +472,59 @@ ratio: 1/1
 eyebrow: wezterm
 ---
 
-# デフォルトのキーバインドは切る
+# 書き出したファイルを分割ファイルの形にする
 
 ::left::
 
-`config.keys` に書いたキーはデフォルトに<FindyAccentMark>追加される</FindyAccentMark>だけ。書いていないキーも全部生きている
+`return {` を `local keybinds = {` に変え、末尾に config へ足す関数を付ける。生成された行は触らない
+
+<p class="text-sm">wezterm.lua からは他の分割ファイルと同じ 1 行で読む</p>
+
+<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+
+```lua [~/.config/wezterm/wezterm.lua]
+require("keybinds").apply_to_config(config) -- [!code ++]
+```
+
+</div>
+
+<FindyCallout>
+  tab.lua や workspace.lua も同じ形。wezterm.lua は require の羅列になる
+</FindyCallout>
+
+::right::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
+
+```lua [~/.config/wezterm/keybinds.lua]
+local module = {} -- [!code ++]
+return { -- [!code --]
+local keybinds = { -- [!code ++]
+  keys = {
+    -- 生成された行はそのまま
+  },
+  key_tables = {
+    -- 生成された行はそのまま
+  },
+}
+function module.apply_to_config(config) -- [!code ++]
+  config.keys = keybinds.keys -- [!code ++]
+  config.key_tables = keybinds.key_tables -- [!code ++]
+end -- [!code ++]
+return module -- [!code ++]
+```
+
+</div>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: wezterm
+---
+
+# デフォルトのキーバインドは切る
+
+::left::
 
 把握していないキーがシェルやエディタのキーと被ると「なぜか効かない」トラブルになる
 
@@ -523,11 +540,8 @@ eyebrow: wezterm
 -- 全部切って、このファイルに書いたものだけを使う
 function module.apply_to_config(config)
   config.disable_default_key_bindings = true -- [!code ++]
-  config.keys = config.keys or {}
-  for _, key in ipairs(keys) do
-    table.insert(config.keys, key)
-  end
-  config.key_tables = key_tables
+  config.keys = keybinds.keys
+  config.key_tables = keybinds.key_tables
 end
 ```
 
@@ -563,15 +577,17 @@ eyebrow: wezterm
 
 <div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
-```lua [~/.config/wezterm/wezterm.lua]
-local wezterm = require("wezterm")
-local config = wezterm.config_builder()
-config.leader = { -- [!code ++]
-  key = ";", -- [!code ++]
-  mods = "CTRL", -- [!code ++]
-  timeout_milliseconds = 2000, -- [!code ++]
-} -- [!code ++]
-return config
+```lua [~/.config/wezterm/keybinds.lua]
+function module.apply_to_config(config)
+  config.leader = { -- [!code ++]
+    key = ";", -- [!code ++]
+    mods = "CTRL", -- [!code ++]
+    timeout_milliseconds = 2000, -- [!code ++]
+  } -- [!code ++]
+  config.disable_default_key_bindings = true
+  config.keys = keybinds.keys
+  config.key_tables = keybinds.key_tables
+end
 ```
 
 </div>
@@ -606,19 +622,49 @@ eyebrow: wezterm
 
 ::right::
 
-```lua [~/.config/wezterm/wezterm.lua]
-local act = wezterm.action
-
-config.keys = {
-  -- Leader のあとに | で左右、- で上下に分割
-  { key = "|", mods = "LEADER|SHIFT", -- [!code ++]
-    action = act.SplitHorizontal{} }, -- [!code ++]
-  { key = "-", mods = "LEADER", -- [!code ++]
-    action = act.SplitVertical{} }, -- [!code ++]
-}
+```lua [~/.config/wezterm/keybinds.lua]
+-- keys = { ... } の中に足す
+-- Leader のあとに | で左右、- で上下に分割
+{ key = "|", mods = "LEADER|SHIFT", -- [!code ++]
+  action = act.SplitHorizontal{} }, -- [!code ++]
+{ key = "-", mods = "LEADER", -- [!code ++]
+  action = act.SplitVertical{} }, -- [!code ++]
 ```
 
 <p class="text-sm op-60"><code>|</code> は Shift を押しながら打つ記号なので mods に <code>SHIFT</code> も足す</p>
+
+---
+layout: two-cols
+ratio: 1/1
+eyebrow: wezterm
+---
+
+# ペイン移動も Leader キーで
+
+::left::
+
+分割と同じ要領で、ペイン移動とズームも Leader に寄せる
+
+<FindyCallout>
+  <code>act</code> は <code>wezterm.action</code> の短縮。
+  書き出したファイルの冒頭で定義済み
+</FindyCallout>
+
+::right::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+
+```lua [~/.config/wezterm/keybinds.lua]
+-- keys = { ... } の中に足す
+-- h/j/k/l でペイン移動
+{ key = "h", mods = "LEADER", -- [!code ++]
+  action = act.ActivatePaneDirection("Left") }, -- [!code ++]
+-- j, k, l も同様に Down, Up, Right
+{ key = "z", mods = "LEADER", -- [!code ++]
+  action = act.TogglePaneZoomState }, -- [!code ++]
+```
+
+</div>
 
 ---
 layout: two-cols
@@ -673,16 +719,10 @@ WezTerm のコマンドパレットは <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd
 
 ::right::
 
-```lua [~/.config/wezterm/wezterm.lua]
-local act = wezterm.action
-
-config.keys = {
-  {
-    key = "p",
-    mods = "CTRL|SHIFT",
-    action = act.ActivateCommandPalette,
-  },
-}
+```lua [~/.config/wezterm/keybinds.lua]
+-- 書き出したファイルにはこの行で入っている
+{ key = "p", mods = "SHIFT|CTRL",
+  action = act.ActivateCommandPalette },
 ```
 
 <FindyRef>
@@ -690,40 +730,6 @@ config.keys = {
 [ActivateCommandPalette](https://wezterm.org/config/lua/keyassignment/ActivateCommandPalette.html)
 
 </FindyRef>
-
----
-layout: two-cols
-ratio: 1/1
-eyebrow: wezterm
----
-
-# WezTerm キーバインドの設定例
-
-::left::
-
-分割と同じ要領で、ペイン移動とズームも Leader に寄せる
-
-<FindyCallout>
-  <code>act</code> は <code>wezterm.action</code> の短縮。
-  ファイル冒頭で <code>local act = wezterm.action</code> としておく
-</FindyCallout>
-
-::right::
-
-<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
-
-```lua [~/.config/wezterm/wezterm.lua]
-config.keys = {
-  -- h/j/k/l でペイン移動
-  { key = "h", mods = "LEADER",
-    action = act.ActivatePaneDirection("Left") },
-  -- j, k, l も同様に Down, Up, Right
-  { key = "z", mods = "LEADER",
-    action = act.TogglePaneZoomState },
-}
-```
-
-</div>
 
 ---
 layout: content
@@ -734,14 +740,10 @@ eyebrow: wezterm
 
 Claude Code は <kbd>Enter</kbd> で送信される。<kbd>Shift</kbd> + <kbd>Enter</kbd> で改行だけを入力できるようにしておくと、複数行のプロンプトが書きやすい
 
-```lua [~/.config/wezterm/wezterm.lua]
-config.keys = {
-  {
-    key = "Enter",
-    mods = "SHIFT",
-    action = wezterm.action.SendString("\n"),
-  },
-}
+```lua [~/.config/wezterm/keybinds.lua]
+-- keys = { ... } の中に足す
+{ key = "Enter", mods = "SHIFT", -- [!code ++]
+  action = act.SendString("\n") }, -- [!code ++]
 ```
 
 ---
@@ -776,21 +778,25 @@ eyebrow: wezterm
 
 ::right::
 
-拾いたいパターンは正規表現で足せる
+<div class="code-compact" style="--findy-code-compact-size: 0.72rem">
+
+```lua [~/.config/wezterm/keybinds.lua]
+-- IME 切替と被るので Cmd+Space に変更
+{ key = " ", mods = "SUPER", -- [!code ++]
+  action = act.QuickSelect }, -- [!code ++]
+```
 
 ```lua [~/.config/wezterm/wezterm.lua]
--- IME 切替と被るので Cmd+Space に変更
-config.keys = {
-  { key = " ", mods = "SUPER",
-    action = act.QuickSelect },
-}
 -- デフォルトのパターンを無効化する
 config.disable_default_quick_select_patterns = true
+-- 拾いたいパターンは正規表現で足せる
 config.quick_select_patterns = {
   -- Git commit hash
   "\\b[0-9a-f]{7,40}\\b",
 }
 ```
+
+</div>
 
 ---
 layout: two-cols
@@ -820,17 +826,16 @@ eyebrow: wezterm
 
 <div class="code-compact">
 
-```lua [~/.config/wezterm/wezterm.lua]
-config.keys = {
-  -- 新しい workspace を作成 (名前は自動)
-  { key = "n", mods = "LEADER",
-    action = act.SwitchToWorkspace },
-  -- 一覧からあいまい検索で選択
-  { key = "w", mods = "LEADER",
-    action = act.ShowLauncherArgs({
-      flags = "FUZZY|WORKSPACES",
-    }) },
-}
+```lua [~/.config/wezterm/keybinds.lua]
+-- keys = { ... } の中に足す
+-- 新しい workspace を作成 (名前は自動)
+{ key = "n", mods = "LEADER", -- [!code ++]
+  action = act.SwitchToWorkspace }, -- [!code ++]
+-- 一覧からあいまい検索で選択
+{ key = "w", mods = "LEADER", -- [!code ++]
+  action = act.ShowLauncherArgs({ -- [!code ++]
+    flags = "FUZZY|WORKSPACES", -- [!code ++]
+  }) }, -- [!code ++]
 ```
 
 </div>
