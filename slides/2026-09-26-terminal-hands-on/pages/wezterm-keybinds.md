@@ -643,7 +643,7 @@ eyebrow: wezterm
 
 ::left::
 
-分割と同じ要領で、ペイン移動とズームも Leader に寄せる
+分割と同じ要領で、ペインの移動・ズーム・閉じるも Leader に寄せる
 
 <FindyCallout>
   <code>act</code> は <code>wezterm.action</code> の短縮。
@@ -652,7 +652,7 @@ eyebrow: wezterm
 
 ::right::
 
-<div class="code-compact" style="--findy-code-compact-size: 0.8rem">
+<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
 ```lua [~/.config/wezterm/keybinds.lua]
 -- keys = { ... } の中に足す
@@ -662,6 +662,9 @@ eyebrow: wezterm
 -- j, k, l も同様に Down, Up, Right
 { key = "z", mods = "LEADER", -- [!code ++]
   action = act.TogglePaneZoomState }, -- [!code ++]
+-- ペインを閉じる (確認あり)
+{ key = "x", mods = "LEADER", -- [!code ++]
+  action = act.CloseCurrentPane({ confirm = true }) }, -- [!code ++]
 ```
 
 </div>
@@ -694,6 +697,7 @@ Leader キー (カスタム設定)
   <FindyKeyValue label="Leader, -">横に分割</FindyKeyValue>
   <FindyKeyValue label="Leader, hjkl">ペイン移動</FindyKeyValue>
   <FindyKeyValue label="Leader, z">ズーム</FindyKeyValue>
+  <FindyKeyValue label="Leader, x">ペインを閉じる</FindyKeyValue>
 </FindyKeyValueList>
 
 ---

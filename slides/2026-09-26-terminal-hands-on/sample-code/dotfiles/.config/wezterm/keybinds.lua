@@ -91,6 +91,8 @@ local keybinds = {
     { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
     -- ペインズーム
     { key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
+    -- ペインを閉じる (確認あり)
+    { key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
     -- ワークスペース: 新規作成 (名前は自動) / 一覧からあいまい検索で選択
     { key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
     { key = "w", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) },
