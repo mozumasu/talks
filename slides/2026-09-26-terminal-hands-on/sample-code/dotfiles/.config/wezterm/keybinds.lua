@@ -1,8 +1,6 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
-local module = {}
-
 local keys = {
   -- 終了
   { key = "q", mods = "SUPER", action = act.QuitApplication },
@@ -147,14 +145,4 @@ local key_tables = {
   },
 }
 
-function module.apply_to_config(config)
-  config.disable_default_key_bindings = true
-  -- wezterm.lua で先に定義したキーを消さないよう追記する
-  config.keys = config.keys or {}
-  for _, key in ipairs(keys) do
-    table.insert(config.keys, key)
-  end
-  config.key_tables = key_tables
-end
-
-return module
+return { keys = keys, key_tables = key_tables }

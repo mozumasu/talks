@@ -90,7 +90,12 @@ config.keys = {
 
 -- デフォルトのキーバインドは切り、keybinds.lua に書き出した分だけを使う
 -- (wezterm show-keys --lua > keybinds.lua で生成し、要らない行を消す)
-require("keybinds").apply_to_config(config)
+config.disable_default_key_bindings = true
+local keybinds = require("keybinds")
+for _, key in ipairs(keybinds.keys) do
+  table.insert(config.keys, key)
+end
+config.key_tables = keybinds.key_tables
 
 -- workspace のトグル切替 (Leader+s で scratch と行き来)
 require("workspace").apply_to_config(config)

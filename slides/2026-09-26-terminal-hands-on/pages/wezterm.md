@@ -300,6 +300,8 @@ WezTerm が読むのは `wezterm.lua` だけ。役割ごとのファイルはそ
 
 </FindyRef>
 
+<p class="text-sm op-60">keybinds.lua だけは <code>show-keys</code> の出力そのまま (表を返す) なので、<code>require("keybinds").keys</code> で受け取る</p>
+
 ::right::
 
 分割した側は config に足す関数を返す
@@ -307,15 +309,15 @@ WezTerm が読むのは `wezterm.lua` だけ。役割ごとのファイルはそ
 <div class="code-compact">
 
 ```lua [~/.config/wezterm/wezterm.lua]
-require("keybinds").apply_to_config(config)
 require("tab").apply_to_config(config)
+require("workspace").apply_to_config(config)
 return config
 ```
 
-```lua [~/.config/wezterm/keybinds.lua]
+```lua [~/.config/wezterm/tab.lua]
 local module = {}
 function module.apply_to_config(config)
-  config.keys = { --[[ ここに集約 ]] }
+  config.tab_bar_at_bottom = true
 end
 return module
 ```

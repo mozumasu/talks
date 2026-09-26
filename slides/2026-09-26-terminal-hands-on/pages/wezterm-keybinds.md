@@ -32,16 +32,16 @@ wezterm show-keys --lua > keybinds.lua
 <div class="code-compact" style="--findy-code-compact-size: 0.75rem">
 
 ```lua [~/.config/wezterm/wezterm.lua]
-local wezterm = require("wezterm")
-local config = wezterm.config_builder()
-require("keybinds").apply_to_config(config) -- [!code ++]
+local keybinds = require("keybinds") -- [!code ++]
+config.keys = keybinds.keys -- [!code ++]
+config.key_tables = keybinds.key_tables -- [!code ++]
 return config
 ```
 
 </div>
 
 <FindyCallout>
-  書き出した中身はデフォルトと同じ。要らないキーはこのファイルから消していく
+  中身はデフォルトと同じ。要らない行はこのファイルから消す
 </FindyCallout>
 
 <style>
@@ -326,8 +326,6 @@ return {
 local wezterm = require("wezterm")
 local act = wezterm.action
 
-local module = {}
-
 local keys = {
   -- 終了
   { key = "q", mods = "SUPER", action = act.QuitApplication },
@@ -480,17 +478,7 @@ local key_tables = {
   },
 }
 
-function module.apply_to_config(config)
-  config.disable_default_key_bindings = true
-  -- wezterm.lua で先に定義したキーを消さないよう追記する
-  config.keys = config.keys or {}
-  for _, key in ipairs(keys) do
-    table.insert(config.keys, key)
-  end
-  config.key_tables = key_tables
-end
-
-return module
+return { keys = keys, key_tables = key_tables }
 ```
 
 ::
@@ -519,16 +507,12 @@ eyebrow: wezterm
 
 <div class="code-compact" style="--findy-code-compact-size: 0.8rem">
 
-```lua [~/.config/wezterm/keybinds.lua]
--- 全部切って、このファイルに書いたものだけを使う
-function module.apply_to_config(config)
-  config.disable_default_key_bindings = true -- [!code ++]
-  config.keys = config.keys or {}
-  for _, key in ipairs(keys) do
-    table.insert(config.keys, key)
-  end
-  config.key_tables = key_tables
-end
+```lua [~/.config/wezterm/wezterm.lua]
+-- 全部切って、keybinds.lua に書いたものだけを使う
+config.disable_default_key_bindings = true -- [!code ++]
+local keybinds = require("keybinds")
+config.keys = keybinds.keys
+config.key_tables = keybinds.key_tables
 ```
 
 </div>
