@@ -854,32 +854,15 @@ eyebrow: wezterm
 
 ::left::
 
-切替前の workspace 名を覚えておくと、<FindyAccentMark>同じキーで行きと帰り</FindyAccentMark>を往復できる
+<p class="text-sm">切替前の workspace 名を覚えておけば、<FindyAccentMark>同じキーで往復</FindyAccentMark>できる</p>
 
-<div class="code-compact" style="--findy-code-compact-size: 0.7rem">
+<div class="code-compact" style="--findy-code-compact-size: 0.62rem">
 
-```lua [~/.config/wezterm/workspace.lua]
--- 右の関数の下に書く (ローカル関数なのでキーもここ)
-function module.apply_to_config(config)
-  config.keys = config.keys or {}
-  -- Leader+s でメモ用の scratch と行き来する
-  table.insert(config.keys, { key = "s", mods = "LEADER",
-    action = toggle_workspace("scratch") })
-end
-```
-
-</div>
-
-<p class="text-sm op-60">マルチプレクサ (herdr など) 側の切替キーと被らないキーを選ぶ</p>
-
-::right::
-
-<div class="code-compact" style="--findy-code-compact-size: 0.75rem">
-
-```lua [~/.config/wezterm/workspace.lua]
--- 切替前にいた workspace 名を覚えておく
-local previous = {}
-
+```lua [~/.config/wezterm/workspace.lua (前半)]
+local wezterm = require("wezterm")
+local act = wezterm.action
+local module = {}
+local previous = {} -- 切替前にいた workspace 名
 local function toggle_workspace(name, spawn)
   return wezterm.action_callback(function(window, pane)
     local current = wezterm.mux.get_active_workspace()
@@ -896,3 +879,26 @@ end
 ```
 
 </div>
+
+::right::
+
+<div class="code-compact" style="--findy-code-compact-size: 0.7rem">
+
+```lua [~/.config/wezterm/workspace.lua (後半)]
+-- toggle_workspace はローカル関数なのでキーもここに書く
+function module.apply_to_config(config)
+  config.keys = config.keys or {}
+  -- Leader+s でメモ用の scratch と行き来する
+  table.insert(config.keys, { key = "s", mods = "LEADER",
+    action = toggle_workspace("scratch") })
+end
+return module
+```
+
+```lua [~/.config/wezterm/wezterm.lua]
+require("workspace").apply_to_config(config)
+```
+
+</div>
+
+<p class="text-sm op-60">マルチプレクサ (herdr など) 側の切替キーと被らないキーを選ぶ</p>
