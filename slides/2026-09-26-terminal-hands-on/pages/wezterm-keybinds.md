@@ -854,21 +854,23 @@ eyebrow: wezterm
 
 ::left::
 
-切替前の workspace 名を覚えておくと、<FindyAccentMark>同じキーで行きと帰り</FindyAccentMark>を往復できる（2 度目の押下で元いた場所へ戻る）
+切替前の workspace 名を覚えておくと、<FindyAccentMark>同じキーで行きと帰り</FindyAccentMark>を往復できる
 
-<div class="code-compact">
+<div class="code-compact" style="--findy-code-compact-size: 0.7rem">
 
-```lua
--- Leader+s でメモ用の scratch と行き来する
-{ key = "s", mods = "LEADER",
-  action = toggle_workspace("scratch") },
+```lua [~/.config/wezterm/workspace.lua]
+-- 右の関数の下に書く (ローカル関数なのでキーもここ)
+function module.apply_to_config(config)
+  config.keys = config.keys or {}
+  -- Leader+s でメモ用の scratch と行き来する
+  table.insert(config.keys, { key = "s", mods = "LEADER",
+    action = toggle_workspace("scratch") })
+end
 ```
 
 </div>
 
-<FindyCallout>
-  マルチプレクサ (herdr など) 側の切替キーと被らないキーを選ぶ
-</FindyCallout>
+<p class="text-sm op-60">マルチプレクサ (herdr など) 側の切替キーと被らないキーを選ぶ</p>
 
 ::right::
 
