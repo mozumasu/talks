@@ -34,16 +34,57 @@ layout: content
 
 手元のブラウザで <https://talks.mozumasu.com/terminal-hands-on/> を開くと、同じスライドを自分のペースで見られます。 {.content-lead}
 
-<FindyKeyValueList size="1.05rem" gap="1rem">
+<FindyKeyValueList size="1.05rem" gap="0.6rem">
   <FindyKeyValue label="← →">前後のスライドへ移動（Space でも進める）</FindyKeyValue>
   <FindyKeyValue label="o">全スライドの一覧を開く。クリックでそのページへジャンプ</FindyKeyValue>
   <FindyKeyValue label="g">ページ番号を入力してジャンプ</FindyKeyValue>
   <FindyKeyValue label="f">フルスクリーン表示</FindyKeyValue>
+  <FindyKeyValue label="画面右端にマウス">目次のサイドバーが開く。次の目次スライドと同じく、項目をクリックでその章へジャンプ</FindyKeyValue>
 </FindyKeyValueList>
 
+---
+layout: content
+---
+
+# キーの表記について
+
+このスライドではキーを次のように書く。Mac と Windows で読み替えてほしい {.content-lead}
+
+<div class="text-base">
+
+| 表記 | macOS | Windows / Linux | WezTerm の mods |
+|---|---|---|---|
+| `Ctrl` | control ⌃ | Ctrl | `CTRL` |
+| `Alt` | option ⌥ | Alt | `ALT` |
+| `Cmd` | command ⌘ | Win | `SUPER` |
+| `Shift` | shift ⇧ | Shift | `SHIFT` |
+| `Leader` | 自分で決める (この資料では `Ctrl+;`) | 同じ | `LEADER` |
+
+</div>
+
 <FindyCallout>
-  このあとの目次スライドも、項目をクリックするとそのページへジャンプできる
+  <code>Ctrl+Shift+T</code> は同時押し。<code>Leader, |</code> のようにカンマで区切ったものと <code>Esc→,</code> は順番に押す
 </FindyCallout>
+
+---
+layout: content
+---
+
+# Windows の人は先に WSL を用意する
+
+<div class="lead">
+
+- シェルの操作はすべて <FindyAccentMark>WSL (Ubuntu)</FindyAccentMark> 上で進める
+- WezTerm を WSL につなぐ設定も必要
+- 手順は <Link to="appendix-windows">Appendix の Windows</Link> にまとめてある
+
+</div>
+
+<FindyCallout variant="warn">
+  <code>wsl --install</code> は再起動を挟むので、ハンズオンが始まる前に済ませておく
+</FindyCallout>
+
+<p class="text-sm op-60">macOS / Linux の人はこのページは読み飛ばして OK</p>
 
 ---
 layout: profile
