@@ -189,6 +189,13 @@ macos-titlebar-style = tabs
 
 </div>
 
+<style>
+/* theme の行が長いので折り返す */
+.slidev-code {
+  white-space: pre-wrap;
+}
+</style>
+
 ---
 layout: two-cols
 ratio: 1/1
