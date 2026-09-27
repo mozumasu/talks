@@ -204,10 +204,8 @@ eyebrow: シェルの設定
 
   →<a href="https://starship.rs/">`Starship`</a>
 
-<p class="text-sm"><code>%~</code> がディレクトリ、<code>vcs_info</code> が git ブランチ、<code>%(?.a.b)</code> が終了コードでの分岐
-
-  ブラウザで組み立てることも可能 
-  <a href="https://bootsignal.com/en/tools/shell-prompt">bootsignal Shell Prompt Generator</a></p>
+<p class="text-sm"><code>%~</code> がディレクトリ、<code>vcs_info</code> が git ブランチ、<code>%(?.a.b)</code> が終了コードでの分岐<br>
+ブラウザで組み立てることも可能: <a href="https://bootsignal.com/en/tools/shell-prompt">bootsignal Shell Prompt Generator</a></p>
 
 ::right::
 

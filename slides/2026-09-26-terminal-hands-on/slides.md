@@ -1,17 +1,15 @@
 ---
 theme: findy
-title: 学生向けハンズオン～イケてるターミナルをつくろう！～
+title: 学生向けハンズオン～イケてるターミナル環境に入門しよう！～
 info: |
   テック文化祭 2026 by Findy Student
-  学生向けハンズオン～イケてるターミナルをつくろう！～
+  学生向けハンズオン～イケてるターミナル環境に入門しよう！～
 class: text-left
 comark: true
 favicon: https://github.com/mozumasu.png
 seoMeta:
-  ogTitle: 学生向けハンズオン～イケてるターミナルをつくろう！～
   ogDescription: テック文化祭 2026 by Findy Student 学生向けハンズオン
   ogUrl: https://talks.mozumasu.com/terminal-hands-on/
-  ogImage: https://talks.mozumasu.com/terminal-hands-on/og-image.png
   twitterCard: summary_large_image
 date: 2026-09-26
 addons:
