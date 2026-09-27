@@ -14,6 +14,7 @@ local keybinds = {
     -- タブ操作
     { key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
     { key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
+    { key = "T", mods = "CTRL", action = act.SpawnTab("CurrentPaneDomain") },
     { key = "1", mods = "SUPER", action = act.ActivateTab(0) },
     { key = "2", mods = "SUPER", action = act.ActivateTab(1) },
     { key = "3", mods = "SUPER", action = act.ActivateTab(2) },
@@ -64,6 +65,7 @@ local keybinds = {
     { key = "X", mods = "CTRL", action = act.ActivateCopyMode },
     -- サーチモード
     { key = "f", mods = "SUPER", action = act.Search("CurrentSelectionOrEmptyString") },
+    { key = "F", mods = "CTRL", action = act.Search("CurrentSelectionOrEmptyString") },
     -- アクティブペインのズーム切替
     { key = "Z", mods = "CTRL", action = act.TogglePaneZoomState },
 
