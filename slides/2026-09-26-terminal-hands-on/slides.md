@@ -109,7 +109,7 @@ role: Findy Inc. / SRE
 ---
 layout: toc
 columns: 1
-scale: 0.88
+scale: 0.85
 ---
 
 ---

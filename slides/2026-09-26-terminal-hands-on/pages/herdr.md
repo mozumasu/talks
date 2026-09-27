@@ -1101,7 +1101,7 @@ eyebrow: herdr
 ```toml [ペイン操作]
 split_vertical = "prefix+v"       # 縦に分割
 split_horizontal = "prefix+minus" # 横に分割
-focus_pane_left = "prefix+h"      # ペイン移動 ←
+focus_pane_left = "prefix+h"      # 移動 ←
 focus_pane_down = "prefix+j"      # ↓
 focus_pane_up = "prefix+k"        # ↑
 focus_pane_right = "prefix+l"     # →
