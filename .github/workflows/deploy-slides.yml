@@ -20,29 +20,43 @@ jobs:
     permissions:
       contents: read
     steps:
-      # デッキの package.json が link:../../../findy-slidev/... を参照するため、
-      # talks と findy-slidev を兄弟ディレクトリとして checkout する
+      # デッキの package.json はテーマを link: の相対パスで参照する。
+      #   link:../../../findy-slidev/...                (talks の兄弟)
+      #   link:../../../../partner-prop/prop-slidev/... (owner をまたぐ)
+      # 両方が解決できるよう、手元の ghq と同じ <owner>/<repo> の配置で checkout する。
+      # (actions/checkout はワークスペースの外に置けないので、talks ごと 1 階層下げる)
+      #   mozumasu/talks  mozumasu/findy-slidev  partner-prop/prop-slidev
       - name: Checkout talks
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          path: talks
+          path: mozumasu/talks
           persist-credentials: false
 
-      - name: Checkout theme repository
+      - name: Checkout findy theme repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           repository: mozumasu/findy-slidev
           # 再現性のため theme のコミットを固定する。更新時はここを上げる
           ref: main
-          path: findy-slidev
+          path: mozumasu/findy-slidev
           token: ${{ secrets.THEME_REPO_READ_TOKEN }}
+          persist-credentials: false
+
+      - name: Checkout partnerprop theme repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: partner-prop/prop-slidev
+          ref: main
+          path: partner-prop/prop-slidev
+          # partner-prop/prop-slidev の Contents: Read-only だけを持つ fine-grained PAT
+          token: ${{ secrets.PROP_SLIDEV_READ_TOKEN }}
           persist-credentials: false
 
       # バージョンは root package.json の packageManager フィールドから読む
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
         with:
-          package_json_file: talks/package.json
+          package_json_file: mozumasu/talks/package.json
 
       - name: Setup Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -50,15 +64,16 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: |
-            talks/pnpm-lock.yaml
-            findy-slidev/pnpm-lock.yaml
+            mozumasu/talks/pnpm-lock.yaml
+            mozumasu/findy-slidev/pnpm-lock.yaml
+            partner-prop/prop-slidev/pnpm-lock.yaml
 
       # playwright-chromium の postinstall が ~/.cache/ms-playwright に Chromium (約 150MB) を
       # 落とすので、バージョンをキーにキャッシュして 2 回目以降のダウンロードを省く。
       # pnpm install より前に復元しておく必要がある
       - name: Resolve playwright-chromium version
         id: playwright
-        working-directory: talks
+        working-directory: mozumasu/talks
         # lockfile のパッケージ宣言行 ("  playwright-chromium@1.61.1:") から取る。
         # @slidev/cli の peer 表記にも同じ文字列が出るので行頭でアンカーする
         run: |
@@ -77,19 +92,23 @@ jobs:
           key: playwright-chromium-${{ runner.os }}-${{ runner.arch }}-${{ steps.playwright.outputs.version }}
 
       # link: 参照はリンク先の依存を自動インストールしないため、テーマ側も install する
-      - name: Install theme dependencies
-        working-directory: findy-slidev
+      - name: Install findy theme dependencies
+        working-directory: mozumasu/findy-slidev
+        run: pnpm install --frozen-lockfile
+
+      - name: Install partnerprop theme dependencies
+        working-directory: partner-prop/prop-slidev
         run: pnpm install --frozen-lockfile
 
       - name: Install talks dependencies
-        working-directory: talks
+        working-directory: mozumasu/talks
         run: pnpm install --frozen-lockfile
 
       # サムネイル生成 (slidev export) は Chromium を使うため、OS 側の共有ライブラリを入れる。
       # デッキごとに実行すると重複するので、playwright CLI を dlx で 1 回だけ動かす
       # (playwright と playwright-chromium は同じバージョンで公開される)
       - name: Install Chromium system dependencies
-        working-directory: talks
+        working-directory: mozumasu/talks
         env:
           PLAYWRIGHT_VERSION: ${{ steps.playwright.outputs.version }}
         run: pnpm dlx "playwright@${PLAYWRIGHT_VERSION}" install-deps chromium
@@ -100,13 +119,13 @@ jobs:
       - name: Restore deck build cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: talks/.cache/decks
-          key: decks-${{ hashFiles('talks/slides/**', 'talks/pnpm-lock.yaml', 'talks/wrangler.jsonc', 'talks/scripts/build.mjs', 'findy-slidev/packages/**', 'findy-slidev/pnpm-lock.yaml') }}
+          path: mozumasu/talks/.cache/decks
+          key: decks-${{ hashFiles('mozumasu/talks/slides/**', 'mozumasu/talks/pnpm-lock.yaml', 'mozumasu/talks/wrangler.jsonc', 'mozumasu/talks/scripts/build.mjs', 'mozumasu/findy-slidev/packages/**', 'mozumasu/findy-slidev/pnpm-lock.yaml', 'partner-prop/prop-slidev/packages/**', 'partner-prop/prop-slidev/pnpm-lock.yaml') }}
           restore-keys: |
             decks-
 
       - name: Build all decks
-        working-directory: talks
+        working-directory: mozumasu/talks
         run: pnpm build
 
       - name: Deploy to Cloudflare Workers
@@ -114,4 +133,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: talks
+          workingDirectory: mozumasu/talks
