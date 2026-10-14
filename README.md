@@ -40,12 +40,9 @@ cd slides && pnpm install
 
 - `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID`
 - `THEME_REPO_READ_TOKEN` (テーマリポジトリが private の場合の contents:read fine-grained PAT)
-- `PROP_SLIDEV_READ_TOKEN` (`partner-prop/prop-slidev` の contents:read fine-grained PAT。
-  partnerprop テーマのデッキをビルドするのに使う)
 
 CI はデッキの `link:` の相対パスがそのまま解決できるよう、手元の ghq と同じ
-`<owner>/<repo>` の配置 (`mozumasu/talks` / `mozumasu/findy-slidev` /
-`partner-prop/prop-slidev`) で checkout する。別オーナーのテーマを足すときは、
+`<owner>/<repo>` の配置 (`mozumasu/talks` / `mozumasu/findy-slidev`) で checkout する。別オーナーのテーマを足すときは、
 `deploy-slides.yml` に checkout・依存の install・キャッシュのキーを同じ形で追加する。
 
 ## 開発
