@@ -20,12 +20,10 @@ jobs:
     permissions:
       contents: read
     steps:
-      # デッキの package.json はテーマを link: の相対パスで参照する。
-      #   link:../../../findy-slidev/...                (talks の兄弟)
-      #   link:../../../../partner-prop/prop-slidev/... (owner をまたぐ)
-      # 両方が解決できるよう、手元の ghq と同じ <owner>/<repo> の配置で checkout する。
+      # デッキの package.json はテーマを link: の相対パス (link:../../../findy-slidev/...) で参照する。
+      # 別オーナーのテーマも足せるよう、手元の ghq と同じ <owner>/<repo> の配置で checkout する。
       # (actions/checkout はワークスペースの外に置けないので、talks ごと 1 階層下げる)
-      #   mozumasu/talks  mozumasu/findy-slidev  partner-prop/prop-slidev
+      #   mozumasu/talks  mozumasu/findy-slidev
       - name: Checkout talks
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -42,16 +40,6 @@ jobs:
           token: ${{ secrets.THEME_REPO_READ_TOKEN }}
           persist-credentials: false
 
-      - name: Checkout partnerprop theme repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          repository: partner-prop/prop-slidev
-          ref: main
-          path: partner-prop/prop-slidev
-          # partner-prop/prop-slidev の Contents: Read-only だけを持つ fine-grained PAT
-          token: ${{ secrets.PROP_SLIDEV_READ_TOKEN }}
-          persist-credentials: false
-
       # バージョンは root package.json の packageManager フィールドから読む
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
@@ -66,7 +54,6 @@ jobs:
           cache-dependency-path: |
             mozumasu/talks/pnpm-lock.yaml
             mozumasu/findy-slidev/pnpm-lock.yaml
-            partner-prop/prop-slidev/pnpm-lock.yaml
 
       # playwright-chromium の postinstall が ~/.cache/ms-playwright に Chromium (約 150MB) を
       # 落とすので、バージョンをキーにキャッシュして 2 回目以降のダウンロードを省く。
@@ -96,10 +83,6 @@ jobs:
         working-directory: mozumasu/findy-slidev
         run: pnpm install --frozen-lockfile
 
-      - name: Install partnerprop theme dependencies
-        working-directory: partner-prop/prop-slidev
-        run: pnpm install --frozen-lockfile
-
       - name: Install talks dependencies
         working-directory: mozumasu/talks
         run: pnpm install --frozen-lockfile
@@ -120,7 +103,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: mozumasu/talks/.cache/decks
-          key: decks-${{ hashFiles('mozumasu/talks/slides/**', 'mozumasu/talks/pnpm-lock.yaml', 'mozumasu/talks/wrangler.jsonc', 'mozumasu/talks/scripts/build.mjs', 'mozumasu/findy-slidev/packages/**', 'mozumasu/findy-slidev/pnpm-lock.yaml', 'partner-prop/prop-slidev/packages/**', 'partner-prop/prop-slidev/pnpm-lock.yaml') }}
+          key: decks-${{ hashFiles('mozumasu/talks/slides/**', 'mozumasu/talks/pnpm-lock.yaml', 'mozumasu/talks/wrangler.jsonc', 'mozumasu/talks/scripts/build.mjs', 'mozumasu/findy-slidev/packages/**', 'mozumasu/findy-slidev/pnpm-lock.yaml') }}
           restore-keys: |
             decks-
 
