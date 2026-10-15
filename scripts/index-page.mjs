@@ -28,11 +28,27 @@ const docswellCard = (d) => `      <article class="card glass">
         </div>
       </article>`;
 
+// 他サイトで公開しているデッキ。サムネイルは build.mjs が dist/external/ に置く
+const externalCard = (x) => `      <article class="card glass">
+        <a class="thumb" href="${escapeHtml(x.link)}" target="_blank" rel="noopener"><img src="/external/${escapeHtml(x.image)}" alt="" loading="lazy"><span class="badge">slides</span></a>
+        <div class="body">
+          <div class="meta">${dateText(x.date)}${x.event ? `<span class="venue">${escapeHtml(x.event)}</span>` : ""}</div>
+          <h3><a href="${escapeHtml(x.link)}" target="_blank" rel="noopener">${escapeHtml(x.title)}</a></h3>
+        </div>
+      </article>`;
+
+const cardOf = { deck: deckCard, docswell: docswellCard, external: externalCard };
+const ogImageOf = {
+  deck: (e, siteUrl) => `${siteUrl}/${e.slug}/cover.png`,
+  docswell: (d) => d.image,
+  external: (x, siteUrl) => `${siteUrl}/external/${x.image}`,
+};
+
 // assetBase: デッキのカバー画像の置き場。本番は "" (同じオリジン)、ローカル確認では本番 URL
 export function renderIndex({ listEntries, siteUrl, brand, assetBase = "" }) {
   const first = listEntries[0];
-  const ogImage = first ? (first.kind === "docswell" ? first.image : `${siteUrl}/${first.slug}/cover.png`) : "";
-  const cards = listEntries.map((e) => (e.kind === "deck" ? deckCard(e, assetBase) : docswellCard(e))).join("\n");
+  const ogImage = first ? ogImageOf[first.kind](first, siteUrl) : "";
+  const cards = listEntries.map((e) => cardOf[e.kind](e, assetBase)).join("\n");
   return `<!doctype html>
 <html lang="ja">
 <head>

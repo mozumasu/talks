@@ -120,6 +120,25 @@ docswell に新しくスライドを投稿しただけでは何も push され�
 一覧に反映するには GitHub Actions のデプロイ workflow を手動で `workflow_dispatch` する
 (`gh workflow run deploy-slides.yml` など)。cron での定期ビルドは入れていない。
 
+## 他サイトで公開しているデッキ
+
+会社のリポジトリの GitHub Pages など、このリポジトリでビルドしないデッキは
+`external/talks.json` に書くと一覧に載る (別タブで遷移する)。サムネイルは
+`external/` に置き、ビルド時に `dist/external/` に配る。
+
+```json
+{
+  "title": "zsh から学ぶ最高の UX",
+  "date": "2026-10-15",
+  "event": "Terminal Night 3",
+  "link": "https://partner-prop.github.io/slides/mozumasu/terminal-night-3/",
+  "image": "terminal-night-3.png"
+}
+```
+
+サムネイルは元デッキで `slidev export --format png --range 1` した 1 ページ目を
+`sips -Z 1000` で縮めたもの。
+
 ## 注意
 
 - スライドの md は `.rumdl.toml` で formatter から除外している

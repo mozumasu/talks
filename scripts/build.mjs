@@ -178,6 +178,26 @@ async function fetchDocswell() {
 const docswellItems = await fetchDocswell();
 console.log(`docswell: ${docswellItems.length} 件`);
 
+// ── 5b. 他サイトで公開しているデッキ ────────────
+// このリポジトリでビルドしないデッキ (会社のリポジトリの GitHub Pages など) を
+// external/talks.json に手で書く。サムネイルは external/ に置き、dist/external/ に配る
+const EXTERNAL_DIR = "external";
+const externalItems = JSON.parse(readFileSync(`${EXTERNAL_DIR}/talks.json`, "utf8")).map((x) => {
+  const ok =
+    x.title && /^\d{4}-\d{2}-\d{2}$/.test(x.date ?? "") && x.link?.startsWith("https://") &&
+    /^[a-z0-9][a-z0-9.-]*\.(png|jpg|webp)$/.test(x.image ?? "") && existsSync(`${EXTERNAL_DIR}/${x.image}`);
+  if (!ok) {
+    console.error(`${EXTERNAL_DIR}/talks.json のエントリが不正 (title / date / https の link / ${EXTERNAL_DIR}/ にある image が必要):\n${JSON.stringify(x)}`);
+    process.exit(1);
+  }
+  return { kind: "external", title: x.title, date: x.date, event: x.event ?? "", link: x.link, image: x.image };
+});
+if (allEntries.some((e) => e.slug === EXTERNAL_DIR)) {
+  console.error(`slug "${EXTERNAL_DIR}" は外部デッキのサムネイル置き場と衝突するので使えません`);
+  process.exit(1);
+}
+console.log(`external: ${externalItems.length} 件`);
+
 // ── 6. デッキごとのビルドキャッシュ ─────────────
 // 入力 (デッキのファイル、link: 参照しているテーマ、lockfile、このスクリプト) の
 // ハッシュが一致するビルド成果物が .cache/decks/<slug>/<hash>/ にあれば再利用する。
@@ -294,8 +314,14 @@ for (const e of indexOnly ? [] : entries) {
 // ── 8. 一覧ページの生成 ─────────────────────────
 // デッキの frontmatter docswell: と一致する RSS item は同じ登壇なので、デッキ側に寄せる
 const linkedFromDecks = new Set(listed.filter((e) => e.docswell).map((e) => canonical(e.docswell)));
-const listEntries = [...listed, ...docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)))]
+const listedDocswell = docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)));
+const listEntries = [...listed, ...listedDocswell, ...externalItems]
   .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 
+mkdirSync(`dist/${EXTERNAL_DIR}`, { recursive: true });
+for (const x of externalItems) cpSync(`${EXTERNAL_DIR}/${x.image}`, `dist/${EXTERNAL_DIR}/${x.image}`);
+
 writeFileSync("dist/index.html", renderIndex({ listEntries, siteUrl: SITE_URL, brand: BRAND, assetBase: indexOnly ? SITE_URL : "" }));
-console.log(`\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${listed.length} + docswell ${listEntries.length - listed.length})`);
+console.log(
+  `\ndist/index.html を生成 (${listEntries.length} 件: デッキ ${listed.length} + docswell ${listedDocswell.length} + external ${externalItems.length})`,
+);
