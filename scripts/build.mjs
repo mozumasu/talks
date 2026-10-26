@@ -52,6 +52,9 @@ const allEntries = decks.map((dir) => {
     // unlisted: 配信はするが一覧に載せない (URL を知っている人にだけ見せる)。
     // draft がビルドごと止めるのに対し、こちらは dist/<slug>/ を作る
     unlisted: fm.unlisted === "true",
+    // prebuilt: CI から読めないテーマ (会社のリポジトリなど) を link: で参照するデッキ。
+    // 手元のビルド結果を prebuilt/<slug>/ にコミットし、テーマが無い CI ではそれを配信する
+    prebuilt: fm.prebuilt === "true",
   };
 });
 
@@ -214,23 +217,32 @@ function* walk(dir) {
   }
 }
 
+// デッキの package.json が link: で参照しているディレクトリ (絶対パス)
+function linkedDirs(e) {
+  const pkg = JSON.parse(readFileSync(`slides/${e.dir}/package.json`, "utf8"));
+  return Object.values({ ...pkg.dependencies, ...pkg.devDependencies })
+    .filter((spec) => typeof spec === "string" && spec.startsWith("link:"))
+    .map((spec) => resolve(`slides/${e.dir}`, spec.slice("link:".length)));
+}
+
+function hashTree(h, dir) {
+  for (const p of walk(dir)) {
+    h.update(p);
+    h.update(readFileSync(p));
+  }
+}
+
 function hashInputs(e) {
   const h = createHash("sha256");
   const addFile = (p) => {
     h.update(p);
     h.update(readFileSync(p));
   };
-  const addTree = (dir) => {
-    for (const p of walk(dir)) addFile(p);
-  };
-  addTree(`slides/${e.dir}`);
+  hashTree(h, `slides/${e.dir}`);
   // link: 参照のテーマ・アドオンは lockfile に内容が載らないので、実体と
   // リンク先リポジトリの lockfile (テーマ側の依存) を辿ってハッシュする
-  const pkg = JSON.parse(readFileSync(`slides/${e.dir}/package.json`, "utf8"));
-  for (const spec of Object.values({ ...pkg.dependencies, ...pkg.devDependencies })) {
-    if (typeof spec !== "string" || !spec.startsWith("link:")) continue;
-    const linked = resolve(`slides/${e.dir}`, spec.slice("link:".length));
-    addTree(linked);
+  for (const linked of linkedDirs(e)) {
+    hashTree(h, linked);
     for (let dir = linked; dir !== dirname(dir); dir = dirname(dir)) {
       if (existsSync(`${dir}/pnpm-lock.yaml`)) {
         addFile(`${dir}/pnpm-lock.yaml`);
@@ -252,16 +264,81 @@ if (useCache && existsSync(CACHE_DIR)) {
   }
 }
 
-// ── 7. 各デッキをビルドして dist/<slug> に集約 ──
+// ── 7. コミット済みのビルド成果物 (prebuilt) ────
+// prebuilt: true のデッキは、テーマが手元にあればビルドして prebuilt/<slug>/ を更新し、
+// 無ければ (CI) prebuilt/<slug>/ をそのまま配信する。.source-hash にはデッキのソース
+// (slides/<dir>/) のハッシュを残し、ソースを直したのに prebuilt を更新し忘れたら CI で止める。
+// テーマ側の変更は CI から見えないので検出できない
+const PREBUILT_DIR = "prebuilt";
+const SOURCE_HASH = ".source-hash";
+
+// 手元と CI で同じ値になるよう、.gitignore で無視されるファイル (.DS_Store など) は入れない
+function sourceHash(e) {
+  const h = createHash("sha256");
+  const files = execSync(`git ls-files -z --cached --others --exclude-standard -- slides/${e.dir}`, { encoding: "utf8" })
+    .split("\0")
+    .filter((p) => p && existsSync(p))
+    .sort();
+  for (const p of files) {
+    h.update(p);
+    h.update(readFileSync(p));
+  }
+  return h.digest("hex").slice(0, 32);
+}
+
+function savePrebuilt(e) {
+  const dest = `${PREBUILT_DIR}/${e.slug}`;
+  rmSync(dest, { recursive: true, force: true });
+  cpSync(`dist/${e.slug}`, dest, { recursive: true });
+  writeFileSync(`${dest}/${SOURCE_HASH}`, `${sourceHash(e)}\n`);
+  console.log(`prebuilt: ${dest}/ を更新 (コミットしてください)`);
+}
+
+function usePrebuilt(e, missing) {
+  const src = `${PREBUILT_DIR}/${e.slug}`;
+  if (!existsSync(`${src}/index.html`) || !existsSync(`${src}/cover.png`) || !existsSync(`${src}/${SOURCE_HASH}`)) {
+    console.error(`${src}/ がありません。テーマのある手元で pnpm build し、${src}/ をコミットしてください`);
+    process.exit(1);
+  }
+  if (readFileSync(`${src}/${SOURCE_HASH}`, "utf8").trim() !== sourceHash(e)) {
+    console.error(`slides/${e.dir}/ が ${src}/ のビルド後に変わっています。手元で pnpm build し、${src}/ をコミットしてください`);
+    process.exit(1);
+  }
+  console.log(`\n=== prebuilt: ${e.dir} -> /${e.slug}/ (テーマが無い: ${missing.join(", ")}) ===`);
+  cpSync(src, `dist/${e.slug}`, { recursive: true, filter: (p) => !p.endsWith(`/${SOURCE_HASH}`) });
+}
+
+// 削除・改名されたデッキや prebuilt をやめたデッキの成果物を掃除する
+if (existsSync(PREBUILT_DIR)) {
+  const live = new Set(allEntries.filter((e) => e.prebuilt).map((e) => e.slug));
+  for (const slug of readdirSync(PREBUILT_DIR)) {
+    if (!live.has(slug)) rmSync(`${PREBUILT_DIR}/${slug}`, { recursive: true, force: true });
+  }
+}
+
+// ── 8. 各デッキをビルドして dist/<slug> に集約 ──
 if (!indexOnly) rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist", { recursive: true });
 for (const e of indexOnly ? [] : entries) {
+  const missing = linkedDirs(e).filter((dir) => !existsSync(dir));
+  if (missing.length > 0) {
+    if (!e.prebuilt) {
+      console.error(`${e.dir} の link: 先がありません: ${missing.join(", ")}`);
+      process.exit(1);
+    }
+    usePrebuilt(e, missing);
+    continue;
+  }
+  // 下書きを含めたビルド (INCLUDE_DRAFTS=1) の成果物はコミットさせない
+  const save = e.prebuilt && !e.draft;
+
   const hash = useCache ? hashInputs(e) : null;
   const cached = hash && `${CACHE_DIR}/${e.slug}/${hash}`;
   // 中身の欠けたエントリを掴まないよう、必須ファイルの存在まで見てからヒット扱いにする
   if (cached && existsSync(`${cached}/index.html`) && existsSync(`${cached}/cover.png`)) {
     console.log(`\n=== cache hit: ${e.dir} -> /${e.slug}/ (${hash}) ===`);
     cpSync(cached, `dist/${e.slug}`, { recursive: true });
+    if (save) savePrebuilt(e);
     continue;
   }
 
@@ -309,9 +386,10 @@ for (const e of indexOnly ? [] : entries) {
     rmSync(`${CACHE_DIR}/${e.slug}`, { recursive: true, force: true });
     cpSync(`dist/${e.slug}`, cached, { recursive: true });
   }
+  if (save) savePrebuilt(e);
 }
 
-// ── 8. 一覧ページの生成 ─────────────────────────
+// ── 9. 一覧ページの生成 ─────────────────────────
 // デッキの frontmatter docswell: と一致する RSS item は同じ登壇なので、デッキ側に寄せる
 const linkedFromDecks = new Set(listed.filter((e) => e.docswell).map((e) => canonical(e.docswell)));
 const listedDocswell = docswellItems.filter((d) => !linkedFromDecks.has(canonical(d.link)));

@@ -95,6 +95,40 @@ Cloudflare Access を `talks.mozumasu.com/<slug>/*` に掛ける (デッキ側�
 | `unlisted: true` | する | 載らない | 開ける |
 | `draft: true` | しない | 載らない | 404 |
 
+## CI から読めないテーマのデッキ (prebuilt)
+
+会社のテーマ (partner-prop/slides の partnerprop テーマ) のように、個人のリポジトリの CI に
+読み取り権限を持たせられないテーマを使うデッキでは、手元でビルドした結果をコミットして配信する。
+headmatter に `prebuilt: true` を書き、テーマは ghq の配置どおり `link:` で参照する。
+
+```yaml
+---
+theme: partnerprop
+addons:
+  - slidev-addon-partnerprop
+prebuilt: true
+title: ...
+---
+```
+
+```jsonc
+// slides/<deck>/package.json
+"slidev-theme-partnerprop": "link:../../../../partner-prop/slides/packages/slidev-theme-partnerprop",
+"slidev-addon-partnerprop": "link:../../../../partner-prop/slides/packages/slidev-addon-partnerprop"
+```
+
+`scripts/build.mjs` は `link:` 先のテーマがあるかどうかで動きを変える。
+
+| | テーマ | 動き |
+| --- | --- | --- |
+| 手元 | ある | ビルドし、結果を `prebuilt/<slug>/` にも保存する |
+| CI | 無い | ビルドせず、`prebuilt/<slug>/` を `dist/<slug>/` にコピーする |
+
+デッキを直したら、手元で `pnpm build` を実行し、`prebuilt/<slug>/` もあわせてコミットする。
+`prebuilt/<slug>/.source-hash` にはデッキのソース (`slides/<deck>/`) のハッシュを残してあり、
+ソースだけ直して `prebuilt/` を更新し忘れると CI のビルドが失敗する。
+テーマ側の変更は CI から見えないので、テーマを更新したときも手元で `pnpm build` し直す。
+
 ## 一覧の並び順と docswell
 
 一覧 (`https://talks.mozumasu.com/`) には、このリポジトリのデッキに加えて
