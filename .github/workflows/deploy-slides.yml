@@ -98,12 +98,23 @@ jobs:
 
       # scripts/build.mjs は入力のハッシュが一致するデッキをビルドせず .cache/decks から
       # 再利用する。キーはビルド入力のハッシュにし、入力が変わらなければ新しいエントリを
-      # 保存しない。変わったときは restore-keys で直近のものを復元して差分だけビルドする
+      # 保存しない。変わったときは restore-keys で直近のものを復元して差分だけビルドする。
+      # hashFiles('slides/**') は node_modules まで辿り、テーマが CI に無い prebuilt のデッキの
+      # 切れたシンボリックリンク (link: 先) で失敗する。コミット済みの内容だけを見るよう、
+      # git のツリー・ブロブのハッシュからキーを作る
+      - name: Compute deck cache key
+        id: deck-cache-key
+        run: |
+          set -euo pipefail
+          talks=$(git -C mozumasu/talks rev-parse HEAD:slides HEAD:pnpm-lock.yaml HEAD:wrangler.jsonc HEAD:scripts/build.mjs | sha256sum | cut -c1-32)
+          findy=$(git -C mozumasu/findy-slidev rev-parse HEAD:packages HEAD:pnpm-lock.yaml | sha256sum | cut -c1-32)
+          echo "key=decks-${talks}-${findy}" >> "$GITHUB_OUTPUT"
+
       - name: Restore deck build cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: mozumasu/talks/.cache/decks
-          key: decks-${{ hashFiles('mozumasu/talks/slides/**', 'mozumasu/talks/pnpm-lock.yaml', 'mozumasu/talks/wrangler.jsonc', 'mozumasu/talks/scripts/build.mjs', 'mozumasu/findy-slidev/packages/**', 'mozumasu/findy-slidev/pnpm-lock.yaml') }}
+          key: ${{ steps.deck-cache-key.outputs.key }}
           restore-keys: |
             decks-
 
