@@ -1,0 +1,173 @@
+
+.slidev-slide-container[data-v-923208b2] {
+  position:relative;width:100%;height:100%;overflow:hidden;
+}
+.slidev-slide-content[data-v-923208b2] {
+  --slidev-slide-container-scale: var(--slidev-slide-scale);
+  transform: translate(-50%, -50%) scale(var(--slidev-slide-scale));
+  position:absolute;left:50%;top:50%;overflow:hidden;--un-bg-opacity:1;background-color:rgb(255 255 255 / var(--un-bg-opacity));
+}.dark .slidev-slide-content[data-v-923208b2]{--un-bg-opacity:1;background-color:rgb(18 18 18 / var(--un-bg-opacity));}
+
+/* 右端の細い透明帯が当たり判定。パネルはその子なので、引き出した後に
+   パネル上へカーソルが移っても :hover が切れない */
+.pp-toc-drawer[data-v-aa68625d] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  z-index: 100;
+  color: var(--theme-text);
+  font-family: Poppins, 'IBM Plex Sans JP', sans-serif;
+}
+
+/* 見出しマークと同じ赤いピル。ドロワーがあることを控えめに示す */
+.pp-toc-drawer__grip[data-v-aa68625d] {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 4px;
+  height: 48px;
+  transform: translateY(-50%);
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-red-mark);
+  opacity: 0.3;
+  transition: opacity 0.15s ease;
+}
+.pp-toc-drawer:hover .pp-toc-drawer__grip[data-v-aa68625d],
+.pp-toc-drawer:focus-within .pp-toc-drawer__grip[data-v-aa68625d] {
+  opacity: 0;
+}
+.pp-toc-drawer__panel[data-v-aa68625d] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  padding: 40px 28px;
+  overflow-y: auto;
+  background: var(--theme-background);
+  border-left: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-card);
+  transform: translateX(100%);
+  transition: transform 0.2s ease;
+}
+.pp-toc-drawer:hover .pp-toc-drawer__panel[data-v-aa68625d],
+.pp-toc-drawer:focus-within .pp-toc-drawer__panel[data-v-aa68625d] {
+  transform: translateX(0);
+}
+
+/* 見出しは v3.1 のヘッダーと同じく左端に赤いマーク */
+.pp-toc-drawer__title[data-v-aa68625d] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.08em;
+}
+.pp-toc-drawer__title[data-v-aa68625d]::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 2px 999px 999px 2px;
+  background: var(--theme-red-mark);
+}
+.pp-toc-drawer__list[data-v-aa68625d] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: pp-toc;
+}
+.pp-toc-drawer__item[data-v-aa68625d] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--theme-border);
+  font-size: 14px;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.4;
+}
+.pp-toc-drawer__item[data-v-aa68625d]::before {
+  counter-increment: pp-toc;
+  content: counter(pp-toc, decimal-leading-zero);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--theme-red);
+}
+
+/* 子項目は番号なしで、親ラベルの開始位置に揃えて控えめに並べる */
+.pp-toc-drawer__children[data-v-aa68625d] {
+  grid-column: 2;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.pp-toc-drawer__child[data-v-aa68625d] {
+  padding: 3px 0;
+  font-size: 13px;
+  font-weight: var(--theme-font-weight-regular);
+}
+.pp-toc-drawer a[data-v-aa68625d] {
+  color: inherit;
+  text-decoration: none;
+}
+.pp-toc-drawer a[data-v-aa68625d]:hover,
+.pp-toc-drawer .is-active > a[data-v-aa68625d] {
+  color: var(--theme-red);
+}
+
+.pp-progress[data-v-8b8a060f] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  z-index: 10;
+  cursor: pointer;
+  touch-action: none;
+  transition: height 0.15s ease;
+}
+
+/* バー自体は細くて狙いにくいので、上に透明の当たり判定を広げる */
+.pp-progress[data-v-8b8a060f]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+}
+.pp-progress[data-v-8b8a060f]:hover,
+.pp-progress.is-dragging[data-v-8b8a060f] {
+  height: 6px;
+}
+.pp-progress__bar[data-v-8b8a060f] {
+  height: 100%;
+  background: var(--theme-red);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.pp-progress.is-dragging .pp-progress__bar[data-v-8b8a060f] {
+  transition: none;
+}
+
+.disable-view-transition[data-v-71463c42] * {
+  view-transition-name: none !important;
+}
+.slidev-page[data-v-71463c42] {
+  position: absolute;
+  inset: 0;
+
+  /* Zoom handling */
+  --slidev-slide-zoom-scale: 1;
+  width: calc(100% / var(--slidev-slide-zoom-scale));
+  height: calc(100% / var(--slidev-slide-zoom-scale));
+  transform-origin: top left;
+  scale: var(--slidev-slide-zoom-scale);
+  /* slide scale = container scale * zoom scale */
+  --slidev-slide-scale: calc(var(--slidev-slide-container-scale) * var(--slidev-slide-zoom-scale));
+}

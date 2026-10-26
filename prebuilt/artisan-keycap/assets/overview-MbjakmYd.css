@@ -1,0 +1,7 @@
+
+.overview-slide-block:hover .overview-slide-action[data-v-b6649ced] {
+  opacity: 0.6;
+}
+.overview-slide-action[data-v-b6649ced]:hover {
+  opacity: 0.8;
+}
