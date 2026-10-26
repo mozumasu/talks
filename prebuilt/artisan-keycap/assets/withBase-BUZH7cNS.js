@@ -1,0 +1,1 @@
+function e(e,t=`/artisan-keycap/`){return!e||!e.startsWith(`/`)||e.startsWith(`//`)||e.startsWith(t)?e:t+e.slice(1)}export{e as t};

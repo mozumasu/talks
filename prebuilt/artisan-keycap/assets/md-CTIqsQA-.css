@@ -1,0 +1,303 @@
+
+.feature-list[data-v-529c7980] {
+  --feature-list-title-size: 1.375rem;
+  --feature-list-gap: 2.25rem;
+  --feature-list-rise: 0.75rem;
+}
+.feature-list ul[data-v-529c7980],
+.feature-list[data-v-529c7980] ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.feature-list li[data-v-529c7980],
+.feature-list[data-v-529c7980] li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--theme-text);
+  font-size: var(--theme-font-size-body);
+  font-weight: var(--theme-font-weight-semibold);
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+}
+.feature-list li + li[data-v-529c7980],
+.feature-list[data-v-529c7980] li + li {
+  margin-top: var(--feature-list-gap);
+}
+
+/* 先頭の太字を赤い英字見出しにして説明と改行する */
+.feature-list li > strong[data-v-529c7980],
+.feature-list[data-v-529c7980] li > strong:first-child {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--theme-red);
+  font-size: var(--feature-list-title-size);
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.feature-list li > span[data-v-529c7980] {
+  display: block;
+}
+.feature-list[data-v-529c7980] em,
+.feature-list[data-v-529c7980] li > strong:not(:first-child) {
+  color: var(--theme-red);
+  font-style: normal;
+}
+.feature-list[data-v-529c7980] p {
+  margin: 0;
+}
+
+/* v-click: 少し下から浮かせて出す (Slidev 既定の opacity 遷移に transform を足す) */
+.is-animated li.slidev-vclick-target[data-v-529c7980],
+.is-animated[data-v-529c7980] li.slidev-vclick-target {
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s var(--theme-ease-out);
+}
+.is-animated li.slidev-vclick-hidden[data-v-529c7980],
+.is-animated[data-v-529c7980] li.slidev-vclick-hidden {
+  transform: translateY(var(--feature-list-rise));
+}
+@media (prefers-reduced-motion: reduce) {
+.is-animated li.slidev-vclick-hidden[data-v-529c7980],
+  .is-animated[data-v-529c7980] li.slidev-vclick-hidden {
+    transform: none;
+}
+}
+
+.pp-qr-code[data-v-ee91a7aa] {
+  --pp-qr-color: var(--theme-black);
+
+  display: block;
+  flex-shrink: 0;
+}
+.pp-qr-code.is-red[data-v-ee91a7aa] {
+  --pp-qr-color: var(--theme-primary);
+}
+.pp-qr-code-bg[data-v-ee91a7aa] {
+  fill: var(--theme-background);
+}
+.pp-qr-code-modules[data-v-ee91a7aa] {
+  fill: var(--pp-qr-color);
+}
+
+.circle-image[data-v-600afe74] {
+  --circle-image-fill: var(--theme-gradient-brand);
+  --circle-image-duration: 0.8s;
+  position: relative;
+  flex-shrink: 0;
+  width: var(--circle-image-size);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--circle-image-fill);
+  /* Safari で overflow: hidden の角丸が transform 中に外れないようにする */
+  isolation: isolate;
+}
+
+/* 写真と下地の円が同じ縁でアンチエイリアスされると、縁に赤がにじむ。下地を 1px 内側に縮めて写真の縁から外す */
+.circle-image.has-image[data-v-600afe74] {
+  background: none;
+}
+.circle-image.has-image[data-v-600afe74]::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: var(--circle-image-fill);
+}
+.circle-image-photo[data-v-600afe74] {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.circle-image-overlay[data-v-600afe74] {
+  position: absolute;
+  inset: 0;
+  background: var(--circle-image-fill);
+  opacity: var(--circle-image-overlay);
+}
+.circle-image-label[data-v-600afe74] {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12%;
+  color: var(--theme-background);
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* --- 表示アニメーション --- */
+/* 写真は赤い円の上にフェードインする。expand は円が広がりきってから写真を出す */
+.is-animated .circle-image-photo[data-v-600afe74] {
+  animation: circle-image-fade-600afe74 var(--circle-image-duration) ease-out both;
+  animation-delay: calc(var(--circle-image-delay) + var(--circle-image-duration) * 0.3);
+}
+.is-animated.reveal-expand[data-v-600afe74] {
+  animation: circle-image-expand-600afe74 calc(var(--circle-image-duration) * 0.8) cubic-bezier(0.2, 0.8, 0.3, 1.1) both;
+  animation-delay: var(--circle-image-delay);
+}
+.is-animated.reveal-expand .circle-image-photo[data-v-600afe74] {
+  animation-delay: calc(var(--circle-image-delay) + var(--circle-image-duration) * 0.7);
+}
+
+/* 写真の無い赤い円は fade でもそのまま浮かび上がらせる */
+.is-animated.reveal-fade[data-v-600afe74]:not(.has-image) {
+  animation: circle-image-fade-600afe74 var(--circle-image-duration) ease-out both;
+  animation-delay: var(--circle-image-delay);
+}
+.is-animated .circle-image-label[data-v-600afe74] {
+  animation: circle-image-fade-600afe74 var(--circle-image-duration) ease-out both;
+  animation-delay: calc(var(--circle-image-delay) + var(--circle-image-duration) * 0.5);
+}
+
+/* v-click で隠れている間は止め、表示されたときに最初から再生する */
+.slidev-vclick-hidden,.slidev-vclick-hidden,.slidev-vclick-hidden,.slidev-vclick-hidden {
+  animation: none;
+}
+@keyframes circle-image-fade-600afe74 {
+from {
+    opacity: 0;
+}
+}
+@keyframes circle-image-expand-600afe74 {
+from {
+    transform: scale(0);
+}
+}
+@media (prefers-reduced-motion: reduce) {
+.circle-image[data-v-600afe74],
+  .circle-image[data-v-600afe74] * {
+    animation: none !important;
+}
+}
+
+.pp-icon[data-v-4179c6b9] {
+  --pp-icon-gray: var(--theme-slate);
+  --pp-icon-color: var(--pp-icon-gray);
+
+  display: inline-block;
+  flex-shrink: 0;
+  color: var(--pp-icon-color);
+  vertical-align: -0.125em;
+}
+.pp-icon.is-red[data-v-4179c6b9] {
+  --pp-icon-color: var(--theme-primary);
+}
+.pp-icon.is-black[data-v-4179c6b9] {
+  --pp-icon-color: var(--theme-text);
+}
+.pp-icon.is-white[data-v-4179c6b9] {
+  --pp-icon-color: var(--theme-background);
+}
+.pp-icon.is-current[data-v-4179c6b9] {
+  --pp-icon-color: currentColor;
+}
+
+.pp-profile[data-v-71d57f18] {
+  --profile-avatar-size: 11.5rem;
+  --profile-qr-size: 4rem;
+
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: 2.75rem;
+  height: 100%;
+}
+
+/* --- 左: 写真・名前・所属・リンク・QR --- */
+.pp-profile-person[data-v-71d57f18] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* スロットで差し替えた画像も丸く切り抜く */
+.pp-profile-avatar[data-v-71d57f18] {
+  width: var(--profile-avatar-size);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.pp-profile-avatar[data-v-71d57f18] img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slidev-layout .pp-profile-name[data-v-71d57f18] {
+  margin: 0.9rem 0 0;
+  font-size: 1.75rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+.pp-profile-name small[data-v-71d57f18] {
+  margin-left: 0.3em;
+  font-size: 0.75em;
+}
+.slidev-layout .pp-profile-affiliation[data-v-71d57f18] {
+  margin: 0.6rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+/* リンクの行と QR を横に並べる */
+.pp-profile-footer[data-v-71d57f18] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.1rem;
+}
+.pp-profile-links[data-v-71d57f18] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--theme-muted);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  text-align: left;
+}
+.slidev-layout .pp-profile-links li[data-v-71d57f18] {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  margin: 0;
+  padding: 0;
+}
+
+/* リンクも周りと同じグレー。Slidev の a の点線の下線は消す */
+.slidev-layout .pp-profile-links a[data-v-71d57f18] {
+  color: inherit;
+  border: none;
+  text-decoration: none;
+}
+.pp-profile-qr[data-v-71d57f18] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: var(--profile-qr-size);
+  margin: 0;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+  line-height: 1;
+}
+
+/* --- 右: 赤い英字見出し＋説明 --- */
+.pp-profile-sections[data-v-71d57f18] {
+  --feature-list-title-size: 1.25rem;
+  --feature-list-gap: 1.1rem;
+}

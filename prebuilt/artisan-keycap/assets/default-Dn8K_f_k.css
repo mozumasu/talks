@@ -1,0 +1,201 @@
+
+.default[data-v-7d861d93] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--theme-header-height) + 1.25rem);
+  padding-bottom: 2.75rem;
+}
+
+/* 白いヘッダー帯。下に薄い影、右下だけ角丸 */
+.pp-header[data-v-7d861d93] {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--theme-header-height);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 1rem;
+  background: var(--theme-background);
+  box-shadow: var(--theme-shadow-card);
+  border-bottom-right-radius: 1.75rem;
+  z-index: 1;
+}
+
+/* 赤いマークは左端で切れて見えるように一部を画面外に出す */
+.pp-header-mark[data-v-7d861d93] {
+  margin-left: -4px;
+  margin-right: 0.25rem;
+}
+.slidev-layout .pp-header-title[data-v-7d861d93] {
+  margin: 0;
+  font-size: var(--theme-font-size-heading);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.pp-confidential[data-v-7d861d93] {
+  padding: 0.15rem 1.9rem;
+  border: 1px solid var(--theme-red);
+  color: var(--theme-red);
+  font-size: var(--theme-font-size-body);
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.02em;
+}
+.pp-header-confidential[data-v-7d861d93] {
+  margin-left: auto;
+}
+.pp-header-logo[data-v-7d861d93] {
+  margin-left: auto;
+}
+.pp-header-confidential + .pp-header-logo[data-v-7d861d93] {
+  margin-left: 1rem;
+}
+.pp-body[data-v-7d861d93] {
+  flex: 1;
+  min-height: 0;
+}
+.pp-note[data-v-7d861d93] {
+  margin: 0.5rem 0 0;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+.pp-page-number[data-v-7d861d93] {
+  position: absolute;
+  right: 3.25rem;
+  bottom: 0.9rem;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1;
+}
+/* --- variant: template (2024.09 テンプレート p.4・p.7) --- */
+/* ヘッダー帯は無く、見出しと説明文は本文と同じ流れに置く。文字は紺 */
+.is-template[data-v-7d861d93] {
+  --default-tpl-indent: 4.125rem; /* 見出し・本文の左端 (マークはこの左に出す) */
+  padding: 2.35rem 2.25rem 2.75rem var(--default-tpl-indent);
+  color: var(--theme-navy);
+}
+.pp-tpl-header[data-v-7d861d93] {
+  margin-bottom: 1.6rem;
+}
+.slidev-layout .pp-tpl-title[data-v-7d861d93] {
+  position: relative;
+  margin: 0;
+  color: var(--theme-navy);
+  font-size: 1.5rem;
+  font-weight: var(--theme-font-weight-semibold);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/* 赤いマークは見出しの左に、本文の左端より外へ出す */
+.pp-tpl-mark[data-v-7d861d93] {
+  position: absolute;
+  top: 50%;
+  left: -2.0625rem;
+  transform: translateY(-50%);
+}
+.pp-tpl-description[data-v-7d861d93] {
+  margin: 0.45rem 0 0;
+  font-size: var(--theme-font-size-body);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+.is-template .pp-copyright[data-v-7d861d93] {
+  color: inherit;
+}
+.pp-tpl-corner[data-v-7d861d93] {
+  position: absolute;
+  top: 0.8rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* --- variant: guideline (ロゴガイドライン p.2〜10) --- */
+.is-guideline[data-v-7d861d93] {
+  --default-gl-bar: 0.5rem;
+  padding: 4.75rem 3.125rem calc(var(--default-gl-bar) + 2.25rem);
+}
+
+/* 上に赤、下にグレーの細いバー */
+.is-guideline[data-v-7d861d93]::before,
+.is-guideline[data-v-7d861d93]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--default-gl-bar);
+}
+.is-guideline[data-v-7d861d93]::before {
+  top: 0;
+  background: var(--theme-red);
+}
+.is-guideline[data-v-7d861d93]::after {
+  bottom: 0;
+  background: var(--theme-gray-brand);
+}
+.pp-gl-header[data-v-7d861d93] {
+  position: absolute;
+  top: calc(var(--default-gl-bar) + 1.6rem);
+  left: 3.125rem;
+  right: 3.125rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.slidev-layout .pp-gl-title[data-v-7d861d93] {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.is-guideline .pp-confidential[data-v-7d861d93] {
+  margin-left: auto;
+}
+.pp-gl-description[data-v-7d861d93] {
+  margin: 0 0 0 auto;
+  font-size: 0.7rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.5;
+  text-align: right;
+  white-space: pre-line;
+}
+.is-guideline .pp-confidential + .pp-gl-description[data-v-7d861d93] {
+  margin-left: 0;
+}
+.is-guideline .pp-copyright[data-v-7d861d93],
+.is-guideline .pp-page-number[data-v-7d861d93] {
+  bottom: calc(var(--default-gl-bar) + 0.8rem);
+}
+.is-guideline .pp-copyright[data-v-7d861d93] {
+  left: 3.125rem;
+}
+
+/* --- template / guideline 共通: 「セクション名 | ページ番号」を細い縦線で区切る --- */
+.pp-page-number.is-split[data-v-7d861d93] {
+  right: 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: var(--theme-font-weight-regular);
+}
+.is-guideline .pp-page-number.is-split[data-v-7d861d93] {
+  right: 3.125rem;
+}
+.pp-page-number.is-split[data-v-7d861d93]::before {
+  content: '';
+  order: 1;
+  width: 1px;
+  height: 0.9rem;
+  background: currentColor;
+}
+.pp-page-number.is-split[data-v-7d861d93] > :last-child {
+  order: 2;
+}
+.pp-page-section[data-v-7d861d93] {
+  font-size: var(--theme-font-size-caption);
+}
