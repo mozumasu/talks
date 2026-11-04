@@ -1,0 +1,25 @@
+
+.swiss-key-message[data-v-c9c64e4d] {
+  max-width: 88%;
+  margin: 0 0 1.6rem;
+  padding-left: 1rem;
+  border-left: var(--swiss-rule-bold, 4px) solid var(--swiss-red, #e30613);
+  color: var(--swiss-ink, #111);
+  font-family: var(--swiss-font-display, sans-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: var(--swiss-tracking-tight, -0.02em);
+  line-height: 1.45;
+}
+
+/* slot 内の md が <p> で包まれても余白が増えないようにする */
+.swiss-key-message[data-v-c9c64e4d] p {
+  margin: 0;
+  line-height: inherit;
+}
+.swiss-key-message[data-v-c9c64e4d] em,
+.swiss-key-message[data-v-c9c64e4d] strong {
+  color: var(--swiss-red-ink, #c80511);
+  font-style: normal;
+  font-weight: inherit;
+}
