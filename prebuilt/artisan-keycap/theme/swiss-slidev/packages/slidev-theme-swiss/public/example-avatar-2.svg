@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- 丸く切り抜いて使う前提で、頭と肩を円の内側に収める -->
+  <rect width="200" height="200" fill="#111111"/>
+  <circle cx="100" cy="80" r="30" fill="#f3f1ec"/>
+  <path d="M44 168 A56 56 0 0 1 156 168 Z" fill="#f3f1ec"/>
+</svg>

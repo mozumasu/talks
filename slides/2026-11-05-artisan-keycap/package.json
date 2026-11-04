@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@slidev/cli": "^52.11.0",
-    "slidev-addon-partnerprop": "link:../../../../partner-prop/slides/packages/slidev-addon-partnerprop",
-    "slidev-theme-partnerprop": "link:../../../../partner-prop/slides/packages/slidev-theme-partnerprop",
+    "slidev-addon-swiss": "link:../../../swiss-slidev/packages/slidev-addon-swiss",
+    "slidev-theme-swiss": "link:../../../swiss-slidev/packages/slidev-theme-swiss",
     "vue": "^3.5.0"
   },
   "devDependencies": {

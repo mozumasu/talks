@@ -1,0 +1,33 @@
+
+.swiss-two-cols[data-v-de6cc28c] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.swiss-two-cols__header[data-v-de6cc28c] {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+.swiss-two-cols__header[data-v-de6cc28c] >  * {
+  margin: 0;
+}
+
+/* 列の溝はグリッドの溝の 2 倍にする */
+.swiss-two-cols__grid[data-v-de6cc28c] {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  column-gap: calc(var(--swiss-gutter) * 2);
+  padding-bottom: 0.5rem;
+}
+.swiss-two-cols__col[data-v-de6cc28c] {
+  min-width: 0;
+  min-height: 0;
+  line-height: 1.8;
+}
+.swiss-two-cols__col[data-v-de6cc28c] >  :first-child {
+  margin-top: 0;
+}
+.is-reverse .is-left[data-v-de6cc28c] {
+  order: 2;
+}
