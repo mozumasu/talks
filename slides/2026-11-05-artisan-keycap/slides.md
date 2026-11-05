@@ -182,6 +182,11 @@ title: 6. 軸を付ける
   レジンで軸まで作るのもいいんだけど、気泡抜くの大変 and 軸の精度が出ないと絶望
 </SwissSpeechBubble>
 
+<div v-after class="grid grid-cols-2 gap-3 mt-5 ml-auto w-4/5">
+  <img :src="$asset('/images/keycap-base.jpg')" alt="市販のキーキャップ用の軸が入ったケース" class="w-full h-32 object-cover">
+  <img :src="$asset('/images/3d-keycaps.jpg')" alt="3D プリンターで印刷したキーキャップの土台" class="w-full h-32 object-cover">
+</div>
+
 ---
 layout: two-cols
 title: 完成！
