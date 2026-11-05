@@ -113,8 +113,8 @@ title: 2. オーブントースターで焼く 120度 12min
 
 <img v-click :src="$asset('/images/dock.jpg')" alt="3D プリンターで作ったドック下の収納" class="w-full h-72 object-cover">
 
-<SwissSpeechBubble v-click pinned image="https://github.com/mozumasu.png">
-  虚無なので 3D プリンタータイム。ドック下収納作ったYo
+<SwissSpeechBubble v-after pinned image="https://github.com/mozumasu.png">
+  ドックをデスク下に収納できるケース作った
 </SwissSpeechBubble>
 
 ---
@@ -124,15 +124,15 @@ title: 3. やすりがけ
 
 <img :src="$asset('/images/sanding.jpg')" alt="やすりがけした樹脂粘土" class="w-full h-52 object-cover">
 
-- P120, P800 で大きい傷をとる
+- P120, P600 で大きい傷をとる
 - P1000, P2000, P3000 で表面を滑らかにする
 
 ::right::
 
 <img v-click :src="$asset('/images/file-case.jpg')" alt="3D プリンターで作ったやすりの収納ケース" class="w-full h-72 object-cover">
 
-<SwissSpeechBubble v-click pinned image="https://github.com/mozumasu.png">
-  やすりの収納が欲しくなって作った。やすりケースお披露目
+<SwissSpeechBubble v-after pinned image="https://github.com/mozumasu.png">
+  やすりの収納が欲しくなって作った
 </SwissSpeechBubble>
 
 ---
@@ -140,11 +140,15 @@ layout: two-cols
 title: 4. アクリル絵の具で塗る
 ---
 
-<img :src="$asset('/images/paint-1.jpg')" alt="アクリル絵の具で塗ったキーキャップを持っているところ" class="w-full h-80 object-cover">
+<img :src="$asset('/images/paint-1.jpg')" alt="アクリル絵の具で塗ったキーキャップを持っているところ" class="w-full h-72 object-cover">
 
 ::right::
 
-<img :src="$asset('/images/paint-2.jpg')" alt="塗り終えたキーキャップの横からの写真" class="w-full h-80 object-cover">
+<img :src="$asset('/images/paint-2.jpg')" alt="塗り終えたキーキャップの横からの写真" class="w-full h-72 object-cover">
+
+<SwissSpeechBubble v-click pinned image="https://github.com/mozumasu.png">
+  粘土にアクリル絵の具を練りこんで色を付けるのもアリ
+</SwissSpeechBubble>
 
 ---
 layout: two-cols
@@ -246,5 +250,7 @@ title: 待ち時間のお供に
 
 # まとめ
 
-- 樹脂粘土はいいぞ
-- 3D プリンターはいいぞ
+<div class="flex flex-col items-center justify-center gap-6 h-72 text-center">
+  <p class="swiss-display !text-5xl">樹脂粘土はいいぞ</p>
+  <p class="swiss-display !text-5xl">3D プリンターはいいぞ</p>
+</div>
