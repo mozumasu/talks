@@ -14,6 +14,7 @@ addons:
 layout: cover
 eyebrow: //localboast Tokyo — 2026.11.05 @MOSH
 subtitle: mozumasu
+avatar: https://github.com/mozumasu.png
 titleSize: 3.8rem
 ---
 
