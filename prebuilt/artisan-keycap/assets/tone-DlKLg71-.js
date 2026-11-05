@@ -1,0 +1,1 @@
+var e=new Set([`statement`,`section`]);function t(e){return e===`red`?`red`:e===`ink`?`ink`:`default`}function n(n,r){return typeof n!=`string`||!e.has(n)?`default`:t(r?.variant)}export{t as n,n as t};

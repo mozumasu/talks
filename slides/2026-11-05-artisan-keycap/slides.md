@@ -104,7 +104,7 @@ align: center
 
 ---
 layout: two-cols
-title: 2. オーブントースターで焼く 12min
+title: 2. オーブントースターで焼く 120度 12min
 ---
 
 <img :src="$asset('/images/oven.jpg')" alt="オーブントースターに入れた樹脂粘土" class="w-full h-72 object-cover">
@@ -122,7 +122,10 @@ layout: two-cols
 title: 3. やすりがけ
 ---
 
-<img :src="$asset('/images/sanding.jpg')" alt="やすりがけした樹脂粘土" class="w-full h-72 object-cover">
+<img :src="$asset('/images/sanding.jpg')" alt="やすりがけした樹脂粘土" class="w-full h-52 object-cover">
+
+- P120, P800 で大きい傷をとる
+- P1000, P2000, P3000 で表面を滑らかにする
 
 ::right::
 
@@ -153,7 +156,7 @@ align: center
 
 ::right::
 
-<SwissSpeechBubble v-click image="https://github.com/mozumasu.png">台を用意しとくといいよ (戒め)</SwissSpeechBubble>
+<SwissSpeechBubble v-click image="https://github.com/mozumasu.png">シリコンの台を用意しとくといいよ (戒め)</SwissSpeechBubble>
 
 ---
 layout: two-cols
@@ -179,11 +182,24 @@ layout: two-cols
 title: 完成！
 ---
 
-<img :src="$asset('/images/done-1.jpg')" alt="キーボードに付けた完成品を上から見た写真" class="w-full h-80 object-cover">
+<img :src="$asset('/images/done-1.jpg')" alt="キーボードに付けた完成品を上から見た写真" class="w-full h-72 object-cover">
 
 ::right::
 
-<img :src="$asset('/images/done-2.jpg')" alt="キーボードに付けた完成品の背中側の写真" class="w-full h-80 object-cover">
+<img :src="$asset('/images/done-2.jpg')" alt="キーボードに付けた完成品の背中側の写真" class="w-full h-72 object-cover">
+
+<SwissSpeechBubble v-click pinned image="https://github.com/mozumasu.png">
+  どの角度から見てもカワイー!!!
+</SwissSpeechBubble>
+
+---
+layout: section
+variant: red
+eyebrow: おまけ
+title: 待ち時間のお供に
+---
+
+〜3D プリンターを添えて〜
 
 ---
 ---
@@ -224,3 +240,11 @@ title: 完成！
     <figcaption class="mt-2 font-bold">磁石付きケース</figcaption>
   </figure>
 </div>
+
+---
+---
+
+# まとめ
+
+- 樹脂粘土はいいぞ
+- 3D プリンターはいいぞ
