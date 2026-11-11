@@ -1,0 +1,24 @@
+
+.prompts[data-v-2e971cc3] {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.prompts pre[data-v-2e971cc3] {
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--theme-radius-sm);
+  background: #1e1e2e;
+  color: #e5e7eb;
+  font-size: 0.8rem;
+}
+.prompts .dir[data-v-2e971cc3] { color: #60a5fa;
+}
+.prompts .git[data-v-2e971cc3] { color: #facc15;
+}
+.prompts .stg[data-v-2e971cc3] { color: #22d3ee;
+}
+.prompts .prod[data-v-2e971cc3] { color: #f87171; font-weight: 700;
+}
+.prompts .ok[data-v-2e971cc3] { color: #4ade80;
+}

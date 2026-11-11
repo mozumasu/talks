@@ -1,0 +1,33 @@
+
+.panes[data-v-6fc0e522] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.pane[data-v-6fc0e522] {
+  padding: 0.5rem 0.75rem;
+  border-top: 4px solid #0891b2;
+  border-radius: var(--theme-radius-sm);
+  background: #1e1e2e;
+  color: #e5e7eb;
+}
+.pane.is-prod[data-v-6fc0e522] {
+  border-top-color: var(--theme-red);
+}
+.pane-title[data-v-6fc0e522] {
+  margin: 0 0 0.25rem;
+  color: #9ca3af;
+  font-size: var(--theme-font-size-caption);
+}
+.pane pre[data-v-6fc0e522] {
+  margin: 0;
+  background: none;
+  color: inherit;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  white-space: pre;
+}
+.pane .cmd[data-v-6fc0e522] {
+  color: #86efac;
+}

@@ -1,0 +1,98 @@
+/* 強調 (*...*) は和文の斜体が崩れるので、斜体にせず赤の太字にする */
+.slidev-layout em {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Appendix から本編に戻るリンク。ページ番号の上の右下に置く */
+.back-link {
+  position: absolute;
+  right: 3.5rem;
+  bottom: 2.5rem;
+  font-size: var(--theme-font-size-caption);
+}
+
+/* 参考にしたドキュメントへのリンク。コピーライトの上に小さく置く */
+.refs {
+  position: absolute;
+  left: 3.5rem;
+  right: 3.5rem;
+  bottom: 2.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+
+.refs p {
+  margin: 0;
+}
+
+/* 長めのコードを 1 枚に収めるために小さくする */
+.code-sm {
+  --slidev-code-font-size: 0.6rem;
+  --slidev-code-line-height: 1.45;
+}
+
+/* 一目でターミナルと分かるよう、黒い画面とウィンドウの丸ボタンで描く */
+.term {
+  overflow: hidden;
+  border-radius: var(--theme-radius-md);
+  background: #1e1e2e;
+  box-shadow: var(--theme-shadow-card);
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  background: #2b2b3c;
+}
+
+.term-bar span {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.term-bar span:nth-child(2) {
+  background: #febc2e;
+}
+
+.term-bar span:nth-child(3) {
+  background: #28c840;
+}
+
+.term-bar em {
+  margin-left: 0.5rem;
+  color: #a6adc8;
+  font-size: var(--theme-font-size-caption);
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* 中のコードも黒い画面に合わせる。ライトのテーマのままだと読めないので、ダークのテーマの色を使う */
+.term {
+  --slidev-code-background: transparent;
+}
+
+.term .slidev-code,
+.term pre {
+  margin: 0;
+  background: transparent !important;
+}
+
+.term .slidev-code span {
+  color: var(--shiki-dark, #e5e7eb) !important;
+}
+
+
+/* 行ハイライトでほかの行を薄くせず、ハイライトした行に色を付ける (Shiki の [!code highlight] のような見た目) */
+.hl-soft .slidev-code .slidev-code-dishonored {
+  opacity: 1;
+}
+
+.hl-soft .slidev-code .slidev-code-highlighted {
+  background: rgba(255, 0, 0, 0.12);
+}

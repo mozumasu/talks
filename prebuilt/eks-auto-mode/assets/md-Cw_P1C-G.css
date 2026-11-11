@@ -1,0 +1,87 @@
+
+.fg[data-v-082a97f4] {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  color: var(--theme-text);
+}
+.fg .area[data-v-082a97f4] {
+  fill: var(--theme-gray-50);
+}
+.fg .area-label[data-v-082a97f4] {
+  fill: var(--theme-muted);
+  font-size: 15px;
+  font-weight: 700;
+}
+.fg .area-label.is-hl[data-v-082a97f4] {
+  fill: var(--theme-red);
+}
+.fg .node[data-v-082a97f4] {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.fg .vm[data-v-082a97f4] {
+  fill: #fff;
+  stroke: var(--theme-navy);
+  stroke-width: 2;
+}
+.fg .managed[data-v-082a97f4] {
+  fill: none;
+  stroke: var(--theme-red);
+  stroke-width: 2.5;
+  stroke-dasharray: 8 5;
+}
+.fg .managed-label[data-v-082a97f4] {
+  fill: var(--theme-red);
+  font-size: 13px;
+  font-weight: 700;
+  text-anchor: end;
+}
+.fg .box[data-v-082a97f4] {
+  fill: var(--theme-indigo);
+}
+.fg .box.is-pod[data-v-082a97f4] {
+  fill: var(--theme-red);
+}
+.fg .box-label[data-v-082a97f4] {
+  fill: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.fg .box-label.is-small[data-v-082a97f4] {
+  font-size: 12px;
+}
+.fg .sub-label[data-v-082a97f4] {
+  fill: var(--theme-muted);
+  font-size: 14px;
+  text-anchor: middle;
+}
+.fg-notes[data-v-082a97f4] {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-size: var(--theme-font-size-body);
+}
+.fg-notes dt[data-v-082a97f4] {
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.fg-notes dd[data-v-082a97f4] {
+  margin: 0;
+}
+.fg-ecs[data-v-082a97f4] {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+.fg-notes small[data-v-082a97f4] {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}

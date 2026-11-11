@@ -1,0 +1,71 @@
+
+.upgrade-grid[data-v-2ac4d4e9] {
+  display: grid;
+  grid-template-columns: 5.5rem repeat(4, 1fr);
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  text-align: center;
+}
+.col-head[data-v-2ac4d4e9] {
+  align-self: end;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid var(--theme-gray-300);
+  font-weight: 700;
+}
+.col-head small[data-v-2ac4d4e9],
+.row-head small[data-v-2ac4d4e9] {
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+  font-weight: 400;
+}
+.row-head[data-v-2ac4d4e9] {
+  align-self: center;
+  font-weight: 700;
+  text-align: left;
+}
+.row-head.is-hl[data-v-2ac4d4e9] {
+  color: var(--theme-red);
+}
+.cell[data-v-2ac4d4e9] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.3rem;
+  border-radius: var(--theme-radius-md);
+  line-height: 1.4;
+}
+
+/* 自分でやる作業は濃い色、AWS がやる作業は点線のグレーにして、手の離れる所を見比べる */
+.cell.is-self[data-v-2ac4d4e9] {
+  background: var(--theme-navy);
+  color: #fff;
+}
+.cell.is-aws[data-v-2ac4d4e9] {
+  border: 2px dashed var(--theme-red);
+  background: var(--theme-red-50);
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.legend[data-v-2ac4d4e9] {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.6rem 0 0.4rem;
+  font-size: var(--theme-font-size-caption);
+}
+.chip[data-v-2ac4d4e9] {
+  padding: 0.1rem 0.6rem;
+  border-radius: var(--theme-radius-pill);
+}
+.chip.is-self[data-v-2ac4d4e9] {
+  background: var(--theme-navy);
+  color: #fff;
+}
+.chip.is-aws[data-v-2ac4d4e9] {
+  border: 1px dashed var(--theme-red);
+  background: var(--theme-red-50);
+  color: var(--theme-red);
+}
+.legend-note[data-v-2ac4d4e9] {
+  color: var(--theme-muted);
+}

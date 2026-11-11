@@ -1,0 +1,102 @@
+
+.kp[data-v-d096be59] {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  color: var(--theme-text);
+}
+.kp .area[data-v-d096be59] {
+  fill: var(--theme-gray-50);
+}
+.kp .area-label[data-v-d096be59] {
+  fill: var(--theme-muted);
+  font-size: 15px;
+  font-weight: 700;
+}
+.kp .box[data-v-d096be59] {
+  fill: var(--theme-indigo);
+}
+.kp .box.is-pod[data-v-d096be59] {
+  fill: var(--theme-red);
+}
+
+/* まだ置き場所が決まっていない Pod は、赤の点線の枠だけで描く */
+.kp .box.is-pending[data-v-d096be59] {
+  fill: #fff;
+  stroke: var(--theme-red);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+.kp .box-label[data-v-d096be59] {
+  fill: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.kp .box-label.is-dark[data-v-d096be59] {
+  fill: var(--theme-red);
+  font-size: 14px;
+}
+.kp .node[data-v-d096be59] {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.kp .node.is-gone[data-v-d096be59] {
+  fill: var(--theme-gray-50);
+  stroke: var(--theme-gray-500);
+  stroke-dasharray: 6 4;
+}
+.kp .node-label[data-v-d096be59] {
+  fill: currentColor;
+  font-size: 14px;
+  font-weight: 700;
+}
+.kp .sub-label[data-v-d096be59] {
+  fill: var(--theme-muted);
+  font-size: 14px;
+  text-anchor: middle;
+}
+.kp .line[data-v-d096be59] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.kp .line.is-strong[data-v-d096be59] {
+  stroke: var(--theme-red);
+  stroke-width: 3;
+}
+.kp .line.is-dashed[data-v-d096be59] {
+  stroke: var(--theme-gray-500);
+  stroke-dasharray: 6 4;
+}
+.kp .line-label[data-v-d096be59] {
+  fill: currentColor;
+  font-size: 13px;
+  text-anchor: middle;
+}
+.kp .line-label.is-strong[data-v-d096be59] {
+  fill: var(--theme-red);
+  font-weight: 700;
+}
+.kp-notes[data-v-d096be59] {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-size: var(--theme-font-size-body);
+}
+.kp-notes dt[data-v-d096be59] {
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.kp-notes dd[data-v-d096be59] {
+  margin: 0;
+}
+.kp-notes small[data-v-d096be59] {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}

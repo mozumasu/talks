@@ -1,0 +1,40 @@
+
+.isolate[data-v-61e8e0de] { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.5rem; align-items: center;
+}
+.isolate-fig[data-v-61e8e0de] { display: block; width: 100%; color: var(--theme-text);
+}
+.isolate-fig .frame[data-v-61e8e0de] { fill: none; stroke: currentColor; stroke-width: 2;
+}
+.isolate-fig .frame-label[data-v-61e8e0de] { fill: currentColor; font-size: 15px; font-weight: 700;
+}
+/* 通信を止める壁。赤の太い点線で囲む */
+.isolate-fig .wall[data-v-61e8e0de] { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 3; stroke-dasharray: 8 5;
+}
+.isolate-fig .wall-label[data-v-61e8e0de] { fill: var(--theme-red); font-size: 14px; font-weight: 700; text-anchor: middle;
+}
+.isolate-fig .pod[data-v-61e8e0de] { fill: var(--theme-red);
+}
+.isolate-fig .pod.is-bad[data-v-61e8e0de] { fill: var(--theme-gray-700);
+}
+.isolate-fig .pod.is-new[data-v-61e8e0de] { fill: #fff; stroke: var(--theme-red); stroke-width: 2.5; stroke-dasharray: 6 4;
+}
+.isolate-fig .pod-label[data-v-61e8e0de] { fill: #fff; font-size: 16px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.isolate-fig .pod-label.is-dark[data-v-61e8e0de] { fill: var(--theme-red);
+}
+.isolate-fig .line[data-v-61e8e0de] { fill: none; stroke: var(--theme-gray-500); stroke-width: 2; stroke-dasharray: 6 4;
+}
+.isolate-fig .cross[data-v-61e8e0de] { fill: var(--theme-red); font-size: 22px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.isolate-fig .note[data-v-61e8e0de] { fill: var(--theme-muted); font-size: 14px; text-anchor: middle;
+}
+.np-link[data-v-61e8e0de] { display: block; font-size: var(--theme-font-size-caption);
+}
+.isolate-notes[data-v-61e8e0de] { margin: 0; font-size: var(--theme-font-size-body);
+}
+.isolate-notes dt[data-v-61e8e0de] { color: var(--theme-red); font-weight: 700;
+}
+.isolate-notes dd[data-v-61e8e0de] { margin: 0 0 0.6rem;
+}
+.isolate-notes small[data-v-61e8e0de] { display: block; margin-top: 0.25rem; color: var(--theme-muted); font-size: var(--theme-font-size-caption);
+}

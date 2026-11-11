@@ -1,0 +1,52 @@
+
+.cni-flow[data-v-4df0a2d1] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0.75rem;
+  font-size: var(--theme-font-size-body);
+}
+.cni-box[data-v-4df0a2d1] {
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--theme-radius-md);
+  background: var(--theme-indigo);
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.cni-box.is-hl[data-v-4df0a2d1] {
+  background: var(--theme-blue);
+  color: var(--theme-navy);
+}
+.cni-box.is-pod[data-v-4df0a2d1] {
+  background: var(--theme-red);
+}
+
+/* 線の上にラベルを載せた右向きの矢印 */
+.cni-arrow[data-v-4df0a2d1] {
+  position: relative;
+  min-width: 3.5rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid currentColor;
+  font-size: var(--theme-font-size-caption);
+  text-align: center;
+}
+.cni-arrow[data-v-4df0a2d1]::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  bottom: -6px;
+  border: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}
+.cni-arrow.is-hl[data-v-4df0a2d1] {
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.cni-table[data-v-4df0a2d1] {
+  font-size: 0.75em;
+}
+.cni-table td[data-v-4df0a2d1]:first-child {
+  white-space: nowrap;
+}
