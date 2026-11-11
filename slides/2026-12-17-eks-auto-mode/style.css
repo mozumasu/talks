@@ -1,0 +1,55 @@
+/* 強調 (*...*) は和文の斜体が崩れるので、斜体にせず赤の太字にする */
+.slidev-layout em {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* 参考にしたドキュメントへのリンク。コピーライトの上に小さく置く */
+.refs {
+  position: absolute;
+  left: 3.5rem;
+  right: 3.5rem;
+  bottom: 2.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+
+.refs p {
+  margin: 0;
+}
+
+/* 別の発表のデッキへのリンク。表紙のサムネイルを付ける */
+.talk-card {
+  display: block;
+  color: var(--theme-text);
+  font-size: var(--theme-font-size-caption);
+  text-decoration: none;
+}
+
+.talk-card img {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.4rem;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-sm);
+  box-shadow: var(--theme-shadow-card);
+}
+
+.talk-card span {
+  color: var(--theme-red);
+}
+
+/* Appendix から本編に戻るリンク。参考リンクと重ならないよう右下に置く */
+.back-link {
+  position: absolute;
+  right: 3.5rem;
+  bottom: 2.25rem;
+  font-size: var(--theme-font-size-caption);
+}
+
+/* 長めのコードを 1 枚に収めるために小さくする */
+.code-sm {
+  --slidev-code-font-size: 0.6rem;
+  --slidev-code-line-height: 1.45;
+}
