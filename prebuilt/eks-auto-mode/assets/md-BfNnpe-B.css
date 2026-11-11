@@ -1,0 +1,11 @@
+
+.addon-table[data-v-862c1bb9] {
+  font-size: 0.7em;
+}
+.addon-table td[data-v-862c1bb9]:first-child {
+  white-space: nowrap;
+}
+.addon-table td[data-v-862c1bb9]:last-child,
+.addon-table th[data-v-862c1bb9]:last-child {
+  background: var(--theme-red-50);
+}

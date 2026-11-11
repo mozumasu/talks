@@ -1,0 +1,31 @@
+
+.addon-fig[data-v-a6142396] { display: block; width: 82%; margin: 0 auto; color: var(--theme-text);
+}
+.addon-fig .frame[data-v-a6142396] { fill: none; stroke: currentColor; stroke-width: 2;
+}
+.addon-fig .frame-label[data-v-a6142396] { fill: currentColor; font-size: 14px; font-weight: 700;
+}
+.addon-fig .node[data-v-a6142396] { fill: var(--theme-gray-50); stroke: currentColor; stroke-width: 2;
+}
+.addon-fig .node-label[data-v-a6142396] { fill: currentColor; font-size: 13px; font-weight: 700;
+}
+.addon-fig .pod[data-v-a6142396] { fill: var(--theme-red);
+}
+.addon-fig .pod-label[data-v-a6142396] { fill: #fff; font-size: 14px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.addon-fig .vol[data-v-a6142396],
+.addon-fig .alb[data-v-a6142396] { fill: #fff; stroke: var(--theme-gray-500); stroke-width: 2;
+}
+.addon-fig .box-label[data-v-a6142396] { fill: currentColor; font-size: 13px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.addon-fig .link[data-v-a6142396] { stroke: var(--theme-gray-500); stroke-width: 2;
+}
+/* アドオンは赤の点線の枠。何をするかを 2 行目に書く */
+.addon-fig .chip[data-v-a6142396] { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 5 3;
+}
+.addon-fig .chip-name[data-v-a6142396] { fill: var(--theme-red); font-size: 13px; font-weight: 700; text-anchor: middle;
+}
+.addon-fig .chip-role[data-v-a6142396] { fill: var(--theme-muted); font-size: 10.5px; text-anchor: middle;
+}
+.addon-fig .arrow[data-v-a6142396] { fill: none; stroke: var(--theme-red); stroke-width: 2;
+}

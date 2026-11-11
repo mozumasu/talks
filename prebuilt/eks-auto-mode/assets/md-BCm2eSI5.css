@@ -1,0 +1,28 @@
+
+.solve[data-v-39b7a264] {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.25rem;
+  font-size: 0.78rem;
+}
+.solve-col ul[data-v-39b7a264] {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.solve-col li[data-v-39b7a264] {
+  margin-bottom: 0.35rem;
+}
+.solve-head[data-v-39b7a264] {
+  margin: 0 0 0.5rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--theme-radius-sm);
+  font-weight: 700;
+}
+.solve-head.is-yes[data-v-39b7a264] {
+  background: var(--theme-red);
+  color: #fff;
+}
+.solve-head.is-no[data-v-39b7a264] {
+  background: var(--theme-gray-100);
+  color: var(--theme-text);
+}

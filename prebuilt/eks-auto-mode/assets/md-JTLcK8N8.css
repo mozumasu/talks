@@ -1,0 +1,174 @@
+
+.pp-typewriter[data-v-79c976ef] {
+  --tw-caret-width: 0.07em;
+  --tw-caret-blink: 1s;
+  /* caret="typing" で、打ち終えてからカーソルを消すまでの時間 */
+  --tw-caret-linger: 0.4s;
+}
+
+/* 読み上げ用の全文 (見た目の文字は 1 文字ずつの span なので aria-hidden にしている) */
+.pp-typewriter-sr[data-v-79c976ef] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.pp-typewriter-char[data-v-79c976ef] {
+  position: relative;
+}
+
+/* 出現時刻までは隠す (場所は取ったまま)。打ち終えた状態 (印刷・アニメーションなし) がそのまま最終形。
+   fill-mode で表示状態を保つ書き方は Chrome で表示に戻らない文字が出たため、
+   fill なしで「出現時刻まで隠す」アニメーションにして、終われば素の状態 (表示) に戻す */
+.is-animated .pp-typewriter-char[data-v-79c976ef] {
+  animation: tw-type-79c976ef var(--tw-at) linear;
+}
+.slidev-vclick-hidden,.slidev-vclick-hidden {
+  animation: none;
+}
+@keyframes tw-type-79c976ef {
+from,
+  to {
+    visibility: hidden;
+}
+}
+
+/* カーソル。各文字の右に「次の文字が出るまで」だけ出し、最後の文字では点滅を続ける。
+   打ち始める前は 1 文字目の左に出す */
+.has-caret.is-animated .pp-typewriter-char[data-v-79c976ef]::after,
+.has-caret.is-animated .pp-typewriter-char[data-v-79c976ef]:nth-child(2)::before {
+  content: '';
+  position: absolute;
+  top: 0.12em;
+  bottom: 0.08em;
+  width: var(--tw-caret-width);
+  background: currentColor;
+  /* 文字と同じく visibility で出し入れする (opacity だと合成スレッドで先走り、文字とずれることがある) */
+  visibility: hidden;
+  pointer-events: none;
+}
+.has-caret.is-animated .pp-typewriter-char[data-v-79c976ef]::after {
+  right: calc(var(--tw-caret-width) * -1.5);
+  animation: tw-caret-on-79c976ef var(--tw-hold) linear var(--tw-at);
+}
+.has-caret.is-animated .pp-typewriter-char.is-last[data-v-79c976ef]::after {
+  animation: tw-caret-blink-79c976ef var(--tw-caret-blink) step-end var(--tw-at) infinite;
+}
+
+/* caret="typing": 最後の文字でも点滅させず、少し置いてから消す */
+.has-caret.is-caret-typing.is-animated .pp-typewriter-char.is-last[data-v-79c976ef]::after {
+  animation: tw-caret-on-79c976ef var(--tw-caret-linger) linear var(--tw-at);
+}
+.has-caret.is-animated .pp-typewriter-char[data-v-79c976ef]:nth-child(2)::before {
+  left: calc(var(--tw-caret-width) * -1.5);
+  animation: tw-caret-on-79c976ef var(--tw-delay) linear;
+}
+.slidev-vclick-hidden,.slidev-vclick-hidden,.slidev-vclick-hidden,.slidev-vclick-hidden {
+  animation: none;
+}
+
+/* 1 文字目が隠れている間 (打ち始め前) も visible を明示すれば親を無視して出せる */
+@keyframes tw-caret-on-79c976ef {
+from,
+  to {
+    visibility: visible;
+}
+}
+@keyframes tw-caret-blink-79c976ef {
+0% {
+    visibility: visible;
+}
+50% {
+    visibility: hidden;
+}
+}
+@media (prefers-reduced-motion: reduce) {
+.is-animated .pp-typewriter-char[data-v-79c976ef],
+  .has-caret.is-animated .pp-typewriter-char[data-v-79c976ef]::after,
+  .has-caret.is-animated .pp-typewriter-char[data-v-79c976ef]::before {
+    animation: none;
+}
+}
+
+.end[data-v-ef15ec6c] {
+  position: relative;
+  padding: 0;
+  font-weight: var(--theme-font-weight-regular);
+}
+
+/* ブラウザのアドレスバー風の帯 */
+.pp-end-browserbar[data-v-ef15ec6c] {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+  height: 4rem;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--theme-border);
+}
+.pp-end-nav[data-v-ef15ec6c] {
+  display: flex;
+  gap: 0.35rem;
+  color: var(--theme-red);
+  font-size: 1.1rem;
+}
+.pp-end-nav span[data-v-ef15ec6c]:first-child {
+  opacity: 0.35;
+}
+.pp-end-address[data-v-ef15ec6c] {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 36.5rem;
+  height: 2.15rem;
+  padding: 0 1.1rem;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-gray-50);
+  font-size: 0.95rem;
+}
+.pp-end-body[data-v-ef15ec6c] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8rem;
+}
+
+/* 検索ボックス風の枠 */
+.pp-end-search[data-v-ef15ec6c] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 36.5rem;
+  height: 2.9rem;
+  margin-top: 2.2rem;
+  padding: 0 2.6rem 0 1.4rem;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-background);
+  box-shadow: var(--theme-shadow-float);
+}
+.pp-end-search-icon[data-v-ef15ec6c] {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: var(--theme-gray-400);
+}
+.pp-end-message[data-v-ef15ec6c] {
+  flex: 1;
+  font-size: 1rem;
+}
+.pp-end-button[data-v-ef15ec6c] {
+  padding: 0.2rem 1.1rem;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-red);
+  color: var(--theme-background);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+.pp-end-cursor[data-v-ef15ec6c] {
+  position: absolute;
+  right: 1.1rem;
+  bottom: -0.9rem;
+  width: 1.15rem;
+  color: var(--theme-black);
+}

@@ -1,0 +1,21 @@
+
+.todo-grid[data-v-13c0a9d4] {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
+  font-size: 0.7rem;
+}
+.todo[data-v-13c0a9d4] {
+  padding: 0.35rem 0.55rem;
+  border-top: 3px solid var(--theme-red);
+  background: var(--theme-gray-50);
+}
+.todo p[data-v-13c0a9d4] {
+  margin: 0;
+  line-height: 1.45;
+}
+.todo .todo-title[data-v-13c0a9d4] {
+  margin-bottom: 0.15rem;
+  color: var(--theme-red);
+  font-weight: 700;
+}

@@ -1,0 +1,11 @@
+
+.np-note[data-v-86f5c17f] {
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+.np[data-v-86f5c17f] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  font-size: var(--theme-font-size-body);
+}

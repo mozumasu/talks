@@ -1,0 +1,36 @@
+
+.split[data-v-f579218b] { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: center;
+}
+.split-fig[data-v-f579218b] { display: block; width: 100%; color: var(--theme-text);
+}
+.split-fig .col-label[data-v-f579218b] { fill: currentColor; font-size: 15px; font-weight: 700; text-anchor: middle;
+}
+.split-fig .node[data-v-f579218b] { fill: var(--theme-gray-50); stroke: currentColor; stroke-width: 2;
+}
+.split-fig .node-label[data-v-f579218b] { fill: currentColor; font-size: 12px; font-weight: 700;
+}
+.split-fig .pod[data-v-f579218b] { fill: var(--theme-red);
+}
+.split-fig .pod.is-bad[data-v-f579218b] { fill: var(--theme-gray-700);
+}
+.split-fig .pod-label[data-v-f579218b] { fill: #fff; font-size: 12px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+/* 抜け出した攻撃の向き。赤の太線 */
+.split-fig .attack[data-v-f579218b] { fill: none; stroke: var(--theme-red); stroke-width: 3;
+}
+.split-fig .cross[data-v-f579218b] { fill: var(--theme-red); font-size: 22px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.split-fig .note[data-v-f579218b] { fill: var(--theme-muted); font-size: 13px; text-anchor: middle;
+}
+.split-fig .note.is-bad[data-v-f579218b] { fill: var(--theme-red); font-weight: 700;
+}
+.split-notes[data-v-f579218b] { margin: 0;
+}
+.split-notes dt[data-v-f579218b] { color: var(--theme-red); font-weight: 700;
+}
+.split-notes dd[data-v-f579218b] { margin: 0 0 0.6rem;
+}
+.split-notes small[data-v-f579218b] { display: block; margin-top: 0.25rem; color: var(--theme-muted); font-size: var(--theme-font-size-caption);
+}
+.split-link[data-v-f579218b] { display: block; font-size: var(--theme-font-size-caption);
+}

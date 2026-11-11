@@ -1,0 +1,22 @@
+
+.pain-grid[data-v-c5a24e94] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.72rem;
+}
+.pain[data-v-c5a24e94] {
+  padding: 0.4rem 0.75rem;
+  border-left: 4px solid var(--theme-red);
+  background: var(--theme-gray-50);
+}
+.pain-title[data-v-c5a24e94] {
+  margin: 0 0 0.2rem;
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.pain ul[data-v-c5a24e94] {
+  margin: 0;
+  padding-left: 1.1rem;
+}

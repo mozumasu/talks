@@ -1,0 +1,11 @@
+
+.tradeoff-table[data-v-4d3ecd70] {
+  font-size: 0.8em;
+}
+.tradeoff-table td[data-v-4d3ecd70]:first-child {
+  white-space: nowrap;
+}
+.tradeoff-table td[data-v-4d3ecd70]:last-child,
+.tradeoff-table th[data-v-4d3ecd70]:last-child {
+  background: var(--theme-red-50);
+}

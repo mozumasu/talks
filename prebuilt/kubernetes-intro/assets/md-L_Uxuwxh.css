@@ -1,0 +1,64 @@
+
+.cri-why[data-v-e2436ca8] {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  color: var(--theme-text);
+}
+.cri-why .area[data-v-e2436ca8] {
+  fill: var(--theme-gray-50);
+}
+.cri-why .area-label[data-v-e2436ca8] {
+  fill: var(--theme-muted);
+  font-size: 15px;
+  font-weight: 700;
+}
+.cri-why .box[data-v-e2436ca8] {
+  fill: var(--theme-indigo);
+}
+.cri-why .box.is-light[data-v-e2436ca8] {
+  fill: var(--theme-blue);
+}
+.cri-why .box.is-pod[data-v-e2436ca8] {
+  fill: var(--theme-red);
+}
+.cri-why .box-label[data-v-e2436ca8] {
+  fill: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.cri-why .box-label.is-dark[data-v-e2436ca8] {
+  fill: var(--theme-navy);
+}
+.cri-why .box-label.is-small[data-v-e2436ca8] {
+  font-size: 14px;
+}
+.cri-why .sub-label[data-v-e2436ca8] {
+  fill: var(--theme-muted);
+  font-size: 14px;
+  text-anchor: middle;
+}
+.cri-why .line[data-v-e2436ca8] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.cri-why .line.is-cri[data-v-e2436ca8] {
+  stroke: var(--theme-red);
+  stroke-width: 3;
+}
+.cri-why .line-label[data-v-e2436ca8] {
+  fill: currentColor;
+  font-size: 15px;
+  text-anchor: middle;
+}
+.cri-why .line-label.is-cri[data-v-e2436ca8] {
+  fill: var(--theme-red);
+  font-size: 18px;
+  font-weight: 700;
+}
+.cri-why .line-label.is-small[data-v-e2436ca8] {
+  font-size: 13px;
+}

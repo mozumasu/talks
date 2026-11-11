@@ -1,0 +1,44 @@
+
+.before[data-v-6da09647] {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+.before-arch[data-v-6da09647] { display: block; width: 100%; color: var(--theme-text);
+}
+.before-arch .frame[data-v-6da09647] { fill: none; stroke: currentColor; stroke-width: 2;
+}
+.before-arch .frame-label[data-v-6da09647] { fill: currentColor; font-size: 16px; font-weight: 700; text-anchor: middle;
+}
+.before-arch .managed[data-v-6da09647] { fill: var(--theme-gray-100); stroke: var(--theme-gray-500); stroke-dasharray: 6 4;
+}
+.before-arch .managed-label[data-v-6da09647] { fill: var(--theme-muted); font-size: 14px; font-weight: 700; text-anchor: middle;
+}
+.before-arch .managed-sub[data-v-6da09647] { fill: var(--theme-gray-700); font-size: 13px; font-weight: 700; text-anchor: middle;
+}
+.before-arch .dp-label[data-v-6da09647] { fill: currentColor; font-size: 14px; font-weight: 700; text-anchor: middle;
+}
+/* Fargate プロファイル。Pod は Pod ごとの VM なので点線の箱で描く */
+.before-arch .profile[data-v-6da09647] { fill: #fff; stroke: var(--theme-navy); stroke-width: 1.5; stroke-dasharray: 5 3;
+}
+.before-arch .profile-label[data-v-6da09647] { fill: var(--theme-navy); font-size: 11px; font-weight: 700; text-anchor: middle;
+}
+.before-arch .pod[data-v-6da09647] { fill: var(--theme-red);
+}
+.before-arch .pod-label[data-v-6da09647] { fill: #fff; font-size: 13px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.before-arch .sidecar[data-v-6da09647] { fill: var(--theme-gray-100); stroke: var(--theme-gray-500);
+}
+.before-arch .sidecar-label[data-v-6da09647] { fill: var(--theme-gray-700); font-size: 11px; text-anchor: middle; dominant-baseline: central;
+}
+.before-arch .legend[data-v-6da09647] { fill: var(--theme-muted); font-size: 11px; text-anchor: middle;
+}
+.issues[data-v-6da09647] { margin: 0; font-size: var(--theme-font-size-body);
+}
+.issues dt[data-v-6da09647] { color: var(--theme-red); font-weight: 700;
+}
+.issues dd[data-v-6da09647] { margin: 0 0 0.6rem;
+}
+.issues small[data-v-6da09647] { display: block; margin-top: 0.25rem; color: var(--theme-muted); font-size: var(--theme-font-size-caption);
+}

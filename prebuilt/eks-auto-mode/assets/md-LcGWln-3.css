@@ -1,0 +1,32 @@
+
+.evict-fig[data-v-31c9dc6f] { display: block; width: 68%; margin: -0.5rem auto 0; color: var(--theme-text);
+}
+.evict-fig .row-label[data-v-31c9dc6f] { fill: currentColor; font-size: 15px; font-weight: 700;
+}
+.evict-fig .row-sub[data-v-31c9dc6f] { fill: var(--theme-muted); font-size: 13px;
+}
+.evict-fig .bar.is-old[data-v-31c9dc6f] { fill: var(--theme-gray-700);
+}
+.evict-fig .bar.is-new[data-v-31c9dc6f] { fill: var(--theme-red);
+}
+/* 起動中はまだリクエストを受けられないので、点線の枠だけにする */
+.evict-fig .bar.is-start[data-v-31c9dc6f] { fill: #fff; stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 5 3;
+}
+.evict-fig .gap[data-v-31c9dc6f] { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 6 4;
+}
+.evict-fig .gap-label[data-v-31c9dc6f] { fill: var(--theme-red); font-size: 14px; font-weight: 700; text-anchor: middle;
+}
+.evict-fig .axis[data-v-31c9dc6f] { stroke: var(--theme-gray-500); stroke-width: 1.5;
+}
+.evict-fig .axis-label[data-v-31c9dc6f] { fill: var(--theme-muted); font-size: 13px; text-anchor: end;
+}
+.legend[data-v-31c9dc6f] { display: flex; gap: 0.6rem; justify-content: center; margin: 0.2rem 0 0.4rem; font-size: var(--theme-font-size-caption);
+}
+.legend .chip[data-v-31c9dc6f] { padding: 0.1rem 0.6rem; border-radius: 999px;
+}
+.legend .chip.is-old[data-v-31c9dc6f] { background: var(--theme-gray-700); color: #fff;
+}
+.legend .chip.is-start[data-v-31c9dc6f] { border: 2px dashed var(--theme-red); color: var(--theme-red);
+}
+.legend .chip.is-new[data-v-31c9dc6f] { background: var(--theme-red); color: #fff;
+}

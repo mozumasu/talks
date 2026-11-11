@@ -1,0 +1,53 @@
+
+.cri-table[data-v-06ba466f] {
+  font-size: 0.8em;
+}
+.cri-table td[data-v-06ba466f]:first-child,
+.cri-table td[data-v-06ba466f]:last-child {
+  white-space: nowrap;
+}
+.cri-flow[data-v-06ba466f] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+.cri-box[data-v-06ba466f] {
+  padding: 0.6rem 1rem;
+  border-radius: var(--theme-radius-md);
+  background: var(--theme-indigo);
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.cri-box.is-light[data-v-06ba466f] {
+  background: var(--theme-blue);
+  color: var(--theme-navy);
+}
+.cri-box.is-pod[data-v-06ba466f] {
+  background: var(--theme-red);
+}
+
+/* 線の上にラベルを載せた右向きの矢印 */
+.cri-arrow[data-v-06ba466f] {
+  position: relative;
+  min-width: 4.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid currentColor;
+  font-size: var(--theme-font-size-caption);
+  text-align: center;
+}
+.cri-arrow[data-v-06ba466f]::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  bottom: -6px;
+  border: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}
+.cri-arrow.is-cri[data-v-06ba466f] {
+  min-width: 6.5rem;
+  color: var(--theme-red);
+  font-weight: 700;
+}

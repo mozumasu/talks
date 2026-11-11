@@ -1,0 +1,73 @@
+
+.sock[data-v-3ffd97a6] {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  color: var(--theme-text);
+}
+.sock .area[data-v-3ffd97a6] {
+  fill: var(--theme-gray-50);
+}
+.sock .area-label[data-v-3ffd97a6] {
+  fill: var(--theme-muted);
+  font-size: 15px;
+  font-weight: 700;
+}
+.sock .box[data-v-3ffd97a6] {
+  fill: var(--theme-indigo);
+}
+.sock .box.is-outside[data-v-3ffd97a6] {
+  fill: var(--theme-gray-100);
+}
+.sock .box-label[data-v-3ffd97a6] {
+  fill: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.sock .box-label.is-dark[data-v-3ffd97a6] {
+  fill: var(--theme-text);
+}
+.sock .file[data-v-3ffd97a6] {
+  fill: #fff;
+  stroke: var(--theme-red);
+  stroke-width: 3;
+}
+.sock .file-fold[data-v-3ffd97a6] {
+  fill: none;
+  stroke: var(--theme-red);
+  stroke-width: 3;
+}
+.sock .file-label[data-v-3ffd97a6] {
+  fill: var(--theme-red);
+  font-size: 20px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.sock .sub-label[data-v-3ffd97a6] {
+  fill: var(--theme-muted);
+  font-size: 14px;
+  text-anchor: middle;
+}
+.sock .line[data-v-3ffd97a6] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.sock .line.is-cri[data-v-3ffd97a6] {
+  stroke: var(--theme-red);
+  stroke-width: 3;
+}
+.sock .line.is-blocked[data-v-3ffd97a6] {
+  stroke: var(--theme-gray-500);
+  stroke-dasharray: 6 5;
+}
+.sock .blocked-mark[data-v-3ffd97a6] {
+  fill: var(--theme-red);
+  font-size: 26px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}

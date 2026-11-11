@@ -1,0 +1,25 @@
+
+.slidev-code-magic-move .shiki-magic-move-enter-from,
+.slidev-code-magic-move .shiki-magic-move-leave-to {
+  opacity: 0;
+}
+
+.kc-cols[data-v-3fae06e5] {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 1.25rem;
+}
+.kc-label[data-v-3fae06e5] {
+  margin: 0 0 0.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+.warn[data-v-3fae06e5] {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  border-left: 4px solid var(--theme-red);
+  background: var(--theme-red-50);
+}
+.warn p[data-v-3fae06e5] {
+  margin: 0;
+}

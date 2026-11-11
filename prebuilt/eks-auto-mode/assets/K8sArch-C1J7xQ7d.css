@@ -1,0 +1,238 @@
+
+.k8s-arch[data-v-5410c0ea] {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 22rem;
+}
+.k8s-arch svg[data-v-5410c0ea] {
+  flex: none;
+  height: 100%;
+  color: var(--theme-text);
+  font-family: inherit;
+}
+.k8s-notes[data-v-5410c0ea] {
+  flex: 1;
+  font-size: var(--theme-font-size-body);
+}
+.k8s-notes dt[data-v-5410c0ea-s] {
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.k8s-notes dd[data-v-5410c0ea-s] {
+  margin: 0 0 1rem;
+}
+
+/* 補足は小さいグレーの文字にする */
+.k8s-notes small[data-v-5410c0ea-s] {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+.frame[data-v-5410c0ea] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+.frame-label[data-v-5410c0ea] {
+  fill: currentColor;
+  font-size: 24px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.frame-label.is-cluster[data-v-5410c0ea] {
+  font-size: 28px;
+}
+.frame-label.is-node[data-v-5410c0ea] {
+  font-size: 22px;
+  font-weight: 600;
+}
+.box[data-v-5410c0ea] {
+  fill: var(--theme-indigo);
+}
+.box.is-light[data-v-5410c0ea] {
+  fill: var(--theme-blue);
+}
+.box.is-pod[data-v-5410c0ea] {
+  fill: var(--theme-red);
+}
+.box.is-cri[data-v-5410c0ea] {
+  fill: var(--theme-navy);
+}
+.box-label[data-v-5410c0ea] {
+  fill: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.box-label.is-dark[data-v-5410c0ea] {
+  fill: var(--theme-navy);
+}
+.box-label.is-small[data-v-5410c0ea] {
+  font-size: 18px;
+}
+
+/* EKS で AWS が管理する範囲。色を抜いてグレーにし、手の届かないものとして薄く見せる */
+.desaturate[data-v-5410c0ea] {
+  fill: #808080;
+  mix-blend-mode: saturation;
+}
+.managed[data-v-5410c0ea] {
+  fill: rgba(217, 217, 217, 0.85);
+  stroke: var(--theme-gray-500);
+  stroke-width: 3;
+  stroke-dasharray: 10 6;
+}
+.owner-label[data-v-5410c0ea] {
+  fill: var(--theme-gray-700);
+  font-size: 32px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.owner-label.is-self[data-v-5410c0ea] {
+  fill: var(--theme-navy);
+  font-size: 20px;
+}
+.owner-sub[data-v-5410c0ea] {
+  fill: var(--theme-muted);
+  font-size: 17px;
+  text-anchor: middle;
+}
+
+/* Karpenter が EC2 を起動して Node を足す流れ */
+.fargate-node[data-v-5410c0ea] {
+  fill: var(--theme-red-50);
+  stroke: var(--theme-red);
+  stroke-width: 3;
+  stroke-dasharray: 5 4;
+}
+.callout[data-v-5410c0ea] {
+  fill: var(--theme-red);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Fargate の VM。AWS 側にあって見えないので点線で描く */
+.fargate-vm[data-v-5410c0ea] {
+  fill: #fff;
+  stroke: var(--theme-navy);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+.fargate-vm-label[data-v-5410c0ea] {
+  fill: var(--theme-navy);
+  font-size: 15px;
+  font-weight: 700;
+}
+.fargate-system[data-v-5410c0ea] {
+  fill: var(--theme-gray-100);
+  stroke: var(--theme-gray-500);
+  stroke-dasharray: 5 3;
+}
+
+/* Auto Mode で AWS が動かす標準のアドオンの帯 */
+.managed-band[data-v-5410c0ea] {
+  fill: var(--theme-gray-100);
+  stroke: var(--theme-gray-500);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+.band-label[data-v-5410c0ea] {
+  fill: var(--theme-gray-700);
+  font-size: 15px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.fargate-label[data-v-5410c0ea] {
+  fill: var(--theme-navy);
+  font-size: 15px;
+  font-weight: 700;
+  dominant-baseline: central;
+}
+.line.is-karpenter[data-v-5410c0ea] {
+  stroke: var(--theme-red);
+  stroke-dasharray: 8 5;
+}
+.new-node[data-v-5410c0ea] {
+  fill: #fff;
+  stroke: var(--theme-red);
+  stroke-width: 3;
+  stroke-dasharray: 8 5;
+}
+.new-node-label[data-v-5410c0ea] {
+  fill: var(--theme-red);
+  font-size: 20px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.new-node-label.is-sub[data-v-5410c0ea] {
+  font-size: 16px;
+  font-weight: 400;
+}
+.karpenter-label[data-v-5410c0ea] {
+  fill: var(--theme-red);
+  font-size: 16px;
+  font-weight: 700;
+}
+.karpenter-label.is-small[data-v-5410c0ea] {
+  font-size: 14px;
+  text-anchor: middle;
+}
+
+/* 枠に収まらない長いラベル */
+.box-label.is-compact[data-v-5410c0ea] {
+  font-size: 17px;
+}
+.runtime[data-v-5410c0ea] {
+  fill: none;
+  stroke: var(--theme-gray-500);
+  stroke-width: 2;
+}
+.line[data-v-5410c0ea] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.line.is-dashed[data-v-5410c0ea] {
+  stroke-dasharray: 6 5;
+}
+.cloud[data-v-5410c0ea] {
+  fill: var(--theme-blue);
+}
+.is-new[data-v-5410c0ea] {
+  opacity: 0;
+  transition: opacity 0.6s var(--theme-ease-out);
+}
+.is-new.is-active[data-v-5410c0ea] {
+  opacity: 1;
+}
+.is-new .frame[data-v-5410c0ea] {
+  stroke: var(--theme-red);
+  stroke-width: 4;
+}
+.is-new .runtime[data-v-5410c0ea] {
+  stroke: var(--theme-red);
+  stroke-width: 4;
+}
+.is-new .frame-label[data-v-5410c0ea] {
+  fill: var(--theme-red);
+}
+
+/* 塗りの部品は外側に赤い縁取りを付ける */
+.is-new .box[data-v-5410c0ea],
+.is-new .cloud[data-v-5410c0ea] {
+  stroke: var(--theme-red);
+  stroke-width: 8;
+  paint-order: stroke;
+}
+
+/* Pod は赤いので縁取りを黒にする */
+.is-new .box.is-pod[data-v-5410c0ea] {
+  stroke: var(--theme-text);
+}
+.is-new .line[data-v-5410c0ea] {
+  stroke: var(--theme-red);
+}

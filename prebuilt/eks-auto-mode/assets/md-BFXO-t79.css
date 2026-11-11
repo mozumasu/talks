@@ -1,0 +1,19 @@
+
+.choose-link[data-v-8dfe27d7] {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--theme-font-size-caption);
+}
+.choose-table[data-v-8dfe27d7] {
+  font-size: 0.66em;
+}
+.choose-table td[data-v-8dfe27d7]:first-child {
+  white-space: nowrap;
+}
+
+/* 選んだ Auto Mode の列を目立たせる */
+.choose-table td[data-v-8dfe27d7]:last-child,
+.choose-table th[data-v-8dfe27d7]:last-child {
+  background: var(--theme-red-50);
+  font-weight: 700;
+}

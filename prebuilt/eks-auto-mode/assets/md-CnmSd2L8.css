@@ -1,0 +1,28 @@
+
+.cp-table[data-v-ebc12b74] {
+  font-size: 0.85em;
+}
+.lifecycle[data-v-ebc12b74] {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.6fr;
+  margin-top: 0.75rem;
+  font-size: var(--theme-font-size-body);
+  text-align: center;
+}
+.lifecycle .phase[data-v-ebc12b74] {
+  padding: 0.4rem 0.5rem;
+  background: var(--theme-gray-50);
+  border-right: 2px solid #fff;
+}
+.lifecycle .phase.is-ext[data-v-ebc12b74] {
+  background: var(--theme-gray-100);
+}
+.lifecycle .phase.is-auto[data-v-ebc12b74] {
+  background: var(--theme-red-50);
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.lifecycle small[data-v-ebc12b74] {
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
