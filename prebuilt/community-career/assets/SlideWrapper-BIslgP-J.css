@@ -1,0 +1,196 @@
+
+.slidev-slide-container[data-v-923208b2] {
+  position:relative;width:100%;height:100%;overflow:hidden;
+}
+.slidev-slide-content[data-v-923208b2] {
+  --slidev-slide-container-scale: var(--slidev-slide-scale);
+  transform: translate(-50%, -50%) scale(var(--slidev-slide-scale));
+  position:absolute;left:50%;top:50%;overflow:hidden;--un-bg-opacity:1;background-color:rgb(255 255 255 / var(--un-bg-opacity));
+}.dark .slidev-slide-content[data-v-923208b2]{--un-bg-opacity:1;background-color:rgb(18 18 18 / var(--un-bg-opacity));}
+
+/* 右端の細い透明帯が当たり判定。パネルはその子なので、引き出した後に
+   パネル上へカーソルが移っても :hover が切れない */
+.swiss-toc-drawer[data-v-cd8de563] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  z-index: 100;
+  color: var(--swiss-ink);
+  font-family: var(--swiss-font-body);
+}
+
+/* ドロワーがあることを控えめに示す赤い縦棒 */
+.swiss-toc-drawer__grip[data-v-cd8de563] {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 3px;
+  height: 48px;
+  transform: translateY(-50%);
+  background: var(--swiss-red);
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+.swiss-toc-drawer:hover .swiss-toc-drawer__grip[data-v-cd8de563],
+.swiss-toc-drawer:focus-within .swiss-toc-drawer__grip[data-v-cd8de563] {
+  opacity: 0;
+}
+
+/* パネルは紙の地に、上端の太い墨の罫線と左端の細い罫線 */
+.swiss-toc-drawer__panel[data-v-cd8de563] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  padding: 28px 28px 40px;
+  overflow-y: auto;
+  background: var(--swiss-paper);
+  border-top: 6px solid var(--swiss-ink);
+  border-left: 1px solid var(--swiss-ink);
+  transform: translateX(100%);
+  transition: transform 0.25s var(--swiss-ease);
+}
+.swiss-toc-drawer:hover .swiss-toc-drawer__panel[data-v-cd8de563],
+.swiss-toc-drawer:focus-within .swiss-toc-drawer__panel[data-v-cd8de563] {
+  transform: translateX(0);
+}
+.swiss-toc-drawer__title[data-v-cd8de563] {
+  margin: 0 0 16px;
+  font-family: var(--swiss-font-display);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.swiss-toc-drawer__list[data-v-cd8de563] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--swiss-ink);
+}
+.swiss-toc-drawer__item[data-v-cd8de563] {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 10px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--swiss-line-soft);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.swiss-toc-drawer__no[data-v-cd8de563] {
+  color: var(--swiss-ink-faint);
+  font-family: var(--swiss-font-display);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.swiss-toc-drawer__item.is-active > .swiss-toc-drawer__no[data-v-cd8de563] {
+  color: var(--swiss-red);
+}
+
+/* 子項目は番号なしで、親ラベルの開始位置に揃えて控えめに並べる */
+.swiss-toc-drawer__children[data-v-cd8de563] {
+  grid-column: 2;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.swiss-toc-drawer__child[data-v-cd8de563] {
+  padding: 3px 0;
+  color: var(--swiss-ink-soft);
+  font-size: 13px;
+  font-weight: 500;
+}
+.swiss-toc-drawer a[data-v-cd8de563] {
+  color: inherit;
+  text-decoration: none;
+}
+.swiss-toc-drawer a[data-v-cd8de563]:hover,
+.swiss-toc-drawer .is-active > a[data-v-cd8de563] {
+  color: var(--swiss-red-ink);
+}
+
+/* スライドより前面に出す (global-bottom はスライドの下のレイヤーなので z-index を付ける) */
+.swiss-progress[data-v-98da8b92] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  z-index: 10;
+  background: var(--swiss-line-soft);
+  cursor: pointer;
+  touch-action: none;
+  transition: height 0.15s ease;
+}
+
+/* バー自体は細くて狙いにくいので、上に透明の当たり判定を広げる */
+.swiss-progress[data-v-98da8b92]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+}
+.swiss-progress[data-v-98da8b92]:hover,
+.swiss-progress.is-dragging[data-v-98da8b92] {
+  height: 6px;
+}
+
+/* 進んだ分はアクセントの赤のベタ */
+.swiss-progress__bar[data-v-98da8b92] {
+  height: 100%;
+  background: var(--swiss-red);
+  transform-origin: left;
+  transition: transform 0.45s var(--swiss-ease);
+}
+.swiss-progress.is-on-solid[data-v-98da8b92] {
+  background: rgba(255, 255, 255, 0.3);
+}
+.swiss-progress.is-on-solid .swiss-progress__bar[data-v-98da8b92] {
+  background: var(--swiss-paper-strong);
+}
+.swiss-progress.is-dragging .swiss-progress__bar[data-v-98da8b92] {
+  transition: none;
+}
+
+.swiss-bg[data-v-3f0841dd] {
+  position: absolute;
+  inset: 0;
+  background: var(--swiss-paper);
+}
+
+/* 補助線はスライドの余白の内側に、本文と同じ 12 列・同じ溝で引く */
+.swiss-bg__grid[data-v-3f0841dd] {
+  position: absolute;
+  inset: 0 var(--swiss-slide-padding-x);
+  display: grid;
+  grid-template-columns: repeat(var(--swiss-columns), minmax(0, 1fr));
+  column-gap: var(--swiss-gutter);
+}
+.swiss-bg__grid > span[data-v-3f0841dd] {
+  background: color-mix(in srgb, var(--swiss-red) 7%, transparent);
+}
+
+.disable-view-transition[data-v-71463c42] * {
+  view-transition-name: none !important;
+}
+.slidev-page[data-v-71463c42] {
+  position: absolute;
+  inset: 0;
+
+  /* Zoom handling */
+  --slidev-slide-zoom-scale: 1;
+  width: calc(100% / var(--slidev-slide-zoom-scale));
+  height: calc(100% / var(--slidev-slide-zoom-scale));
+  transform-origin: top left;
+  scale: var(--slidev-slide-zoom-scale);
+  /* slide scale = container scale * zoom scale */
+  --slidev-slide-scale: calc(var(--slidev-slide-container-scale) * var(--slidev-slide-zoom-scale));
+}

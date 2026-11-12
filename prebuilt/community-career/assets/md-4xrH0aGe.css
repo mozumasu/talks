@@ -1,0 +1,80 @@
+
+.cover[data-v-5ab7ab76] {
+  position: relative;
+  overflow: hidden;
+}
+.cover__circle[data-v-5ab7ab76] {
+  top: -9rem;
+  right: -6rem;
+  width: 25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--swiss-red);
+}
+.cover__inner[data-v-5ab7ab76] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.slidev-layout .cover__eyebrow[data-v-5ab7ab76] {
+  margin-top: 0.6rem;
+}
+.cover__main[data-v-5ab7ab76] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.cover__title[data-v-5ab7ab76] {
+  max-width: 85%;
+  margin-bottom: 1.4rem;
+  white-space: pre-line;
+}
+.cover__title[data-v-5ab7ab76] p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.cover__title[data-v-5ab7ab76] em {
+  color: var(--swiss-red-ink);
+  font-style: normal;
+}
+.cover__foot[data-v-5ab7ab76] {
+  margin-top: 0.8rem;
+  align-items: start;
+}
+.cover__lead[data-v-5ab7ab76] {
+  grid-column: 1 / 8;
+  color: var(--swiss-ink);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.cover__lead[data-v-5ab7ab76] p {
+  margin: 0;
+}
+
+/* 発表者。アイコンと名前を右端にそろえて横に並べる */
+.cover__author[data-v-5ab7ab76] {
+  grid-column: 9 / 13;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.7rem;
+}
+.cover__avatar[data-v-5ab7ab76] {
+  flex: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.slidev-layout .cover__subtitle[data-v-5ab7ab76] {
+  margin: 0;
+  font-family: var(--swiss-font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: right;
+  white-space: pre-line;
+}
