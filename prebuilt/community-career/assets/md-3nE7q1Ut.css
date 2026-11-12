@@ -1,0 +1,213 @@
+
+.swiss-feature-list ul[data-v-36b8e49c],
+.swiss-feature-list[data-v-36b8e49c] ul {
+  margin: 0;
+  padding: 0;
+  border-top: var(--swiss-rule, 1px) solid var(--swiss-line, #111);
+  list-style: none;
+}
+
+/* 項目の間は細い罫線で区切る */
+.swiss-feature-list li[data-v-36b8e49c],
+.swiss-feature-list[data-v-36b8e49c] li {
+  margin: 0;
+  padding: 0.7rem 0 0.8rem;
+  border-bottom: var(--swiss-rule, 1px) solid var(--swiss-line-soft, #d4d1ca);
+  list-style: none;
+  color: var(--swiss-ink, #111);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* テーマの箇条書きの赤い正方形は、見出しが目印になるので出さない */
+.swiss-feature-list li[data-v-36b8e49c]::before,
+.swiss-feature-list[data-v-36b8e49c] li::before {
+  content: none;
+}
+
+/* 先頭の太字を見出しにして、説明と改行する。大文字には変えず書いたとおりに出す */
+.swiss-feature-list li > strong[data-v-36b8e49c],
+.swiss-feature-list[data-v-36b8e49c] li > strong:first-child {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--swiss-ink, #111);
+  font-family: var(--swiss-font-display, sans-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.swiss-feature-list li > span[data-v-36b8e49c] {
+  display: block;
+}
+.swiss-feature-list[data-v-36b8e49c] em,
+.swiss-feature-list[data-v-36b8e49c] li > strong:not(:first-child) {
+  color: var(--swiss-red-ink, #c80511);
+  font-style: normal;
+  font-weight: 700;
+}
+.swiss-feature-list[data-v-36b8e49c] p {
+  margin: 0;
+}
+
+/* --- row: 横一列に並べ、各項目の上端に太めの墨の罫線を引く --- */
+.swiss-feature-list.is-row ul[data-v-36b8e49c],
+.swiss-feature-list.is-row[data-v-36b8e49c] ul {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  column-gap: calc(var(--swiss-gutter, 1.25rem) * 2);
+  border-top: 0;
+}
+.swiss-feature-list.is-row li[data-v-36b8e49c],
+.swiss-feature-list.is-row[data-v-36b8e49c] li {
+  padding: 0.8rem 0 0;
+  border-top: 2px solid var(--swiss-line, #111);
+  border-bottom: 0;
+}
+
+/* 3 つの部品を 12 列のグリッドに置き、variant ごとに置く列と行だけを変える */
+.swiss-profile[data-v-d1968ec8] {
+  --swiss-profile-avatar-size: 13rem;
+  --swiss-profile-name-size: 4.2rem;
+
+  height: 100%;
+  padding-bottom: 0.5rem;
+}
+
+/* --- 部品の見た目 (どの variant でも同じ) --- */
+
+/* 写真の区画。区画の中の真ん中に写真を置く */
+.swiss-profile__avatar-area[data-v-d1968ec8] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 写真は丸く切り抜く。四角で組む中で、人の写真だけを円にして目印にする。スロットで差し替えた画像も同じ */
+.swiss-profile__avatar[data-v-d1968ec8] {
+  width: var(--swiss-profile-avatar-size);
+  max-width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.swiss-profile__avatar[data-v-d1968ec8] img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiss-profile__person[data-v-d1968ec8] {
+  min-width: 0;
+}
+
+/* 見出しは名前の上の赤い小見出しにして、名前を主役にする */
+.slidev-layout .swiss-profile__title[data-v-d1968ec8] {
+  margin: 0 0 0.6rem;
+  color: var(--swiss-red-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: var(--swiss-tracking-caps);
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.slidev-layout .swiss-profile__name[data-v-d1968ec8] {
+  margin: 0;
+  font-family: var(--swiss-font-display);
+  font-size: var(--swiss-profile-name-size);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: var(--swiss-tracking-tight);
+}
+.swiss-profile__name small[data-v-d1968ec8] {
+  margin-left: 0.3em;
+  color: var(--swiss-ink-soft);
+  font-size: 0.4em;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.slidev-layout .swiss-profile__affiliation[data-v-d1968ec8] {
+  margin: 0.9rem 0 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* リンクは所属の下に 1 行で並べ、細い縦線で区切る */
+.swiss-profile__links[data-v-d1968ec8] {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--swiss-ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.slidev-layout .swiss-profile__links li[data-v-d1968ec8] {
+  margin: 0;
+  padding: 0;
+}
+.slidev-layout .swiss-profile__links li[data-v-d1968ec8]::before {
+  content: none;
+}
+.slidev-layout .swiss-profile__links li + li[data-v-d1968ec8] {
+  margin-left: 0.8rem;
+  padding-left: 0.8rem;
+  border-left: var(--swiss-rule) solid var(--swiss-line-soft);
+}
+
+/* リンクも周りと同じ色。Slidev の a の点線の下線は消す */
+.slidev-layout .swiss-profile__links a[data-v-d1968ec8] {
+  color: inherit;
+  border: none;
+  text-decoration: none;
+}
+
+/* --- poster: 左の 8 列に名前を下揃え、右の 4 列の真ん中に写真。項目は下に横一列 --- */
+.is-poster[data-v-d1968ec8] {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.is-poster .swiss-profile__person[data-v-d1968ec8] {
+  grid-column: 1 / 9;
+  grid-row: 1;
+  align-self: end;
+  padding-bottom: 2rem;
+}
+.is-poster .swiss-profile__avatar-area[data-v-d1968ec8] {
+  grid-column: 9 / 13;
+  grid-row: 1;
+  padding-bottom: 2rem;
+}
+.is-poster .swiss-profile__sections[data-v-d1968ec8] {
+  grid-column: 1 / 13;
+  grid-row: 2;
+}
+
+/* --- split: 左の 5 列に写真と名前、右の 6 列に項目を縦に積む。左右とも上下の真ん中に置く --- */
+.is-split[data-v-d1968ec8] {
+  --swiss-profile-avatar-size: 9rem;
+  --swiss-profile-name-size: 2.6rem;
+
+  grid-template-rows: auto auto;
+  align-content: center;
+}
+.is-split .swiss-profile__avatar-area[data-v-d1968ec8] {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  justify-content: flex-start;
+  padding-bottom: 1.4rem;
+}
+.is-split .swiss-profile__person[data-v-d1968ec8] {
+  grid-column: 1 / 6;
+  grid-row: 2;
+}
+.is-split .swiss-profile__sections[data-v-d1968ec8] {
+  grid-column: 7 / 13;
+  grid-row: 1 / 3;
+  align-self: center;
+}

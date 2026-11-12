@@ -1,0 +1,61 @@
+
+/* Slidev の ol の字下げ (.slidev-layout ol) より強くするため .slidev-layout を付ける */
+.slidev-layout .swiss-toc__list[data-v-e46ad665] {
+  margin: 0;
+  padding: 0;
+  column-gap: calc(var(--swiss-gutter) * 2);
+  list-style: none;
+}
+
+/* 項目の間は細い罫線で区切る。Slidev が li に付ける左マージンは消し、見出しと左端を揃える */
+.swiss-toc__item[data-v-e46ad665] {
+  break-inside: avoid;
+  margin: 0;
+  padding: 0.6rem 0;
+  border-top: var(--swiss-rule) solid var(--swiss-line);
+}
+.swiss-toc__link[data-v-e46ad665] {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  color: var(--swiss-ink);
+  text-decoration: none;
+}
+
+/* 番号は赤の等幅数字 */
+.swiss-toc__no[data-v-e46ad665] {
+  flex: none;
+  width: 2.4rem;
+  color: var(--swiss-red);
+  font-family: var(--swiss-font-display);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1;
+}
+.swiss-toc__label[data-v-e46ad665] {
+  flex: 1;
+  font-family: var(--swiss-font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.swiss-toc__link:hover .swiss-toc__label[data-v-e46ad665] {
+  color: var(--swiss-red-ink);
+}
+.slidev-layout .swiss-toc__children[data-v-e46ad665] {
+  margin: 0.3rem 0 0 3.4rem;
+  padding: 0;
+  list-style: none;
+}
+.swiss-toc__children li[data-v-e46ad665] {
+  padding: 0.1rem 0;
+  font-size: 0.8rem;
+}
+.swiss-toc__children li[data-v-e46ad665]::before {
+  content: none;
+}
+.swiss-toc__children a[data-v-e46ad665] {
+  color: var(--swiss-ink-soft);
+  text-decoration: none;
+}
