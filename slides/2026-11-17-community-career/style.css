@@ -1,0 +1,291 @@
+/* swiss テーマの色と文字の大きさを、このデッキで使う名前に割り当てる */
+:root {
+  --theme-red: var(--swiss-red);
+  --theme-red-50: color-mix(in srgb, var(--swiss-red) 10%, #fff);
+  --theme-gray-75: #ececec;
+  --theme-muted: var(--swiss-muted);
+  --theme-font-size-display: var(--swiss-font-size-display);
+  --theme-font-size-body: var(--swiss-font-size-body);
+  --theme-font-weight-bold: 700;
+  --theme-font-weight-regular: 400;
+}
+
+/* 本文の下に置いたまとめ (KeyMessage) は、残りの余白の上下中央に置く */
+.default__body:has(> .swiss-key-message) {
+  display: flex;
+  flex-direction: column;
+}
+
+.default__body > .swiss-key-message {
+  /* KeyMessage 側の margin に負けないよう !important を付ける */
+  margin-block: auto !important;
+}
+
+/* ビジュアルのない statement (一言だけのスライド) は、上下も中央に置く */
+.slidev-layout.statement.is-align-center:not(:has(.swiss-statement__visual)) {
+  justify-content: center;
+}
+
+/* 横に説明を添える小さめのサムネイル */
+.thumb-sm img {
+  height: 7rem !important;
+}
+
+/* 箇条書きの親と子にメリハリを付ける: 親は太字、子は小さく薄くして詰める */
+.default__body > ul > li,
+.default__body > div ul:not(ul ul) > li {
+  font-weight: var(--theme-font-weight-bold);
+}
+
+.default__body ul ul {
+  margin-top: 0.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.default__body ul ul > li {
+  font-size: 0.85em;
+  font-weight: var(--theme-font-weight-regular);
+  color: var(--theme-muted);
+  line-height: 1.6;
+}
+
+/* 発表で読みやすいよう、本文の文字を一回り大きくする */
+.default__body {
+  font-size: 1.4rem;
+}
+
+/* 短い箇条書きだけのスライドは、本文を上下左右の中央に置く (frontmatter に class: center-body) */
+.center-body .default__body {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Before ▶ After の比較 (テーマの BeforeAfter と同じ見た目)。After 側を v-click で 1 行ずつ出す */
+.ba {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.ba-row {
+  display: grid;
+  grid-template-columns: 1fr 3.25rem 1fr;
+  align-items: stretch;
+}
+
+/* 矢印と After をまとめて v-click で出すため、親の列をそのまま使う */
+.ba-after-wrap {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+.ba-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.6rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.ba-before {
+  background: var(--theme-gray-75);
+}
+
+.ba-after {
+  height: 100%;
+  background: var(--theme-red-50);
+  color: var(--theme-red);
+}
+
+.ba-after em {
+  font-style: normal;
+}
+
+.ba-arrow {
+  justify-self: center;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.32rem 0 0.32rem 0.6rem;
+  border-color: transparent transparent transparent var(--theme-red);
+}
+
+/* スライドの主役にする大きめのサムネイル */
+.thumb-lg img {
+  height: 12rem !important;
+}
+
+/* 一覧に並べる小さなサムネイル */
+.thumb-xs img {
+  height: 5.5rem !important;
+}
+
+/* 正方形のカバー画像などを切り取らずに収める */
+.thumb-contain img {
+  object-fit: contain !important;
+  background: var(--theme-gray-75);
+}
+
+/* 箇条書きの前に置く小見出し */
+.slidev-layout .lead-label {
+  margin: 0 0 0.5rem;
+  color: var(--theme-red);
+  font-size: 0.85em;
+  font-weight: var(--theme-font-weight-bold);
+}
+
+/* statement の小見出しと一言を同じ大きさで並べ、一言を v-click で出す */
+.slidev-layout .statement-pair p {
+  margin: 0;
+  font-size: 3.4rem;
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+
+.slidev-layout .statement-pair .statement-pair-label {
+  color: var(--theme-red);
+}
+
+/* 章扉の番号と章名を 1 行に並べる */
+.slidev-layout.section .section__body {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.slidev-layout.section .section__no {
+  flex: none;
+  line-height: 1;
+}
+
+/* statement-pair は本文に見出しを書くので、本文の上の罫線と余白を外す */
+.slidev-layout .swiss-statement__body:has(.statement-pair) {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* 人物のアイコンと名前 (X のプロフィールへのリンク) */
+.slidev-layout .person-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  border-width: 0 !important;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.slidev-layout .person-card img {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9999px;
+  object-fit: cover;
+}
+
+.slidev-layout .person-card.is-sm img {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.slidev-layout .person-card.is-sm span {
+  font-size: 0.75rem;
+}
+
+/* 機能を並べるカード */
+.slidev-layout .feature-card {
+  padding: 1.1rem 1.3rem;
+  border-top: var(--swiss-rule-bold, 4px) solid var(--swiss-red);
+  background: var(--swiss-paper-strong, #fff);
+}
+
+.slidev-layout .feature-card p {
+  margin: 0;
+  font-size: 0.85em;
+  color: var(--swiss-muted);
+}
+
+.slidev-layout .feature-card .feature-card__title {
+  margin-bottom: 0.4rem;
+  font-size: 1.05em;
+  font-weight: 700;
+  color: var(--swiss-ink);
+}
+
+/* 手順のカードのあいだの矢印 */
+.slidev-layout .flow-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--swiss-red);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* 4 段の流れは文字を少し小さくして折り返しを減らす */
+.slidev-layout .flow-cards .feature-card {
+  padding: 1rem;
+}
+
+.slidev-layout .flow-cards .feature-card p {
+  font-size: 0.8em;
+}
+
+.slidev-layout .flow-cards .feature-card .feature-card__title {
+  font-size: 1em;
+}
+
+/* 楽園ラジオの画像はロゴが左に寄っているので、切り取る位置をずらして中央に見せる */
+.thumb-radio img {
+  object-position: 30% 50% !important;
+}
+
+/* まとめ: 大きな番号と見出しを罫線で区切って並べ、最後に赤い帯で締める */
+.slidev-layout .summary-steps {
+  border-top: var(--swiss-rule-bold, 4px) solid var(--swiss-ink);
+}
+
+.slidev-layout .summary-step {
+  display: grid;
+  grid-template-columns: 5rem 14rem 1fr;
+  align-items: baseline;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--swiss-ink);
+}
+
+.slidev-layout .summary-step__no {
+  color: var(--swiss-red);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.slidev-layout .summary-step__title {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.slidev-layout .summary-step__note {
+  color: var(--swiss-muted);
+  font-size: 1.1rem;
+}
+
+.slidev-layout .summary-band {
+  margin-top: 2.2rem;
+  padding: 1.1rem 1.6rem;
+  background: var(--swiss-red);
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
