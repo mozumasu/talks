@@ -1,0 +1,88 @@
+
+.statement[data-v-438fc1af] {
+  --statement-subtitle-size: 1.125rem;
+  --statement-body-line-height: 2;
+  --statement-text-gap: 2rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 3.25rem 4rem 2.75rem;
+}
+.is-brand[data-v-438fc1af] {
+  background: var(--theme-gradient-brand);
+  color: var(--theme-background);
+}
+.is-align-center .pp-statement-text[data-v-438fc1af] {
+  text-align: center;
+}
+.slidev-layout .pp-statement-label[data-v-438fc1af] {
+  margin: 0 0 0.75rem;
+  color: var(--theme-red);
+  font-size: var(--theme-font-size-body);
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+.slidev-layout .pp-statement-title[data-v-438fc1af] {
+  margin: 0;
+  font-size: var(--theme-font-size-display);
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+}
+.slidev-layout .pp-statement-subtitle[data-v-438fc1af] {
+  margin: 0.35rem 0 0;
+  font-size: var(--statement-subtitle-size);
+  font-weight: var(--theme-font-weight-regular);
+  line-height: 1.4;
+}
+.pp-statement-body[data-v-438fc1af] {
+  margin-top: var(--statement-text-gap);
+  font-size: var(--theme-font-size-body);
+  font-weight: var(--theme-font-weight-semibold);
+  letter-spacing: 0.08em;
+  line-height: var(--statement-body-line-height);
+}
+.pp-statement-body[data-v-438fc1af] p {
+  margin: 0;
+}
+.pp-statement-body[data-v-438fc1af] p + p {
+  margin-top: 0.75em;
+}
+
+/* 本文中の強調だけ赤にする */
+.pp-statement-body[data-v-438fc1af] em,
+.pp-statement-body[data-v-438fc1af] strong {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: var(--theme-font-weight-bold);
+}
+
+/* 残りの高さの中央にビジュアルを置く */
+.pp-statement-visual[data-v-438fc1af] {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1.5rem;
+}
+.pp-statement-visual img[data-v-438fc1af] {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 赤背景では強調色・小見出しも白にする (赤に赤は読めないため下線で強調) */
+.is-brand .pp-statement-label[data-v-438fc1af],
+.is-brand .pp-statement-title[data-v-438fc1af],
+.is-brand .pp-copyright[data-v-438fc1af] {
+  color: var(--theme-background);
+}
+.is-brand .pp-statement-body[data-v-438fc1af] em,
+.is-brand .pp-statement-body[data-v-438fc1af] strong {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}

@@ -1,0 +1,1 @@
+import{g as e}from"./modules/shiki-B4lhBmXg.js";import{t}from"./useNav-C6e8Mxda.js";import"./slidev/client-DJ4UgrbI.js";function n(n){let{isPrintMode:r}=t();return e(()=>n()&&!r.value)}export{n as t};

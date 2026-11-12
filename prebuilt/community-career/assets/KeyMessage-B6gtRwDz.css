@@ -1,0 +1,20 @@
+
+.key-message[data-v-84a3fac7] {
+  margin: 0.5rem 0 1.5rem;
+  color: var(--theme-text);
+  font-size: var(--theme-font-size-lead);
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* slot 内の md が <p> で包まれても余白が増えないようにする */
+.key-message[data-v-84a3fac7] p {
+  margin: 0;
+}
+.key-message[data-v-84a3fac7] em,
+.key-message[data-v-84a3fac7] strong {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: inherit;
+}
