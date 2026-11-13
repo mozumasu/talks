@@ -6,8 +6,6 @@ event: //localboast Tokyo
 info: |
   アルチザンキーキャップにチャレンジ！
   https://localboast-tokyo.connpass.com/event/406024/
-# テーマは CI で checkout していないので、手元のビルド結果 (prebuilt/) を配信する
-prebuilt: true
 favicon: https://github.com/mozumasu.png
 addons:
   - slidev-addon-swiss
