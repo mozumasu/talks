@@ -1,1 +1,0 @@
-function e(e,t=`/community-career/`){return!e||!e.startsWith(`/`)||e.startsWith(`//`)||e.startsWith(t)?e:t+e.slice(1)}export{e as t};

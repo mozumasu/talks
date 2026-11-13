@@ -23,7 +23,7 @@ jobs:
       # デッキの package.json はテーマを link: の相対パス (link:../../../findy-slidev/...) で参照する。
       # 別オーナーのテーマも足せるよう、手元の ghq と同じ <owner>/<repo> の配置で checkout する。
       # (actions/checkout はワークスペースの外に置けないので、talks ごと 1 階層下げる)
-      #   mozumasu/talks  mozumasu/findy-slidev
+      #   mozumasu/talks  mozumasu/findy-slidev  mozumasu/swiss-slidev
       - name: Checkout talks
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -40,6 +40,16 @@ jobs:
           token: ${{ secrets.THEME_REPO_READ_TOKEN }}
           persist-credentials: false
 
+      # swiss テーマは public なので token なしで checkout できる
+      - name: Checkout swiss theme repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: mozumasu/swiss-slidev
+          # 再現性のため theme のコミットを固定する。更新時はここを上げる
+          ref: main
+          path: mozumasu/swiss-slidev
+          persist-credentials: false
+
       # バージョンは root package.json の packageManager フィールドから読む
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
@@ -54,6 +64,7 @@ jobs:
           cache-dependency-path: |
             mozumasu/talks/pnpm-lock.yaml
             mozumasu/findy-slidev/pnpm-lock.yaml
+            mozumasu/swiss-slidev/pnpm-lock.yaml
 
       # playwright-chromium の postinstall が ~/.cache/ms-playwright に Chromium (約 150MB) を
       # 落とすので、バージョンをキーにキャッシュして 2 回目以降のダウンロードを省く。
@@ -83,6 +94,10 @@ jobs:
         working-directory: mozumasu/findy-slidev
         run: pnpm install --frozen-lockfile
 
+      - name: Install swiss theme dependencies
+        working-directory: mozumasu/swiss-slidev
+        run: pnpm install --frozen-lockfile
+
       - name: Install talks dependencies
         working-directory: mozumasu/talks
         run: pnpm install --frozen-lockfile
@@ -108,7 +123,8 @@ jobs:
           set -euo pipefail
           talks=$(git -C mozumasu/talks rev-parse HEAD:slides HEAD:pnpm-lock.yaml HEAD:wrangler.jsonc HEAD:scripts/build.mjs | sha256sum | cut -c1-32)
           findy=$(git -C mozumasu/findy-slidev rev-parse HEAD:packages HEAD:pnpm-lock.yaml | sha256sum | cut -c1-32)
-          echo "key=decks-${talks}-${findy}" >> "$GITHUB_OUTPUT"
+          swiss=$(git -C mozumasu/swiss-slidev rev-parse HEAD:packages HEAD:pnpm-lock.yaml | sha256sum | cut -c1-32)
+          echo "key=decks-${talks}-${findy}-${swiss}" >> "$GITHUB_OUTPUT"
 
       - name: Restore deck build cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

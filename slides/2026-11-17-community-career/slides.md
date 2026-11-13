@@ -7,8 +7,6 @@ info: |
   コミュニティから広がる、学び・仲間・キャリア
   〜イベント参加から登壇まで、エンジニアの可能性を広げるヒント〜
   viviON 社内勉強会
-# swiss テーマは CI で checkout していないので、手元のビルド結果 (prebuilt/) を配信する
-prebuilt: true
 # URL を知っている人にだけ見せる
 unlisted: true
 favicon: https://github.com/mozumasu.png

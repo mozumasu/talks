@@ -42,7 +42,7 @@ cd slides && pnpm install
 - `THEME_REPO_READ_TOKEN` (テーマリポジトリが private の場合の contents:read fine-grained PAT)
 
 CI はデッキの `link:` の相対パスがそのまま解決できるよう、手元の ghq と同じ
-`<owner>/<repo>` の配置 (`mozumasu/talks` / `mozumasu/findy-slidev`) で checkout する。別オーナーのテーマを足すときは、
+`<owner>/<repo>` の配置 (`mozumasu/talks` / `mozumasu/findy-slidev` / `mozumasu/swiss-slidev`) で checkout する。別オーナーのテーマを足すときは、
 `deploy-slides.yml` に checkout・依存の install・キャッシュのキーを同じ形で追加する。
 
 ## 開発
