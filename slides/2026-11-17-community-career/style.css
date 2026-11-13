@@ -289,3 +289,148 @@
   font-weight: 800;
   letter-spacing: -0.01em;
 }
+
+/* 自分の気持ちを吹き出しで見せる。アイコンの横に置き、残りの余白の上下中央に置く */
+.default__body:has(> .speech) {
+  display: flex;
+  flex-direction: column;
+}
+
+.slidev-layout .speech {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  margin-block: auto;
+}
+
+.slidev-layout .speech__avatar {
+  flex: none;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 9999px;
+  object-fit: cover;
+}
+
+.slidev-layout .speech__bubble {
+  position: relative;
+  padding: 1rem 1.6rem;
+  border: 3px solid var(--swiss-ink);
+  border-radius: 1.2rem;
+  background: var(--swiss-paper-strong, #fff);
+  font-size: 1.45rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.5;
+}
+
+/* アイコンを指すしっぽ。外側 (枠線の色) に内側 (背景色) を重ねて縁取りにする */
+.slidev-layout .speech__bubble::before,
+.slidev-layout .speech__bubble::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  border-style: solid;
+  transform: translateY(-50%);
+}
+
+.slidev-layout .speech__bubble::before {
+  left: -1.1rem;
+  border-width: 0.7rem 1.1rem 0.7rem 0;
+  border-color: transparent var(--swiss-ink) transparent transparent;
+}
+
+.slidev-layout .speech__bubble::after {
+  left: -0.8rem;
+  border-width: 0.55rem 0.85rem 0.55rem 0;
+  border-color: transparent var(--swiss-paper-strong, #fff) transparent transparent;
+}
+
+/* /btw の流れを画像で見せる: 左に 1 と 2 を縦に並べ、右に 3 の編集前後を大きく置く */
+.slidev-layout .btw-flow {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.slidev-layout .btw-flow__side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.slidev-layout .btw-step {
+  margin: 0;
+}
+
+.slidev-layout .btw-step figcaption {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  font-weight: var(--theme-font-weight-bold);
+}
+
+.slidev-layout .btw-step figcaption span {
+  color: var(--swiss-red);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.slidev-layout .btw-step img {
+  display: block;
+  width: 100%;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+/* 編集前と編集後の画面に、見出しを重ねて余白を節約する */
+.slidev-layout .btw-diff {
+  position: relative;
+}
+
+.slidev-layout .btw-diff__label {
+  position: absolute;
+  bottom: 0.4rem;
+  padding: 0.1rem 0.6rem;
+  background: var(--swiss-ink);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: var(--theme-font-weight-bold);
+}
+
+.slidev-layout .btw-diff__label.is-before {
+  left: 0.4rem;
+}
+
+.slidev-layout .btw-diff__label.is-after {
+  left: calc(50% + 0.4rem);
+  background: var(--swiss-red);
+}
+
+/* OG 画像のない記事へのリンク。サムネイルと同じ高さの文字のカードにする */
+.slidev-layout .ref-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 13rem;
+  height: 5.5rem;
+  padding: 0.6rem 0.9rem;
+  border-width: 0 !important;
+  border-top: var(--swiss-rule-bold, 4px) solid var(--swiss-red) !important;
+  background: var(--swiss-paper-strong, #fff);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  color: inherit;
+  font-size: 0.8rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.slidev-layout .ref-card__site {
+  color: var(--swiss-muted);
+  font-size: 0.7rem;
+  font-weight: var(--theme-font-weight-regular);
+}

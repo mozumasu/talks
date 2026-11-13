@@ -24,7 +24,7 @@ title: 発表テーマの探し方
 
 <SwissKeyMessage v-click class="mt-10">
 
-コミュニティの人と話すと<br>自分の*普通*が普通じゃないと分かったりする
+自分の知っていること *≠* みんなが知ってること
 
 </SwissKeyMessage>
 
@@ -46,29 +46,28 @@ title: /btw の回答をメモに貯める
 
 # /btw の回答をメモに貯める
 
-<div class="flex items-stretch gap-2 mt-2 flow-cards">
-  <div v-click class="feature-card flex-1">
-    <p class="feature-card__title">1. /btw</p>
-    <p>作業中に質問して<br>回答をコピー</p>
+<div class="btw-flow">
+  <div class="btw-flow__side">
+    <figure v-click class="btw-step">
+      <figcaption><span>1</span>/btw → c で回答をコピー</figcaption>
+      <img src="/btw-answer.jpg" />
+    </figure>
+    <figure v-click class="btw-step">
+      <figcaption><span>2</span>Raycast で Claude を起動して技術メモに編集</figcaption>
+      <img src="/raycast-tech-scrap.png" />
+    </figure>
   </div>
-  <div v-click class="flow-arrow">→</div>
-  <div v-after class="feature-card flex-1">
-    <p class="feature-card__title">2. Raycast</p>
-    <p>自作のコマンドを<br>呼び出す</p>
-  </div>
-  <div v-click class="flow-arrow">→</div>
-  <div v-after class="feature-card flex-1">
-    <p class="feature-card__title">3. Claude</p>
-    <p>固有名詞を除いて<br>技術メモに整形</p>
-  </div>
-  <div v-click class="flow-arrow">→</div>
-  <div v-after class="feature-card flex-1">
-    <p class="feature-card__title">4. nb</p>
-    <p>メモとして貯めて<br>あとで検索</p>
-  </div>
+  <figure v-click class="btw-step">
+    <figcaption><span>3</span>編集した内容がクリップボードに入る</figcaption>
+    <div class="btw-diff">
+      <img src="/tech-scrap-diff.png" />
+      <span class="btw-diff__label is-before">編集前</span>
+      <span class="btw-diff__label is-after">編集後</span>
+    </div>
+  </figure>
 </div>
 
-<SwissKeyMessage v-click class="mt-10">
+<SwissKeyMessage v-click class="mt-4">
 
 固有名詞を除くので、社内の話もそのまま*発表のネタ*に育てられる
 
@@ -123,6 +122,14 @@ title: nb でメモを貯める
 - ノートブックで用途を分ける
 
 </v-clicks>
+
+<div class="flex items-end gap-4 mt-6">
+  <a href="https://eiji.page/blog/nb-memo-cli-intro/" target="_blank" rel="noopener" class="ref-card">
+    <span class="ref-card__site">eiji.page</span>
+    エンジニアのためのメモ管理 CLI ツール nb の使い方
+  </a>
+  <LinkThumb href="https://github.com/mozumasu/nb.nvim" src="https://opengraph.githubassets.com/1/mozumasu/nb.nvim" class="thumb-xs" />
+</div>
 
 </div>
 <div v-click>
