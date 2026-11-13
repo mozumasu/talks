@@ -55,34 +55,34 @@ title: 初めてのコミュニティ vim-jp! 2
 <div>
 
 - コミュニティの文化が面白い
-  - !ペンギン
   - グルメチャンネルがある
   - ガジェットを買ったら「経済が回る」スタンプが押される <span class="whitespace-nowrap"><img src="/keizai-chance.gif" class="inline h-7 ml-2" /><img src="/spin_keizai.gif" class="inline h-7 ml-1" /><img src="/spin_keizai_x2.gif" class="inline h-7 ml-1" /></span>
+  - !ペンギン
 
 </div>
-<figure class="text-center text-sm w-[11rem]">
+<figure v-click="1" class="text-center text-sm w-[11rem]">
   <img src="https://pbs.twimg.com/media/D4_A8TaUYAAWQ-w.jpg:medium" class="w-full rounded shadow" />
   <figcaption class="mt-1">!ペンギン: 初心者にワイワイ群がって布教する様子</figcaption>
 </figure>
 </div>
 
-<div v-click="1">
+<div v-click="2">
 
 - スタンプで関心があることを伝えやすい
 
 </div>
-<div v-click="2">
+<div v-click="3">
 
 - Vim駅伝に参加
 
 </div>
 
 <div class="flex items-center gap-8 ml-10 mt-2">
-<div v-click="3" class="flex gap-4">
+<div v-click="4" class="flex gap-4">
   <LinkThumb href="https://vim-jp.org/ekiden/" :src="$asset('vim-ekiden.png')" class="thumb-xs thumb-contain" />
   <LinkThumb href="https://zenn.dev/mozumasu/articles/mozumasu-translate-in-vim" src="https://res.cloudinary.com/zenn/image/upload/s--Jfc_aKJv--/c_fit%2Cg_north_west%2Cl_text:notosansjp-medium.otf_55:NeoVim%25E3%2581%25A7%25E7%25BF%25BB%25E8%25A8%25B3%25E3%2581%2597%25E3%2581%259F%25E3%2582%258D%2Cw_1010%2Cx_90%2Cy_100/g_south_west%2Cl_text:notosansjp-medium.otf_37:mozumasu%2Cx_203%2Cy_121/g_south_west%2Ch_90%2Cl_fetch:aHR0cHM6Ly9zdGF0aWMuemVubi5zdHVkaW8vdXNlci11cGxvYWQvYXZhdGFyL2IzZTRhZjAyMDkuanBlZw==%2Cr_max%2Cw_90%2Cx_87%2Cy_95/v1627283836/default/og-base-w1200-v2.png?_a=BACMTiAE" class="thumb-xs" />
 </div>
-<SwissSpeechBubble v-click="4" image="https://github.com/mozumasu.png">シャイなので話には混じれず見る専</SwissSpeechBubble>
+<SwissSpeechBubble v-click="5" image="https://github.com/mozumasu.png">シャイなので話には混じれず見る専</SwissSpeechBubble>
 </div>
 
 ---
@@ -95,7 +95,7 @@ title: コミュニティで話すようになったきっかけ
 - 自分の記事がコミュニティで流れた
 - vim-jp で自分の記事が紹介されるのが密かな夢だった
 
-<SwissSpeechBubble image="https://github.com/mozumasu.png" class="mt-10">嬉しすぎて初チャット</SwissSpeechBubble>
+<SwissSpeechBubble v-click image="https://github.com/mozumasu.png" class="mt-10">嬉しすぎて初チャット</SwissSpeechBubble>
 
 ---
 eyebrow: 02 コミュニティ
@@ -151,3 +151,5 @@ title: コミュニティで得られたもの
 </div>
 </div>
 </div>
+
+<SwissSpeechBubble v-click image="https://github.com/mozumasu.png" class="mt-6">仲間が頑張ってるし私も負けてられんな〜</SwissSpeechBubble>

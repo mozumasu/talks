@@ -64,7 +64,10 @@ title: 初めてのイベントで感じたこと
   </div>
 </div>
 
-<SwissKeyMessage v-click>楽しい! 今まで関わったことのないタイプの人がたくさん!<br>広い場所で生きていたい!</SwissKeyMessage>
+<div v-click class="speech">
+  <img src="https://github.com/mozumasu.png" class="speech__avatar" />
+  <div class="speech__bubble">楽しい! 今まで関わったことのないタイプの人がたくさん!<br>広い場所で生きていたい!</div>
+</div>
 
 ---
 eyebrow: 01 きっかけ

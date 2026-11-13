@@ -70,3 +70,23 @@ title: 初めての登壇を終えて
 - 感謝された
 
 <SwissKeyMessage>自分が思っていたよりも需要があった<br>記事だけでは広まらない範囲にも伝えられた</SwissKeyMessage>
+
+---
+eyebrow: 03 発表
+title: 登壇で心掛けていること
+---
+
+# 登壇で心掛けていること
+
+- 自分の言葉で喋る
+  - 原稿はガチガチに用意せず、話したいことを箇条書きで書く (目次)
+  - 3 回は通す: 流れが不自然なところや冗長な表現に気づける
+
+<div v-click class="grid grid-cols-[1fr_auto] gap-8 items-center">
+<div>
+
+- ビジュアルで伝えられることはビジュアルで
+
+</div>
+<LinkThumb href="https://partner-prop.github.io/slides/mozumasu/terminal-night-3/20" :src="$asset('terminal-night-3.png')" caption="例: zsh から学ぶ最高の UX" class="thumb-sm" />
+</div>
