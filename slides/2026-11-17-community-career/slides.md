@@ -7,8 +7,6 @@ info: |
   コミュニティから広がる、学び・仲間・キャリア
   〜イベント参加から登壇まで、エンジニアの可能性を広げるヒント〜
   viviON 社内勉強会
-# URL を知っている人にだけ見せる
-unlisted: true
 favicon: https://github.com/mozumasu.png
 addons:
   - slidev-addon-swiss
