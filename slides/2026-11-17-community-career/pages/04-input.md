@@ -151,6 +151,14 @@ title: Slidev はいいぞ
 - ブラウザで動く (Vue と Vite で作られている)
 - テーマやアドオンで見た目と機能を足せる
 
+<div v-click class="mt-6">
+  <p class="lead-label">Slidev の作者のスライドを見てくれ</p>
+  <div class="flex items-center gap-4">
+    <LinkThumb href="https://github.com/antfu/talks" src="https://opengraph.githubassets.com/1/antfu/talks" class="thumb-xs" />
+    <a href="https://talks.antfu.me/2024/vue-fes-japan/1" target="_blank" rel="noopener" class="text-sm">例: Yak Shaving<br>(Vue Fes Japan 2024)</a>
+  </div>
+</div>
+
 </div>
 <a href="https://sli.dev/" target="_blank" rel="noopener" class="border-0!">
   <img src="https://sli.dev/logo-title.png" alt="Slidev" class="w-56" />
