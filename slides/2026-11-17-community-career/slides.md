@@ -1,6 +1,6 @@
 ---
 theme: swiss
-title: コミュニティから広がる、学び・仲間・キャリア
+title: 熱量は伝染する。
 date: 2026-11-17
 event: viviON 社内勉強会
 info: |
