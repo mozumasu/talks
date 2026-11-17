@@ -143,19 +143,6 @@
   font-weight: var(--theme-font-weight-bold);
 }
 
-/* statement の小見出しと一言を同じ大きさで並べ、一言を v-click で出す */
-.slidev-layout .statement-pair p {
-  margin: 0;
-  font-size: 3.4rem;
-  font-weight: var(--theme-font-weight-bold);
-  letter-spacing: 0.06em;
-  line-height: 1.5;
-}
-
-.slidev-layout .statement-pair .statement-pair-label {
-  color: var(--theme-red);
-}
-
 /* 章扉の番号と章名を 1 行に並べる */
 .slidev-layout.section .section__body {
   display: flex;
@@ -166,13 +153,6 @@
 .slidev-layout.section .section__no {
   flex: none;
   line-height: 1;
-}
-
-/* statement-pair は本文に見出しを書くので、本文の上の罫線と余白を外す */
-.slidev-layout .swiss-statement__body:has(.statement-pair) {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: 0;
 }
 
 /* 人物のアイコンと名前 (X のプロフィールへのリンク) */
@@ -409,28 +389,420 @@
   background: var(--swiss-red);
 }
 
-/* OG 画像のない記事へのリンク。サムネイルと同じ高さの文字のカードにする */
-.slidev-layout .ref-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.3rem;
-  width: 13rem;
-  height: 5.5rem;
-  padding: 0.6rem 0.9rem;
-  border-width: 0 !important;
-  border-top: var(--swiss-rule-bold, 4px) solid var(--swiss-red) !important;
-  background: var(--swiss-paper-strong, #fff);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
-  color: inherit;
-  font-size: 0.8rem;
-  font-weight: var(--theme-font-weight-bold);
-  line-height: 1.4;
-  text-decoration: none;
+/* 記事を読む人とイベントに来る人の集合の図。重なりは乗算で混ぜて見せる */
+.slidev-layout .venn {
+  width: 22rem;
 }
 
-.slidev-layout .ref-card__site {
-  color: var(--swiss-muted);
-  font-size: 0.7rem;
+.slidev-layout .venn__event {
+  fill: var(--theme-red-50);
+  stroke: var(--swiss-red);
+  stroke-width: 3;
+}
+
+.slidev-layout .venn__article {
+  fill: var(--theme-gray-75);
+  stroke: var(--swiss-ink);
+  stroke-width: 3;
+  mix-blend-mode: multiply;
+}
+
+.slidev-layout .venn__label {
+  fill: var(--swiss-ink);
+  font-size: 20px;
+  font-weight: var(--theme-font-weight-bold);
+  text-anchor: middle;
+}
+
+.slidev-layout .venn__label.is-red,
+.slidev-layout .venn__note {
+  fill: var(--swiss-red);
+}
+
+.slidev-layout .venn__note {
+  font-size: 18px;
+  font-weight: var(--theme-font-weight-bold);
+  text-anchor: middle;
+}
+
+/* サムネイルの中央寄せを崩さずに、右横へ小さなグレーの補足を添える */
+.slidev-layout .side-note {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 14rem;
+  margin: 0 0 0 1.2rem;
+  transform: translateY(-50%);
+  color: var(--theme-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* 雑誌の表紙は縦長なので、16:9 に切り取る LinkThumb を使わずにそのまま出す */
+.slidev-layout .magazine-link {
+  border-width: 0 !important;
+}
+
+.slidev-layout .magazine-link img {
+  height: 7rem;
+  width: auto;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+}
+
+/* ブックマークの紹介: 追加・保存先・検索の 3 つの画面を横に並べる */
+.slidev-layout .bookmark-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.slidev-layout .bookmark-tool {
+  border-width: 0 !important;
+  color: inherit;
+  text-decoration: underline;
+}
+
+.slidev-layout .bookmark-note {
+  margin: 0.4rem 0 0;
+  color: var(--theme-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+/* 3 つの画面は縦横の比率が少しずつ違うので、同じ比率に切りそろえて高さを合わせる */
+.slidev-layout .bookmark-flow .btw-step img {
+  aspect-ratio: 1.6;
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* nb の紹介: 左に画面とリンク、右に特徴とキー操作を小さめにまとめる */
+.slidev-layout .nb-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 0.5rem;
+}
+
+.slidev-layout .nb-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.slidev-layout .nb-points {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.slidev-layout .default__body .nb-points > li {
   font-weight: var(--theme-font-weight-regular);
+}
+
+/* 画像の横に添えるキー操作の表は、文字を小さくして画像に幅を譲る */
+.slidev-layout .keymap-table {
+  font-size: 0.75rem;
+}
+
+.slidev-layout .keymap-table th,
+.slidev-layout .keymap-table td {
+  padding: 0.3rem 0.6rem;
+}
+
+/* 下書きとできあがりを矢印でつなぐ。縦長の下書きは高さで、一覧は残りの幅で合わせる */
+.slidev-layout .draft-flow {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.slidev-layout .draft-flow .btw-step:first-child img {
+  width: auto;
+  height: 19rem;
+}
+
+/* Neovim の 2 つの画面を、高さがそろう幅の比で横に並べる */
+.slidev-layout .nvim-flow {
+  display: grid;
+  grid-template-columns: 1.36fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+/* Slidev の良さ: 左に 4 つの特徴の箇条書き、右に機能の見本を置く */
+.slidev-layout .slidev-points {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Slidev の機能の見本: コードブロックとプレゼンターモードを縦に並べる */
+.slidev-layout .slidev-samples {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.slidev-layout .slidev-samples img {
+  max-height: 11rem;
+  width: auto;
+}
+
+.slidev-layout .code-sample .slidev-code {
+  margin: 0;
+  font-size: 0.7rem;
+}
+
+/* 右の列は、テーマの画像と機能の見本を同じ場所に重ね、クリックで入れ替える */
+.slidev-layout .slidev-right {
+  display: grid;
+}
+
+.slidev-layout .slidev-right > * {
+  grid-area: 1 / 1;
+}
+
+/* statement の一文を 1 文字ずつ打って出す。title は文字列でしか渡せないので、
+   左から切り抜く範囲を文字数 (8 文字) の段階で広げて、タイピングに見せる */
+.slidev-layout.typing-title .swiss-statement__title {
+  animation: typing-title 0.6s steps(8, end) 0.2s both;
+}
+
+@keyframes typing-title {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slidev-layout.typing-title .swiss-statement__title {
+    animation: none;
+  }
+}
+
+/* 学習習慣のサイクル: 楕円の上に 5 つの段階を置き、弧の矢印で次の段階へつなぐ。
+   各段階の位置は楕円 (中心 50%, 50%、半径 38% × 40%) を 72° ずつ回した点 */
+.slidev-layout .cycle {
+  position: relative;
+  width: 34rem;
+  height: 22rem;
+  margin: 0 auto;
+}
+
+.slidev-layout .cycle__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* 矢印は細い墨の線にして、赤は中央の一言と各段階の英字だけに絞る */
+.slidev-layout .cycle__ring path {
+  fill: none;
+  stroke: var(--swiss-ink);
+  stroke-width: 1.5;
+}
+
+.slidev-layout .cycle__ring marker path {
+  fill: var(--swiss-ink);
+  stroke: none;
+}
+
+/* 楕円の下地は点線にして、まだ進んでいない区間も一周の形が見えるようにする */
+.slidev-layout .cycle__ring .cycle__track {
+  fill: none;
+  stroke: var(--swiss-line, #ccc);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+/* 各段階は楕円の上の点に置いた幅 0 の目印。番号の丸を点の真上に、文字を外側に出す */
+.slidev-layout .cycle__node {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.slidev-layout .cycle__no {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 9999px;
+  background: var(--swiss-ink);
+  color: var(--swiss-paper, #fff);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  /* v-click のプリセットが translate を使うので、中央寄せは transform で行う */
+  transform: translate(-50%, -50%);
+}
+
+.slidev-layout .cycle__node p {
+  position: absolute;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* 段階の名前を、章名と同じ英字の小見出しで添える */
+.slidev-layout .cycle__node p b {
+  display: block;
+  margin-bottom: 0.1rem;
+  color: var(--swiss-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.slidev-layout .cycle__node.is-bottom p {
+  top: 1.6rem;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.slidev-layout .cycle__node.is-right p {
+  left: 1.7rem;
+  transform: translateY(-50%);
+}
+
+.slidev-layout .cycle__node.is-left p {
+  right: 1.7rem;
+  transform: translateY(-50%);
+  text-align: right;
+}
+
+.slidev-layout .cycle__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  /* v-click のプリセットが translate を使うので、中央寄せは transform で行う */
+  transform: translate(-50%, -50%);
+}
+
+.slidev-layout .cycle__center span {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.slidev-layout .cycle__center em {
+  display: block;
+  color: var(--swiss-red);
+  font-size: 2.2rem;
+  font-style: normal;
+  letter-spacing: -0.02em;
+}
+
+/* いちばん上の段階は上に余白が少ないので、英字と文字を 1 行に並べて丸の上に置く */
+.slidev-layout .cycle__node.is-top p {
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+}
+
+.slidev-layout .cycle__node.is-top p b {
+  display: inline;
+  margin: 0 0.5rem 0 0;
+}
+
+/* 段階に添える小さな補足 */
+.slidev-layout .cycle__note {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  font-weight: var(--theme-font-weight-regular);
+}
+
+.slidev-layout .cycle__thumb {
+  display: inline-flex;
+  margin-top: 0.4rem;
+  font-weight: var(--theme-font-weight-regular);
+}
+
+/* LinkThumb は縦並びの flex なので、そのままだと画像が補足の文字の幅まで伸びて上下が切れる。
+   幅を高さから決めるよう、伸ばさない */
+.slidev-layout .cycle__thumb img {
+  align-self: flex-end;
+  width: auto !important;
+  height: 4.5rem !important;
+}
+
+/* 活動の価値: 罫線で区切った 3 列に、番号と英字、大きな語、説明、画像を同じ高さで並べる */
+.slidev-layout .values {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
+  margin-top: 0.5rem;
+}
+
+.slidev-layout .values__col {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.7rem;
+  border-top: var(--swiss-rule-bold, 4px) solid var(--swiss-ink);
+}
+
+.slidev-layout .values__col p {
+  margin: 0;
+}
+
+.slidev-layout .values__no {
+  color: var(--swiss-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.slidev-layout .values__word {
+  margin-top: 0.1rem !important;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.slidev-layout .values__desc {
+  flex: 1;
+  margin-top: 0.4rem !important;
+  color: var(--swiss-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.slidev-layout .values__desc b {
+  color: var(--swiss-ink);
+}
+
+/* 説明の長さが違っても画像の上端がそろうよう、画像は列の下に寄せる */
+.slidev-layout .values__img {
+  display: block;
+  margin-top: 0.8rem;
+  border-width: 0 !important;
+}
+
+.slidev-layout .values__img img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.25rem;
 }

@@ -1,14 +1,15 @@
 ---
 layout: section
+variant: red
 no: "04"
-title: テーマ・インプット
-toc: テーマ・インプット：学びと発信を続ける仕組み
+title: Input
+toc: Input　ネタを貯める仕組み
 ---
 
-学びと発信を続ける仕組み
+ネタを貯める仕組み
 
 ---
-eyebrow: 04 テーマ・インプット
+eyebrow: 04 Input
 title: 発表テーマの探し方
 ---
 
@@ -29,18 +30,36 @@ title: 発表テーマの探し方
 </SwissKeyMessage>
 
 ---
-eyebrow: 04 テーマ・インプット
-title: 日々のインプットを発表につなげる
+eyebrow: 04 Input
+title: ブックマークも Markdown で持つ
 ---
 
-# 日々のインプットを発表につなげる
+# ブックマークも Markdown で持つ
 
-- インプットを効率化するツール: Raycast / Claude Code / nb
-- 発表をラクにする仕組み: Slidev × Neovim
-- 効率化しながら表現力を高める工夫
+<div class="bookmark-flow">
+  <figure v-click class="btw-step">
+    <figcaption><span>1</span><a href="https://www.raycast.com/rmartins/markmarks" target="_blank" rel="noopener" class="bookmark-tool">MarkMarks (Raycast)</a> でブックマーク</figcaption>
+    <img src="/markmarks-add.png" />
+    <p class="bookmark-note">開いているページのタイトルと URL が自動で入力される</p>
+  </figure>
+  <figure v-click class="btw-step">
+    <figcaption><span>2</span>保存先は Markdown ファイル</figcaption>
+    <img src="/markmarks-markdown.png" />
+  </figure>
+  <figure v-click class="btw-step">
+    <figcaption><span>3</span>タイトルや URL をあいまい検索して開く</figcaption>
+    <img src="/markmarks-search.png" />
+  </figure>
+</div>
+
+<SwissKeyMessage v-click class="mt-6">
+
+ブックマークも*ただの Markdown* なので、メモと同じように扱える
+
+</SwissKeyMessage>
 
 ---
-eyebrow: 04 テーマ・インプット
+eyebrow: 04 Input
 title: /btw の回答をメモに貯める
 ---
 
@@ -74,65 +93,34 @@ title: /btw の回答をメモに貯める
 </SwissKeyMessage>
 
 ---
-eyebrow: 04 テーマ・インプット
-title: ブックマークも Markdown で持つ
----
-
-# ブックマークも Markdown で持つ
-
-<div class="grid grid-cols-[auto_1fr] gap-12 items-center mt-2">
-<a href="https://www.raycast.com/rmartins/markmarks" target="_blank" class="person-card">
-  <img src="https://files.raycast.com/out7sq8l5nie5ytw5vwrc5cyau9g" alt="" class="!rounded-none" />
-  <span>MarkMarks (Raycast)</span>
-</a>
-<div>
-
-<v-clicks>
-
-- 開いているタブを Raycast からブックマーク
-- 保存先は Markdown ファイル。見出しでグループ分け
-- タイトルや URL をファジー検索して開く
-
-</v-clicks>
-
-</div>
-</div>
-
-<SwissKeyMessage v-click class="mt-10">
-
-ブックマークも*ただの Markdown* なので、メモと同じように扱える
-
-</SwissKeyMessage>
-
----
-eyebrow: 04 テーマ・インプット
+eyebrow: 04 Input
 title: nb でメモを貯める
 ---
 
 # nb でメモを貯める
 
-<div class="grid grid-cols-[1fr_auto] gap-12 mt-2">
+<div class="nb-layout">
 <div>
-
-<v-clicks>
-
-- CLI のノートツール
-- メモは Markdown
-- 保存先は Git リポジトリ<br>→ 端末をまたいで同期
-- ノートブックで用途を分ける
-
-</v-clicks>
-
-<div class="flex items-end gap-4 mt-6">
-  <a href="https://eiji.page/blog/nb-memo-cli-intro/" target="_blank" rel="noopener" class="ref-card">
-    <span class="ref-card__site">eiji.page</span>
-    エンジニアのためのメモ管理 CLI ツール nb の使い方
-  </a>
+<figure class="btw-step">
+  <figcaption>Neovim から nb のメモを探して開く</figcaption>
+  <img src="/nb-picker.png" />
+</figure>
+<div class="flex gap-4 mt-4">
+  <LinkThumb href="https://eiji.page/blog/nb-memo-cli-intro/" src="https://eiji.page/og/nb-memo-cli-intro.png" class="thumb-xs" />
   <LinkThumb href="https://github.com/mozumasu/nb.nvim" src="https://opengraph.githubassets.com/1/mozumasu/nb.nvim" class="thumb-xs" />
 </div>
-
 </div>
+<div class="nb-side">
 <div v-click>
+  <p class="lead-label">nb とは</p>
+  <ul class="nb-points">
+    <li>CLI のノートツール</li>
+    <li>メモは Markdown</li>
+    <li>Git で端末をまたいで同期</li>
+    <li>ノートブックで用途を分ける</li>
+  </ul>
+</div>
+<div v-click class="keymap-table">
   <p class="lead-label">Neovim から操作する</p>
 
 | キー | できること |
@@ -144,49 +132,121 @@ title: nb でメモを貯める
 
 </div>
 </div>
+</div>
 
 ---
-eyebrow: 04 テーマ・インプット
+eyebrow: 04 Input
+title: Slidev はいいぞ
+---
+
+# Slidev はいいぞ
+
+<div class="grid grid-cols-[1fr_auto] gap-12 items-center mt-2">
+<div>
+
+<p class="lead-label">開発者のためのスライドツール</p>
+
+- Markdown でスライドを書く
+- `---` で区切ると 1 枚のスライドになる
+- ブラウザで動く (Vue と Vite で作られている)
+- テーマやアドオンで見た目と機能を足せる
+
+</div>
+<a href="https://sli.dev/" target="_blank" rel="noopener" class="border-0!">
+  <img src="https://sli.dev/logo-title.png" alt="Slidev" class="w-56" />
+</a>
+</div>
+
+---
+eyebrow: 04 Input
 title: 発表をラクにする Slidev
 ---
 
 # 発表をラクにする Slidev
 
-<div class="grid grid-cols-2 gap-6 mt-2">
-  <div v-click class="feature-card">
-    <p class="feature-card__title">章ごとにファイルを分けられる</p>
-    <p>Markdown で書けて、<code>src:</code> で読み込むだけ</p>
+<div class="slidev-points">
+<div>
+
+<v-clicks>
+
+- 章ごとにファイルを分けられる
+- AI で表現力の幅が広がる
+- レイアウトの知見が[テーマ](https://github.com/mozumasu/swiss-slidev)に貯まる
+- 欲しい機能がだいたいある
+
+</v-clicks>
+
+</div>
+<div class="slidev-right">
+<figure v-click="[3, 4]" class="btw-step">
+  <figcaption>テーマ: swiss-slidev</figcaption>
+  <img src="/swiss-theme-overview.png" alt="swiss-slidev のテーマのスライド一覧" />
+</figure>
+<div v-click="4" class="slidev-samples">
+<figure class="btw-step">
+  <figcaption>コードブロック (行のハイライト)</figcaption>
+  <div class="code-sample">
+
+```ts {2}
+function greet(name: string) {
+  const message = `Hello, ${name}!`
+  console.log(message)
+}
+```
+
   </div>
-  <div v-click class="feature-card">
-    <p class="feature-card__title">AI で表現力の幅が広がる</p>
-    <p>図や動きもコードなので頼みやすい</p>
-  </div>
-  <div v-click class="feature-card">
-    <p class="feature-card__title">レイアウトの知見がテーマに貯まる</p>
-    <p>一度作ったレイアウトを次の発表でも使える</p>
-  </div>
-  <div v-click class="feature-card">
-    <p class="feature-card__title">欲しい機能がだいたいある</p>
-    <p>コードブロック、プレゼンターモードなど</p>
-  </div>
+</figure>
+<figure class="btw-step">
+  <figcaption>プレゼンターモード</figcaption>
+  <img src="https://sli.dev/screenshots/presenter-mode.png" alt="Slidev のプレゼンターモードの画面" />
+</figure>
+</div>
+</div>
 </div>
 
-<SwissKeyMessage v-click class="mt-10">
+<SwissKeyMessage v-click class="mt-6">
 
 レイアウトは *AI*、内容は *人間* と分業できる
 
 </SwissKeyMessage>
 
 ---
-eyebrow: 04 テーマ・インプット
+eyebrow: 04 Input
+title: 下書きがそのままスライドになる
+---
+
+# 下書きがそのままスライドになる
+
+<div class="draft-flow">
+  <figure class="btw-step">
+    <figcaption>これが</figcaption>
+    <img src="/slidev-draft.png" />
+  </figure>
+  <span class="flow-arrow">→</span>
+  <figure v-click class="btw-step">
+    <figcaption>こうなる</figcaption>
+    <img src="/slidev-overview.png" />
+  </figure>
+</div>
+
+---
+# 次の章扉へは右上から赤い円が広がって移る
+transition: swiss-circle
+eyebrow: 04 Input
 title: Neovim で編集もラクラク
 ---
 
 # Neovim で編集もラクラク
 
-<v-clicks>
+<p class="lead-label">Neovim のカスタマイズで、より使いやすく</p>
 
-- 折り畳み機能をカスタマイズして、スライドごとにトグルする
-- ファジーファインダーでスライドを検索する
-
-</v-clicks>
+<div class="nvim-flow">
+  <figure v-click class="btw-step">
+    <figcaption><span>1</span>スライド一覧からジャンプ</figcaption>
+    <img src="/nvim-slide-jump.png" />
+  </figure>
+  <figure v-click class="btw-step">
+    <figcaption><span>2</span>スライド一覧をトグル</figcaption>
+    <img src="/nvim-slide-fold.png" />
+  </figure>
+</div>

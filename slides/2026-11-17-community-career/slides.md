@@ -12,16 +12,25 @@ unlisted: true
 favicon: https://github.com/mozumasu.png
 addons:
   - slidev-addon-swiss
+# 表紙からプロフィールへは 12 列が開いて移る。headmatter の transition は全体の既定にもなるので、
+# ほかの枚は defaults で fade に戻す
+transition: swiss-columns
+defaults:
+  transition: fade
 layout: cover
 eyebrow: viviON 社内勉強会 — 2026.11.17
 subtitle: mozumasu
 avatar: https://github.com/mozumasu.png
-titleSize: 3.4rem
+titleSize: 4.6rem
 ---
 
 ::title::
 
-*コミュニティ*から広がる、<br>学び・仲間・キャリア
+*熱量*は伝染する。
+
+::default::
+
+コミュニティから広がる、学び・仲間・キャリア
 
 ---
 layout: profile
@@ -40,7 +49,9 @@ links:
 
 ---
 layout: toc
-title: 今日話すこと
+title: Agenda
+# 次の章扉へは右上から赤い円が広がって移る
+transition: swiss-circle
 ---
 
 ---
