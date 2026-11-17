@@ -108,3 +108,11 @@ title: 登壇で心掛けていること
 </div>
 <LinkThumb href="https://partner-prop.github.io/slides/mozumasu/terminal-night-3/20" :src="$asset('terminal-night-3.png')" caption="例: zsh から学ぶ最高の UX" class="thumb-sm" />
 </div>
+
+<div v-click class="mt-4">
+  <p class="lead-label">記事や登壇資料の参考にしているもの</p>
+  <div class="flex gap-4 text-xs">
+    <LinkThumb href="https://zenn.dev/suzuki_hoge/articles/2022-12-output-my-rule-37db5df201ba16" src="https://res.cloudinary.com/zenn/image/upload/s--A57KbjYA--/c_fit%2Cg_north_west%2Cl_text:notosansjp-medium.otf_55:%25E8%25A8%2598%25E4%25BA%258B%25E3%2582%2592%25E6%259B%25B8%25E3%2581%258F%25E3%2581%25A8%25E3%2581%258D%25E3%2581%25AE%25E8%2587%25AA%25E5%2588%2586%25E3%2583%25AB%25E3%2583%25BC%25E3%2583%25AB%2Cw_1010%2Cx_90%2Cy_100/g_south_west%2Cl_text:notosansjp-medium.otf_37:%25E3%2581%25BB%25E3%2581%2592%25E3%2581%2595%25E3%2582%2593%2Cx_203%2Cy_121/g_south_west%2Ch_90%2Cl_fetch:aHR0cHM6Ly9zdGF0aWMuemVubi5zdHVkaW8vdXNlci11cGxvYWQvYXZhdGFyLzNlMDU2Mzg4YjAuanBlZw==%2Cr_max%2Cw_90%2Cx_87%2Cy_95/v1627283836/default/og-base-w1200-v2.png?_a=BACMTiAE" class="thumb-xs" />
+    <LinkThumb href="https://eiji.page/" src="https://eiji.page/_astro/default.CPT0DVPP_ZNDfjS.webp" class="thumb-xs" />
+  </div>
+</div>
