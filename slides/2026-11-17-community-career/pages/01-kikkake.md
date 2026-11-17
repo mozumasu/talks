@@ -1,14 +1,15 @@
 ---
 layout: section
+variant: red
 no: "01"
-title: きっかけ
-toc: きっかけ：コミュニティとの出会い
+title: Encounter
+toc: Encounter　熱量に出会う
 ---
 
-コミュニティとの出会い
+熱量に出会う
 
 ---
-eyebrow: 01 きっかけ
+eyebrow: 01 Encounter
 title: 初めてのイベント参加
 ---
 
@@ -43,7 +44,7 @@ title: 初めてのイベント参加
 </div>
 
 ---
-eyebrow: 01 きっかけ
+eyebrow: 01 Encounter
 title: 初めてのイベントで感じたこと
 ---
 
@@ -70,7 +71,7 @@ title: 初めてのイベントで感じたこと
 </div>
 
 ---
-eyebrow: 01 きっかけ
+eyebrow: 01 Encounter
 title: イベントでの思い出
 class: center-body
 ---
@@ -83,7 +84,7 @@ class: center-body
 <img src="/otaku-chat.svg" class="h-52 mt-6 rounded shadow" />
 
 ---
-eyebrow: 01 きっかけ
+eyebrow: 01 Encounter
 title: イベント後日
 ---
 
@@ -98,12 +99,20 @@ title: イベント後日
 
 <div v-click="1">
 <ul>
-  <li>教えてもらった設定を忘れる
-    <ul><li v-click="2">ブログを頼りに公式ドキュメントを読み込む → WezTerm 沼へ</li></ul>
-  </li>
+  <li>教えてもらった設定を忘れる <span v-click="2">→ ドキュメントを読み込んで沼へ</span></li>
 </ul>
-<div v-click="3" class="flex gap-4 ml-10 mt-2">
+<div v-click="3" class="flex items-center gap-6 ml-10 mt-2">
   <LinkThumb href="https://zenn.dev/mozumasu/articles/mozumasu-wezterm-customization" src="https://res.cloudinary.com/zenn/image/upload/s--7sSrxqoq--/c_fit%2Cg_north_west%2Cl_text:notosansjp-medium.otf_55:%25E3%2583%25A2%25E3%2583%2586%25E3%2582%258B%25E3%2582%25BF%25E3%2583%25BC%25E3%2583%259F%25E3%2583%258A%25E3%2583%25AB%25E3%2581%25AB%25E3%2582%25AB%25E3%2582%25B9%25E3%2582%25BF%25E3%2583%259E%25E3%2582%25A4%25E3%2582%25BA%25E3%2581%2597%25E3%2582%2588%25E3%2581%2586%25EF%25BC%2588WezTerm%25EF%25BC%2589%2Cw_1010%2Cx_90%2Cy_100/g_south_west%2Cl_text:notosansjp-medium.otf_37:mozumasu%2Cx_203%2Cy_121/g_south_west%2Ch_90%2Cl_fetch:aHR0cHM6Ly9zdGF0aWMuemVubi5zdHVkaW8vdXNlci11cGxvYWQvYXZhdGFyL2IzZTRhZjAyMDkuanBlZw==%2Cr_max%2Cw_90%2Cx_87%2Cy_95/v1627283836/default/og-base-w1200-v2.png?_a=BACMTiAE" class="thumb-sm" />
+  <div v-click="4" class="flex items-center gap-4">
+    <span class="flow-arrow">→</span>
+    <a href="https://gihyo.jp/magazine/SD/archive/2025/202506" target="_blank" rel="noopener" class="magazine-link">
+      <img src="https://gihyo.jp/assets/images/cover/2025/thumb/TH800_642506.jpg" alt="Software Design 2025年6月号の表紙" />
+    </a>
+    <div>
+      <div class="font-bold">後にこの記事が<br>雑誌の寄稿につながる</div>
+      <div class="text-sm text-[var(--theme-muted)] mt-1">Software Design 2025年6月号</div>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -113,11 +122,10 @@ TODO: WezTerm にルビを振る
 
 ---
 layout: statement
-align: center
-decor: false
+label: イベントでの学び
+title: 熱量は伝染する。
+# 一文を 1 文字ずつ打って出す (style.css の .typing-title)
+class: typing-title
+# 次の章扉へは右上から赤い円が広がって移る
+transition: swiss-circle
 ---
-
-<div class="statement-pair">
-  <p class="statement-pair-label">イベントでの学び</p>
-  <p v-click>熱量は他人を動かす</p>
-</div>

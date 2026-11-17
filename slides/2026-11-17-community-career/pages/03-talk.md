@@ -1,14 +1,15 @@
 ---
 layout: section
+variant: red
 no: "03"
-title: 発表
-toc: 発表：参加する側から発信する側へ
+title: Output
+toc: Output　布教する側へ
 ---
 
-参加する側から発信する側へ
+布教する側へ
 
 ---
-eyebrow: 03 発表
+eyebrow: 03 Output
 title: 初めてのアドカレ
 ---
 
@@ -26,7 +27,7 @@ title: 初めてのアドカレ
 <SwissKeyMessage>アドカレのメンバーには記事が届く。書く理由になる<br>まずは目の前の人に刺さりそうな記事を書く</SwissKeyMessage>
 
 ---
-eyebrow: 03 発表
+eyebrow: 03 Output
 title: 初めての登壇
 ---
 
@@ -59,20 +60,37 @@ title: 登壇は布教駆動
 ---
 
 ---
-eyebrow: 03 発表
+eyebrow: 03 Output
 title: 初めての登壇を終えて
 ---
 
 # 初めての登壇を終えて
 
+<div class="grid grid-cols-[1fr_auto] gap-8 items-center">
+<div>
+
 - 声をかけられる側になる
 - 友人ができた
-- 感謝された
+- 感謝される
+
+</div>
+<svg v-click viewBox="0 0 420 270" class="venn" role="img" aria-label="記事を読む人とイベントに来る人の集合の図">
+  <circle cx="270" cy="130" r="105" class="venn__event" />
+  <circle cx="150" cy="130" r="105" class="venn__article" />
+  <text x="115" y="124" class="venn__label">記事を</text>
+  <text x="115" y="150" class="venn__label">読む人</text>
+  <text x="305" y="124" class="venn__label is-red">イベントに</text>
+  <text x="305" y="150" class="venn__label is-red">来る人</text>
+  <text x="305" y="262" class="venn__note">記事だけでは届かない</text>
+</svg>
+</div>
 
 <SwissKeyMessage>自分が思っていたよりも需要があった<br>記事だけでは広まらない範囲にも伝えられた</SwissKeyMessage>
 
 ---
-eyebrow: 03 発表
+# 次の章扉へは右上から赤い円が広がって移る
+transition: swiss-circle
+eyebrow: 03 Output
 title: 登壇で心掛けていること
 ---
 
