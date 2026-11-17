@@ -806,3 +806,8 @@
   object-fit: cover;
   border-radius: 0.25rem;
 }
+
+/* 表紙の eyebrow はテーマで大文字になるが、viviON の表記を崩さないようそのまま出す */
+.slidev-layout .cover__eyebrow {
+  text-transform: none;
+}
