@@ -56,7 +56,7 @@ clicks: 6
 /* ターミナルは 1 枚分の大きさで作られているので、半分の幅に縮める */
 .repeat-demo > div {
   zoom: 0.8;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 /* 半分の幅ではキーと説明が横に入らないので、説明はキーの下の行に置く */
 .repeat-demo :deep(.terminal-demo-footer) {
@@ -71,8 +71,8 @@ clicks: 6
 }
 /* 動いていない側はグレーアウトする */
 .repeat-demo > .is-dim {
+  /* PDF では filter の範囲がずれて灰色の四角が出るので、薄くするだけにする */
   opacity: 0.35;
-  filter: grayscale(1);
 }
 </style>
 

@@ -1,0 +1,28 @@
+
+.repeat-demo[data-v-5e54607f] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+/* ターミナルは 1 枚分の大きさで作られているので、半分の幅に縮める */
+.repeat-demo > div[data-v-5e54607f] {
+  zoom: 0.8;
+  transition: opacity 0.3s ease;
+}
+/* 半分の幅ではキーと説明が横に入らないので、説明はキーの下の行に置く */
+.repeat-demo[data-v-5e54607f] .terminal-demo-footer {
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: 0.4rem;
+  /* キーの有無で高さが変わると下の注記が動くので、2 行分の高さに固定する */
+  height: 6rem;
+}
+.repeat-demo[data-v-5e54607f] .terminal-demo-note {
+  flex-basis: 100%;
+}
+/* 動いていない側はグレーアウトする */
+.repeat-demo > .is-dim[data-v-5e54607f] {
+  /* PDF では filter の範囲がずれて灰色の四角が出るので、薄くするだけにする */
+  opacity: 0.35;
+}
