@@ -164,7 +164,7 @@ title: シェル本体と行編集の関係
 clicks: 3
 ---
 
-<KeyMessage>編集は<em>行編集の仕組み</em>、実行は<em>シェル本体</em></KeyMessage>
+<KeyMessage>編集は<em>行編集の仕組み</em> / 実行は<em>シェル本体</em></KeyMessage>
 
 <ShellEditorRelation />
 

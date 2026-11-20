@@ -15,7 +15,7 @@ tocLevel: 2
 clicks: 6
 ---
 
-<KeyMessage>zsh と Bash は<em>前のコマンドへ</em>、fish は<em>1 単語ずつ前へ</em></KeyMessage>
+<KeyMessage>zsh と Bash は<em>前のコマンドへ</em> / fish は<em>1 単語ずつ前へ</em></KeyMessage>
 
 <div class="repeat-demo">
 <div :class="$clicks <= 2 ? 'is-active' : 'is-dim'">
@@ -152,7 +152,7 @@ layout: default
 title: キーバインド比較まとめ
 ---
 
-<KeyMessage>同じキーでも、<em>機能の名前と細かい動き</em>はシェルごとに違う</KeyMessage>
+<KeyMessage>同じキーでも<em>機能の名前と動き</em>はシェルごとに違う</KeyMessage>
 
 <table class="cmp-matrix">
 <thead><tr><th></th><th>zsh</th><th>Bash</th><th>fish</th><th>Nushell</th></tr></thead>

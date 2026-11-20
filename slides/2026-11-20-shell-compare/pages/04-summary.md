@@ -13,80 +13,18 @@ title: 今日のまとめ
 clicks: 3
 ---
 
-<div class="sum">
-  <div v-click="1" class="sum-col">
-    <p class="sum-no">01</p>
-    <p class="sum-label">行編集の基本</p>
-    <p class="sum-main">キーを受け取るのは<br><em>行編集の仕組み</em></p>
-    <p class="sum-sub">ZLE / Readline / fish 本体 / Reedline</p>
-  </div>
-  <div v-click="2" class="sum-col">
-    <p class="sum-no">02</p>
-    <p class="sum-label">同じ操作を比べる</p>
-    <p class="sum-main">同じキーでも<br><em>動きが違う</em></p>
-    <p class="sum-sub">Esc → . / !$ / エディタで編集</p>
-  </div>
-  <div v-click="3" class="sum-col">
-    <p class="sum-no">03</p>
-    <p class="sum-label">ないなら作る</p>
-    <p class="sum-main"><em>関数</em>を書いて<br><em>キーに割り当てる</em></p>
-    <p class="sum-sub">関数で行の中身とカーソル位置を書き換える</p>
-  </div>
-</div>
-
-<style>
-.sum {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  height: 100%;
-  align-content: center;
-  margin-top: -1rem;
-}
-.sum-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  padding: 0 1.6rem;
-  border-left: 1px solid var(--theme-gray-200);
-}
-.sum-col:first-child {
-  border-left: none;
-}
-.sum-col p {
-  margin: 0;
-}
-.sum-no {
-  color: var(--theme-red);
-  font-size: 3.2rem;
-  font-weight: var(--theme-font-weight-bold);
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-.sum-label {
-  color: var(--theme-muted);
-  font-size: 0.85rem;
-  font-weight: var(--theme-font-weight-bold);
-  letter-spacing: 0.08em;
-}
-.sum-main {
-  font-size: 1.55rem;
-  font-weight: var(--theme-font-weight-bold);
-  line-height: 1.45;
-}
-.sum-sub {
-  margin-top: 0.4rem !important;
-  color: var(--theme-muted);
-  font-size: 0.75rem;
-  line-height: 1.6;
-}
-</style>
+<PointColumns click :items="[
+  { label: '行編集の基本', title: 'キーを受け取るのは<br><em>行編集の仕組み</em>', text: 'ZLE / Readline / fish 本体 / Reedline' },
+  { label: '同じ操作を比べる', title: '同じキーでも<br><em>動きが違う</em>', text: 'Esc → . / !$ / エディタで編集' },
+  { label: 'ないなら作る', title: '<em>関数</em>を書いて<br><em>キーに割り当てる</em>', text: '関数で行の中身とカーソル位置を書き換える' },
+]" />
 
 ---
 layout: default
 title: 今の割り当ては、シェルに聞けば分かる
 ---
 
-<KeyMessage>キーではなく<em>機能の名前</em>で探すと、シェルが変わっても見つけやすい</KeyMessage>
+<KeyMessage><em>機能の名前</em>で探せばシェルが変わっても見つかる</KeyMessage>
 
 | | 割り当ての一覧 | 例: 最後の引数を入れる機能を探す |
 |---|---|---|

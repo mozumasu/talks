@@ -288,11 +288,9 @@ title: "Nushell に Alt + . を作る"
   { title: '履歴から取り出して差し込む', text: 'history は<em>テーブル</em>で返るので、最後の行の command 列を空白で区切り、最後の単語をカーソル位置に入れる' },
 ]" />
 
-<div class="why-box">
-  <p class="why-title">⚠ Esc → . が使えない理由</p>
-  <p>Reedline が使う crossterm は<br>単独で届いた Esc をすぐ Esc キーとして扱う</p>
-  <a class="why-link" href="https://github.com/crossterm-rs/crossterm/issues/993">crossterm-rs/crossterm#993</a>
-</div>
+<NoteBox title="⚠ Esc → . が使えない理由" href="https://github.com/crossterm-rs/crossterm/issues/993" link-label="crossterm-rs/crossterm#993">
+Reedline が使う crossterm は<br>単独で届いた Esc をすぐ Esc キーとして扱う
+</NoteBox>
 
 ::code::
 
@@ -315,35 +313,5 @@ $env.config.keybindings ++= [{
 .slidev-code code {
   white-space: pre-wrap;
   word-break: break-all;
-}
-/* Esc → . が使えない理由を、注意の囲みで見せる */
-.why-box {
-  margin-top: 1.5rem;
-  padding: 0.7rem 1rem;
-  border: 1.5px dashed var(--theme-gray-200);
-  border-radius: 0.5rem;
-  color: var(--theme-muted);
-  font-size: 0.72rem;
-  line-height: 1.6;
-}
-.why-box p {
-  margin: 0;
-}
-.why-title {
-  margin-bottom: 0.2rem !important;
-  color: var(--theme-text, inherit);
-  font-weight: var(--theme-font-weight-bold);
-}
-.slidev-layout a.why-link {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.1rem 0.6rem;
-  border: 1px solid var(--theme-gray-200);
-  border-bottom: 1px solid var(--theme-gray-200);
-  border-radius: 999px;
-  background: var(--theme-background);
-  color: var(--theme-muted);
-  font-family: var(--slidev-code-font-family, monospace);
-  font-size: 0.7rem;
 }
 </style>

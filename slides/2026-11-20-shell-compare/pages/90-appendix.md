@@ -141,7 +141,7 @@ layout: default
 title: tty とは
 ---
 
-<KeyMessage>tty = ターミナルとシェルの間にある、<em>OS の端末の窓口</em></KeyMessage>
+<KeyMessage>tty = ターミナルとシェルの間にある<em>OS の端末の窓口</em></KeyMessage>
 
 <div class="tty-flow">
   <div><b>ターミナル</b><span>WezTerm など。キーを送り、届いた文字を表示する</span></div>
