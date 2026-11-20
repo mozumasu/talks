@@ -42,7 +42,7 @@ qr: https://talks.mozumasu.com/shell-compare/
 ---
 
 - **Environment** macOS / WezTerm / Neovim / macSKK
-- **CAREER** SES → フリーランス → Platform SRE → Embedded SRE
+- **Career** SES → フリーランス → Platform SRE → Embedded SRE
 - **Media** TECH WORLD / adachin dev / MIRAITO CHANNEL /<br>エンジニアの楽園ラジオ に出演
 - **Shell** ふだんは zsh
 

@@ -41,18 +41,18 @@ const step = computed(() => Math.min($clicks.value, 2))
       <p class="ser-group-title">行編集がシェル本体の<em>外</em>にある (ライブラリ)</p>
       <div class="ser-cards">
         <div class="ser-card">
-          <div class="ser-shell is-small"><span class="ser-shell-name">bash</span></div>
+          <div class="ser-shell is-small"><span class="ser-shell-name">Bash</span></div>
           <span class="ser-link" />
           <div class="ser-editor is-library">
             <b>GNU Readline</b>
           </div>
           <div class="ser-users">
-            <span>gdb</span><span>sqlite3</span><span>Python</span>
+            <span>gdb</span><span>rlwrap</span>
           </div>
           <p class="ser-note">ほかのツールも使う</p>
         </div>
         <div class="ser-card">
-          <div class="ser-shell is-small"><span class="ser-shell-name">nu</span></div>
+          <div class="ser-shell is-small"><span class="ser-shell-name">Nushell</span></div>
           <span class="ser-link" />
           <div class="ser-editor is-library">
             <b>Reedline</b>

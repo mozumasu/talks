@@ -1,0 +1,9 @@
+
+/* 2 クリック目で、zsh だけにある登録の段を目立たせる */
+.reg-step code[data-v-5d4592a5] {
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.slidev-page:has(.slidev-vclick-target:not(.slidev-vclick-hidden)) .reg-step code[data-v-5d4592a5] {
+  background: var(--theme-red);
+  color: var(--theme-background);
+}

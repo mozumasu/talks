@@ -81,7 +81,7 @@ layout: default
 title: "Case 1: 直前のコマンドの最後の引数を入れる"
 ---
 
-<KeyMessage>3 つのシェルは<em>同じキー</em>で入る。<em>Nushell にはキーがない</em></KeyMessage>
+<KeyMessage>3 つのシェルは<em>同じキー</em>で使える。<em>Nushell にはキーがない</em></KeyMessage>
 
 | | 操作 | 機能の名前 |
 |---|---|---|
@@ -118,11 +118,11 @@ title: "Case 2: 履歴展開 !$ で比べる"
 | | `!$` を打って Enter | 実行せずに展開するには |
 |---|---|---|
 | zsh | 展開して実行 | Tab で展開 / `setopt hist_verify` |
-| Bash | 展開して実行 | `Esc` → `^` で展開 / `shopt -s histverify` |
+| Bash | 展開して実行 | `Esc` → `^` (キャレット) で展開 / `shopt -s histverify` |
 | fish | 履歴展開がない | ― |
 | Nushell | 展開のみ | 最初からこの動き |
 
-<RefNote>zsh と Bash は <code>magic-space</code> を Space に割り当てると、Space を押したときに展開される / 参照: <a href="https://www.nushell.sh/book/line_editor.html">Nushell: Reedline, Nu's Line Editor</a></RefNote>
+<RefNote><code>!$</code> = 直前のコマンドの最後の引数 / zsh と Bash は <code>magic-space</code> を Space に割り当てると、Space を押したときに展開される / 参照: <a href="https://www.nushell.sh/book/line_editor.html">Nushell: Reedline, Nu's Line Editor</a></RefNote>
 
 ---
 layout: default
@@ -134,9 +134,9 @@ tocLevel: 2
 | | 編集を取り消す | エディタで編集する | 書きかけを退避する |
 |---|---|---|---|
 | zsh | `Ctrl+-` | `Esc` → `e` (要設定) | `Esc` → `q` |
-| Bash | `Ctrl+-` | `^X^E` <span class="warn-note">⚠ 閉じると実行される</span> | なし |
-| fish | `Ctrl+-` / `^Z` | `Esc` → `e` / `Esc` → `v` | なし |
-| Nushell | `^Z` | `^O` | なし |
+| Bash | `Ctrl+-` | `Ctrl+X Ctrl+E` <span class="warn-note">⚠ 閉じると実行される</span> | なし |
+| fish | `Ctrl+-` / `Ctrl+Z` | `Esc` → `e` / `Esc` → `v` | なし |
+| Nushell | `Ctrl+Z` | `Ctrl+O` | なし |
 
 <style>
 .warn-note {
@@ -159,8 +159,8 @@ title: キーバインド比較まとめ
 <tbody>
 <tr><th>最後の引数</th><td class="is-ok"><code>Esc → .</code></td><td class="is-ok"><code>Esc → .</code></td><td class="is-ok"><code>Esc → .</code></td><td class="is-none">なし</td></tr>
 <tr><th>後ろから 2 つめの引数</th><td class="is-ok"><code>Esc → 2  Esc → .</code></td><td class="is-ok"><code>Esc → 1  Esc → .</code></td><td class="is-ok"><code>Esc → .</code><small>2 回押す</small></td><td class="is-none">なし</td></tr>
-<tr><th>取り消し</th><td class="is-ok"><code>Ctrl+-</code></td><td class="is-ok"><code>Ctrl+-</code></td><td class="is-ok"><code>Ctrl+-</code></td><td class="is-ok"><code>^Z</code></td></tr>
-<tr><th>エディタで編集</th><td class="is-cfg"><code>Esc → e</code><small>要設定</small></td><td class="is-warn"><code>^X^E</code><small>⚠ 閉じると実行</small></td><td class="is-ok"><code>Esc → e</code></td><td class="is-ok"><code>^O</code></td></tr>
+<tr><th>編集を取り消す</th><td class="is-ok"><code>Ctrl+-</code></td><td class="is-ok"><code>Ctrl+-</code></td><td class="is-ok"><code>Ctrl+-</code></td><td class="is-ok"><code>Ctrl+Z</code></td></tr>
+<tr><th>エディタで編集</th><td class="is-cfg"><code>Esc → e</code><small>要設定</small></td><td class="is-warn"><code>Ctrl+X Ctrl+E</code><small>⚠ 閉じると実行</small></td><td class="is-ok"><code>Esc → e</code></td><td class="is-ok"><code>Ctrl+O</code></td></tr>
 <tr><th>書きかけを退避</th><td class="is-ok"><code>Esc → q</code></td><td class="is-none">なし</td><td class="is-none">なし</td><td class="is-none">なし</td></tr>
 </tbody>
 </table>

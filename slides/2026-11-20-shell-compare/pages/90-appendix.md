@@ -197,12 +197,11 @@ title: 行編集の仕組みは tty の設定を切り替える
 
 <KeyMessage>プロンプトで待っている間、行編集の仕組みは tty を<em>1 キーずつ渡す設定</em>にしている</KeyMessage>
 
-| プロンプトで待っているもの | tty の設定 | 意味 |
+| 待っているもの | tty の設定 | 意味 |
 |---|---|---|
-| bash (Readline あり) | `-icanon -echo` | Readline が 1 キーずつ受け取り、画面にも自分で書く |
+| bash (Readline あり) | `-icanon -echo` | Readline が 1 キーずつ受け取って画面に書く |
 | zsh / fish / Nushell | `-icanon -echo` | 同じ。ZLE・fish・Reedline が受け取る |
-| bash (Readline なし) | `icanon echo` | tty が Enter までまとめて持ち、打った文字も tty が画面に返す |
-| `cat` (参考) | `icanon echo` | 行編集を持たないふつうのコマンドと同じ |
+| bash (Readline なし) | `icanon echo` | tty が Enter でまとめて渡し、画面にも返す |
 
 ```sh [別のターミナルから、待っているシェルの tty の設定を見る (macOS)]
 stty -f /dev/ttys003 -a | grep -oE -- '-?icanon|-?echo '

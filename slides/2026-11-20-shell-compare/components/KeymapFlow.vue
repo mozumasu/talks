@@ -14,8 +14,8 @@ const step = computed(() => Math.min($clicks.value, 4))
 const stepClasses = computed(() => [1, 2, 3, 4].filter(n => step.value >= n).map(n => `at-${n}`))
 
 const rows = [
-  { key: '^A', op: '行頭へ移る' },
-  { key: '^W', op: '単語を消す' },
+  { key: 'Ctrl+A', op: '行頭へ移る' },
+  { key: 'Ctrl+W', op: '単語を消す' },
   { key: 'Esc → .', op: '最後の引数を入れる', hit: true },
   { key: 'Ctrl+-', op: '取り消す' },
 ]
@@ -25,7 +25,7 @@ const shells = [
   { name: 'zsh', editor: 'ZLE', kind: 'Widget', op: 'insert-last-word' },
   { name: 'Bash', editor: 'GNU Readline', kind: 'Readline の関数', op: 'yank-last-arg' },
   { name: 'fish', editor: 'fish 本体', kind: '入力関数', op: 'history-token-search-backward' },
-  { name: 'Nushell', editor: 'Reedline', kind: 'イベント', op: 'Enter (!$ を展開)' },
+  { name: 'Nushell', editor: 'Reedline', kind: 'イベント', op: 'なし (!$ で代用)' },
 ]
 </script>
 

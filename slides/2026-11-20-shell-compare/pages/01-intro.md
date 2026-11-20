@@ -147,13 +147,12 @@ onBeforeUnmount(() => clearInterval(timer))
 
 <TerminalDemo
   :step="$clicks"
-  legend="^ = Ctrl"
   :frames="[
     { history: ['❯ git status'], line: '' },
     { key: '↑', history: ['❯ git status'], line: 'git status', note: '例えば ↑ で履歴から呼び出したり' },
-    { key: '^W', history: ['❯ git status'], line: 'git ', note: '^W で最後の単語を消したり' },
+    { key: 'Ctrl+W', history: ['❯ git status'], line: 'git ', note: 'Ctrl+W で最後の単語を消したり' },
     { history: ['❯ git status'], line: 'git ' + 'log'.slice(0, typed), mark: [4, 4 + typed], note: 'log と打ち直す。ここまでがシェルに渡る前の編集' },
-    { key: '^M', history: ['❯ git status', '❯ git log'], line: '', note: 'Enter を押して初めて、シェルが行を受け取って実行する' },
+    { key: 'Enter', history: ['❯ git status', '❯ git log'], line: '', note: 'Enter を押して初めて、シェルが行を受け取って実行する' },
   ]"
 />
 
@@ -190,7 +189,7 @@ clicks: 3
   title="bash (Readline なしのビルド)"
   :frames="[
     { line: 'echo abc', note: '^A で行頭へ移りたい' },
-    { key: '^A', line: 'echo abc^A', mark: [8, 10], note: 'カーソルは動かず、^A がそのまま文字として入る' },
+    { key: 'Ctrl+A', line: 'echo abc^A', mark: [8, 10], note: 'カーソルは動かず、^A がそのまま文字として入る' },
     { key: '↑', line: 'echo abc^A^[[A', mark: [10, 14], note: '履歴も出ない。矢印キーの信号が文字のまま入る' },
   ]"
 />
@@ -199,7 +198,7 @@ clicks: 3
 <KeyMessage>行の編集は Bash 本体ではなく<em>Readline が受け持っている</em></KeyMessage>
 </div>
 
-<RefNote>Nix の <code>mkShell</code> の bash がこのビルド (<code>--disable-readline</code>)</RefNote>
+<RefNote>Nix の <code>mkShell</code> の中で起動する bash がこのビルド (<code>--disable-readline</code>)</RefNote>
 
 ---
 layout: default
@@ -210,6 +209,6 @@ tocLevel: 2
 clicks: 4
 ---
 
-<KeyMessage>どのシェルも<em>行編集の仕組み</em>がキーに割り当てた<em>操作</em>を呼ぶ</KeyMessage>
+<KeyMessage>キーを押すと<em>行編集の仕組み</em>が割り当てた<em>操作</em>を呼ぶ</KeyMessage>
 
 <KeymapFlow />

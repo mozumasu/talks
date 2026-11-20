@@ -35,7 +35,7 @@ title: キーバインド設定の流れ
 clicks: 2
 ---
 
-<KeyMessage>どのシェルも<em>関数を書いて</em><em>キーに割り当てる</em>だけ</KeyMessage>
+<KeyMessage>どのシェルも<em>処理を書いて</em><em>キーに割り当てる</em>だけ</KeyMessage>
 
 <div class="kb-flow">
   <div v-click="1" class="kb-step">
@@ -53,7 +53,7 @@ clicks: 2
   </div>
 </div>
 
-<RefNote>例は zsh。zsh だけは割り当ての前に <code>zle -N</code> で関数を Widget として登録する</RefNote>
+<RefNote>例は zsh</RefNote>
 
 <style>
 .kb-flow {
@@ -240,7 +240,7 @@ clicks: 1
 
 | | 行の中身 | カーソル位置 | 関数の登録 | キーに割り当てる |
 |---|---|---|---|---|
-| zsh | `$BUFFER` | `$CURSOR` | <span class="reg-step">`zle -N`</span> | `bindkey` |
+| zsh | `$BUFFER` / `$LBUFFER` | `$CURSOR` | <span class="reg-step">`zle -N`</span> | `bindkey` |
 | Bash | `$READLINE_LINE` | `$READLINE_POINT` | ― | `bind -x` |
 | fish | `commandline` | `commandline -C` | ― | `bind` |
 | Nushell | `commandline` | `commandline get-cursor` | ― | `$env.config.keybindings` |
@@ -280,11 +280,11 @@ tocLevel: 2
 
 ---
 layout: code
-title: "Nushell に Alt + . を作る"
+title: "Nushell に Alt+. を作る"
 ---
 
 <CodeSteps :steps="[
-  { title: 'キーを決める', text: 'Alt + . に割り当てる。Nushell では Esc → . が使えないので、Alt と . を同時に押す' },
+  { title: 'キーを決める', text: 'Alt+. に割り当てる (Nushell では Esc → . が使えない)' },
   { title: '履歴から取り出して差し込む', text: 'history は<em>テーブル</em>で返るので、最後の行の command 列を空白で区切り、最後の単語をカーソル位置に入れる' },
 ]" />
 
