@@ -1,0 +1,46 @@
+
+.pp-toc[data-v-03ee9046] {
+  --pp-toc-no-width: 1.5rem;
+  --pp-toc-gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  column-gap: 3rem;
+}
+
+/* 子項目ごと列をまたがせない */
+.pp-toc-item[data-v-03ee9046] {
+  break-inside: avoid;
+  padding: 0.35rem 0;
+}
+.slidev-layout .pp-toc-link[data-v-03ee9046] {
+  color: inherit;
+  border-bottom: none;
+  text-decoration: none;
+}
+.pp-toc-item > .pp-toc-link[data-v-03ee9046] {
+  display: flex;
+  align-items: baseline;
+  gap: var(--pp-toc-gap);
+  font-size: 1rem;
+  font-weight: var(--theme-font-weight-bold);
+}
+.pp-toc-no[data-v-03ee9046] {
+  flex: none;
+  width: var(--pp-toc-no-width);
+  color: var(--theme-red);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.pp-toc-children[data-v-03ee9046] {
+  /* 子項目は親のラベルの左端にそろえる */
+  margin: 0.2rem 0 0 calc(var(--pp-toc-no-width) + var(--pp-toc-gap));
+  padding: 0;
+  list-style: none;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-body);
+  line-height: 1.7;
+}
+.pp-toc-children li[data-v-03ee9046]::before {
+  content: '— ';
+}

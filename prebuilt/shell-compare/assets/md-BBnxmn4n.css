@@ -1,0 +1,62 @@
+
+.cmp-matrix[data-v-c14b4dc1] {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: separate;
+  border-spacing: 0.35rem;
+  font-size: 0.8rem;
+}
+.cmp-matrix th[data-v-c14b4dc1],
+.cmp-matrix td[data-v-c14b4dc1] {
+  padding: 0.35rem 0.6rem;
+  border: none;
+  text-align: center;
+  white-space: nowrap;
+}
+.cmp-matrix thead th[data-v-c14b4dc1] {
+  font-size: 0.9rem;
+}
+.cmp-matrix tbody th[data-v-c14b4dc1] {
+  text-align: left;
+  font-weight: var(--theme-font-weight-bold);
+}
+.cmp-matrix code[data-v-c14b4dc1] {
+  padding: 0;
+  background: none;
+  font-size: 0.78rem;
+}
+.cmp-matrix small[data-v-c14b4dc1] {
+  display: block;
+  font-size: 0.65rem;
+}
+/* 最初から使える: 赤の薄い地 / 設定が要る: 点線 / 動きが違う: 赤い枠 / なし: グレー */
+.cmp-matrix .is-ok[data-v-c14b4dc1],
+.cmp-legend .is-ok[data-v-c14b4dc1] {
+  border-radius: 0.4rem;
+  background: var(--theme-red-soft);
+}
+.cmp-matrix .is-cfg[data-v-c14b4dc1],
+.cmp-legend .is-cfg[data-v-c14b4dc1] {
+  border: 1.5px dashed var(--theme-gray-200);
+  border-radius: 0.4rem;
+}
+.cmp-matrix .is-warn[data-v-c14b4dc1],
+.cmp-legend .is-warn[data-v-c14b4dc1] {
+  border: 1.5px solid var(--theme-red);
+  border-radius: 0.4rem;
+  color: var(--theme-red);
+}
+.cmp-matrix .is-none[data-v-c14b4dc1],
+.cmp-legend .is-none[data-v-c14b4dc1] {
+  color: var(--theme-gray-200);
+}
+.cmp-legend[data-v-c14b4dc1] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin: 0.3rem 0 0;
+  font-size: 0.65rem;
+}
+.cmp-legend span[data-v-c14b4dc1] {
+  padding: 0.05rem 0.5rem;
+}

@@ -1,0 +1,310 @@
+
+.cover[data-v-c27ae485] {
+  /* 表紙のキャッチだけの大きさ (display と lead の間) */
+  --pp-cover-title-size: 1.95rem;
+  --pp-cover-avatar-size: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--theme-gradient-section);
+}
+.pp-arcs[data-v-c27ae485] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 右側のビジュアル。左のテキストに少し重なる位置まで広げる (v3.1 と同じく横幅の約 7 割) */
+.pp-cover-visual[data-v-c27ae485] {
+  position: absolute;
+  top: 0;
+  right: 2.4%;
+  bottom: 0;
+  width: 68.5%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.pp-cover-visual img[data-v-c27ae485] {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.pp-cover-logo[data-v-c27ae485] {
+  position: absolute;
+  top: 1.4rem;
+  left: 1.4rem;
+}
+.pp-cover-body[data-v-c27ae485] {
+  position: absolute;
+  left: 4.25rem;
+  top: 38.5%;
+  max-width: 50%;
+}
+.slidev-layout .pp-cover-title[data-v-c27ae485] {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: var(--pp-cover-title-size);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.pp-cover-accent[data-v-c27ae485] {
+  color: var(--theme-red);
+}
+.pp-cover-divider[data-v-c27ae485] {
+  width: 26rem;
+  margin: 1.6rem 0 1.2rem -0.4rem;
+  border: 0;
+  border-top: 1px solid var(--theme-border);
+}
+.slidev-layout .pp-cover-subtitle[data-v-c27ae485] {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* 発表者名の左に丸いアイコンを添える */
+.pp-cover-byline[data-v-c27ae485] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.pp-cover-avatar[data-v-c27ae485] {
+  flex: none;
+  width: var(--pp-cover-avatar-size);
+  height: var(--pp-cover-avatar-size);
+  overflow: hidden;
+  border-radius: 50%;
+}
+.pp-cover-avatar[data-v-c27ae485] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pp-cover-tagline[data-v-c27ae485] {
+  position: absolute;
+  left: 4.25rem;
+  bottom: 5.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--theme-gray-400);
+  font-weight: var(--theme-font-weight-bold);
+}
+.pp-cover-tagline-main[data-v-c27ae485] {
+  font-size: 2rem;
+  line-height: 1;
+}
+.pp-cover-tagline-note[data-v-c27ae485] {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  white-space: pre-line;
+}
+/* --- variant: template (2024.09 テンプレート p.1) --- */
+.cover.is-template[data-v-c27ae485] {
+  /* テンプレートの文字・帯は紺がかったグレー。帯と PRM の色は紺を白で薄めて作る */
+  --cover-band-color: color-mix(in srgb, var(--theme-navy) 16%, var(--theme-background));
+  --cover-band-text: color-mix(in srgb, var(--theme-navy) 42%, var(--theme-background));
+  background: var(--theme-background);
+  color: var(--theme-navy);
+}
+
+/* 右端の黄〜赤の有機的な形。高さいっぱいに置き、右端は画面外へ流す */
+.is-template .pp-cover-blob[data-v-c27ae485] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  pointer-events: none;
+}
+.is-template .pp-cover-visual[data-v-c27ae485] {
+  right: -1.5%;
+  width: 57%;
+}
+.is-template .pp-cover-logo[data-v-c27ae485] {
+  top: 3.1rem;
+  left: 3rem;
+}
+.is-template .pp-cover-body[data-v-c27ae485] {
+  left: 4.125rem;
+  top: 40.5%;
+  max-width: 42%;
+}
+.cover.is-template .pp-cover-subtitle[data-v-c27ae485] {
+  font-size: 2rem;
+  font-weight: var(--theme-font-weight-regular);
+  line-height: 1.3;
+}
+.cover.is-template .pp-cover-title[data-v-c27ae485] {
+  margin-top: 0.4rem;
+  color: var(--theme-navy);
+  font-size: 3rem;
+  font-weight: var(--theme-font-weight-semibold);
+  line-height: 1.25;
+}
+
+/* 左端から伸びて右へ消えていくグレーの帯 */
+.is-template .pp-cover-tagline[data-v-c27ae485] {
+  left: 0;
+  top: 65.6%;
+  bottom: auto;
+  width: 50%;
+  height: 4.9rem;
+  padding-left: 4.125rem;
+  gap: 0.6rem;
+  background: linear-gradient(90deg, var(--cover-band-color) 40%, transparent);
+  color: var(--cover-band-text);
+}
+.is-template .pp-cover-tagline-main[data-v-c27ae485] {
+  font-size: 2.85rem;
+  letter-spacing: 0.01em;
+}
+.is-template .pp-cover-tagline-note[data-v-c27ae485] {
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+/* --- variant: talk (技術登壇向け) --- */
+/* タイトルが 2 行になっても下のイベント名と重ならないよう、絶対配置ではなく縦に積む */
+.cover.is-talk[data-v-c27ae485] {
+  --pp-cover-title-size: 3.75rem;
+  --pp-cover-avatar-size: 2.75rem;
+  display: flex;
+  flex-direction: column;
+  padding: 5.25rem 4.25rem 3.5rem;
+}
+
+/* 背景の弧 (絶対配置) が文字の上に描かれないよう、文字側を前面に出す */
+.is-talk .pp-cover-body[data-v-c27ae485] {
+  position: relative;
+  z-index: 1;
+  top: auto;
+  left: auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: none;
+}
+.cover.is-talk .pp-cover-title[data-v-c27ae485] {
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+/* ::title:: スロットは md なので p で届く。強調だけ赤にする */
+.is-talk .pp-cover-title[data-v-c27ae485] p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.is-talk .pp-cover-title[data-v-c27ae485] em,
+.is-talk .pp-cover-title[data-v-c27ae485] strong {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: inherit;
+}
+.is-talk .pp-cover-lead[data-v-c27ae485] {
+  margin-top: 0.9rem;
+  font-size: 1.25rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.5;
+}
+.is-talk .pp-cover-lead[data-v-c27ae485] p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* 右下のプロダクト画面に掛からない長さで止める */
+.is-talk .pp-cover-divider[data-v-c27ae485] {
+  width: 60%;
+  margin: 1.5rem 0 1.25rem;
+}
+.cover.is-talk .pp-cover-subtitle[data-v-c27ae485] {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+.is-talk .pp-cover-tagline[data-v-c27ae485] {
+  position: relative;
+  z-index: 1;
+  left: auto;
+  bottom: auto;
+}
+
+/* プロダクト画面はタイトルに掛からない右下に小さく置く */
+.is-talk .pp-cover-visual[data-v-c27ae485] {
+  top: auto;
+  right: 2%;
+  bottom: 4%;
+  width: 46%;
+  height: 56%;
+}
+
+/* --- variant: brand (ロゴガイドライン p.1) --- */
+.cover.is-brand[data-v-c27ae485] {
+  /* 縦の割り付け: 白 (ロゴ) 31% / 赤 42% / グレー / 黒い帯 */
+  --cover-band-top: 31%;
+  --cover-band-height: 42%;
+  --cover-bar-height: 1.5rem;
+  background: var(--theme-background);
+}
+
+/* ロゴは白い領域の上下中央。位置は保護領域 (32px) を含めた外枠で指定する */
+.is-brand .pp-cover-logo[data-v-c27ae485] {
+  top: 1.45rem;
+  left: 1.4rem;
+}
+.pp-cover-band[data-v-c27ae485] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--cover-band-top);
+  height: var(--cover-band-height);
+  overflow: hidden;
+  background: var(--theme-red);
+}
+.pp-cover-band img[data-v-c27ae485] {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.is-brand .pp-cover-body[data-v-c27ae485] {
+  left: 0;
+  right: 0;
+  top: calc(var(--cover-band-top) + var(--cover-band-height));
+  bottom: var(--cover-bar-height);
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 3.375rem 1.4rem;
+  background: var(--theme-gray-brand);
+}
+.cover.is-brand .pp-cover-title[data-v-c27ae485] {
+  font-size: 1.5rem;
+  font-weight: var(--theme-font-weight-semibold);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+.cover.is-brand .pp-cover-subtitle[data-v-c27ae485] {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: var(--theme-font-weight-regular);
+  line-height: 1.5;
+}
+.pp-cover-bar[data-v-c27ae485] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--cover-bar-height);
+  background: var(--theme-black);
+}

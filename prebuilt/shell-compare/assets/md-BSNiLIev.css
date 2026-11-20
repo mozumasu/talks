@@ -1,0 +1,81 @@
+
+.end[data-v-ef15ec6c] {
+  position: relative;
+  padding: 0;
+  font-weight: var(--theme-font-weight-regular);
+}
+
+/* ブラウザのアドレスバー風の帯 */
+.pp-end-browserbar[data-v-ef15ec6c] {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+  height: 4rem;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--theme-border);
+}
+.pp-end-nav[data-v-ef15ec6c] {
+  display: flex;
+  gap: 0.35rem;
+  color: var(--theme-red);
+  font-size: 1.1rem;
+}
+.pp-end-nav span[data-v-ef15ec6c]:first-child {
+  opacity: 0.35;
+}
+.pp-end-address[data-v-ef15ec6c] {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 36.5rem;
+  height: 2.15rem;
+  padding: 0 1.1rem;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-gray-50);
+  font-size: 0.95rem;
+}
+.pp-end-body[data-v-ef15ec6c] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8rem;
+}
+
+/* 検索ボックス風の枠 */
+.pp-end-search[data-v-ef15ec6c] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 36.5rem;
+  height: 2.9rem;
+  margin-top: 2.2rem;
+  padding: 0 2.6rem 0 1.4rem;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-background);
+  box-shadow: var(--theme-shadow-float);
+}
+.pp-end-search-icon[data-v-ef15ec6c] {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: var(--theme-gray-400);
+}
+.pp-end-message[data-v-ef15ec6c] {
+  flex: 1;
+  font-size: 1rem;
+}
+.pp-end-button[data-v-ef15ec6c] {
+  padding: 0.2rem 1.1rem;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-red);
+  color: var(--theme-background);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+.pp-end-cursor[data-v-ef15ec6c] {
+  position: absolute;
+  right: 1.1rem;
+  bottom: -0.9rem;
+  width: 1.15rem;
+  color: var(--theme-black);
+}

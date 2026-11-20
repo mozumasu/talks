@@ -1,0 +1,31 @@
+
+.pp-two-cols[data-v-8dc356d1] {
+  --pp-two-cols-gap: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pp-two-cols-header[data-v-8dc356d1] {
+  margin-bottom: 1.25rem;
+}
+.pp-two-cols-header[data-v-8dc356d1] >  :first-child {
+  margin-top: 0;
+}
+.pp-two-cols-grid[data-v-8dc356d1] {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  column-gap: var(--pp-two-cols-gap);
+}
+.pp-col[data-v-8dc356d1] {
+  position: relative;
+  min-width: 0;
+}
+.pp-col[data-v-8dc356d1] >  :first-child {
+  margin-top: 0;
+}
+
+/* 見た目の順だけ入れ替える (スロットの左が右カラムに来る) */
+.is-reverse .pp-col-left[data-v-8dc356d1] {
+  order: 2;
+}

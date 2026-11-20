@@ -1,0 +1,20 @@
+
+.pp-logo[data-v-cf02503f] {
+  display: inline-flex;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  line-height: 0;
+}
+.pp-logo img[data-v-cf02503f] {
+  display: block;
+  width: auto;
+  max-width: none;
+}
+
+/* P の赤い上半分だけ (グレーなし) を見出しの頭に置く。使用許諾済み (#3) */
+.pp-logo-heading-mark[data-v-cf02503f] {
+  display: block;
+  aspect-ratio: 1;
+  background: var(--theme-red-mark, #fe0d17);
+  border-radius: 12% 50% 50% 12%;
+}

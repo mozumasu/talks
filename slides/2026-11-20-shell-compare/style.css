@@ -1,0 +1,35 @@
+/* 強調 (*...*) は和文の斜体が崩れるので、斜体にせず赤の太字にする */
+.slidev-layout em {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* 前回のスライドへのリンク。表紙のサムネイルを中央に置く */
+.talk-card {
+  display: block;
+  width: 58%;
+  margin: 1.5rem auto 0;
+  color: var(--theme-red);
+  font-size: var(--theme-font-size-caption);
+  text-align: center;
+  text-decoration: none;
+}
+
+/* リンクの下線 (破線) はカードの幅いっぱいに伸びるので、URL の文字の下だけに引く */
+.slidev-layout a.talk-card {
+  border-bottom: none;
+}
+
+.talk-card span {
+  border-bottom: 1px dashed currentColor;
+}
+
+.talk-card img {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-sm);
+  box-shadow: var(--theme-shadow-card);
+}

@@ -1,0 +1,91 @@
+
+.pp-compare[data-v-6ed80272] {
+  --pp-compare-gap: 2rem;
+  --pp-compare-gap-arrow: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pp-compare-lead[data-v-6ed80272] {
+  margin-bottom: 0.75rem;
+  font-size: var(--theme-font-size-body);
+  line-height: 1.7;
+}
+.pp-compare-lead[data-v-6ed80272] >  * {
+  margin: 0;
+}
+.pp-compare-grid[data-v-6ed80272] {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  /* 行の高さは中身に合わせ (矢印を中身の中央に置くため)、本文の高さを上限にする */
+  grid-template-rows: fit-content(100%);
+  align-content: start;
+  column-gap: var(--pp-compare-gap);
+}
+.pp-compare-grid.has-arrow[data-v-6ed80272] {
+  column-gap: var(--pp-compare-gap-arrow);
+}
+.pp-compare-side[data-v-6ed80272] {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pp-compare-label[data-v-6ed80272] {
+  align-self: flex-start;
+  margin: 0 0 0.5rem;
+  padding: 0.2rem 0.9rem;
+  border-radius: var(--theme-radius-pill);
+  font-size: 0.75rem;
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.is-before .pp-compare-label[data-v-6ed80272] {
+  background: var(--theme-gray-75);
+  color: var(--theme-gray-700);
+}
+.is-after .pp-compare-label[data-v-6ed80272] {
+  background: var(--theme-red);
+  color: var(--theme-background);
+}
+
+/* コードは本文の高さを上限に、はみ出す分はブロック内でスクロールさせる */
+.pp-compare-code[data-v-6ed80272] {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pp-compare-code[data-v-6ed80272] >  * {
+  min-height: 0;
+}
+.pp-compare-code[data-v-6ed80272] >  :first-child {
+  margin-top: 0 !important;
+}
+.pp-compare-code[data-v-6ed80272] >  :last-child {
+  margin-bottom: 0 !important;
+}
+.pp-compare-code[data-v-6ed80272] .slidev-code-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+.pp-compare-code[data-v-6ed80272] .slidev-code {
+  min-height: 0;
+}
+.pp-compare-caption[data-v-6ed80272] {
+  margin: 0.5rem 0 0;
+  color: var(--theme-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+.is-after .pp-compare-caption[data-v-6ed80272] {
+  color: var(--theme-text);
+}
+
+/* 矢印はコードの縦中央あたりに置く */
+.pp-compare-arrow[data-v-6ed80272] {
+  align-self: center;
+  color: var(--theme-red);
+}

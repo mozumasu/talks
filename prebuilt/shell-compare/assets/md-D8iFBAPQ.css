@@ -1,0 +1,51 @@
+
+.kb-flow[data-v-cad43d88] {
+  display: grid;
+  grid-template-columns: 1fr 3rem 1fr;
+  align-items: stretch;
+  margin-top: 2.5rem;
+}
+.kb-step[data-v-cad43d88] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1.4rem 1.6rem;
+  border: 2px solid var(--theme-red);
+  border-radius: 0.9rem;
+  background: var(--theme-red-soft);
+}
+.kb-step p[data-v-cad43d88] {
+  margin: 0;
+}
+.kb-no[data-v-cad43d88] {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--theme-red);
+  color: var(--theme-background);
+  font-weight: var(--theme-font-weight-bold);
+}
+.kb-title[data-v-cad43d88] {
+  font-size: 1.25rem;
+  font-weight: var(--theme-font-weight-bold);
+}
+.kb-desc[data-v-cad43d88] {
+  color: var(--theme-muted);
+  font-size: 0.85rem;
+}
+.kb-ex[data-v-cad43d88] {
+  margin-top: auto;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.4rem;
+  background: #16181d;
+  color: #e6e6e6;
+  font-size: 0.85rem;
+}
+.kb-arrow[data-v-cad43d88] {
+  align-self: center;
+  color: var(--theme-red);
+  font-size: 1.4rem;
+  text-align: center;
+}
