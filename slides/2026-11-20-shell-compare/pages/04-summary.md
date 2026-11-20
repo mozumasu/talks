@@ -13,7 +13,7 @@ title: 今日のまとめ
 clicks: 3
 ---
 
-<PointColumns click :items="[
+<PointColumns click :start="2" :items="[
   { label: '行編集の基本', title: 'キーを受け取るのは<br><em>行編集の仕組み</em>', text: 'ZLE / Readline / fish 本体 / Reedline' },
   { label: '同じ操作を比べる', title: '同じキーでも<br><em>動きが違う</em>', text: 'Esc → . / !$ / エディタで編集' },
   { label: 'ないなら作る', title: '<em>処理</em>を書いて<br><em>キーに割り当てる</em>', text: '行の中身とカーソル位置を書き換える' },
