@@ -610,6 +610,8 @@ Data Plane で動く Pod。*コントローラー*の仲間で、足りない No
 
 ---
 title: EKS Auto Mode とは
+# Appendix の Ingress と LB Controller と ALB から戻ってくる
+routeAlias: automode
 ---
 
 Control Plane に加えて、*Node と標準のアドオン*も AWS が管理する
@@ -617,7 +619,7 @@ Control Plane に加えて、*Node と標準のアドオン*も AWS が管理す
 <K8sArch :step="13" eks automode>
   <dl>
     <div v-click><dt>Node</dt><dd>中身は EC2。作成・更新・台数の調整を AWS がやる<br><small>Bottlerocket ベースで、最長 21 日で新しい Node に入れ替わる</small></dd></div>
-    <div v-click><dt>標準のアドオン</dt><dd>Pod のネットワーク・名前解決・Node の起動・EBS や ALB の作成をする部品が、最初から動く<br><small>VPC CNI・CoreDNS・Karpenter・EBS CSI ドライバー・Load Balancer Controller など</small></dd></div>
+    <div v-click><dt>標準のアドオン</dt><dd>Pod のネットワーク・名前解決・Node の起動・EBS や ALB の作成をする部品が、最初から動く<br><small>VPC CNI・CoreDNS・Karpenter・EBS CSI ドライバー・<Link to="lb-controller">Load Balancer Controller</Link> など</small></dd></div>
     <div v-click><dt>自分が扱うもの</dt><dd>Pod とマニフェスト<br><small>EC2 の条件は NodePool で変えられる</small></dd></div>
   </dl>
 </K8sArch>
