@@ -1,0 +1,196 @@
+
+.note-box[data-v-a33a49e2] {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1rem;
+  border: 1.5px dashed var(--theme-gray-200);
+  border-radius: var(--theme-radius-sm, 0.5rem);
+  color: var(--theme-gray-700);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+.note-box p[data-v-a33a49e2],
+.note-box-body[data-v-a33a49e2] p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.note-box-title[data-v-a33a49e2] {
+  margin-bottom: 0.2rem !important;
+  color: var(--theme-text);
+  font-weight: var(--theme-font-weight-bold);
+}
+
+/* テーマのリンクの下線 (破線) は付けず、丸い枠のラベルにする */
+.slidev-layout a.note-box-link[data-v-a33a49e2],
+a.note-box-link[data-v-a33a49e2] {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid var(--theme-gray-200);
+  border-radius: 999px;
+  background: var(--theme-background);
+  color: var(--theme-gray-700);
+  font-family: var(--slidev-code-font-family, monospace);
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+
+.code-steps[data-v-95ffae77] {
+  --code-steps-no-size: 1.5rem;
+  --code-steps-dim: 0.4;
+  --code-steps-duration: 0.25s;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--theme-text);
+}
+.code-steps-item[data-v-95ffae77] {
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.55rem 0.75rem 0.55rem 0.9rem;
+  border-radius: var(--theme-radius-sm);
+  line-height: 1.6;
+  transition:
+    opacity var(--code-steps-duration) var(--theme-ease-out),
+    background-color var(--code-steps-duration) var(--theme-ease-out);
+}
+
+/* 左端の赤線 (強調中だけ出す) */
+.code-steps-item[data-v-95ffae77]::before {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  left: 0;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--theme-red);
+  opacity: 0;
+  transition: opacity var(--code-steps-duration) var(--theme-ease-out);
+}
+.has-active .code-steps-item[data-v-95ffae77]:not(.is-active) {
+  opacity: var(--code-steps-dim);
+}
+.code-steps-item.is-active[data-v-95ffae77] {
+  background: var(--theme-red-soft);
+}
+.code-steps-item.is-active[data-v-95ffae77]::before {
+  opacity: 1;
+}
+.code-steps-no[data-v-95ffae77] {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--code-steps-no-size);
+  height: var(--code-steps-no-size);
+  margin-top: 0.05rem;
+  border-radius: 50%;
+  background: var(--theme-black);
+  color: var(--theme-background);
+  font-size: 0.75rem;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1;
+  transition: background-color var(--code-steps-duration) var(--theme-ease-out);
+}
+.is-active .code-steps-no[data-v-95ffae77] {
+  background: var(--theme-red);
+}
+.code-steps-body[data-v-95ffae77] {
+  flex: 1;
+  min-width: 0;
+}
+.code-steps-body p[data-v-95ffae77] {
+  margin: 0;
+}
+.code-steps-title[data-v-95ffae77] {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--theme-font-size-body);
+  font-weight: var(--theme-font-weight-bold);
+}
+.code-steps-lines[data-v-95ffae77] {
+  margin-left: auto;
+  color: var(--theme-muted);
+  font-size: 0.65rem;
+  font-weight: var(--theme-font-weight-regular);
+}
+.code-steps-text[data-v-95ffae77] {
+  font-size: 0.8125rem;
+}
+.code-steps-text[data-v-95ffae77] em {
+  color: var(--theme-red);
+  font-style: normal;
+  font-weight: var(--theme-font-weight-bold);
+}
+
+.pp-code[data-v-72ad9a90] {
+  --pp-code-gap: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pp-code-lead[data-v-72ad9a90] {
+  margin-bottom: 0.75rem;
+  font-size: var(--theme-font-size-body);
+  line-height: 1.7;
+}
+.pp-code-lead[data-v-72ad9a90] >  * {
+  margin: 0;
+}
+.pp-code-grid[data-v-72ad9a90] {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: var(--pp-code-gap);
+}
+.pp-code-text[data-v-72ad9a90] {
+  min-width: 0;
+  font-size: var(--theme-font-size-body);
+  line-height: 1.7;
+}
+.pp-code-text[data-v-72ad9a90] >  :first-child {
+  margin-top: 0;
+}
+
+/* コードは本文の高さを上限に、はみ出す分はブロック内でスクロールさせる */
+.pp-code-pane[data-v-72ad9a90] {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pp-code-pane[data-v-72ad9a90] >  * {
+  flex-shrink: 1;
+  min-height: 0;
+}
+.pp-code-pane[data-v-72ad9a90] >  :first-child {
+  margin-top: 0 !important;
+}
+.pp-code-pane[data-v-72ad9a90] >  :last-child {
+  margin-bottom: 0 !important;
+}
+.pp-code-pane[data-v-72ad9a90] .slidev-code-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+.pp-code-pane[data-v-72ad9a90] .slidev-code {
+  min-height: 0;
+}
+.is-reverse .pp-code-text[data-v-72ad9a90] {
+  order: 2;
+}
+
+/* Nushell の cmd が 1 行で長いので、見切れないように折り返す */
+.slidev-code code[data-v-8a526498] {
+  white-space: pre-wrap;
+  word-break: break-all;
+}

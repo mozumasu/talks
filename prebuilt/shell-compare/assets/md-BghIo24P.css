@@ -1,0 +1,54 @@
+
+.pp-pill[data-v-715ed64b] {
+  --pp-pill-bg: var(--theme-navy);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 1.5rem;
+  color: var(--theme-background);
+  background: var(--pp-pill-bg);
+  border-radius: var(--theme-radius-pill);
+  font-size: var(--theme-font-size-body);
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+}
+.pp-pill.is-block[data-v-715ed64b] {
+  display: flex;
+  width: 100%;
+}
+.pp-pill.is-red[data-v-715ed64b] {
+  --pp-pill-bg: var(--theme-primary);
+}
+.pp-pill.is-black[data-v-715ed64b] {
+  --pp-pill-bg: var(--theme-black);
+}
+.pp-pill[data-v-715ed64b] em {
+  font-style: normal;
+  font-weight: var(--theme-font-weight-bold);
+}
+
+/* v-click で出たら、名前を左から 1 つずつ出す */
+.shell-pills .pp-pill[data-v-6dd6fd5a] {
+  opacity: 0;
+}
+.shell-pills:not(.slidev-vclick-hidden) .pp-pill[data-v-6dd6fd5a] {
+  animation: shell-pill-in-6dd6fd5a 0.4s ease forwards;
+}
+.shell-pills:not(.slidev-vclick-hidden) .pp-pill[data-v-6dd6fd5a]:nth-child(2) {
+  animation-delay: 0.35s;
+}
+.shell-pills:not(.slidev-vclick-hidden) .pp-pill[data-v-6dd6fd5a]:nth-child(3) {
+  animation-delay: 0.7s;
+}
+@keyframes shell-pill-in-6dd6fd5a {
+from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+}
+to {
+    opacity: 1;
+    transform: none;
+}
+}

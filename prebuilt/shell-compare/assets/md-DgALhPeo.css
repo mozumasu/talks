@@ -1,0 +1,6 @@
+
+/* Nushell の cmd が 1 行で長いので、見切れないように折り返す */
+.slidev-code code[data-v-de985db6] {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
