@@ -610,3 +610,208 @@ Fargate では *CoreDNS と LB Controller を自分で上げていた*
   background: var(--theme-red-50);
 }
 </style>
+
+---
+title: Ingress と LB Controller と ALB
+# EKS Auto Mode とは / バージョンアップはどう変わる? からリンクする
+routeAlias: lb-controller
+---
+
+*Ingress* は注文書、*LB Controller* は注文書を読む係、*ALB* は係が作る実物
+
+<svg class="lbc-fig" viewBox="0 0 760 200" role="img" aria-label="クラスターの中の Ingress を LB Controller が読み、AWS の API でクラスターの外に ALB を作る。利用者のリクエストは ALB から Service、Pod へ届く">
+  <defs>
+    <marker id="lbc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="context-stroke" />
+    </marker>
+  </defs>
+  <rect class="frame" x="6" y="8" width="520" height="184" rx="12" />
+  <text class="frame-label" x="20" y="182">クラスター</text>
+
+  <!-- Ingress: 注文書 -->
+  <rect class="doc" x="30" y="34" width="190" height="104" rx="6" />
+  <text class="doc-title" x="44" y="56">Ingress</text>
+  <text class="tag" x="208" y="55">in etcd</text>
+  <text class="code" x="44" y="80">ingressClassName: alb</text>
+  <text class="code" x="44" y="100">host: api.example.com</text>
+  <text class="code" x="44" y="120">/ → Service api</text>
+
+  <!-- LB Controller: 係 -->
+  <rect class="chip" x="320" y="62" width="180" height="48" rx="8" />
+  <text class="chip-name" x="410" y="82">LB Controller</text>
+  <text class="chip-role" x="410" y="100">Ingress を見張る係</text>
+  <path class="arrow" d="M220,86 L316,86" marker-end="url(#lbc-arrow)" />
+  <text class="step" x="268" y="76">① 読む</text>
+
+  <!-- ALB: 実物 -->
+  <rect class="alb" x="610" y="62" width="130" height="48" rx="6" />
+  <text class="box-label" x="675" y="86">ALB</text>
+  <path class="arrow" d="M500,86 L606,86" marker-end="url(#lbc-arrow)" />
+  <text class="step" x="556" y="76">② AWS API で作る</text>
+  <text class="note" x="675" y="134">AWS コンソールの EC2 →</text>
+  <text class="note" x="675" y="150">ロードバランサーで見える</text>
+
+  <!-- リクエストの流れ -->
+  <path class="req" d="M670,20 L670,58" marker-end="url(#lbc-arrow)" />
+  <text class="note" x="684" y="38" text-anchor="start">利用者</text>
+  <path class="req" d="M610,98 C560,160 420,170 330,160" marker-end="url(#lbc-arrow)" />
+  <text class="note" x="290" y="164">Service → Pod</text>
+</svg>
+
+<div class="lbc-modes">
+
+| | LB Controller が動く場所 | IngressClass の `controller` | 上げるのは |
+| --- | --- | --- | --- |
+| 自前 (移行前) | クラスターの中の Pod | `ingress.k8s.aws/alb` | *自分* |
+| Auto Mode の組み込み | AWS の管理側。Pod は見えない | `eks.amazonaws.com/alb` | AWS |
+
+</div>
+
+<div class="lbc-notes">
+
+- ALB は、作った係が管理する。係を Auto Mode の組み込みに替えると*新しい ALB が作られる*ので、DNS の向き先を切り替える
+- ALB をコンソールで直接変えても、係が Ingress の内容に戻す。変えるのは Ingress (Helm の values) のほう
+
+</div>
+
+<div class="refs">
+
+参考: [Create an IngressClass to configure an Application Load Balancer](https://docs.aws.amazon.com/eks/latest/userguide/auto-configure-alb.html) / [Enable EKS Auto Mode on existing EKS clusters](https://docs.aws.amazon.com/eks/latest/userguide/migrate-auto.html)
+
+</div>
+
+<div class="back-link lbc-back">← <Link to="automode">Auto Mode とは</Link> / <Link to="version-up">バージョンアップ</Link> に戻る</div>
+
+<style>
+.lbc-fig { display: block; width: 66%; margin: 0 auto; color: var(--theme-text); }
+.lbc-fig .frame { fill: none; stroke: currentColor; stroke-width: 2; }
+.lbc-fig .frame-label { fill: currentColor; font-size: 13px; font-weight: 700; }
+/* Ingress は注文書なので、紙に見えるよう灰色の地にする */
+.lbc-fig .doc { fill: var(--theme-gray-50); stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.lbc-fig .doc-title { fill: currentColor; font-size: 14px; font-weight: 700; }
+/* Ingress の置き場所。データとして etcd に入ることを示す */
+.lbc-fig .tag { fill: var(--theme-muted); font-size: 10.5px; font-family: var(--theme-font-mono, ui-monospace, monospace); text-anchor: end; }
+.lbc-fig .code { fill: var(--theme-muted); font-size: 11px; font-family: var(--theme-font-mono, ui-monospace, monospace); }
+/* アドオンは 標準のアドオンとは の図と同じ赤の点線の枠 */
+.lbc-fig .chip { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 5 3; }
+.lbc-fig .chip-name { fill: var(--theme-red); font-size: 14px; font-weight: 700; text-anchor: middle; }
+.lbc-fig .chip-role { fill: var(--theme-muted); font-size: 11px; text-anchor: middle; }
+.lbc-fig .alb { fill: #fff; stroke: var(--theme-gray-500); stroke-width: 2; }
+.lbc-fig .box-label { fill: currentColor; font-size: 14px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+.lbc-fig .arrow { fill: none; stroke: var(--theme-red); stroke-width: 2; }
+.lbc-fig .step { fill: var(--theme-red); font-size: 11px; font-weight: 700; text-anchor: middle; }
+.lbc-fig .req { fill: none; stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.lbc-fig .note { fill: var(--theme-muted); font-size: 11px; text-anchor: middle; }
+
+.lbc-modes {
+  font-size: 0.62em;
+}
+
+.lbc-notes {
+  font-size: 0.78em;
+}
+
+.lbc-modes td:first-child {
+  white-space: nowrap;
+}
+
+.lbc-back a {
+  font-size: inherit;
+}
+</style>
+
+---
+title: EKS Capability とは
+# バージョンアップはどう変わる? / Auto Mode で解消されること からリンクする
+routeAlias: eks-capability
+---
+
+*EKS Capability* は、よく使う道具を *AWS が管理する形*でクラスターに付ける機能。道具は*クラスターの外*で動く
+
+<svg class="cap-fig" viewBox="0 0 760 190" role="img" aria-label="自分で入れる Argo CD はクラスターの中の Pod として動く。EKS Capability の Argo CD は AWS の管理側で動き、クラスターの中には Application などの設定だけが残る">
+  <defs>
+    <marker id="cap-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="context-stroke" />
+    </marker>
+  </defs>
+
+  <!-- 左: 自分で入れる -->
+  <text class="head" x="180" y="20">自分で入れる (以前)</text>
+  <rect class="frame" x="20" y="32" width="320" height="150" rx="12" />
+  <text class="frame-label" x="34" y="172">クラスター</text>
+  <rect class="chip" x="48" y="56" width="264" height="44" rx="8" />
+  <text class="chip-name" x="180" y="76">Argo CD の Pod 一式</text>
+  <text class="chip-role" x="180" y="92">server・repo-server・controller など</text>
+  <text class="note" x="180" y="128">上げる・直すのは自分</text>
+
+  <!-- 右: EKS Capability -->
+  <text class="head" x="560" y="20">EKS Capability (今)</text>
+  <rect class="aws" x="400" y="32" width="340" height="56" rx="10" />
+  <text class="aws-label" x="414" y="50">AWS の管理側</text>
+  <text class="cap-name" x="570" y="72">Argo CD (type: ARGOCD)</text>
+  <rect class="frame" x="400" y="104" width="340" height="78" rx="12" />
+  <text class="frame-label" x="414" y="172">クラスター</text>
+  <rect class="doc" x="440" y="116" width="260" height="34" rx="6" />
+  <text class="code" x="570" y="137">argocd: Application などの設定だけ</text>
+  <path class="arrow" d="M570,88 L570,114" marker-end="url(#cap-arrow)" />
+</svg>
+
+<div class="cap-table">
+
+| | 自分で入れる | EKS Capability |
+| --- | --- | --- |
+| 動く場所 | クラスターの中の Pod | AWS の管理側 (クラスターの外) |
+| 上げる・直す | *自分* | AWS |
+| ログイン | 自分で用意 | IAM Identity Center |
+
+</div>
+
+<div class="cap-notes">
+
+- クラスターの外で動くので、*Auto Mode に移す対象に入らない*。移す前後で同期が続くかを確かめるだけ
+- 選べる道具は Argo CD・ACK・kro。自分で入れて上げるのは LB Controller・External Secrets・New Relic・Aikido など
+
+</div>
+
+<div class="refs">
+
+参考: [Amazon EKS Capabilities](https://docs.aws.amazon.com/eks/latest/userguide/capabilities.html)
+
+</div>
+
+<div class="back-link cap-back">← <Link to="version-up">バージョンアップ</Link> に戻る</div>
+
+<style>
+.cap-fig { display: block; width: 56%; margin: 0 auto; color: var(--theme-text); }
+.cap-fig .head { fill: currentColor; font-size: 13px; font-weight: 700; text-anchor: middle; }
+.cap-fig .frame { fill: none; stroke: currentColor; stroke-width: 2; }
+.cap-fig .frame-label { fill: currentColor; font-size: 12px; font-weight: 700; }
+/* 自分で上げる部品は 標準のアドオンとは の図と同じ赤の点線の枠 */
+.cap-fig .chip { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 5 3; }
+.cap-fig .chip-name { fill: var(--theme-red); font-size: 13px; font-weight: 700; text-anchor: middle; }
+.cap-fig .chip-role { fill: var(--theme-muted); font-size: 10.5px; text-anchor: middle; }
+/* AWS が管理する側は灰色の実線 */
+.cap-fig .aws { fill: var(--theme-gray-50); stroke: var(--theme-gray-500); stroke-width: 2; }
+.cap-fig .aws-label { fill: var(--theme-muted); font-size: 11px; font-weight: 700; }
+.cap-fig .cap-name { fill: currentColor; font-size: 13px; font-weight: 700; text-anchor: middle; }
+.cap-fig .doc { fill: var(--theme-gray-50); stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.cap-fig .code { fill: var(--theme-muted); font-size: 11px; font-family: var(--theme-font-mono, ui-monospace, monospace); text-anchor: middle; }
+.cap-fig .note { fill: var(--theme-muted); font-size: 11px; text-anchor: middle; }
+.cap-fig .arrow { fill: none; stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 3 3; }
+
+.cap-table {
+  font-size: 0.62em;
+}
+
+.cap-table td:first-child {
+  white-space: nowrap;
+}
+
+.cap-notes {
+  font-size: 0.78em;
+}
+
+.cap-back a {
+  font-size: inherit;
+}
+</style>

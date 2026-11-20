@@ -192,7 +192,7 @@ Auto Mode では、*Control Plane を上げたあとの作業*がなくなる
   <div class="col-head">① Control Plane<br><small>API サーバーなど</small></div>
   <div class="col-head">② <Link to="std-addons">標準のアドオン</Link><br><small>CoreDNS など</small></div>
   <div class="col-head">③ Data Plane<br><small>Pod が動く場所</small></div>
-  <div class="col-head">④ 自分で入れたアドオン<br><small>Argo CD・LB Controller など</small></div>
+  <div class="col-head">④ 自分で入れたアドオン<br><small>LB Controller・External Secrets など</small></div>
 
   <div class="row-head">Fargate<br><small>移行前</small></div>
   <div class="cell is-self">自分で上げる</div>
@@ -210,7 +210,8 @@ Auto Mode では、*Control Plane を上げたあとの作業*がなくなる
 <div class="legend"><span class="chip is-self">自分でやる</span><span class="chip is-aws">AWS がやる</span><span class="legend-note">違うのは ② と ③ だけ</span></div>
 
 - Fargate の Pod は、起動したときの kubelet のバージョンのまま動く。新しくするには作り直すしかない
-- LB Controller は、Auto Mode の組み込みの LB に移せば ② になる。ただし、今ある ALB はそのまま引き継げない
+- LB Controller は、Auto Mode の組み込みの LB に移せば ② になる。ただし、今ある ALB はそのまま引き継げない <Link to="lb-controller" class="text-xs">なぜ? →</Link>
+- Argo CD は EKS Capability なので、AWS が上げる (④ に入らない) <Link to="eks-capability" class="text-xs">EKS Capability とは →</Link>
 
 <div class="refs">
 
@@ -630,7 +631,7 @@ title: Auto Mode で解消されるもの・されないもの
     <p class="solve-head is-no">解消されない</p>
     <ul>
       <li><b>バージョンアップの開始</b>: 古い API への対応も含めて自分</li>
-      <li><b>自分で入れたアドオン</b>: Argo CD などは自分で上げる</li>
+      <li><b>自分で入れたアドオン</b>: LB Controller などは自分で上げる (Argo CD は <Link to="eks-capability">EKS Capability</Link> で AWS)</li>
       <li><b>requests / limits</b>: Node に詰めるので、むしろ前より大事</li>
       <li><b>アプリのセキュリティ</b>: イメージの脆弱性・IAM・アプリは自分</li>
     </ul>
