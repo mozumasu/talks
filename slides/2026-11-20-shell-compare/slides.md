@@ -10,7 +10,6 @@ info: |
 # 会社のテーマは CI から読めないので、手元のビルド結果 (prebuilt/) を配信する
 prebuilt: true
 # 発表まで一覧に載せない
-unlisted: true
 comark: true
 # 会社のマーク (public/favicon.png)。--base 付きで配信するので相対パスで書く
 favicon: favicon.png
