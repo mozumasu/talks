@@ -3,8 +3,10 @@ import { useIsSlideActive } from '@slidev/client'
 
 // Kubernetes の全体像。step 以下の登場人物だけを描き、step で初めて出るものを目立たせる
 // (下からフェードインし、赤くなる)。
-// スライドを 1 枚進めるごとに step を 1 つ上げて、kubectl apply してから Pod が動くまでの順に
-// 登場人物を紹介する。最後の登場人物より大きい step では、どれも目立たせずに描く
+// スライドを 1 枚進めるごとに step を 1 つ上げる。最初に平常時の地図 (箱 → Node と Pod →
+// kubelet とランタイム → api-server と etcd) を描き、そのあと Pod が落ちてから戻るまでに
+// 働く順 (controller-manager → scheduler → kube-proxy) に登場人物を紹介する。
+// 最後の登場人物より大きい step では、どれも目立たせずに描く
 // recover を渡すと、Node 1 の Pod が 1 つ落ちたところから、代わりの Pod が Node 2 で動くまでを描く。
 // 0: Pod が落ちる / 1: controller-manager が置き場所が未定の Pod を作る /
 // 2: scheduler が Node 2 に置くと決める / 3: Node 2 の kubelet が起動する
@@ -34,11 +36,10 @@ type Part = typeof CLUSTER | typeof CONTROL_PLANE | typeof DATA_PLANE | typeof N
   | typeof CLOUD_CONTROLLER_MANAGER
 
 // 登場人物ごとに、初めて出る step。
-// 最初は箱 (Cluster と Control Plane / Data Plane) だけを出す。Node は、Pod をどの Node に
-// 置くか決める kube-scheduler と一緒に出す
+// cloud-controller-manager は本編では紹介しないので、どの step でも出さない
 const ORDER: Record<Part, number> = {
-  cluster: 1, controlPlane: 1, dataPlane: 1, apiServer: 2, etcd: 3, controllerManager: 4, scheduler: 5, nodes: 5,
-  kubelet: 6, cri: 7, pods: 8, kubeProxy: 9, cloudControllerManager: 10,
+  cluster: 1, controlPlane: 1, dataPlane: 1, nodes: 2, pods: 2, kubelet: 3, cri: 3,
+  apiServer: 4, etcd: 4, controllerManager: 5, scheduler: 6, kubeProxy: 7, cloudControllerManager: Infinity,
 }
 
 // 隣のスライドは先にマウントされるので、表示されてからフェードインを始める
@@ -113,15 +114,21 @@ const nodes = [
         </template>
       </g>
 
-      <!-- 代わりの Pod。未定のあいだは Node の外に置き、決まったら Node 2 に動かす -->
+      <!--
+      代わりの Pod。
+      1: 置き場所が空欄のまま Node の外に置く / 2: scheduler が行き先 (Node 2) の札を付ける (運ぶのは scheduler ではない) /
+      3: Node 2 の kubelet が見つけて、Node 2 へスライドさせてから起動する /
+      4: 置き終わったあと (動かさず、どれも目立たせない)
+      -->
       <g
         v-if="recover !== undefined && recover >= 1"
         class="new-pod"
-        :class="{ 'is-pending': recover < 3 }"
-        :style="{ transform: recover === 1 ? 'translate(25px, -407px)' : 'none' }"
+        :class="{ 'is-pending': recover < 3, 'is-appearing': recover === 1 && active, 'is-booting': recover === 3 && active }"
+        :style="{ transform: recover < 3 ? 'translate(25px, -407px)' : 'none' }"
       >
         <rect class="box is-pod" x="835" y="555" width="85" height="62" rx="8" />
         <text class="box-label" x="877.5" y="586">Pod</text>
+        <text v-if="recover === 2" class="dest-tag" :class="{ 'is-active': active }" x="877.5" y="537">↓ Node 2</text>
       </g>
 
       <!-- コンテナランタイム (CRI) -->
@@ -141,12 +148,6 @@ const nodes = [
           <rect class="box" :class="{ 'is-focus': recover === 3 && n.label === 'Node 2' }" :x="n.x + 12" y="290" width="120" height="60" rx="8" />
           <text class="box-label is-compact" :x="n.x + 72" y="320">kubelet</text>
         </template>
-        <!-- kubelet は api-server とだけ話す -->
-        <path
-          class="line"
-          :d="`M${nodes[0].x + 72},290 V200 M${nodes[1].x + 72},290 V200 H300 V268`"
-          marker-end="url(#k8s-arrow)"
-        />
       </g>
 
       <!-- kube-proxy -->
@@ -168,6 +169,12 @@ const nodes = [
       <g v-if="shown(API_SERVER)" :class="cls(API_SERVER)">
         <rect class="box" x="190" y="270" width="220" height="70" rx="8" />
         <text class="box-label" x="300" y="305">kube-api-server</text>
+        <!-- kubelet は api-server とだけ話す (kubelet が先に出ているので、api-server と一緒に出す) -->
+        <path
+          class="line"
+          :d="`M${nodes[0].x + 72},290 V200 M${nodes[1].x + 72},290 V200 H300 V268`"
+          marker-end="url(#k8s-arrow)"
+        />
       </g>
 
       <!-- etcd -->
@@ -416,6 +423,91 @@ const nodes = [
 
 .new-pod {
   transition: transform 0.6s var(--theme-ease-out);
+}
+
+/* kubelet の段では、置き場所が決まった Pod を Node 2 へスライドさせ、着いてから起動 (点線 → 塗り) する。
+   スライドごとに図を描き直すので、前の枚の位置から動かすには animation を使う */
+.new-pod.is-booting {
+  animation: k8s-place 1s cubic-bezier(0.65, 0, 0.35, 1) 0.5s both;
+}
+
+.new-pod.is-booting .box.is-pod {
+  animation: k8s-boot-box 0.4s ease-out 1.5s both;
+}
+
+.new-pod.is-booting .box-label {
+  animation: k8s-boot-label 0.4s ease-out 1.5s both;
+}
+
+@keyframes k8s-place {
+  from {
+    transform: translate(25px, -407px);
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+/* 起動する前は、置き場所が決まっていない Pod と同じ白抜きの点線 */
+@keyframes k8s-boot-box {
+  from {
+    fill: #fff;
+    stroke: var(--theme-red);
+    stroke-width: 3;
+    stroke-dasharray: 6 4;
+  }
+}
+
+@keyframes k8s-boot-label {
+  from {
+    fill: var(--theme-red);
+  }
+}
+
+/* controller-manager の段では、登録された Pod をポンと出す。
+   g には位置の transform が付いているので、中の四角と文字のほうを拡大する */
+.new-pod.is-appearing > * {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: k8s-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+}
+
+@keyframes k8s-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* scheduler が付ける行き先の札 */
+.dest-tag {
+  fill: var(--theme-red);
+  font-size: 20px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  opacity: 0;
+}
+
+.dest-tag.is-active {
+  animation: k8s-tag 0.4s ease-out 0.6s both;
+}
+
+@keyframes k8s-tag {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* まだ動いていない Pod は白抜きの赤い点線にする */

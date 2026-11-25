@@ -10,7 +10,7 @@ tocLevel: 2
 ---
 title: Pod が落ちたらどう動く?
 # 05 の「Pod を消しても戻ってくる」からリンクする
-routeAlias: pod-down
+routeAlias: pod-down-appendix
 ---
 
 登場人物は直接は話さず、*kube-api-server* を通してバトンを渡す

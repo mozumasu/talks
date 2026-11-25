@@ -59,19 +59,47 @@ title: まとめ
 
 <Narrator mood="happy">こうして頭の中に<em>地図</em>ができたのじゃ</Narrator>
 
-<div class="wrap">
 <ol class="wrap-points">
-  <li v-click>Kubernetes は「あるべき状態」に<em>合わせ続けて</em>くれる</li>
-  <li v-click>登場人物は <em>Control Plane</em> (司令塔) と <em>Data Plane</em> (現場) に分かれる</li>
-  <li v-click>みんな <em>kube-api-server</em> を通して話す<br><small>登録 → 置き場所を決める → 起動、とバトンを渡していく</small></li>
+  <li v-click>Kubernetes は「あるべき状態」に<em>合わせ続けて</em>くれる<br><small>だから深夜 3 時に起きなくてよい</small></li>
+  <li v-click>第二話の手作業は、部品が<em>代わりにやって</em>くれる<br><small>kube-controller-manager (気づく) → kube-scheduler (決める) → kubelet (起動する) → kube-proxy (届ける)</small></li>
+  <li v-click>部品どうしは直接話さず、<em>kube-api-server</em> を見張ってバトンを渡す</li>
 </ol>
-<div v-click class="wrap-end">
-  <Yuru class="wrap-person" mood="sleep" />
-  <p>今夜はぐっすり眠れそうじゃ<br><b>めでたし、めでたし</b></p>
+
+---
+title: 爆速で入門するコツ
+---
+
+<Narrator mood="happy">地図は、描きながら直していくものなのじゃ</Narrator>
+
+<div class="tips">
+<!-- 図に起こす → ズレに気づく → 直す を、矢印でぐるっと回る図にする -->
+<svg class="tips-cycle" viewBox="0 0 360 300" role="img" aria-label="図に起こす、ズレに気づく、直す、を繰り返すサイクル">
+  <defs>
+    <marker id="tips-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
+    </marker>
+  </defs>
+  <path class="tips-arc" d="M215,52 A120,120 0 0 1 292,196" marker-end="url(#tips-arrow)" />
+  <path class="tips-arc" d="M250,250 A120,120 0 0 1 110,250" marker-end="url(#tips-arrow)" />
+  <path class="tips-arc" d="M68,196 A120,120 0 0 1 145,52" marker-end="url(#tips-arrow)" />
+  <g class="tips-step"><rect x="110" y="20" width="140" height="50" rx="25" /><text x="180" y="45">図に起こす</text></g>
+  <g class="tips-step"><rect x="220" y="200" width="140" height="50" rx="25" /><text x="290" y="225">ズレに気づく</text></g>
+  <g class="tips-step"><rect x="0" y="200" width="140" height="50" rx="25" /><text x="70" y="225">直す</text></g>
+</svg>
+<div>
+  <p class="tips-label">このデッキを作りながら気づいたズレ</p>
+  <dl class="tips-gaps">
+    <div v-click><dt>思い込み: scheduler が Pod を Node に運ぶ</dt><dd>実際は行き先を書き込むだけ。起動するのは kubelet</dd></div>
+    <div v-click><dt>思い込み: Pod は置き場所が決まってから作られる</dt><dd>実際は controller-manager が、置き場所を空欄のまま先に登録する</dd></div>
+  </dl>
+  <div v-click class="wrap-end">
+    <Yuru class="wrap-person" mood="sleep" />
+    <p>今夜はぐっすり眠れそうじゃ<br><b>めでたし、めでたし</b></p>
+  </div>
 </div>
 </div>
 
-<p v-click class="wrap-next">続きは Appendix へ (連携の流れ・kubectl の向き先・ハンズオン)</p>
+<p v-click class="wrap-next">続きは Appendix へ (kubectl の向き先・ハンズオン・CRI など)</p>
 
 ---
 layout: end
