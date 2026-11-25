@@ -62,9 +62,10 @@ const nodes = [
 </script>
 
 <template>
-  <!-- 説明は図の右に置く。説明の無いスライドでも同じ幅を空けて、スライド間で図の位置を揃える -->
+  <!-- 説明は図の右に置く。説明の無いスライド (全体像など) では、図を真ん中に置く -->
   <div class="k8s-arch">
-    <svg viewBox="0 0 1260 700" role="img" aria-label="Kubernetes の全体像">
+    <!-- 右端は cloud-controller-manager とクラウドの置き場所だったが、本編では出さないので切り詰める -->
+    <svg viewBox="0 0 1050 700" role="img" aria-label="Kubernetes の全体像">
       <defs>
         <marker id="k8s-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
@@ -214,7 +215,8 @@ const nodes = [
         <text class="node-down-label" x="600" y="500">停止</text>
       </g>
     </svg>
-    <aside class="k8s-notes">
+    <!-- 説明 (スロット) が無いスライドでは欄を作らず、図を真ん中に置く -->
+    <aside v-if="$slots.default" class="k8s-notes">
       <slot />
     </aside>
   </div>
@@ -223,6 +225,7 @@ const nodes = [
 <style scoped>
 .k8s-arch {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 1.5rem;
   height: 20rem;
