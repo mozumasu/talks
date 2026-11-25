@@ -1,0 +1,7 @@
+
+.two-col[data-v-409372a5] {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}

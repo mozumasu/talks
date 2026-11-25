@@ -399,26 +399,7 @@
   font-weight: 700;
 }
 
-/* まとめ。左に持ち帰ってほしい 3 つ、右に物語の結び */
-.wrap {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 2rem;
-  align-items: center;
-  margin-top: 1.25rem;
-}
-
-.wrap-points {
-  display: grid;
-  gap: 1.1rem;
-  margin: 1.5rem 0 0;
-}
-
-.wrap-points small {
-  color: var(--theme-muted);
-  font-size: var(--theme-font-size-caption);
-}
-
+/* 締めのスライドの物語の結び (寝ている人と「めでたし」) と、Appendix への案内 */
 .wrap-end {
   display: flex;
   gap: 1rem;
