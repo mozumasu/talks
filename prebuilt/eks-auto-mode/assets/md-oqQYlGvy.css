@@ -1,0 +1,48 @@
+
+.lbc-fig[data-v-2e67ea19] { display: block; width: 66%; margin: 0 auto; color: var(--theme-text);
+}
+.lbc-fig .frame[data-v-2e67ea19] { fill: none; stroke: currentColor; stroke-width: 2;
+}
+.lbc-fig .frame-label[data-v-2e67ea19] { fill: currentColor; font-size: 13px; font-weight: 700;
+}
+/* Ingress は注文書なので、紙に見えるよう灰色の地にする */
+.lbc-fig .doc[data-v-2e67ea19] { fill: var(--theme-gray-50); stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 4 3;
+}
+.lbc-fig .doc-title[data-v-2e67ea19] { fill: currentColor; font-size: 14px; font-weight: 700;
+}
+/* Ingress の置き場所。データとして etcd に入ることを示す */
+.lbc-fig .tag[data-v-2e67ea19] { fill: var(--theme-muted); font-size: 10.5px; font-family: var(--theme-font-mono, ui-monospace, monospace); text-anchor: end;
+}
+.lbc-fig .code[data-v-2e67ea19] { fill: var(--theme-muted); font-size: 11px; font-family: var(--theme-font-mono, ui-monospace, monospace);
+}
+/* アドオンは 標準のアドオンとは の図と同じ赤の点線の枠 */
+.lbc-fig .chip[data-v-2e67ea19] { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 5 3;
+}
+.lbc-fig .chip-name[data-v-2e67ea19] { fill: var(--theme-red); font-size: 14px; font-weight: 700; text-anchor: middle;
+}
+.lbc-fig .chip-role[data-v-2e67ea19] { fill: var(--theme-muted); font-size: 11px; text-anchor: middle;
+}
+.lbc-fig .alb[data-v-2e67ea19] { fill: #fff; stroke: var(--theme-gray-500); stroke-width: 2;
+}
+.lbc-fig .box-label[data-v-2e67ea19] { fill: currentColor; font-size: 14px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+}
+.lbc-fig .arrow[data-v-2e67ea19] { fill: none; stroke: var(--theme-red); stroke-width: 2;
+}
+.lbc-fig .step[data-v-2e67ea19] { fill: var(--theme-red); font-size: 11px; font-weight: 700; text-anchor: middle;
+}
+.lbc-fig .req[data-v-2e67ea19] { fill: none; stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 3 3;
+}
+.lbc-fig .note[data-v-2e67ea19] { fill: var(--theme-muted); font-size: 11px; text-anchor: middle;
+}
+.lbc-modes[data-v-2e67ea19] {
+  font-size: 0.62em;
+}
+.lbc-notes[data-v-2e67ea19] {
+  font-size: 0.78em;
+}
+.lbc-modes td[data-v-2e67ea19]:first-child {
+  white-space: nowrap;
+}
+.lbc-back a[data-v-2e67ea19] {
+  font-size: inherit;
+}
