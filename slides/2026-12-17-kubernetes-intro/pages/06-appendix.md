@@ -1,13 +1,5 @@
 ---
 layout: section
-title: '06'
-toc: Appendix
----
-
-# Appendix
-
----
-layout: section
 title: Appendix
 toc: コンテナランタイムと CRI
 tocLevel: 2
@@ -407,7 +399,7 @@ routeAlias: split-appendix
 
 </div>
 
-<Link to="controller-manager" class="back-link">← 本編に戻る</Link>
+<Link to="scheduler" class="back-link">← 本編に戻る</Link>
 
 <style>
 .split-table {

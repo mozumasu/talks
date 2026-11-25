@@ -1,7 +1,8 @@
 ---
 layout: section
-title: '03'
+title: Appendix
 toc: kubectlの向き先 is どこ!?
+tocLevel: 2
 ---
 
 # kubectlの向き先 is どこ!?

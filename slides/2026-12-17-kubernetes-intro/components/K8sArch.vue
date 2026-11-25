@@ -2,31 +2,54 @@
 import { useIsSlideActive } from '@slidev/client'
 
 // Kubernetes の全体像。step 以下の登場人物だけを描き、step で初めて出るものを目立たせる
-// (フェードインし、赤くなる)。
-// スライドを 1 枚進めるごとに step を 1 つ上げて、登場人物を順に紹介する。
-// 最後の登場人物より大きい step では、どれも目立たせずに描く
+// (下からフェードインし、赤くなる)。
+// スライドを 1 枚進めるごとに step を 1 つ上げて、kubectl apply してから Pod が動くまでの順に
+// 登場人物を紹介する。最後の登場人物より大きい step では、どれも目立たせずに描く
 // recover を渡すと、Node 1 の Pod が 1 つ落ちたところから、代わりの Pod が Node 2 で動くまでを描く。
 // 0: Pod が落ちる / 1: controller-manager が置き場所が未定の Pod を作る /
 // 2: scheduler が Node 2 に置くと決める / 3: Node 2 の kubelet が起動する
-const { step = Infinity, recover } = defineProps<{ step?: number; recover?: number }>()
+// reveal は step 1 のスライドで、箱をクリックごとに 1 つずつ出すのに使う ($clicks を渡す)。
+// 0: Cluster / 1: + Control Plane / 2: + Data Plane
+const { step = Infinity, recover, reveal = Infinity } = defineProps<{
+  step?: number
+  recover?: number
+  reveal?: number
+}>()
 
-const CLUSTER = 1
-const PLANES = 2
-const NODES = 3
-const PODS = 4
-const CRI = 5
-const KUBELET = 6
-const KUBE_PROXY = 7
-const API_SERVER = 8
-const ETCD = 9
-const SCHEDULER = 10
-const CONTROLLER_MANAGER = 11
-const CLOUD_CONTROLLER_MANAGER = 12
+const CLUSTER = 'cluster'
+const CONTROL_PLANE = 'controlPlane'
+const DATA_PLANE = 'dataPlane'
+const NODES = 'nodes'
+const PODS = 'pods'
+const CRI = 'cri'
+const KUBELET = 'kubelet'
+const KUBE_PROXY = 'kubeProxy'
+const API_SERVER = 'apiServer'
+const ETCD = 'etcd'
+const SCHEDULER = 'scheduler'
+const CONTROLLER_MANAGER = 'controllerManager'
+const CLOUD_CONTROLLER_MANAGER = 'cloudControllerManager'
+type Part = typeof CLUSTER | typeof CONTROL_PLANE | typeof DATA_PLANE | typeof NODES | typeof PODS | typeof CRI | typeof KUBELET
+  | typeof KUBE_PROXY | typeof API_SERVER | typeof ETCD | typeof SCHEDULER | typeof CONTROLLER_MANAGER
+  | typeof CLOUD_CONTROLLER_MANAGER
+
+// 登場人物ごとに、初めて出る step。
+// 最初は箱 (Cluster と Control Plane / Data Plane) だけを出す。Node は、Pod をどの Node に
+// 置くか決める kube-scheduler と一緒に出す
+const ORDER: Record<Part, number> = {
+  cluster: 1, controlPlane: 1, dataPlane: 1, apiServer: 2, etcd: 3, controllerManager: 4, scheduler: 5, nodes: 5,
+  kubelet: 6, cri: 7, pods: 8, kubeProxy: 9, cloudControllerManager: 10,
+}
 
 // 隣のスライドは先にマウントされるので、表示されてからフェードインを始める
 const active = useIsSlideActive()
-const shown = (n: number) => n <= step
-const cls = (n: number) => ({ 'is-new': n === step, 'is-active': active.value })
+// step 1 の箱を出す順番 (reveal と比べる)
+const REVEAL: Partial<Record<Part, number>> = { cluster: 0, controlPlane: 1, dataPlane: 2 }
+const revealed = (p: Part) => step !== 1 || (REVEAL[p] ?? 0) <= reveal
+const shown = (p: Part) => ORDER[p] <= step && revealed(p)
+// reveal を使うときは、いま出た箱だけを目立たせる
+const isNew = (p: Part) => ORDER[p] === step && (reveal === Infinity || REVEAL[p] === reveal)
+const cls = (p: Part) => ({ 'is-new': isNew(p), 'is-active': active.value })
 
 const isDown = (node: string, i: number) => recover !== undefined && node === 'Node 1' && i === 2
 
@@ -54,10 +77,14 @@ const nodes = [
         <text class="frame-label is-cluster" x="525" y="45">Cluster</text>
       </g>
 
-      <!-- Control Plane / Data Plane -->
-      <g v-if="shown(PLANES)" :class="cls(PLANES)">
+      <!-- Control Plane -->
+      <g v-if="shown(CONTROL_PLANE)" :class="cls(CONTROL_PLANE)">
         <rect class="frame" x="40" y="60" width="390" height="610" rx="12" />
         <text class="frame-label" x="235" y="92">Control Plane</text>
+      </g>
+
+      <!-- Data Plane -->
+      <g v-if="shown(DATA_PLANE)" :class="cls(DATA_PLANE)">
         <rect class="frame" x="450" y="60" width="570" height="610" rx="12" />
         <text class="frame-label" x="735" y="92">Data Plane</text>
       </g>
@@ -103,6 +130,8 @@ const nodes = [
           <rect class="runtime" :x="n.x + 15" y="415" width="240" height="220" />
           <rect class="box is-cri" :x="n.x + 200" y="605" width="55" height="30" />
           <text class="box-label is-small" :x="n.x + 227.5" y="620">CRI</text>
+          <!-- kubelet がランタイムに起動を頼む矢印。ランタイムと一緒に出す -->
+          <path class="line" :d="`M${n.x + 72},350 V380 H${n.x + 135} V413`" marker-end="url(#k8s-arrow)" />
         </template>
       </g>
 
@@ -111,8 +140,13 @@ const nodes = [
         <template v-for="n in nodes" :key="n.label">
           <rect class="box" :class="{ 'is-focus': recover === 3 && n.label === 'Node 2' }" :x="n.x + 12" y="290" width="120" height="60" rx="8" />
           <text class="box-label is-compact" :x="n.x + 72" y="320">kubelet</text>
-          <path class="line" :d="`M${n.x + 72},350 V380 H${n.x + 135} V413`" marker-end="url(#k8s-arrow)" />
         </template>
+        <!-- kubelet は api-server とだけ話す -->
+        <path
+          class="line"
+          :d="`M${nodes[0].x + 72},290 V200 M${nodes[1].x + 72},290 V200 H300 V268`"
+          marker-end="url(#k8s-arrow)"
+        />
       </g>
 
       <!-- kube-proxy -->
@@ -122,17 +156,7 @@ const nodes = [
           <text class="box-label is-dark is-compact" :x="n.x + 198" y="320">kube-proxy</text>
           <path class="line" :d="`M${n.x + 198},350 V380 H${n.x + 135}`" />
         </template>
-      </g>
-
-      <!-- kube-api-server。kubelet と kube-proxy は api-server とだけ話す -->
-      <g v-if="shown(API_SERVER)" :class="cls(API_SERVER)">
-        <rect class="box" x="190" y="270" width="220" height="70" rx="8" />
-        <text class="box-label" x="300" y="305">kube-api-server</text>
-        <path
-          class="line"
-          :d="`M${nodes[0].x + 72},290 V200 M${nodes[1].x + 72},290 V200 H300 V268`"
-          marker-end="url(#k8s-arrow)"
-        />
+        <!-- kube-proxy も api-server とだけ話す -->
         <path
           class="line is-dashed"
           :d="`M${nodes[0].x + 198},290 V215 M${nodes[1].x + 198},290 V215 H360 V268`"
@@ -140,11 +164,18 @@ const nodes = [
         />
       </g>
 
+      <!-- kube-api-server -->
+      <g v-if="shown(API_SERVER)" :class="cls(API_SERVER)">
+        <rect class="box" x="190" y="270" width="220" height="70" rx="8" />
+        <text class="box-label" x="300" y="305">kube-api-server</text>
+      </g>
+
       <!-- etcd -->
       <g v-if="shown(ETCD)" :class="cls(ETCD)">
         <rect class="box" x="60" y="270" width="100" height="70" rx="8" />
         <text class="box-label" x="110" y="305">etcd</text>
-        <path class="line" d="M190,305 H162" marker-end="url(#k8s-arrow)" />
+        <!-- api-server は etcd に書き込むだけでなく読み出しもするので、両向きにする -->
+        <path class="line" d="M190,305 H162" marker-start="url(#k8s-arrow)" marker-end="url(#k8s-arrow)" />
       </g>
 
       <!-- kube-scheduler -->
@@ -201,6 +232,17 @@ const nodes = [
 .k8s-notes {
   flex: 1;
   font-size: var(--theme-font-size-body);
+}
+
+/* v-click の説明は Slidev 標準だと一瞬で出るので、図と同じ速さで下からフェードインさせる */
+.k8s-notes :slotted(.slidev-vclick-target) {
+  transition:
+    opacity 0.6s var(--theme-ease-out),
+    transform 0.6s var(--theme-ease-out);
+}
+
+.k8s-notes :slotted(.slidev-vclick-hidden) {
+  transform: translateY(0.5rem);
 }
 
 .k8s-notes :slotted(dt) {
@@ -299,13 +341,23 @@ const nodes = [
   fill: var(--theme-blue);
 }
 
+/* 先読みしたスライドは display: none から表示に切り替わるので、transition では動かない。
+   animation なら表示されたときに再生される */
 .is-new {
   opacity: 0;
-  transition: opacity 0.6s var(--theme-ease-out);
 }
 
 .is-new.is-active {
   opacity: 1;
+  animation: k8s-fade-in 0.6s var(--theme-ease-out);
+}
+
+/* 説明と同じく、少し下から浮かび上がらせる */
+@keyframes k8s-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
 }
 
 .is-new .frame {
