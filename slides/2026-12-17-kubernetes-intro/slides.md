@@ -9,8 +9,6 @@ info: |
   https://techbull.connpass.com/event/409611/
 # 会社のテーマは CI から読めないので、手元のビルド結果 (prebuilt/) を配信する
 prebuilt: true
-# 発表まで一覧に載せない
-unlisted: true
 # 会社のマーク (public/favicon.png)。--base 付きで配信するので相対パスで書く
 favicon: favicon.png
 addons:
@@ -61,7 +59,7 @@ title: まとめ
 
 <ol class="wrap-points">
   <li v-click>Kubernetes は「あるべき状態」に<em>合わせ続けて</em>くれる<br><small>だから深夜 3 時に起きなくてよい</small></li>
-  <li v-click>第二話の手作業は、部品が<em>代わりにやって</em>くれる<br><small>kube-controller-manager (気づく) → kube-scheduler (決める) → kubelet (起動する) → kube-proxy (届ける)</small></li>
+  <li v-click>手作業は、部品が<em>代わりにやって</em>くれる<br><small>kube-controller-manager (気づく) → kube-scheduler (決める) → kubelet (起動する) → kube-proxy (届ける)</small></li>
   <li v-click>部品どうしは直接話さず、<em>kube-api-server</em> を見張ってバトンを渡す</li>
 </ol>
 
@@ -115,11 +113,7 @@ toc: Appendix
 # Appendix
 
 ---
-# 発表時間 (5〜10 分) に収めるため、01 より後ろは Appendix に回す
-src: ./pages/02-collaboration.md
----
-
----
+# 発表時間 (5〜10 分) に収めるため、本編より後ろは Appendix に回す
 src: ./pages/03-kubectl.md
 ---
 

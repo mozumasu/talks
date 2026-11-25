@@ -7,9 +7,9 @@ import { useIsSlideActive } from '@slidev/client'
 // kubelet とランタイム → api-server と etcd) を描き、そのあと Pod が落ちてから戻るまでに
 // 働く順 (controller-manager → scheduler → kube-proxy) に登場人物を紹介する。
 // 最後の登場人物より大きい step では、どれも目立たせずに描く
-// recover を渡すと、Node 1 の Pod が 1 つ落ちたところから、代わりの Pod が Node 2 で動くまでを描く。
-// 0: Pod が落ちる / 1: controller-manager が置き場所が未定の Pod を作る /
-// 2: scheduler が Node 2 に置くと決める / 3: Node 2 の kubelet が起動する
+// recover を渡すと、Node 1 ごと落ちたところから、代わりの Pod が Node 2 で動くまでを描く。
+// 0: Node 1 が落ちる / 1: controller-manager が置き場所が未定の Pod を作る /
+// 2: scheduler が Node 2 に置くと決める / 3: Node 2 の kubelet が起動する / 4: 置き終わったあと
 // reveal は step 1 のスライドで、箱をクリックごとに 1 つずつ出すのに使う ($clicks を渡す)。
 // 0: Cluster / 1: + Control Plane / 2: + Data Plane
 const { step = Infinity, recover, reveal = Infinity } = defineProps<{
@@ -52,13 +52,12 @@ const shown = (p: Part) => ORDER[p] <= step && revealed(p)
 const isNew = (p: Part) => ORDER[p] === step && (reveal === Infinity || REVEAL[p] === reveal)
 const cls = (p: Part) => ({ 'is-new': isNew(p), 'is-active': active.value })
 
-const isDown = (node: string, i: number) => recover !== undefined && node === 'Node 1' && i === 2
 
 const NODE_W = 270
 // pods は Node の左上からの相対位置
 const nodes = [
-  { x: 465, label: 'Node 1', pods: [[35, 440], [150, 440], [92, 525]] },
-  { x: 740, label: 'Node 2', pods: [[95, 480]] },
+  { x: 465, label: 'Node 1', pods: [[92, 480]] },
+  { x: 740, label: 'Node 2', pods: [[35, 440], [150, 440]] },
 ]
 </script>
 
@@ -102,14 +101,8 @@ const nodes = [
       <g v-if="shown(PODS)" :class="cls(PODS)">
         <template v-for="n in nodes" :key="n.label">
           <template v-for="([dx, y], i) in n.pods" :key="i">
-            <template v-if="isDown(n.label, i)">
-              <rect class="box is-down" :x="n.x + dx" :y="y" width="85" height="62" rx="8" />
-              <text class="down-mark" :x="n.x + dx + 42.5" :y="y + 31">✕</text>
-            </template>
-            <template v-else>
-              <rect class="box is-pod" :x="n.x + dx" :y="y" width="85" height="62" rx="8" />
-              <text class="box-label" :x="n.x + dx + 42.5" :y="y + 31">Pod</text>
-            </template>
+            <rect class="box is-pod" :x="n.x + dx" :y="y" width="85" height="62" rx="8" />
+            <text class="box-label" :x="n.x + dx + 42.5" :y="y + 31">Pod</text>
           </template>
         </template>
       </g>
@@ -124,11 +117,11 @@ const nodes = [
         v-if="recover !== undefined && recover >= 1"
         class="new-pod"
         :class="{ 'is-pending': recover < 3, 'is-appearing': recover === 1 && active, 'is-booting': recover === 3 && active }"
-        :style="{ transform: recover < 3 ? 'translate(25px, -407px)' : 'none' }"
+        :style="{ transform: recover < 3 ? 'translate(28px, -377px)' : 'none' }"
       >
-        <rect class="box is-pod" x="835" y="555" width="85" height="62" rx="8" />
-        <text class="box-label" x="877.5" y="586">Pod</text>
-        <text v-if="recover === 2" class="dest-tag" :class="{ 'is-active': active }" x="877.5" y="537">↓ Node 2</text>
+        <rect class="box is-pod" x="832" y="525" width="85" height="62" rx="8" />
+        <text class="box-label" x="874.5" y="556">Pod</text>
+        <text v-if="recover === 2" class="dest-tag" :class="{ 'is-active': active }" x="874.5" y="507">↓ Node 2</text>
       </g>
 
       <!-- コンテナランタイム (CRI) -->
@@ -213,6 +206,12 @@ const nodes = [
         />
         <text class="box-label is-dark is-small" x="1145" y="150">Cloud</text>
         <text class="box-label is-dark is-small" x="1145" y="172">Provider API</text>
+      </g>
+      <!-- 落ちた Node 1。中の kubelet も Pod もまとめて止まったことを、上から灰色で覆って見せる -->
+      <g v-if="recover !== undefined" class="node-down" :class="{ 'is-falling': recover === 0 && active }">
+        <rect x="465" y="230" width="270" height="420" rx="10" />
+        <text class="node-down-mark" x="600" y="430">✕</text>
+        <text class="node-down-label" x="600" y="500">停止</text>
       </g>
     </svg>
     <aside class="k8s-notes">
@@ -405,20 +404,32 @@ const nodes = [
   paint-order: stroke;
 }
 
-/* 落ちた Pod は灰色の点線にして ✕ を付ける */
-.box.is-down {
-  fill: none;
+/* 落ちた Node は白く覆って灰色の点線にし、✕ を付ける */
+.node-down rect {
+  fill: rgb(255 255 255 / 0.8);
   stroke: var(--theme-gray-500);
-  stroke-width: 2.5;
-  stroke-dasharray: 6 5;
+  stroke-width: 3;
+  stroke-dasharray: 8 6;
 }
 
-.down-mark {
+.node-down text {
   fill: var(--theme-gray-500);
-  font-size: 30px;
   font-weight: 700;
   text-anchor: middle;
   dominant-baseline: central;
+}
+
+.node-down-mark {
+  font-size: 120px;
+}
+
+.node-down-label {
+  font-size: 28px;
+}
+
+/* Node が落ちる段では、覆いをフェードインさせる */
+.node-down.is-falling {
+  animation: k8s-fade-in 0.6s var(--theme-ease-out) 0.4s both;
 }
 
 .new-pod {
@@ -441,7 +452,7 @@ const nodes = [
 
 @keyframes k8s-place {
   from {
-    transform: translate(25px, -407px);
+    transform: translate(28px, -377px);
   }
 
   to {
