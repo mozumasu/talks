@@ -1,0 +1,31 @@
+
+.prep[data-v-ddf5afc9] {
+  --slidev-code-font-size: 0.7rem;
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.8em;
+}
+.prep-label[data-v-ddf5afc9] {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+}
+.prep pre[data-v-ddf5afc9] {
+  margin: 0;
+}
+.prep small[data-v-ddf5afc9] {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+.prep-docker[data-v-ddf5afc9] {
+  margin-top: 0.5rem;
+  font-size: 0.85em;
+  padding: 0.6rem 1rem;
+  border-left: 4px solid var(--theme-red);
+  background: var(--theme-red-50);
+}
+.prep-docker p[data-v-ddf5afc9] {
+  margin: 0;
+}

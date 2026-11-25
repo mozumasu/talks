@@ -409,8 +409,8 @@ routeAlias: scheduler
 
 <K8sArch :step="6" :recover="2">
   <dl>
-    <div v-click><dt>決め方</dt><dd>Pod が要求する CPU・メモリと、各 Node の空きを見比べる<br><small>Node が使える量は kubelet が報告する。空きは、すでに置いた Pod の要求量を引いて計算する (実際の使用量ではない)</small></dd></div>
-    <div v-click><dt>決めたら</dt><dd>api-server に「この Pod は Node 2 で」と書き込むだけ<br><small>Pod の記録に行き先が入り、etcd に保存される。運んだり起動したりはしない</small></dd></div>
+    <div v-click><dt>決め方</dt><dd>Pod が要求する CPU・メモリと、各 Node の空きを見比べる<br><small>空き = Node が使える量 − 置いた Pod の要求量 (使用量ではない)</small></dd></div>
+    <div v-click><dt>決めたら</dt><dd>api-server に「この Pod は Node 2 で」と書き込むだけ<br><small>記録は etcd に保存。運んだり起動したりはしない</small></dd></div>
     <div v-click><dt>第二話の「2. 空いているサーバーを探す」</dt><dd>を、代わりにやる係</dd></div>
     <div v-click><Link to="split-appendix" class="text-xs">kube-controller-manager と分かれている理由は Appendix へ →</Link></div>
   </dl>
@@ -441,8 +441,8 @@ transition: none
 <!-- Pod は置き終わっているので、recover を 4 にして動かさない -->
 <K8sArch :step="7" :recover="4">
   <dl>
-    <div v-click><dt>Service</dt><dd>複数の Pod をまとめた、変わらない宛先<br><small>Pod は作り直されるたびに IP が変わるので、宛先は Service にしておく</small></dd></div>
-    <div v-click><dt>転送のルールを書き換える</dt><dd>kube-proxy は Node ごとに、Service あての通信を Pod に転送するルールを書き換える<br><small>宛先の Pod の一覧は kube-controller-manager が更新し、kube-proxy はそれを見張っている</small></dd></div>
+    <div v-click><dt>Service</dt><dd>複数の Pod をまとめた、変わらない宛先</dd></div>
+    <div v-click><dt>転送のルールを書き換える</dt><dd>Node ごとに、Service あての通信を Pod に送るルールを書き換える<br><small>宛先の一覧は kube-controller-manager が更新する</small></dd></div>
     <div v-click><dt>第二話の「4. ロードバランサーの宛先を直す」</dt><dd>を、代わりにやる係</dd></div>
   </dl>
 </K8sArch>
@@ -495,7 +495,7 @@ title: 用語まとめ
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  font-size: 0.7em;
+  font-size: 0.75em;
 }
 
 .glossary dl {
@@ -526,7 +526,7 @@ title: 用語まとめ
 
 /* 説明の欄は使わないので、図の幅だけにする */
 .glossary-map .k8s-arch {
-  height: 12rem;
+  height: 9rem;
 }
 
 .glossary-map :deep(.k8s-notes) {

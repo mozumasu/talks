@@ -1,1 +1,0 @@
-import{_ as e}from"./modules/shiki-DK_OTy91.js";import{t}from"./useNav-B0W-z4Ay.js";import"./slidev/client-D-149TnE.js";function n(n){let{isPrintMode:r}=t();return e(()=>n()&&!r.value)}export{n as t};

@@ -225,7 +225,7 @@ const nodes = [
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  height: 22rem;
+  height: 20rem;
 }
 
 .k8s-arch svg {
