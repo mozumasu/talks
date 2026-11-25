@@ -23,7 +23,7 @@ const { mood = 'normal' } = defineProps<{
 
 .narrator-face {
   flex: none;
-  height: 4.5rem;
+  height: 5.5rem;
 }
 
 .narrator-bubble {

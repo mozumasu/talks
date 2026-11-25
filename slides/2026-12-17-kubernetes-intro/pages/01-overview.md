@@ -130,7 +130,7 @@ title: 第二話 深夜 3 時のアラーム
 
 .nok-person {
   flex: none;
-  height: 6rem;
+  height: 8rem;
 }
 
 .nok-pic {
