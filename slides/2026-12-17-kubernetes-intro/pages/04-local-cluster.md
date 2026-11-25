@@ -89,9 +89,9 @@ brew install kind kubectl danielfoehrkn/switch/switch
 .prep {
   --slidev-code-font-size: 0.7rem;
   display: grid;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-  font-size: 0.85em;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.8em;
 }
 
 .prep-label {
@@ -111,7 +111,7 @@ brew install kind kubectl danielfoehrkn/switch/switch
 }
 
 .prep-docker {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   font-size: 0.85em;
   padding: 0.6rem 1rem;
   border-left: 4px solid var(--theme-red);
@@ -156,6 +156,10 @@ title: クラスターの中は namespace で分かれている
 kubectl get namespaces
 ```
 
+<!-- 文字を大きくしたので、出力と表を横に並べて縦に収める -->
+<div class="ns-cols">
+<div class="code-sm">
+
 ```text
 NAME                 STATUS   AGE
 default              Active   1m
@@ -165,21 +169,30 @@ kube-system          Active   1m
 local-path-storage   Active   1m
 ```
 
+</div>
 <div class="ns-table">
 
 | namespace | 中身 |
 | --- | --- |
-| *default* | namespace を指定しないで作ったものが入る。05 章の Deployment もここ |
+| *default* | namespace を指定しないで作ったものが入る。「アプリを動かしてみる」の Deployment もここ |
 | *kube-system* | Kubernetes 自身の部品 |
 | kube-public | 誰でも読める情報 (ほとんど使わない) |
 | kube-node-lease | Node が動いていることを知らせる信号 |
 | local-path-storage | kind が入れるもの (手元のディスクを使うストレージ) |
 
 </div>
+</div>
 
 <style>
+.ns-cols {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
 .ns-table {
-  font-size: 0.8em;
+  font-size: 0.75em;
 }
 
 .ns-table td:first-child {

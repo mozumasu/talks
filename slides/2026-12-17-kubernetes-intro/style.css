@@ -1,3 +1,10 @@
+/* LT で会場の後ろからも読めるよう、テーマの本文と補足の文字を一回り大きくする
+   (テーマの標準は本文 0.875rem、補足 0.625rem) */
+:root {
+  --theme-font-size-body: 1.125rem;
+  --theme-font-size-caption: 0.85rem;
+}
+
 /* 強調 (*...*) は和文の斜体が崩れるので、斜体にせず赤の太字にする */
 .slidev-layout em {
   color: var(--theme-red);

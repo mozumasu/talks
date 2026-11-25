@@ -1,0 +1,13 @@
+
+.ns-cols[data-v-0c72054f] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.ns-table[data-v-0c72054f] {
+  font-size: 0.75em;
+}
+.ns-table td[data-v-0c72054f]:first-child {
+  white-space: nowrap;
+}
