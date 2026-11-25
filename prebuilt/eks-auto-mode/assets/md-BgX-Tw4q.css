@@ -1,0 +1,43 @@
+
+.cap-fig[data-v-d133da66] { display: block; width: 56%; margin: 0 auto; color: var(--theme-text);
+}
+.cap-fig .head[data-v-d133da66] { fill: currentColor; font-size: 13px; font-weight: 700; text-anchor: middle;
+}
+.cap-fig .frame[data-v-d133da66] { fill: none; stroke: currentColor; stroke-width: 2;
+}
+.cap-fig .frame-label[data-v-d133da66] { fill: currentColor; font-size: 12px; font-weight: 700;
+}
+/* 自分で上げる部品は 標準のアドオンとは の図と同じ赤の点線の枠 */
+.cap-fig .chip[data-v-d133da66] { fill: var(--theme-red-50); stroke: var(--theme-red); stroke-width: 2; stroke-dasharray: 5 3;
+}
+.cap-fig .chip-name[data-v-d133da66] { fill: var(--theme-red); font-size: 13px; font-weight: 700; text-anchor: middle;
+}
+.cap-fig .chip-role[data-v-d133da66] { fill: var(--theme-muted); font-size: 10.5px; text-anchor: middle;
+}
+/* AWS が管理する側は灰色の実線 */
+.cap-fig .aws[data-v-d133da66] { fill: var(--theme-gray-50); stroke: var(--theme-gray-500); stroke-width: 2;
+}
+.cap-fig .aws-label[data-v-d133da66] { fill: var(--theme-muted); font-size: 11px; font-weight: 700;
+}
+.cap-fig .cap-name[data-v-d133da66] { fill: currentColor; font-size: 13px; font-weight: 700; text-anchor: middle;
+}
+.cap-fig .doc[data-v-d133da66] { fill: var(--theme-gray-50); stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 4 3;
+}
+.cap-fig .code[data-v-d133da66] { fill: var(--theme-muted); font-size: 11px; font-family: var(--theme-font-mono, ui-monospace, monospace); text-anchor: middle;
+}
+.cap-fig .note[data-v-d133da66] { fill: var(--theme-muted); font-size: 11px; text-anchor: middle;
+}
+.cap-fig .arrow[data-v-d133da66] { fill: none; stroke: var(--theme-gray-500); stroke-width: 1.5; stroke-dasharray: 3 3;
+}
+.cap-table[data-v-d133da66] {
+  font-size: 0.62em;
+}
+.cap-table td[data-v-d133da66]:first-child {
+  white-space: nowrap;
+}
+.cap-notes[data-v-d133da66] {
+  font-size: 0.78em;
+}
+.cap-back a[data-v-d133da66] {
+  font-size: inherit;
+}
