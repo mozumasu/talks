@@ -86,7 +86,7 @@ hello-7c9d8b6f5d-x8r2n   1/1     Running   # ← 新しい Pod
 
 <div v-click>
 
-<Link to="pod-down">「Pod が落ちたらどう動く?」で見た流れそのもの →</Link>
+<Link to="pod-down">本編の「深夜 3 時」と同じく、controller-manager → scheduler → kubelet の順にバトンが渡る →</Link>
 
 </div>
 

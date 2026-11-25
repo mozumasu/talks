@@ -235,7 +235,7 @@ title: 第五話 概念の嵐
 
 <Narrator :mood="$clicks >= 1 ? 'panic' : 'happy'">
 <span v-if="$clicks === 0">喜んで、さっそく勉強を始めたのじゃが……</span>
-<span v-else>初手で、<em>たくさんの概念</em>がいっぺんにやってきたのじゃ</span>
+<span v-else><em>たくさんの概念</em>がいっぺんにやってきたのじゃ</span>
 </Narrator>
 
 <!-- 用語は人のまわりに散らす。位置は --x / --y (% ) で決める -->
@@ -308,7 +308,7 @@ toc: Kubernetes の地図を描く
 # Kubernetes の地図を描く
 
 ---
-title: Kubernetesを構成するやつら
+title: 地図を描く (平常時)
 transition: none
 ---
 
@@ -324,147 +324,137 @@ Kubernetes の単位は *Cluster*。中は Control Plane (司令塔) と Data Pl
 </K8sArch>
 
 ---
-title: Kubernetesを構成するやつら
+title: 地図を描く (平常時)
 transition: none
 ---
 
-`kubectl apply` は *kube-api-server* に届く
+Data Plane には *Node* があり、その上で *Pod* が動いている
 
 <K8sArch :step="2">
   <dl>
-    <div v-click><dt>kube-api-server</dt><dd>クラスターの窓口。人も部品も、みんなここと話す<br><small>部品どうしは直接話さず、api-server を通してバトンを渡す</small></dd></div>
+    <div v-click><dt>Node</dt><dd>Pod を動かすマシン 1 台。クラウドならたいてい VM<br><small>第一話の「サーバー」にあたる</small></dd></div>
+    <div v-click><dt>Pod</dt><dd>コンテナを動かす入れ物。Kubernetes で動かす最小の単位<br><small>第一話の「app」にあたる</small></dd></div>
   </dl>
 </K8sArch>
 
 ---
-title: Kubernetesを構成するやつら
-transition: none
----
-
-api-server は「あるべき状態」を *etcd* に書き込む
-
-<K8sArch :step="3">
-  <dl>
-    <div v-click><dt>etcd</dt><dd>クラスターの状態を保存するデータストア<br><small>例: 「hello の Pod を 3 つ」というマニフェストの中身</small></dd></div>
-    <div v-click><dt>読み出しも api-server 経由</dt><dd>etcd と話すのは api-server だけ<br><small><code>kubectl get</code> も、ほかの部品が今の状態を確かめるのも、api-server が etcd から読んで返す</small></dd></div>
-    <div v-click><small>名前の由来: Unix の設定置き場 <code>/etc</code> + distributed (分散) の d</small></div>
-  </dl>
-</K8sArch>
-
----
-title: Kubernetesを構成するやつら
-transition: none
----
-
-*kube-controller-manager* が足りない Pod を、置き場所を空欄のまま登録する
-
-<K8sArch :step="4">
-  <dl>
-    <div v-click><dt>今とあるべき状態を比べる</dt><dd>「3 つ」と書いてあるのに 0 個なので、Pod を 3 つ登録する<br><small>このときの Pod は記録だけで、まだどこでも動いていない。どの Node で動かすかは空欄</small></dd></div>
-    <div v-click><small>Pod が落ちたときに作り直すのも、この係</small></div>
-  </dl>
-</K8sArch>
-
----
-title: Kubernetesを構成するやつら
-# Appendix から戻ってくる
-routeAlias: scheduler
-transition: none
----
-
-*kube-scheduler* が Pod をどの *Node* で動かすか決める
-
-<K8sArch :step="5">
-  <dl>
-    <div v-click><dt>Node</dt><dd>Pod を動かすマシン 1 台。クラウドならたいてい VM<br><small>物理サーバーでもよい</small></dd></div>
-    <div v-click><dt>決め方</dt><dd>kubelet が api-server に報告した Node の情報を読んで決める。決めた Node を api-server に書き込む<br><small>条件の例: 必要な CPU・メモリ、置きたい Node (GPU 付き、特定の AZ など)</small></dd></div>
-    <div v-click><Link to="split-appendix" class="text-xs">kube-controller-manager と分かれている理由は Appendix へ →</Link></div>
-  </dl>
-</K8sArch>
-
----
-title: Kubernetesを構成するやつら
-transition: none
----
-
-各 Node の *kubelet* が api-server を見張って、自分の Node に決まった Pod を見つける
-
-<K8sArch :step="6">
-  <dl>
-    <div v-click><dt>kubelet</dt><dd>Node ごとにいて、Pod を起動して見張る<br><small>コンテナが落ちたら再起動するのもこの係</small></dd></div>
-    <div v-click><small>名前の -let は「小さい」の意味 (booklet = 小冊子、piglet = 子豚)。Node ごとにいる小さな Kubernetes の代理人</small></div>
-  </dl>
-</K8sArch>
-
----
-title: Kubernetesを構成するやつら
+title: 地図を描く (平常時)
 transition: none
 # Appendix から戻ってくる
 routeAlias: container-runtime
 ---
 
-kubelet は *コンテナランタイム* にコンテナの起動を頼む
+Node ごとに *kubelet* がいて、*コンテナランタイム* に Pod を動かしてもらう
 
-<K8sArch :step="7">
+<K8sArch :step="3">
   <dl>
-    <div v-click><dt>コンテナランタイム</dt><dd>コンテナを実際に動かすソフトウェア<br><small>例: containerd、CRI-O</small></dd></div>
-    <div v-click><dt>CRI (Container Runtime Interface)</dt><dd>Kubernetes とコンテナランタイムをつなぐ共通の規格<br><Link to="cri-appendix" class="text-xs">詳しくは Appendix へ →</Link></dd></div>
+    <div v-click><dt>kubelet</dt><dd>Node ごとにいて、Pod を起動して見張る<br><small>名前の -let は「小さい」の意味と言われる。Node ごとにいる小さな Kubernetes の代理人</small></dd></div>
+    <div v-click><dt>コンテナランタイム</dt><dd>コンテナを実際に動かすソフトウェア (例: containerd)<br><small>kubelet とは CRI (Container Runtime Interface) という共通の規格で話す</small><Link to="cri-appendix" class="text-xs">詳しくは Appendix へ →</Link></dd></div>
   </dl>
 </K8sArch>
 
 ---
-title: Kubernetesを構成するやつら
+title: 地図を描く (平常時)
 transition: none
 ---
 
-*Pod* が動き出す
+*kube-api-server* が窓口で、*etcd* が記録係
 
-<K8sArch :step="8">
+<K8sArch :step="4">
   <dl>
-    <div v-click><dt>Pod</dt><dd>コンテナを動かす入れ物。Kubernetes で動かす最小の単位<br><small>IP アドレスは Pod に 1 つ。中のコンテナはそれを共有し、localhost で話せる</small></dd></div>
-    <div v-click><dt>Pod に入るコンテナ (1 つ以上)</dt><dd>
-      <b>メイン</b>: アプリ本体<br>
-      <b>init</b> (任意): 先に準備をして終わる<br>
-      <b>サイドカー</b> (任意): 横で動き続ける
-    </dd></div>
+    <div v-click><dt>kube-api-server</dt><dd>クラスターの窓口。人も部品も、みんなここと話す<br><small>kubelet も、Node と Pod の様子をここに報告し続ける</small></dd></div>
+    <div v-click><dt>etcd</dt><dd>「あるべき状態」と今の状態を覚えておくデータストア<br><small><code>kubectl apply</code> で渡したマニフェスト (<code>replicas: 3</code>) もここに残る</small></dd></div>
   </dl>
 </K8sArch>
 
 ---
-title: Kubernetesを構成するやつら
+title: 地図を描く (深夜 3 時)
+transition: none
+# 05 の「Pod を消しても戻ってくる」と、Appendix からリンクする
+routeAlias: pod-down
+---
+
+第二話の深夜 3 時、*Node 1 が落ちた!*
+
+<!-- 新しく出る登場人物はいないので、step を半端にして赤くしない -->
+<K8sArch :step="4.5" :recover="0">
+  <dl>
+    <div v-click><dt>報告が途絶える</dt><dd>kubelet も一緒に止まるので、api-server への定期報告が届かなくなる</dd></div>
+    <div v-click><dt>Node が落ちたと判断する</dt><dd>kube-controller-manager (Node の係) が気づいて Node 1 を NotReady にし、しばらく待ってから Node 1 の Pod を退去させる<br><small>待つ時間は標準で約 5 分。そのあいだに戻ってくるかもしれないから</small></dd></div>
+  </dl>
+</K8sArch>
+
+---
+title: 地図を描く (深夜 3 時)
 transition: none
 ---
 
-動いた Pod への通信は *kube-proxy* が振り分ける
+*kube-controller-manager* が足りない Pod に気づき、置き場所が空欄の Pod を登録する
 
-<K8sArch :step="9">
+<K8sArch :step="5" :recover="1">
   <dl>
-    <div v-click><dt>Pod の IP は変わる</dt><dd>Pod は作り直されるたびに IP アドレスが変わるので、そのままでは宛先にしにくい</dd></div>
-    <div v-click><dt>Service</dt><dd>複数の Pod をまとめた、変わらない宛先<br><small>kube-proxy は Service あての通信を、裏にいる Pod のどれかに届ける</small></dd></div>
+    <div v-click><dt>今とあるべき状態を比べる</dt><dd>「3 つ」なのに 2 つしかないので、Pod を 1 つ登録する<br><small>働くのは ReplicaSet の係。この Pod は記録だけで、まだどこでも動いていない</small></dd></div>
+    <div v-click><dt>第二話の「1. アラートで起きる」</dt><dd>を、代わりにやる係</dd></div>
   </dl>
 </K8sArch>
 
 ---
-title: Kubernetesを構成するやつら
+title: 地図を描く (深夜 3 時)
+transition: none
+# Appendix から戻ってくる
+routeAlias: scheduler
+---
+
+*kube-scheduler* が、空いている Node を決める
+
+<K8sArch :step="6" :recover="2">
+  <dl>
+    <div v-click><dt>決め方</dt><dd>Pod が要求する CPU・メモリと、各 Node の空きを見比べる<br><small>Node が使える量は kubelet が報告する。空きは、すでに置いた Pod の要求量を引いて計算する (実際の使用量ではない)</small></dd></div>
+    <div v-click><dt>決めたら</dt><dd>Pod に「Node 2 で動かして」と書き込むだけ<br><small>運んだり起動したりはしない</small></dd></div>
+    <div v-click><dt>第二話の「2. 空いているサーバーを探す」</dt><dd>を、代わりにやる係</dd></div>
+    <div v-click><Link to="split-appendix" class="text-xs">kube-controller-manager と分かれている理由は Appendix へ →</Link></div>
+  </dl>
+</K8sArch>
+
+---
+title: 地図を描く (深夜 3 時)
 transition: none
 ---
 
-クラウドのロードバランサーが要るときは *cloud-controller-manager* が作る
+Node 2 の *kubelet* が、コンテナランタイムに起動を頼む
 
-<K8sArch :step="10">
+<!-- 新しく出る登場人物はいないので、step を半端にして赤くしない -->
+<K8sArch :step="6.5" :recover="3">
   <dl>
-    <div v-click><dt>たとえば</dt><dd><code>type: LoadBalancer</code> の Service を作ると、クラウドのロードバランサーを作る<br><small>Node の VM がクラウド上で消えたら、Node を片付けるのもこの係</small></dd></div>
+    <div v-click><dt>見張っている</dt><dd>kubelet は api-server を見張っていて、自分の Node に決まった Pod を見つける</dd></div>
+    <div v-click><dt>第二話の「3. ssh して docker run し直す」</dt><dd>を、代わりにやる係</dd></div>
   </dl>
 </K8sArch>
 
 ---
-title: Kubernetesを構成するやつら
+title: 地図を描く (深夜 3 時)
+transition: none
 ---
 
-これが Kubernetes の*全体像*
+*kube-proxy* が、新しい Pod にも通信が届くようにする
+
+<!-- Pod は置き終わっているので、recover を 4 にして動かさない -->
+<K8sArch :step="7" :recover="4">
+  <dl>
+    <div v-click><dt>Service</dt><dd>複数の Pod をまとめた、変わらない宛先<br><small>Pod は作り直されるたびに IP が変わるので、宛先は Service にしておく</small></dd></div>
+    <div v-click><dt>転送のルールを書き換える</dt><dd>kube-proxy は Node ごとに、Service あての通信を Pod に転送するルールを書き換える<br><small>宛先の Pod の一覧は kube-controller-manager が更新し、kube-proxy はそれを見張っている</small></dd></div>
+    <div v-click><dt>第二話の「4. ロードバランサーの宛先を直す」</dt><dd>を、代わりにやる係</dd></div>
+  </dl>
+</K8sArch>
+
+---
+title: 地図ができた
+---
+
+<Narrator mood="happy">人が寝ている間に、これを全部やってくれるのじゃ。これが Kubernetes の<em>地図</em>じゃ</Narrator>
 
 <!-- 新しく出る登場人物がいないので、最後の step より大きくしてフェードインさせない -->
-<K8sArch :step="11" />
+<K8sArch :step="8" />
 
 ---
 title: 用語まとめ
@@ -484,7 +474,6 @@ title: 用語まとめ
     <dt>etcd</dt><dd>クラスターの状態を保存するデータストア</dd>
     <dt>kube-controller-manager</dt><dd>今の状態をあるべき状態に近づける</dd>
     <dt>kube-scheduler</dt><dd>Pod をどの Node で動かすか決める</dd>
-    <dt>cloud-controller-manager</dt><dd>クラウドのリソースを操作する</dd>
   </dl>
   <dl>
     <p class="glossary-group">Data Plane (現場)</p>
@@ -492,13 +481,13 @@ title: 用語まとめ
     <dt>kubelet</dt><dd>Node ごとにいて、Pod を起動して見張る</dd>
     <dt>コンテナランタイム</dt><dd>コンテナを実際に動かすソフトウェア</dd>
     <dt>CRI</dt><dd>Kubernetes とランタイムをつなぐ共通の規格</dd>
-    <dt>kube-proxy</dt><dd>Service あての通信を Pod に振り分ける</dd>
+    <dt>kube-proxy</dt><dd>Service あての通信が Pod に届くよう、転送のルールを書き換える</dd>
   </dl>
 </div>
 
 <!-- 用語と図を見比べられるよう、全体像を小さく下に置く -->
 <div class="glossary-map">
-  <K8sArch :step="11" />
+  <K8sArch :step="8" />
 </div>
 
 <style>
