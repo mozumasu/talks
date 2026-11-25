@@ -1,0 +1,111 @@
+
+/* 高さは使う側のクラスで決める (ここで決めると、scoped のほうが強くて上書きできない) */
+.yuru[data-v-72dd7ce2] {
+  display: block;
+  overflow: visible;
+  color: var(--theme-text);
+}
+.yuru-line[data-v-72dd7ce2] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.yuru-line.is-thin[data-v-72dd7ce2] {
+  stroke-width: 3;
+}
+.yuru-head[data-v-72dd7ce2] {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 4;
+}
+.yuru-beard[data-v-72dd7ce2] {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.yuru-wisp[data-v-72dd7ce2] {
+  fill: none;
+  stroke: var(--theme-gray-500);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.yuru-dot[data-v-72dd7ce2] {
+  fill: currentColor;
+}
+.yuru-eye[data-v-72dd7ce2] {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+.yuru-mouth[data-v-72dd7ce2] {
+  fill: var(--theme-red);
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.yuru-wrinkle[data-v-72dd7ce2] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.yuru-red-eye[data-v-72dd7ce2] {
+  fill: #fecaca;
+  stroke: var(--theme-red);
+  stroke-width: 2;
+}
+.yuru-stream[data-v-72dd7ce2] {
+  fill: none;
+  stroke: #60a5fa;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.yuru-teeth[data-v-72dd7ce2] {
+  fill: #fff;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+.yuru-teeth-line[data-v-72dd7ce2] {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.yuru-tear[data-v-72dd7ce2] {
+  fill: #60a5fa;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.yuru-cry-mouth[data-v-72dd7ce2] {
+  fill: #1e1e2e;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.yuru-tongue[data-v-72dd7ce2] {
+  fill: var(--theme-red);
+}
+.yuru-sweat[data-v-72dd7ce2] {
+  fill: #60a5fa;
+}
+.yuru-bags[data-v-72dd7ce2] {
+  fill: none;
+  stroke: var(--theme-gray-500);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.yuru-mark[data-v-72dd7ce2] {
+  fill: currentColor;
+  font-size: 22px;
+  font-weight: 700;
+}
+.yuru-mark.is-small[data-v-72dd7ce2] {
+  font-size: 15px;
+}
+.yuru-mark.is-red[data-v-72dd7ce2] {
+  fill: var(--theme-red);
+  font-size: 30px;
+}

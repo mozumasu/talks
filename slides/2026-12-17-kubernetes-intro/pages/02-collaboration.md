@@ -1,7 +1,8 @@
 ---
 layout: section
-title: '02'
+title: Appendix
 toc: 登場人物はどう連携する?
+tocLevel: 2
 ---
 
 # 登場人物はどう連携する?

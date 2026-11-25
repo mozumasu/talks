@@ -96,3 +96,351 @@
 .hl-soft .slidev-code .slidev-code-highlighted {
   background: rgba(255, 0, 0, 0.12);
 }
+
+/* 01 章の「Kubernetes がない世界 / ある世界」。サーバー (Node) を 3 台並べ、落ちたものに ✕ を重ねる */
+.world {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.world .server {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 9rem;
+  padding: 0.75rem;
+  border: 2.5px solid var(--theme-text);
+  border-radius: var(--theme-radius-sm);
+}
+
+.world .server p {
+  margin: 0;
+  font-weight: 700;
+  text-align: center;
+}
+
+.world .app {
+  padding: 0.4rem;
+  border-radius: var(--theme-radius-sm);
+  background: var(--theme-red);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* 落ちたあとに作り直された app / Pod */
+.world .app.is-new {
+  outline: 4px solid var(--theme-text);
+}
+
+.world .down {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--theme-radius-sm);
+  background: rgb(255 255 255 / 0.75);
+  color: var(--theme-gray-500);
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.world-event {
+  color: var(--theme-red);
+  font-weight: 700;
+}
+
+.world-steps {
+  margin: 0.5rem 0 0;
+}
+
+.world-manifest {
+  margin-bottom: 0.5rem;
+}
+
+.world-next {
+  margin-top: 0.75rem;
+  color: var(--theme-muted);
+}
+
+/* 01 章の物語の場面 (語り手の長老とゆるい人) */
+.story-scene {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.story-person {
+  flex: none;
+  height: 10rem;
+}
+
+.story-world {
+  flex: 1;
+  margin: 0;
+}
+
+.story-cry {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  height: 100%;
+  margin-top: 2rem;
+}
+
+.story-cry-person {
+  flex: none;
+  height: 16rem;
+}
+
+.story-cry {
+  transition: filter 0.6s var(--theme-ease-out), opacity 0.6s var(--theme-ease-out);
+}
+
+/* Kubernetes を出すときは、場面をグレーアウトする */
+.story-cry.is-dimmed {
+  filter: grayscale(1);
+  opacity: 0.15;
+}
+
+/* 後ろの文字が Kubernetes! と重なって読みにくいので、文字はほぼ消す */
+.story-cry.is-dimmed .story-cry-text {
+  opacity: 0.3;
+  transition: opacity 0.6s var(--theme-ease-out);
+}
+
+.story-savior {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* グレーアウトが済んでから「そこで!」、ためを作ってから「Kubernetes!」をポンと出す */
+.story-savior-lead {
+  color: var(--theme-text);
+  font-size: 2.5rem;
+  animation: story-savior-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+}
+
+.story-savior-name {
+  color: var(--theme-red);
+  font-size: 5rem;
+  line-height: 1.1;
+  animation: story-savior-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s both;
+}
+
+@keyframes story-savior-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.story-cry-text {
+  flex: 1;
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.story-rest {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.story-rest-person {
+  flex: none;
+  height: 4.5rem;
+}
+
+/* 人のまわりに用語が降ってくる */
+.terms {
+  position: relative;
+  height: 20rem;
+  margin-top: 1rem;
+}
+
+.terms-person {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 12rem;
+  transform: translate(-50%, -50%);
+}
+
+/* 泣いている顔の画像 (背景は白) と、落ち続ける涙 */
+.terms-person.is-face {
+  width: 13rem;
+  height: 13rem;
+}
+
+.terms-person.is-face img {
+  width: 100%;
+  height: 100%;
+}
+
+/* 涙の粒。元の絵の涙と同じ色 (#7db1de) と細い線で描き、筋の上を始まりから終わりまで流す */
+.tear {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 0.28rem;
+  height: 0.5rem;
+  border: 1px solid rgb(0 0 0 / 0.45);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: #7db1de;
+  translate: -50% 0;
+  animation: tear-flow 1.8s ease-in var(--d) infinite;
+}
+
+@keyframes tear-flow {
+  0% {
+    top: var(--y);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    top: calc(var(--y) + var(--len));
+    opacity: 0;
+  }
+}
+
+/* 人のせりふ。頭の右上に出す */
+.terms-say {
+  position: absolute;
+  top: 8%;
+  left: 58%;
+  margin: 0;
+  padding: 0.4rem 0.9rem;
+  border: 2.5px solid var(--theme-text);
+  border-radius: 1rem;
+  background: #fff;
+  font-weight: 700;
+}
+
+.terms-cloud {
+  position: absolute;
+  inset: 0;
+}
+
+.terms-cloud span {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--theme-red-50);
+  color: var(--theme-red);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.story-map {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.story-map-person {
+  flex: none;
+  height: 9rem;
+}
+
+/* 地図の紙。中身が入るまでは ? を描く */
+.story-map-paper {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  height: 15rem;
+  padding: 0.5rem;
+  border-radius: var(--theme-radius-md);
+  background: #fffbea;
+}
+
+/* K8sArch の scoped の高さより強くするため、クラスを重ねる */
+.story-map-paper .k8s-arch.k8s-arch {
+  height: 14rem;
+}
+
+.story-map-paper .k8s-notes.k8s-notes {
+  display: none;
+}
+
+.story-map-blank {
+  color: var(--theme-gray-500);
+  font-size: 5rem;
+  font-weight: 700;
+}
+
+/* まとめ。左に持ち帰ってほしい 3 つ、右に物語の結び */
+.wrap {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.wrap-points {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+}
+
+.wrap-points small {
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}
+
+.wrap-end {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.wrap-person {
+  flex: none;
+  height: 7rem;
+}
+
+.wrap-end p {
+  margin: 0;
+}
+
+.wrap-end b {
+  color: var(--theme-red);
+  font-size: 1.4rem;
+}
+
+.wrap-next {
+  margin-top: 1.25rem;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+}

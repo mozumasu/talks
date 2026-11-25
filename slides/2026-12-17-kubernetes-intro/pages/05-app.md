@@ -1,7 +1,8 @@
 ---
 layout: section
-title: '05'
+title: Appendix
 toc: アプリを動かしてみる
+tocLevel: 2
 ---
 
 # アプリを動かしてみる
