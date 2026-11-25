@@ -52,18 +52,6 @@ src: ./pages/01-overview.md
 ---
 
 ---
-title: まとめ
----
-
-<Narrator mood="happy">こうして頭の中に<em>地図</em>ができたのじゃ</Narrator>
-
-<ol class="wrap-points">
-  <li v-click>Kubernetes は「あるべき状態」に<em>合わせ続けて</em>くれる<br><small>だから深夜 3 時に起きなくてよい</small></li>
-  <li v-click>手作業は、部品が<em>代わりにやって</em>くれる<br><small>kube-controller-manager (気づく) → kube-scheduler (決める) → kubelet (起動する) → kube-proxy (届ける)</small></li>
-  <li v-click>部品どうしは直接話さず、<em>kube-api-server</em> を見張ってバトンを渡す</li>
-</ol>
-
----
 title: 爆速で入門するコツ
 ---
 

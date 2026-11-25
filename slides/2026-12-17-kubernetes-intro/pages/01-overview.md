@@ -379,8 +379,7 @@ routeAlias: pod-down
 <!-- 新しく出る登場人物はいないので、step を半端にして赤くしない -->
 <K8sArch :step="4.5" :recover="0">
   <dl>
-    <div v-click><dt>報告が途絶える</dt><dd>kubelet も一緒に止まるので、api-server への定期報告が届かなくなる</dd></div>
-    <div v-click><dt>Node が落ちたと判断する</dt><dd>kube-controller-manager (Node の係) が気づいて Node 1 を NotReady にし、しばらく待ってから Node 1 の Pod を退去させる<br><small>待つ時間は標準で約 5 分。そのあいだに戻ってくるかもしれないから</small></dd></div>
+    <div v-click><dt>報告が途絶える</dt><dd>kubelet も一緒に止まるので、api-server への定期報告が届かなくなる<br><small>あるべき状態は「3 つ」のまま</small></dd></div>
   </dl>
 </K8sArch>
 
@@ -393,7 +392,8 @@ transition: none
 
 <K8sArch :step="5" :recover="1">
   <dl>
-    <div v-click><dt>今とあるべき状態を比べる</dt><dd>「3 つ」なのに 2 つしかないので、Pod を 1 つ登録する<br><small>働くのは ReplicaSet の係。この Pod は記録だけで、まだどこでも動いていない</small></dd></div>
+    <div v-click><dt>Node の係</dt><dd>落ちた Node 1 の Pod を退去させる<br><small>標準では約 5 分待ってから</small></dd></div>
+    <div v-click><dt>ReplicaSet の係</dt><dd>足りない Pod を 1 つ登録する<br><small>まだ記録だけ。置き場所は空欄</small></dd></div>
     <div v-click><dt>第二話の「1. アラートで起きる」</dt><dd>を、代わりにやる係</dd></div>
   </dl>
 </K8sArch>
@@ -410,7 +410,7 @@ routeAlias: scheduler
 <K8sArch :step="6" :recover="2">
   <dl>
     <div v-click><dt>決め方</dt><dd>Pod が要求する CPU・メモリと、各 Node の空きを見比べる<br><small>Node が使える量は kubelet が報告する。空きは、すでに置いた Pod の要求量を引いて計算する (実際の使用量ではない)</small></dd></div>
-    <div v-click><dt>決めたら</dt><dd>Pod に「Node 2 で動かして」と書き込むだけ<br><small>運んだり起動したりはしない</small></dd></div>
+    <div v-click><dt>決めたら</dt><dd>api-server に「この Pod は Node 2 で」と書き込むだけ<br><small>Pod の記録に行き先が入り、etcd に保存される。運んだり起動したりはしない</small></dd></div>
     <div v-click><dt>第二話の「2. 空いているサーバーを探す」</dt><dd>を、代わりにやる係</dd></div>
     <div v-click><Link to="split-appendix" class="text-xs">kube-controller-manager と分かれている理由は Appendix へ →</Link></div>
   </dl>
