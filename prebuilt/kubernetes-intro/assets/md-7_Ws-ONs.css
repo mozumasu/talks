@@ -1,0 +1,106 @@
+
+.nok[data-v-80682679] {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 0.75rem;
+}
+.nok-lb[data-v-80682679] {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--theme-radius-sm);
+  background: var(--theme-text);
+  color: #fff;
+  font-weight: 700;
+}
+.nok-lb small[data-v-80682679] {
+  font-weight: 400;
+}
+.nok-world[data-v-80682679] {
+  margin-top: 2rem;
+}
+
+/* ロードバランサーから各サーバーへの線 */
+.nok-world .wire[data-v-80682679] {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  height: 2rem;
+  border-left: 2.5px solid var(--theme-text);
+}
+.nok-world .wire.is-cut[data-v-80682679] {
+  border-left-style: dashed;
+  border-left-color: var(--theme-gray-500);
+}
+
+/* 空いているサーバーを探している段 */
+.nok-world .server.is-target[data-v-80682679] {
+  outline: 4px dashed var(--theme-red);
+  outline-offset: 4px;
+}
+.nok-steps[data-v-80682679] {
+  margin: 0.75rem 0 0;
+}
+.nok-steps li.is-now[data-v-80682679] {
+  color: var(--theme-red);
+  font-weight: 700;
+}
+.nok-now[data-v-80682679] {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+.nok-person[data-v-80682679] {
+  flex: none;
+  height: 8rem;
+}
+.nok-pic[data-v-80682679] {
+  flex: 1;
+  min-height: 5rem;
+}
+.nok-pic[data-v-80682679] > * {
+  animation: nok-fade-in-80682679 0.4s var(--theme-ease-out);
+}
+@keyframes nok-fade-in-80682679 {
+from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+}
+}
+
+/* スマホの通知 */
+.nok-phone[data-v-80682679] {
+  padding: 0.6rem 0.9rem;
+  border-radius: 1rem;
+  background: #1e1e2e;
+  color: #fff;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.2);
+}
+.nok-phone small[data-v-80682679] {
+  display: block;
+  color: #9ca3af;
+  font-size: var(--theme-font-size-caption);
+}
+.nok-phone b[data-v-80682679] {
+  color: #f87171;
+}
+.nok-note[data-v-80682679] {
+  padding: 0.6rem 1rem;
+  border-left: 4px solid var(--theme-red);
+  background: var(--theme-red-50);
+}
+.nok-term[data-v-80682679] {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--theme-radius-sm);
+  background: #1e1e2e;
+  color: #e5e7eb;
+  font-size: 0.8rem;
+}
+.nok-term span[data-v-80682679] {
+  color: #86efac;
+}

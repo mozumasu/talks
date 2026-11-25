@@ -1,0 +1,33 @@
+
+.narrator[data-v-93813424] {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.narrator-face[data-v-93813424] {
+  flex: none;
+  height: 5.5rem;
+}
+.narrator-bubble[data-v-93813424] {
+  position: relative;
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 2.5px solid var(--theme-text);
+  border-radius: 1rem;
+  background: #fff;
+}
+
+/* 吹き出しのしっぽ */
+.narrator-bubble[data-v-93813424]::before {
+  position: absolute;
+  top: 50%;
+  left: -0.75rem;
+  border-width: 0.5rem 0.75rem 0.5rem 0;
+  border-style: solid;
+  border-color: transparent var(--theme-text) transparent transparent;
+  transform: translateY(-50%);
+  content: '';
+}
+.narrator-bubble p[data-v-93813424-s] {
+  margin: 0;
+}
