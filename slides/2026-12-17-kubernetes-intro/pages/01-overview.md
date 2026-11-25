@@ -524,8 +524,9 @@ title: 用語まとめ
   margin-top: 0.25rem;
 }
 
-/* 説明の欄は使わないので、図の幅だけにする */
-.glossary-map .k8s-arch {
+/* 図を小さくする。本番のビルドでは K8sArch の根元の要素にこのスライドの scoped の属性が付かないので、
+   :deep() で当てる */
+.glossary-map :deep(.k8s-arch) {
   height: 9rem;
 }
 
