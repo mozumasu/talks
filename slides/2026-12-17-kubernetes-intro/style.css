@@ -381,21 +381,8 @@
 }
 
 /* 地図の紙。中身が入るまでは ? を描く */
-/* 地図の図と、その下の出典。出典の右端を図の右端にそろえる */
-.story-map-figure {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-/* 出典は小さく、図の幅より長くしない */
-.story-map-ref {
-  margin: 0.15rem 0 0;
-  color: var(--theme-muted);
-  font-size: 0.55rem;
-}
-
 .story-map-paper {
+  position: relative;
   display: grid;
   flex: 1;
   place-items: center;
@@ -405,9 +392,26 @@
   background: #fffbea;
 }
 
+/* 出典は紙の右下の角に小さく置き、図を中央から動かさない。図の右の余白に収まるよう 2 行に折る */
+.story-map-ref {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.35rem;
+  margin: 0;
+  color: var(--theme-muted);
+  font-size: 0.55rem;
+  line-height: 1.8;
+  text-align: right;
+}
+
+/* テーマの .slidev-layout p の行間より強くする */
+.slidev-layout .story-map-ref {
+  line-height: 1.8;
+}
+
 /* K8sArch の scoped の高さより強くするため、クラスを重ねる */
 .story-map-paper .k8s-arch.k8s-arch {
-  height: 12.25rem;
+  height: 14rem;
 }
 
 .story-map-paper .k8s-notes.k8s-notes {
