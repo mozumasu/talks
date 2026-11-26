@@ -382,7 +382,6 @@
 
 /* 地図の紙。中身が入るまでは ? を描く */
 .story-map-paper {
-  position: relative;
   display: grid;
   flex: 1;
   place-items: center;
@@ -392,16 +391,19 @@
   background: #fffbea;
 }
 
-/* 出典は紙の右下の角に小さく置き、図を中央から動かさない。図の右の余白に収まるよう 2 行に折る */
+/* 地図の図と出典を横に並べ、出典の下端を図の下端にそろえる */
+.story-map-figure {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-end;
+}
+
+/* 出典は小さく、図の右に 1 行で添える */
 .story-map-ref {
-  position: absolute;
-  right: 0.6rem;
-  bottom: 0.35rem;
   margin: 0;
   color: var(--theme-muted);
-  font-size: 0.55rem;
-  line-height: 1.8;
-  text-align: right;
+  font-size: 0.5rem;
+  white-space: nowrap;
 }
 
 /* テーマの .slidev-layout p の行間より強くする */
