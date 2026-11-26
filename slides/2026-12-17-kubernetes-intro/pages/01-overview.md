@@ -299,6 +299,12 @@ title: 第六話 地図を手に
 
 </div>
 
+<div class="refs">
+
+参考: [Kubernetes 公式ドキュメント「クラスターのアーキテクチャ」](https://kubernetes.io/ja/docs/concepts/architecture/)
+
+</div>
+
 ---
 layout: section
 title: '02'
