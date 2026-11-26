@@ -289,7 +289,11 @@ title: 第六話 地図を手に
   <Yuru class="story-map-person" :mood="$clicks >= 1 ? 'happy' : 'confused'" />
   <div class="story-map-paper">
     <span v-if="$clicks === 0" class="story-map-blank">?</span>
-    <K8sArch v-else :step="11" />
+    <!-- 出典は図のすぐ右に、図の下端にそろえて添える -->
+    <div v-else class="story-map-figure">
+      <K8sArch :step="11" />
+      <p class="story-map-ref">参考: <a href="https://kubernetes.io/ja/docs/concepts/architecture/" target="_blank">公式ドキュメント「クラスターのアーキテクチャ」</a></p>
+    </div>
   </div>
 </div>
 

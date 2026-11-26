@@ -391,6 +391,26 @@
   background: #fffbea;
 }
 
+/* 地図の図と出典を横に並べ、出典の下端を図の下端にそろえる */
+.story-map-figure {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-end;
+}
+
+/* 出典は小さく、図の右に 1 行で添える */
+.story-map-ref {
+  margin: 0;
+  color: var(--theme-muted);
+  font-size: 0.5rem;
+  white-space: nowrap;
+}
+
+/* テーマの .slidev-layout p の行間より強くする */
+.slidev-layout .story-map-ref {
+  line-height: 1.8;
+}
+
 /* K8sArch の scoped の高さより強くするため、クラスを重ねる */
 .story-map-paper .k8s-arch.k8s-arch {
   height: 14rem;
