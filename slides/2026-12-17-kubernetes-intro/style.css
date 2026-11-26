@@ -381,9 +381,20 @@
 }
 
 /* 地図の紙。中身が入るまでは ? を描く */
+.story-map-body {
+  flex: 1;
+}
+
+/* 地図の下に添える出典 */
+.story-map-ref {
+  margin: 0.35rem 0 0;
+  color: var(--theme-muted);
+  font-size: var(--theme-font-size-caption);
+  text-align: right;
+}
+
 .story-map-paper {
   display: grid;
-  flex: 1;
   place-items: center;
   height: 15rem;
   padding: 0.5rem;
