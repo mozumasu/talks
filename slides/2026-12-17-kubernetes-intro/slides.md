@@ -96,6 +96,7 @@ message: Thank you for listening!
 layout: section
 title: '03'
 toc: Appendix
+appendix: true
 ---
 
 # Appendix
