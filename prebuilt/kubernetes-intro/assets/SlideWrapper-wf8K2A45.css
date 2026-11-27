@@ -1,0 +1,248 @@
+
+.slidev-slide-container[data-v-923208b2] {
+  position:relative;width:100%;height:100%;overflow:hidden;
+}
+.slidev-slide-content[data-v-923208b2] {
+  --slidev-slide-container-scale: var(--slidev-slide-scale);
+  transform: translate(-50%, -50%) scale(var(--slidev-slide-scale));
+  position:absolute;left:50%;top:50%;overflow:hidden;--un-bg-opacity:1;background-color:rgb(255 255 255 / var(--un-bg-opacity));
+}.dark .slidev-slide-content[data-v-923208b2]{--un-bg-opacity:1;background-color:rgb(18 18 18 / var(--un-bg-opacity));}
+
+/* 右端の細い透明帯が当たり判定。パネルはその子なので、引き出した後に
+   パネル上へカーソルが移っても :hover が切れない */
+.pp-toc-drawer[data-v-0e802f15] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  z-index: 100;
+  color: var(--theme-text);
+  font-family: Poppins, 'IBM Plex Sans JP', sans-serif;
+}
+
+/* 見出しマークと同じ赤いピル。ドロワーがあることを控えめに示す */
+.pp-toc-drawer__grip[data-v-0e802f15] {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 4px;
+  height: 48px;
+  transform: translateY(-50%);
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-red-mark);
+  opacity: 0.3;
+  transition: opacity 0.15s ease;
+}
+.pp-toc-drawer:hover .pp-toc-drawer__grip[data-v-0e802f15],
+.pp-toc-drawer:focus-within .pp-toc-drawer__grip[data-v-0e802f15] {
+  opacity: 0;
+}
+.pp-toc-drawer__panel[data-v-0e802f15] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  background: var(--theme-background);
+  border-left: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-card);
+  transform: translateX(100%);
+  transition: transform 0.2s ease;
+}
+.pp-toc-drawer:hover .pp-toc-drawer__panel[data-v-0e802f15],
+.pp-toc-drawer:focus-within .pp-toc-drawer__panel[data-v-0e802f15] {
+  transform: translateX(0);
+}
+
+/* 目次の本体だけをスクロールさせ、下端のトグルは常に見えるようにする */
+.pp-toc-drawer__body[data-v-0e802f15] {
+  flex: 1;
+  min-height: 0;
+  padding: 40px 28px 24px;
+  overflow-y: auto;
+}
+
+/* 見出しは v3.1 のヘッダーと同じく左端に赤いマーク */
+.pp-toc-drawer__title[data-v-0e802f15] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: var(--theme-font-weight-bold);
+  letter-spacing: 0.08em;
+}
+.pp-toc-drawer__title[data-v-0e802f15]::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 2px 999px 999px 2px;
+  background: var(--theme-red-mark);
+}
+.pp-toc-drawer__list[data-v-0e802f15] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: pp-toc;
+}
+.pp-toc-drawer__item[data-v-0e802f15] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--theme-border);
+  font-size: 14px;
+  font-weight: var(--theme-font-weight-bold);
+  line-height: 1.4;
+}
+.pp-toc-drawer__item[data-v-0e802f15]::before {
+  counter-increment: pp-toc;
+  content: counter(pp-toc, decimal-leading-zero);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--theme-red);
+}
+
+/* 子項目は番号なしで、親ラベルの開始位置に揃えて控えめに並べる */
+.pp-toc-drawer__children[data-v-0e802f15] {
+  grid-column: 2;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.pp-toc-drawer__child[data-v-0e802f15] {
+  padding: 3px 0;
+  font-size: 13px;
+  font-weight: var(--theme-font-weight-regular);
+}
+.pp-toc-drawer__toggle[data-v-0e802f15] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  width: 100%;
+  margin: 0;
+  padding: 16px 28px 24px;
+  border: 0;
+  border-top: 1px solid var(--theme-border);
+  background: none;
+  color: var(--theme-muted);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.pp-toc-drawer__toggle[data-v-0e802f15]:hover {
+  color: var(--theme-text);
+}
+
+/* つまみが左右に動くスイッチ。オンでプログレスバーと同じ赤になる */
+.pp-toc-drawer__switch[data-v-0e802f15] {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 16px;
+  border-radius: var(--theme-radius-pill);
+  background: var(--theme-gray-200);
+  transition: background 0.15s ease;
+}
+.pp-toc-drawer__switch[data-v-0e802f15]::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--theme-background);
+  transition: transform 0.15s ease;
+}
+.pp-toc-drawer__toggle[aria-checked='true'] .pp-toc-drawer__switch[data-v-0e802f15] {
+  background: var(--theme-red);
+}
+.pp-toc-drawer__toggle[aria-checked='true'] .pp-toc-drawer__switch[data-v-0e802f15]::after {
+  transform: translateX(12px);
+}
+.pp-toc-drawer a[data-v-0e802f15] {
+  color: inherit;
+  text-decoration: none;
+}
+.pp-toc-drawer a[data-v-0e802f15]:hover,
+.pp-toc-drawer .is-active > a[data-v-0e802f15] {
+  color: var(--theme-red);
+}
+
+.pp-progress[data-v-564357b9] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  z-index: 10;
+  cursor: pointer;
+  touch-action: none;
+  transition: height 0.15s ease;
+}
+
+/* バー自体は細くて狙いにくいので、上に透明の当たり判定を広げる */
+.pp-progress[data-v-564357b9]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+}
+.pp-progress[data-v-564357b9]:hover,
+.pp-progress.is-dragging[data-v-564357b9] {
+  height: 6px;
+}
+.pp-progress__bar[data-v-564357b9] {
+  height: 100%;
+  background: var(--theme-red);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.pp-progress.is-dragging .pp-progress__bar[data-v-564357b9] {
+  transition: none;
+}
+
+/* Appendix の開始位置の目盛り。バーより少し上に飛び出させて、赤い上でも見えるようにする */
+.pp-progress__mark[data-v-564357b9] {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: calc(100% + 4px);
+  transform: translateX(-50%);
+  background: var(--theme-gray-500);
+  pointer-events: none;
+}
+
+/* Appendix は「本編は終わった」ことが分かるよう、トラックを敷いて灰色で控えめに進める */
+.pp-progress.is-appendix[data-v-564357b9] {
+  background: var(--theme-gray-100);
+}
+.pp-progress.is-appendix .pp-progress__bar[data-v-564357b9] {
+  background: var(--theme-gray-400);
+}
+
+.disable-view-transition[data-v-71463c42] * {
+  view-transition-name: none !important;
+}
+.slidev-page[data-v-71463c42] {
+  position: absolute;
+  inset: 0;
+
+  /* Zoom handling */
+  --slidev-slide-zoom-scale: 1;
+  width: calc(100% / var(--slidev-slide-zoom-scale));
+  height: calc(100% / var(--slidev-slide-zoom-scale));
+  transform-origin: top left;
+  scale: var(--slidev-slide-zoom-scale);
+  /* slide scale = container scale * zoom scale */
+  --slidev-slide-scale: calc(var(--slidev-slide-container-scale) * var(--slidev-slide-zoom-scale));
+}
